@@ -1451,12 +1451,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   // 每筆：{ date, day, title, ind?, label?, href, current? }
   // ind 僅接受 'red' | 'amber' | 'green'（見下方 INDICATOR_CLASSES 白名單）
   // label 語彙已改為 惡化／持平／改善
-  const ARCHIVE_ITEMS = [
-    {"date":"2026-08-28","day":"08:30","title":"7月貿易逆差 73.4 億美元年增 13.6%，出口對進口涵蓋率降至 77.7%","href":"/archive/turkey-econ-20260828.html","ind":"red","label":"惡化"},
-    {"date":"2026-08-27","day":"08:30","title":"市場觀望 Jackson Hole 談話，新興市場貨幣普遍走弱","href":"/archive/turkey-econ-20260827.html","ind":"amber","label":"持平"},
-    {"date":"2026-08-14","day":"08:30","title":"央行第三期通膨報告暫停年底預測區間，僅保留 24% 目標","href":"/archive/turkey-econ-20260814.html","ind":"amber","label":"持平"},
-    {"date":"2026-08-05","day":"08:30","title":"7月 CPI 年增 31.75% 為3月以來最低，核心通膨降至 29.91%","href":"/archive/turkey-econ-20260805.html","ind":"green","label":"改善"}
-  ];
+  // 這裡原本放了 4 筆示範用的假資料（2026-08-28/27/14/05），連結的
+  // /archive/turkey-econ-*.html 從未真的存在過，點下去必定 404，已於
+  // 2026-08-30 清空。之後請用 archive_today.py 產生真正的歷史頁面，
+  // 再把對應的一筆物件加回這個陣列（格式沿用上面註解的欄位）。
+  const ARCHIVE_ITEMS = [];
 
 
   const panel = document.getElementById('archivePanel');
