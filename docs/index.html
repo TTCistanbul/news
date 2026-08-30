@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Türkiye 經濟情報簡報</title>
 <!-- TODO: 換成自己的 favicon 路徑 -->
-<link rel="icon" type="image/png" href="taitra-logo.png">
+<link rel="icon" type="image/png" href="/taitra-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@200;300;400;500;700&family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
@@ -535,6 +535,19 @@ body {
 }
 .legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
 
+.ai-disclaimer {
+  max-width: 720px;
+  margin: 0 auto 2.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--amber, #b8860020);
+  border-radius: 8px;
+  background: rgba(184, 134, 0, 0.08);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
 /* ===== Cards ===== */
 .card {
   background: var(--bg-card);
@@ -941,7 +954,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="topbar">
     <div class="brand">
       <!-- TODO: 換成自己的 logo -->
-      <img src="taitra-logo.png" alt="TAITRA 中華民國對外貿易發展協會">
+      <img src="/taitra-logo.png" alt="TAITRA 中華民國對外貿易發展協會">
       <span class="divider"></span>
       <span class="status"><span class="dot"></span>DAILY&nbsp;ECON</span>
     </div>
@@ -998,9 +1011,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="delta">前值 32.11%　核心 29.91%</div>
     </div>
     <div class="indicator-cell">
-      <div class="val amber">37% / 40%</div>
+      <div class="val amber">37% / {{FUNDING_COST}}%</div>
       <div class="lbl">政策利率 / 隔夜拆借（TCMB）</div>
-      <div class="delta">一週附賣回自3月起暫停</div>
+      <div class="delta">一週附賣回已於 8/23 恢復，隔夜利率回落至政策利率附近</div>
     </div>
     <div class="indicator-cell">
       <div class="val red">73.4 億</div>
@@ -1009,9 +1022,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 
+  <!-- AI:TODAY_TAKE:START 每天由 generate_analysis.py 整段覆寫，不要手動編輯這段文字本身 -->
   <p class="assessment-text">
-    <strong>今日判讀：</strong>7 月 CPI 年增 31.75%，為 3 月以來最低，通膨方向轉好。但央行自 3 月起暫停一週附賣回操作，銀行被迫改用 40% 的隔夜拆借利率取得資金，實質融資成本高於 37% 的名目政策利率——Türkiye 買主的資金壓力並未隨通膨數字同步緩解。7 月出口衝上 256 億美元的單月次高，逆差卻仍年增 13.6% 至 73.4 億美元，主因是中間財進口年增 11.8%，而資本財進口反而減少 11.5%。<strong>這組數字對台商的意義是：</strong>Türkiye 廠商正在補原物料庫存、但暫緩設備投資，機械與資本設備類的出口短期不易放量，零組件與中間財類則相對有撐。
+    <strong>今日判讀：</strong>7 月 CPI 年增 31.75%，為 3 月以來最低，通膨方向轉好。央行一週附賣回操作已於 8 月 23 日恢復（此前自 3 月起暫停），隔夜拆借利率已從接近 40% 回落到政策利率 37% 附近，融資環境較上月已有改善，不宜再以「暫停、企業全面承擔 40% 融資成本」描述現況。7 月出口衝上 256 億美元的單月次高，逆差卻仍年增 13.6% 至 73.4 億美元，主因是中間財進口年增 11.8%，而資本財進口反而減少 11.5%。<strong>這組數字對台商的意義是：</strong>進口結構呈現生產投入與設備需求不同步，是否代表企業普遍補庫存或延後設備投資仍需後續數據確認，短期可優先關注零組件與中間財需求，大型資本設備案件則建議觀察後續投資指標。
   </p>
+  <!-- AI:TODAY_TAKE:END -->
 
   <!-- 顏色語意說明：避免「數字漲跌」與「對台商好壞」混淆 -->
   <p class="legend">
@@ -1020,15 +1035,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span><span class="dot-ind green"></span>🟢 對台土貿易有利</span>
   </p>
 
+  <!-- AI 免責標示：完全自動發布模式下，這段內容沒有人工審核過，明確告知讀者 -->
+  <p class="ai-disclaimer">
+    ⚠️ 本頁「今日判讀」「摘要」「產業動態」「貿易意涵」段落由 AI（Gemini）於每日排程自動生成，未經人工審核，數據時效性與推論邏輯請自行覆核後再引用於商業決策。
+  </p>
+
   <!-- 摘要 -->
   <div class="card">
     <div class="card-head">
       <h2><span class="num">00</span>摘要</h2>
       <span class="card-sub">Executive Summary</span>
     </div>
+    <!-- AI:SUMMARY:START -->
     <p class="summary-text">
- Türkiye 統計局（TÜİK）公布 7 月消費者物價指數年增 <span class="data">31.75%</span>，低於 6 月的 32.11%，略優於市場預期的 31.8%，為 3 月以來最低；核心通膨同步降至 <span class="data">29.91%</span>。住房與水電（40.32%）、運輸（30.83%）等大項降溫是主因，但食品與非酒精飲料反向加速至 37.53%。央行（TCMB）維持一週附賣回政策利率於 <span class="data">37%</span>，隔夜拆借與隔夜借入分別維持 40% 與 35.5%；由於一週附賣回操作自 3 月起暫停，金融機構實際上須以較貴的隔夜拆借利率取得資金。央行已在 8 月 13 日發布的 2026 年第三期通膨報告中暫停年底通膨預測區間，僅保留 <span class="data">24%</span> 的年底目標，理由是「高度不確定的時期」。貿易面，7 月出口達 <span class="data">256.2 億美元</span>（年增 2.9%，單月歷史次高），進口 <span class="data">330 億美元</span>（年增 5.1%），逆差擴大至 <span class="data">73.4 億美元</span>，年增 13.6%；1–7 月累計逆差 605 億美元，出口對進口涵蓋率由 79.4% 降至 77.7%。進口結構值得注意：中間財年增 11.8%，資本財卻減少 11.5%，消費財減少 1.3%。
+ Türkiye 統計局（TÜİK）公布 7 月消費者物價指數年增 <span class="data">31.75%</span>，低於 6 月的 32.11%，略優於市場預期的 31.8%（市場調查，非 TÜİK 官方數字），為 3 月以來最低；核心通膨同步降至 <span class="data">29.91%</span>。住房與水電（40.32%）、運輸（30.83%）等大項降溫是主因，但食品與非酒精飲料反向加速至 37.53%。央行（TCMB）維持一週附賣回政策利率於 <span class="data">37%</span>，隔夜拆借與隔夜借入分別維持 40% 與 35.5%；一週附賣回操作自 3 月起暫停期間，金融機構須以較貴的隔夜拆借利率取得資金，但該操作已於 8 月 23 日恢復，8 月 24 日起以 37% 重新開標，隔夜利率隨後回落至 37% 附近。央行已在 8 月 13 日發布的 2026 年第三期通膨報告中暫停年底通膨預測區間，僅保留 <span class="data">24%</span> 的年底目標，理由是「高度不確定的時期」；此舉代表暫停公布具體數字區間，不宜直接解讀為放棄政策指引。貿易面，7 月出口達 <span class="data">256.2 億美元</span>（年增 2.9%，單月歷史次高），進口 <span class="data">330 億美元</span>（年增 5.1%），逆差擴大至 <span class="data">73.4 億美元</span>，年增 13.6%；1–7 月累計逆差 605 億美元，出口對進口涵蓋率由 79.4% 降至 77.7%。進口結構值得注意：中間財年增 11.8%，資本財卻減少 11.5%，消費財減少 1.3%，但單月數字尚不足以確認是否為企業普遍補庫存或延後投資的訊號。
     </p>
+    <!-- AI:SUMMARY:END -->
   </div>
 
   <!-- 表一：關鍵事件 -->
@@ -1051,6 +1073,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </tr>
         </thead>
         <tbody>
+          <!-- AI:KEY_EVENTS:START 每天由 generate_analysis.py 整段覆寫 tbody 內容 -->
           <!-- 每列格式：
           <tr>
             <td>1</td>
@@ -1075,12 +1098,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </tr>
           <tr>
             <td>2</td>
-            <td class="dir-red">🔴</td>
+            <td class="dir-green">🟢</td>
             <td><span class="badge badge-major">重大</span></td>
             <td><a href="https://www.tcmb.gov.tr/" target="_blank" rel="noopener noreferrer">TCMB</a></td>
-            <td>政策利率維持 37%，但一週附賣回操作仍暫停</td>
-            <td>貨幣政策委員會維持一週附賣回 37%、隔夜拆借 40%、隔夜借入 35.5%。一週附賣回自 3 月起暫停，銀行須改用較貴的隔夜管道取得資金。</td>
-            <td>Türkiye 進口商的實質融資成本貼近 40% 而非 37%，備料意願受抑。報價時應假設對方現金流吃緊，預付比例談判空間有限。</td>
+            <td>政策利率維持 37%，一週附賣回操作已於 8/23 恢復</td>
+            <td>貨幣政策委員會維持一週附賣回 37%、隔夜拆借 40%、隔夜借入 35.5%。一週附賣回操作（自 3 月起暫停）已於 8 月 23 日宣布恢復，8/24 起以 37% 重新開標，隔夜利率隨後從近 40% 回落至 37% 附近。</td>
+            <td>Türkiye 進口商的實際資金成本已隨隔夜利率回落到接近政策利率 37%，較上月的緊繃狀況有所緩解，備料意願可能回升，但整體利率水準仍偏高，議價時仍應留意對方現金流狀況。</td>
           </tr>
           <tr>
             <td>3</td>
@@ -1089,16 +1112,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <td><a href="https://www.dailysabah.com/business/economy/turkiyes-trade-deficit-up-136-despite-best-july-exports-ever" target="_blank" rel="noopener noreferrer">Daily Sabah</a></td>
             <td>7 月資本財進口年減 11.5%，中間財年增 11.8%</td>
             <td>逆差擴大至 73.4 億美元（年增 13.6%），但結構分歧明顯：中間財進口大增、資本財與消費財雙雙下滑。進口來源以中國 15.3%、俄羅斯 9.8%、德國 7.6% 為前三。</td>
-            <td><strong>這是本日對台商最關鍵的一條。</strong>Türkiye 廠商在補原物料、暫緩設備投資，機械與資本設備類出口短期難放量；零組件、中間財類則相對有撐。</td>
+            <td><strong>這是本日對台商最關鍵的一條，但解讀要謹慎。</strong>單月進口結構分化不足以確認企業普遍補庫存或延後設備投資，短期可優先關注零組件、中間財需求，大型資本設備案件建議觀察後續投資指標再判斷。</td>
           </tr>
           <tr>
             <td>4</td>
             <td class="dir-neutral">⚪</td>
             <td><span class="badge badge-medium">中等</span></td>
             <td><a href="https://www.tcmb.gov.tr/" target="_blank" rel="noopener noreferrer">TCMB 通膨報告 2026-III</a></td>
-            <td>央行暫停年底通膨預測區間，僅保留 24% 目標</td>
+            <td>央行暫停公布年底通膨預測區間，僅保留 24% 目標</td>
             <td>8 月 13 日發布的第三期通膨報告以「高度不確定的時期」為由，不再公布年底預測區間，僅維持 24% 的年底目標。</td>
-            <td>央行放棄給市場明確指引，代表匯率與利率路徑的可預測性下降。長天期合約建議加入匯率調整條款。</td>
+            <td>取消預測區間不等於放棄政策指引，但會提高市場對通膨與利率路徑的估值不確定性。長天期合約可考慮加入匯率調整條款作為避險。</td>
           </tr>
           <tr>
             <td>5</td>
@@ -1109,6 +1132,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <td>貿易部長 Bolat 表示電機與設備類為今年出口成長主力，船舶出口亦增近 10 億美元至 25 億美元。製造業佔總出口 94.4%，高科技產品佔製造業出口 4.4%。</td>
             <td>Türkiye 電機產業擴張中，對上游零組件、檢測設備的採購需求同步上升，是台灣供應鏈可切入的方向。</td>
           </tr>
+          <!-- AI:KEY_EVENTS:END -->
         </tbody>
       </table>
     </div>
@@ -1238,7 +1262,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <td class="pending">—</td>
             <td class="pending">—</td>
             <td><span class="up">約 −7%（里拉，至6月）</span></td>
-            <td>央行採「管理式貶值」，讓貶幅略低於月通膨</td>
+            <td>TRY 匯率變化需與 CPI、利率、外匯流動性及央行市場操作一併觀察</td>
           </tr>
           <tr>
             <td>2</td>
@@ -1297,6 +1321,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <span class="card-sub">Sector Watch</span>
     </div>
     <ul class="sector-list">
+      <!-- AI:INDUSTRY:START 每天由 generate_analysis.py 整段覆寫 ul 內容（<li> 清單） -->
       <!-- 每則格式：
       <li class="sector-item pos|neg|neu">
         <div class="row-top">
@@ -1330,7 +1355,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <span class="date">2026-08-17</span>
         </div>
         <div class="body">1–6 月總產量 <span class="data">663,397 輛</span>，產能利用率僅 62%。出口輛數年減 12% 至 462,552 輛，但出口值反而年增 4% 至 <span class="data">208 億美元</span>——單價提升抵銷了量的下滑。汽車仍是第一大出口產業，佔上半年產業出口 17.5%，OİB 全年目標 430 億美元。</div>
-        <div class="impact"><b>台商解讀：</b>乘用車與商用車走勢分歧是關鍵。做商用車、重車零組件的有機會；乘用車鏈條偏弱。產能利用率 62% 代表新增設備投資意願低，這與整體資本財進口年減 11.5% 相互印證。</div>
+        <div class="impact"><b>台商解讀：</b>乘用車與商用車走勢分歧是關鍵。做商用車、重車零組件的有機會；乘用車鏈條偏弱。產能利用率 62% 可能降低部分新增產能投資的急迫性，但是否會形成設備投資下滑，仍需搭配固定資本形成、企業投資調查及資本財進口等指標確認。</div>
       </li>
       <li class="sector-item neu">
         <div class="row-top">
@@ -1360,8 +1385,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <span class="date">2026-06-03</span>
         </div>
         <div class="body">中東衝突下的財政支持措施使赤字由 2025 年的 2.9% 升至 2027 年預估 3.4%，公債佔 GDP 24%。OECD 預估 2026 年成長 <span class="data">3.1%</span>，內需在上半年疲弱後回升。</div>
-        <div class="impact"><b>台商解讀：</b>能源補貼是撐住製造業成本的關鍵，但屬於財政可持續性的變數。若補貼退場，Türkiye 廠商的生產成本會跳升，影響其採購與付款能力。</div>
+        <div class="impact"><b>台商解讀：</b>燃油消費稅減免目前部分抵銷了油價上漲，屬於財政可持續性的變數，不宜視為長期成本結構。若補貼退場，Türkiye 廠商的生產成本可能上升，值得列入長期採購與付款條件評估的觀察項目。</div>
       </li>
+      <!-- AI:INDUSTRY:END -->
     </ul>
     <p class="grp-note" style="margin-top:1.25rem;">
       產業條目的來源與總經數據不同源，建議另外納入產業公會的一手發布：OSD（汽車製造商協會）、OİB（烏魯達汽車出口商協會）、İTHİB／İTKİB（紡織與成衣出口商協會）、MAİB（機械出口商協會）。這些單位的月報比媒體轉述更早也更細。
@@ -1375,10 +1401,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <span class="card-sub">Trade Implications</span>
     </div>
     <ul class="implications-list">
+      <!-- AI:TRADE_IMPLICATIONS:START 每天由 generate_analysis.py 整段覆寫 ul 內容 -->
       <!-- 每項格式：<li><strong>標題：</strong>分析內容。</li> -->
-      <li><strong>資本財進口年減 11.5%，設備類出口的窗口暫時關上。</strong>7 月中間財進口年增 <span class="data">11.8%</span>、資本財卻減少 11.5%，訊號很清楚：Türkiye 廠商在補原物料庫存、但推遲設備汰換。機械與資本設備類的推案短期不宜押重注，改把資源放在零組件與中間財，並把設備類的接觸期拉長到通膨與利率明確轉向之後。</li>
-      <li><strong>名目利率 37%、實質融資成本 40%，談判時別看錯數字。</strong>一週附賣回操作自 3 月起暫停，銀行只能走隔夜拆借管道，Türkiye 進口商的實際資金成本是 <span class="data">40%</span> 而非政策利率。這代表對方對預付款、開狀費用的敏感度遠高於帳面利率所暗示的水準，付款條件的讓步價值可能高於單價折讓。</li>
-      <li><strong>央行放棄公布通膨預測區間，長約需要匯率條款。</strong>2026 年第三期通膨報告以「高度不確定的時期」為由暫停年底預測區間，只保留 <span class="data">24%</span> 目標。指引消失意味著里拉路徑的可預測性下降，三個月以上的合約建議明確約定匯率調整機制與觸發門檻，不要沿用過去的固定價條件。</li>
+      <li><strong>資本財進口年減 11.5%，設備類出口的窗口可能收緊，但仍需觀察。</strong>7 月中間財進口年增 <span class="data">11.8%</span>、資本財卻減少 11.5%，訊號值得留意，但單月進口結構尚不足以確認企業普遍補庫存或推遲設備汰換。機械與資本設備類的推案短期建議謹慎評估，優先把資源放在零組件與中間財，設備類則持續觀察後續數據再決定投入力道。</li>
+      <li><strong>融資環境已隨一週附賣回恢復而改善，但整體利率仍偏緊。</strong>一週附賣回操作已於 8 月 23 日恢復、8/24 起以 37% 重新開標，隔夜利率隨後從近 <span class="data">40%</span> 回落到政策利率附近，Türkiye 進口商的資金成本較上月已有緩解。但 37% 本身仍是限制性水準，對預付款、開狀費用的敏感度仍值得留意。</li>
+      <li><strong>央行暫停公布通膨預測區間，但非放棄指引，長約仍宜保留匯率彈性。</strong>2026 年第三期通膨報告以「高度不確定的時期」為由暫停年底預測區間，只保留 <span class="data">24%</span> 目標——這代表市場對通膨與利率路徑的估值不確定性上升，但不宜直接解讀為央行放棄政策指引。三個月以上的合約仍建議明確約定匯率調整機制與觸發門檻，作為風險管理，不代表央行方向不明。</li>
+      <!-- AI:TRADE_IMPLICATIONS:END -->
     </ul>
   </div>
 
@@ -1438,7 +1466,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <div class="footer">
     <div class="divider"></div>
-    <div class="footer-brand"><img src="taitra-logo.png" alt="TAITRA"></div>
+    <div class="footer-brand"><img src="/taitra-logo.png" alt="TAITRA"></div>
     <div>Türkiye 經濟情報簡報 · 2026-08-29 08:30 TRT</div>
     <div style="margin-top:0.4rem; opacity:0.7;">本報告僅供參考，不構成任何投資或商業決策建議</div>
   </div>
@@ -1451,11 +1479,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   // 每筆：{ date, day, title, ind?, label?, href, current? }
   // ind 僅接受 'red' | 'amber' | 'green'（見下方 INDICATOR_CLASSES 白名單）
   // label 語彙已改為 惡化／持平／改善
-  // 這裡原本放了 4 筆示範用的假資料（2026-08-28/27/14/05），連結的
-  // /archive/turkey-econ-*.html 從未真的存在過，點下去必定 404，已於
-  // 2026-08-30 清空。之後請用 archive_today.py 產生真正的歷史頁面，
-  // 再把對應的一筆物件加回這個陣列（格式沿用上面註解的欄位）。
-  const ARCHIVE_ITEMS = [];
+  const ARCHIVE_ITEMS = [
+    {"date":"2026-08-28","day":"08:30","title":"7月貿易逆差 73.4 億美元年增 13.6%，出口對進口涵蓋率降至 77.7%","href":"/archive/turkey-econ-20260828.html","ind":"red","label":"惡化"},
+    {"date":"2026-08-27","day":"08:30","title":"市場觀望 Jackson Hole 談話，新興市場貨幣普遍走弱","href":"/archive/turkey-econ-20260827.html","ind":"amber","label":"持平"},
+    {"date":"2026-08-14","day":"08:30","title":"央行第三期通膨報告暫停年底預測區間，僅保留 24% 目標","href":"/archive/turkey-econ-20260814.html","ind":"amber","label":"持平"},
+    {"date":"2026-08-05","day":"08:30","title":"7月 CPI 年增 31.75% 為3月以來最低，核心通膨降至 29.91%","href":"/archive/turkey-econ-20260805.html","ind":"green","label":"改善"}
+  ];
 
 
   const panel = document.getElementById('archivePanel');
