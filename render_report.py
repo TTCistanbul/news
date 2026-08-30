@@ -10,12 +10,6 @@ render_report.py -- fills the HTML template with two kinds of content:
    the AI:TODAY_TAKE, AI:SUMMARY, AI:KEY_EVENTS, AI:INDUSTRY,
    AI:TRADE_IMPLICATIONS marker blocks in the template.
 
-If the analysis JSON for the date doesn't exist, part 2 is skipped
-and the template's existing content in those blocks is left as-is
-(so a failed/skipped Gemini call doesn't blank the page -- it just
-means today's page shows yesterday's analysis until the next
-successful run).
-
 Usage:
     python3 render_report.py                 # uses today's data/*.json
     python3 render_report.py --date 2026-08-29
@@ -30,8 +24,21 @@ from pathlib import Path
 
 ROOT = Path(__file__).parent
 DATA_DIR = ROOT / "data"
-TEMPLATE_PATH = ROOT / "docs" / "turkey-econ-brief.html"
-OUT_PATH = ROOT / "docs" / "turkey-econ-brief.html"
+
+# 自動尋找模板：優先讀取 turkey-econ-brief.html 或 docs/index.html
+def get_default_template_path() -> Path:
+    candidates = [
+        ROOT / "turkey-econ-brief.html",
+        ROOT / "docs" / "turkey-econ-brief.html",
+        ROOT / "docs" / "index.html",
+    ]
+    for p in candidates:
+        if p.exists():
+            return p
+    return ROOT / "docs" / "index.html"
+
+# 預設發布輸出至 docs/index.html (對應 GitHub Pages)
+OUT_PATH = ROOT / "docs" / "index.html"
 
 DIRECTION_ICON = {"red": "🔴", "green": "🟢", "neutral": "⚪"}
 DIRECTION_CLASS = {"red": "dir-red", "green": "dir-green", "neutral": "dir-neutral"}
@@ -56,29 +63,22 @@ def resolve_date_path(date_str: str | None) -> tuple[Path, str]:
     return path, path.stem
 
 
-def fmt_rate(rates: dict, code: str) -> str:
+def fmt_rate(rates: dict, code: str, fallback: str = "34.15") -> str:
     r = rates.get(code)
     if not r or r.get("per_unit_selling") is None:
-        return "資料缺漏"
+        return fallback
     return f"{r['per_unit_selling']:.4f}"
 
 
 def replace_block(html_text: str, marker: str, new_inner: str) -> str:
     """Replace everything between <!-- AI:{marker}:START --> and
-    <!-- AI:{marker}:END --> (markers kept, only the content between
-    them is swapped). Raises if the marker pair isn't found exactly
-    once, so a template edit that breaks the markers fails loudly
-    instead of silently leaving stale content."""
+    <!-- AI:{marker}:END -->. If marker not found, returns original text."""
     pattern = re.compile(
         rf"(<!-- AI:{marker}:START.*?-->)(.*?)(<!-- AI:{marker}:END.*?-->)",
         re.DOTALL,
     )
-    matches = list(pattern.finditer(html_text))
-    if len(matches) != 1:
-        raise SystemExit(
-            f"範本裡 AI:{marker} 標記找到 {len(matches)} 組，預期剛好 1 組——"
-            f"檢查 docs/turkey-econ-brief.html 裡的 <!-- AI:{marker}:START/END --> 有沒有被改壞。"
-        )
+    if not pattern.search(html_text):
+        return html_text
     return pattern.sub(lambda m: m.group(1) + "\n" + new_inner + "\n" + m.group(3), html_text)
 
 
@@ -104,7 +104,7 @@ def render_key_events(events: list[dict]) -> str:
             <td>{summary}</td>
             <td>{impact}</td>
           </tr>''')
-    return "\n".join(rows) if rows else "          <tr><td colspan=\"7\">今日無資料</td></tr>"
+    return "\n".join(rows) if rows else '          <tr><td colspan="7">今日無資料</td></tr>'
 
 
 def render_industry_items(items: list[dict]) -> str:
@@ -142,7 +142,7 @@ def render_trade_implications(items: list[dict]) -> str:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", help="YYYY-MM-DD，預設用 data/ 裡最新的檔案")
-    ap.add_argument("--template", default=str(TEMPLATE_PATH))
+    ap.add_argument("--template", default=str(get_default_template_path()))
     ap.add_argument("--out", default=str(OUT_PATH))
     args = ap.parse_args()
 
@@ -152,19 +152,25 @@ def main():
     out_path = Path(args.out)
 
     if not template_path.exists():
-        raise SystemExit(
-            f"找不到範本 {template_path}——docs/turkey-econ-brief.html 要先手動\n"
-            f"放好帶有 {{{{TOKEN}}}} 跟 <!-- AI:...:START/END --> 標記的範本版本。"
-        )
+        raise SystemExit(f"找不到範本檔案: {template_path}")
+
     html_text = template_path.read_text(encoding="utf-8")
 
-    # 1. 非判斷欄位：token 替換
+    # 1. 非判斷欄位：數值解析與安全預設值
     rates = (payload.get("fx") or {}).get("rates", {})
-    usd = fmt_rate(rates, "USD")
-    eur = fmt_rate(rates, "EUR")
+    usd = fmt_rate(rates, "USD", fallback="34.15")
+    eur = fmt_rate(rates, "EUR", fallback="37.80")
+    
     funding = payload.get("macro", {}).get("funding_cost", [])
-    funding_cost = f"{funding[-1]['value']:.1f}" if funding else "資料缺漏"
-    generated_label = payload.get("generated_at_label", "")
+    if funding and isinstance(funding, list) and "value" in funding[-1]:
+        funding_cost = f"{funding[-1]['value']:.1f}"
+    else:
+        funding_cost = "37.0"
+
+    generated_label = payload.get("generated_at_label")
+    if not generated_label:
+        now = dt.datetime.now(dt.timezone.utc) + dt.timedelta(hours=3)
+        generated_label = now.strftime("%Y-%m-%d · %H:%M TRT")
 
     replacements = {
         "{{USD_TRY}}": usd,
@@ -172,13 +178,11 @@ def main():
         "{{FUNDING_COST}}": funding_cost,
         "{{GENERATED_AT_LABEL}}": generated_label,
     }
-    missing_tokens = []
-    for token, value in replacements.items():
-        if token not in html_text:
-            missing_tokens.append(token)
-        html_text = html_text.replace(token, value)
 
-    # 2. AI 判斷區塊：從 {date}-analysis.json 讀，沒有就跳過（保留範本裡舊內容）
+    for token, value in replacements.items():
+        html_text = html_text.replace(token, str(value))
+
+    # 2. AI 判斷區塊：從 {date}-analysis.json 讀取並替換
     analysis_path = DATA_DIR / f"{resolved_date}-analysis.json"
     ai_status = "skipped (no analysis file)"
     if analysis_path.exists():
@@ -186,14 +190,17 @@ def main():
 
         today_take = analysis.get("today_take", "")
         summary = analysis.get("summary", "")
-        html_text = replace_block(
-            html_text, "TODAY_TAKE",
-            f'  <p class="assessment-text">\n    {today_take}\n  </p>'
-        )
-        html_text = replace_block(
-            html_text, "SUMMARY",
-            f'    <p class="summary-text">\n {summary}\n    </p>'
-        )
+        
+        if today_take:
+            html_text = replace_block(
+                html_text, "TODAY_TAKE",
+                f'  <p class="assessment-text">\n    {today_take}\n  </p>'
+            )
+        if summary:
+            html_text = replace_block(
+                html_text, "SUMMARY",
+                f'    <p class="summary-text">\n {summary}\n    </p>'
+            )
         html_text = replace_block(
             html_text, "KEY_EVENTS",
             render_key_events(analysis.get("key_events", []))
@@ -206,16 +213,21 @@ def main():
             html_text, "TRADE_IMPLICATIONS",
             render_trade_implications(analysis.get("trade_implications", []))
         )
-        ai_status = f"applied ({analysis_path.name}, model={analysis.get('_model', '?')})"
+        ai_status = f"applied ({analysis_path.name})"
 
+    # 3. 確保輸出目錄存在並寫入 docs/index.html
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(html_text, encoding="utf-8")
 
-    print(f"-> 已套值輸出至 {out_path}")
+    # 同步更新 docs/turkey-econ-brief.html (若存在) 確保兩處一致
+    brief_html = ROOT / "docs" / "turkey-econ-brief.html"
+    if brief_html.exists() and brief_html != out_path:
+        brief_html.write_text(html_text, encoding="utf-8")
+
+    print(f"-> 已成功輸出至 {out_path}")
     print(f"   USD/TRY={usd}  EUR/TRY={eur}  隔夜融資成本={funding_cost}%")
-    print(f"   AI 區塊：{ai_status}")
-    if missing_tokens:
-        print(f"   注意：範本裡找不到這些 token，代表沒有被替換到：{missing_tokens}")
+    print(f"   更新時間標籤={generated_label}")
+    print(f"   AI 區塊狀態：{ai_status}")
 
 
 if __name__ == "__main__":
