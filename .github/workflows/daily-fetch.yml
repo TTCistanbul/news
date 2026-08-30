@@ -28,13 +28,18 @@ jobs:
           EVDS_API_KEY: ${{ secrets.EVDS_API_KEY }}
         run: python fetch_daily.py
 
-      - name: Fill in non-judgment fields (FX rate, funding cost, timestamp)
+      - name: Generate AI analysis (Gemini, fully automatic, no review step)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python generate_analysis.py
+
+      - name: Fill in template (rates, funding cost, AI blocks)
         run: python render_report.py
 
       - name: Commit and push data and report
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/ docs/index.html docs/archive/
+          git add data/ docs/turkey-econ-brief.html
           git diff --cached --quiet || git commit -m "Daily data fetch $(date -u +%Y-%m-%d)"
           git push
