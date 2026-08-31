@@ -330,6 +330,96 @@ def main():
     else:
         funding_cost = "37.0"
 
+    # 核心指標區塊：CPI、商品貿易差額。這兩個原本是 8/29 手寫的靜態樣本
+    # 文字，從來沒有真的接資料，這裡改成讀 EVDS 抓到的真實序列。日期字串
+    # 格式來自 borsapy，實機沒驗證過長怎樣，所以月份標籤用寬鬆的方式解析，
+    # 解析不出來就直接顯示原始日期字串，不要讓整段掛掉或顯示錯誤月份。
+    def _month_label(date_str: str) -> str:
+        if not date_str:
+            return "最新"
+        m = re.match(r"^(\d{4})-(\d{1,2})", date_str)
+        if m:
+            return f"{int(m.group(2))}月"
+        m = re.match(r"^(\d{1,2})-\d{4}", date_str)
+        if m and int(m.group(1)) <= 12:
+            return f"{int(m.group(1))}月"
+        return date_str
+
+    cpi_series = payload.get("macro", {}).get("cpi") or []
+    if cpi_series and "value" in cpi_series[-1]:
+        cpi_latest = cpi_series[-1]
+        cpi_value = f"{cpi_latest['value']:.2f}"
+        cpi_month_label = _month_label(cpi_latest.get("date", ""))
+        if len(cpi_series) >= 2 and "value" in cpi_series[-2]:
+            cpi_prev = cpi_series[-2]["value"]
+            cpi_delta = f"前值 {cpi_prev:.2f}%"
+            cpi_color = "green" if cpi_latest["value"] <= cpi_prev else "red"
+        else:
+            cpi_delta = "尚無前一期資料可比較"
+            cpi_color = "amber"
+    else:
+        cpi_value, cpi_month_label, cpi_delta, cpi_color = "—", "—", "資料尚未取得", "amber"
+
+    # 貿易差額 = 出口序列 - 進口序列（EVDS 沒有現成乾淨的「淨額」序列可用，
+    # 2026-08-31 使用者確認過 Q16「Net Exports...Merchanting」其實是轉口
+    # 貿易這種小眾特殊項目，改用出口/進口兩支序列自己相減）。兩個序列都
+    # 是 borsapy 抓回來的，用日期字串對齊，不能直接假設兩邊筆數/順序一樣。
+    exp_series = payload.get("macro", {}).get("trade_exports") or []
+    imp_series = payload.get("macro", {}).get("trade_imports") or []
+    exp_by_date = {e["date"]: e["value"] for e in exp_series if "date" in e and "value" in e}
+    imp_by_date = {e["date"]: e["value"] for e in imp_series if "date" in e and "value" in e}
+    common_dates = sorted(set(exp_by_date) & set(imp_by_date))
+    tb_points = [(d, exp_by_date[d] - imp_by_date[d]) for d in common_dates]
+
+    if tb_points:
+        tb_date, tb_val = tb_points[-1]  # 單位：百萬美元
+        tb_label = "順差" if tb_val >= 0 else "逆差"
+        tb_value = f"{abs(tb_val) / 100:.1f} 億美元"
+        tb_color = "green" if tb_val >= 0 else "red"
+        tb_month_label = _month_label(tb_date)
+        if len(tb_points) >= 2:
+            prev_date, prev_val = tb_points[-2]
+            prev_label = "順差" if prev_val >= 0 else "逆差"
+            tb_delta = f"上月：{abs(prev_val) / 100:.1f} 億美元{prev_label}　（資料月份：{tb_date}）"
+        else:
+            tb_delta = f"尚無前一期資料可比較　（資料月份：{tb_date}）"
+    else:
+        tb_value, tb_label, tb_color = "—", "", "amber"
+        tb_month_label, tb_delta = "—", "資料尚未取得"
+
+    # 「核心指標」第三格改顯示台灣—Türkiye 雙邊貿易餘額的簡短版（不是
+    # Türkiye 對全世界的整體貿易差額——那個算好了但不放在這一格顯示，
+    # tb_value 等變數保留著沒有刪，下面完整版卡片＝06 台灣—Türkiye 雙邊
+    # 貿易，或之後有別的地方要用整體差額還可以接）。
+    tw_tr_data_early = load_tw_tr_trade()
+    tw_months = (tw_tr_data_early or {}).get("months") or []
+    if tw_months:
+        tw_latest = tw_months[-1]
+        tw_exp, tw_imp = tw_latest.get("exports_to_turkey"), tw_latest.get("imports_from_turkey")
+        if tw_exp is not None and tw_imp is not None:
+            tw_bal = tw_exp - tw_imp
+            twtr_label = "出超" if tw_bal >= 0 else "入超"
+            twtr_value = f"${abs(tw_bal) / 1_000_000:,.1f}M"
+            twtr_color = "green" if tw_bal >= 0 else "red"
+            twtr_month_label = html.escape(tw_latest.get("month", ""))
+            if len(tw_months) >= 2:
+                prev = tw_months[-2]
+                p_exp, p_imp = prev.get("exports_to_turkey"), prev.get("imports_from_turkey")
+                if p_exp is not None and p_imp is not None:
+                    p_bal = p_exp - p_imp
+                    p_label = "出超" if p_bal >= 0 else "入超"
+                    twtr_delta = f"上月：台灣{p_label} ${abs(p_bal) / 1_000_000:,.1f}M"
+                else:
+                    twtr_delta = "上月資料不完整"
+            else:
+                twtr_delta = "尚無前一期資料可比較"
+        else:
+            twtr_value, twtr_label, twtr_color = "—", "", "amber"
+            twtr_month_label, twtr_delta = "—", "當月出口/進口資料不完整"
+    else:
+        twtr_value, twtr_label, twtr_color = "—", "", "amber"
+        twtr_month_label, twtr_delta = "—", "尚未提供 data/tw-tr-trade.json"
+
     # TWD/TRY：不是任何央行的官方報價，是 fetch_daily.py 用 TCMB 官方
     # USD/TRY 跟第三方免費 API 的 USD/TWD 算出來的交叉匯率。抓取失敗時
     # 顯示跟其他「還沒接上」欄位一致的提示文字，不要留著空白或舊數字。
@@ -357,6 +447,20 @@ def main():
         "{{EUR_TRY}}": eur,
         "{{FUNDING_COST}}": funding_cost,
         "{{TWD_TRY}}": twd_try,
+        "{{CPI_VALUE}}": cpi_value,
+        "{{CPI_COLOR}}": cpi_color,
+        "{{CPI_MONTH_LABEL}}": cpi_month_label,
+        "{{CPI_DELTA}}": cpi_delta,
+        "{{TRADE_BALANCE_VALUE}}": tb_value,
+        "{{TRADE_BALANCE_COLOR}}": tb_color,
+        "{{TRADE_BALANCE_LABEL}}": tb_label,
+        "{{TRADE_BALANCE_MONTH_LABEL}}": tb_month_label,
+        "{{TRADE_BALANCE_DELTA}}": tb_delta,
+        "{{TWTR_VALUE}}": twtr_value,
+        "{{TWTR_COLOR}}": twtr_color,
+        "{{TWTR_LABEL}}": twtr_label,
+        "{{TWTR_MONTH_LABEL}}": twtr_month_label,
+        "{{TWTR_DELTA}}": twtr_delta,
         "{{GENERATED_AT_LABEL}}": generated_label,
         "{{DATE_ZH}}": date_zh,
     }
@@ -399,7 +503,7 @@ def main():
 
     # 3. 台灣—Türkiye 雙邊貿易（人工每月維護，跟上面的 AI 區塊無關，
     #    不管 analysis 檔案存不存在都要跑）
-    tw_tr_data = load_tw_tr_trade()
+    tw_tr_data = tw_tr_data_early
     html_text = replace_block(html_text, "TW_TR_TRADE", render_tw_tr_trade(tw_tr_data))
 
     reports_index = load_reports_index()

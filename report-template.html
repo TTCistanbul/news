@@ -1015,9 +1015,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- 核心指標 -->
   <div class="indicator-strip">
     <div class="indicator-cell">
-      <div class="val green">31.75%</div>
-      <div class="lbl">年通膨率（TÜİK CPI，7月）</div>
-      <div class="delta">前值 32.11%　核心 29.91%</div>
+      <div class="val {{CPI_COLOR}}">{{CPI_VALUE}}%</div>
+      <div class="lbl">年通膨率（TÜİK CPI，{{CPI_MONTH_LABEL}}）</div>
+      <div class="delta">{{CPI_DELTA}}</div>
     </div>
     <div class="indicator-cell">
       <div class="val amber">37% / {{FUNDING_COST}}%</div>
@@ -1025,9 +1025,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="delta">一週附賣回已於 8/23 恢復，隔夜利率回落至政策利率附近</div>
     </div>
     <div class="indicator-cell">
-      <div class="val red">73.4 億</div>
-      <div class="lbl">7月貿易逆差（美元）</div>
-      <div class="delta">年增 13.6%　1–7月累計 605 億</div>
+      <div class="val {{TWTR_COLOR}}">{{TWTR_VALUE}}</div>
+      <div class="lbl">台灣對 Türkiye 貿易{{TWTR_LABEL}}（{{TWTR_MONTH_LABEL}}）</div>
+      <div class="delta">{{TWTR_DELTA}}</div>
     </div>
   </div>
 
