@@ -191,6 +191,20 @@ EVDS_SERIES = {
     # Specified Coverage (2025=100)」查到新代碼，換成這支。CPI 本身就是
     # 月頻資料，frequency=5 沒問題，跟 funding_cost 不同，不要對調。
     "cpi": ("TP.FE25.OKTG01", 5),
+    # 商品貿易差額（淨額，International BPM6 統計口徑）——2026-08-31 從 EVDS
+    # 網頁 All Series → BALANCE OF PAYMENTS STATISTICS (CBRT) → Balance of
+    # Payments Developments-Detailed Presentation → 1.1.Goods 底下查到這支，
+    # 使用者手動在網頁上確認取得，非由本程式自動探索。單位是「百萬美元」
+    # （月頻），不是台幣簡報常見的「億」，render_report.py 那邊會換算。
+    # 如果之後發現數字對不起來（例如變成只有出口或只有進口，不是淨額），
+    # 回頭到同一個路徑重新確認選的是「Net」那個子項目，換掉這裡的代碼。
+    # 商品出口／進口（BPM6，International 統計口徑）——2026-08-31 使用者
+    # 用 EVDS 網頁自己匯出 Excel 核對過：Q5 是出口、Q6 是進口，兩者相減
+    # 算出來的差額量級（每月約 -44 億～-95 億美元）跟 TÜİK 官方數字對得上。
+    # 原本試過 Q16「Net Exports of Goods Under Merchanting」，那個其實是
+    # 「轉口貿易淨額」這種很小眾的特殊項目，數字量級差了幾十倍，不要用。
+    "trade_exports": ("TP.ODEAYRSUNUM6.Q5", 5),
+    "trade_imports": ("TP.ODEAYRSUNUM6.Q6", 5),
 }
 
 # EVDS v2 → v3 frequency 對照（v2 是舊 evds/evdspy 系列套件慣用的 1-8 編號，
@@ -620,6 +634,16 @@ def main():
             try:
                 payload["macro"][name] = fetch_evds(code, start, end, key, freq)[-14:]
                 print(f"✓ EVDS {name}", file=sys.stderr)
+                if name == "trade_imports" and payload["macro"].get("trade_exports") and payload["macro"][name]:
+                    exp_v = payload["macro"]["trade_exports"][-1].get("value")
+                    imp_v = payload["macro"][name][-1].get("value")
+                    if exp_v is not None and imp_v is not None:
+                        print(
+                            f"   ↳ 出口 {exp_v:.0f} － 進口 {imp_v:.0f} = "
+                            f"差額 {exp_v - imp_v:.0f}（單位百萬美元，人工核對："
+                            f"應落在 -4000 ~ -12000 附近才合理）",
+                            file=sys.stderr,
+                        )
             except Exception as e:
                 payload["errors"].append(f"evds:{name}: {e}")
                 print(f"✗ EVDS {name}: {e}", file=sys.stderr)
