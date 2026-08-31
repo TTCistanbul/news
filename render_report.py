@@ -61,6 +61,31 @@ def load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def load_recent_industry_items(resolved_date: str, window_days: int = 7) -> list[dict]:
+    """產業動態原本只看「今天」這一份分析檔案，今天新聞剛好抓到 0 則的話
+    整段就是空的，即使過去 6 天明明有資料也不會被用到。這裡改成真的把
+    過去 window_days 天、每一天的 -analysis.json 都讀進來，把 industry_items
+    全部彙整在一起，再交給 render_industry_items() 做日期篩選＋排序。
+    某一天的分析檔案不存在或壞掉就跳過，不讓整段掛掉。"""
+    try:
+        as_of = dt.date.fromisoformat(resolved_date)
+    except ValueError:
+        return []
+    items: list[dict] = []
+    for i in range(window_days):
+        d = as_of - dt.timedelta(days=i)
+        p = DATA_DIR / f"{d.isoformat()}-analysis.json"
+        if not p.exists():
+            continue
+        try:
+            day_analysis = load_json(p)
+        except Exception as e:
+            print(f"! {p.name} 讀取失敗，跳過：{e}")
+            continue
+        items.extend(day_analysis.get("industry_items", []) or [])
+    return items
+
+
 def resolve_date_path(date_str: str | None) -> tuple[Path, str]:
     if date_str:
         path = DATA_DIR / f"{date_str}.json"
@@ -492,10 +517,6 @@ def main():
             render_key_events(analysis.get("key_events", []))
         )
         html_text = replace_block(
-            html_text, "INDUSTRY",
-            render_industry_items(analysis.get("industry_items", []), report_date)
-        )
-        html_text = replace_block(
             html_text, "TRADE_IMPLICATIONS",
             render_trade_implications(analysis.get("trade_implications", []))
         )
@@ -505,6 +526,14 @@ def main():
     #    不管 analysis 檔案存不存在都要跑）
     tw_tr_data = tw_tr_data_early
     html_text = replace_block(html_text, "TW_TR_TRADE", render_tw_tr_trade(tw_tr_data))
+
+    # 產業動態：彙整過去 7 天各天的分析檔案，獨立於「今天」有沒有分析檔案，
+    # 就算今天 Gemini 那步失敗、沒有今天的 -analysis.json，前幾天有資料
+    # 一樣要能顯示出來
+    html_text = replace_block(
+        html_text, "INDUSTRY",
+        render_industry_items(load_recent_industry_items(resolved_date), report_date)
+    )
 
     reports_index = load_reports_index()
     html_text = replace_block(html_text, "REPORTS_LIST", render_reports_list(reports_index))
