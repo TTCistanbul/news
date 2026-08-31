@@ -145,6 +145,91 @@ TWD_CROSS_URL = "https://open.er-api.com/v6/latest/USD"
 BRENT_CSV_URL = "https://datahub.io/core/oil-prices/_r/-/data/brent-daily.csv"
 
 
+# ─────────────────────────────────────────────
+# 1d. 貿易俱樂部（中國輸出入銀行）土耳其專頁 —— 半年左右才發一篇新報告，
+#     跟其他每天都有新內容的來源性質不同。每天只檢查「綜合評論」列表
+#     最上面那篇的 ID，跟上次記錄的 ID 比對；只有真的換了新報告才回傳
+#     完整內容，其餘時候回傳 None（代表「沒有新報告」，不是抓取失敗，
+#     呼叫端不要把 None 當成錯誤處理）。
+# 2026-08-31：沒辦法連網實機驗證這段正規表達式在真實 HTML 上抓不抓得到，
+#     如果之後發現一直抓不到任何項目，把印出來的「解析不到任何項目」
+#     警告訊息回報，附上當時網站原始碼，才能照實際標籤結構調整，不要用猜的。
+# ─────────────────────────────────────────────
+EXIMCLUB_LIST_URL = (
+    "https://www.eximclub.com.tw/innerListA.aspx?Continen=3&Country=%E5%9C%9F%E8%80%B3%E5%85%B6"
+)
+EXIMCLUB_STATE_PATH = OUT_DIR / "_eximclub_seen.json"
+
+
+def fetch_eximclub_turkey_report() -> dict | None:
+    try:
+        r = requests.get(EXIMCLUB_LIST_URL, headers=UA, timeout=TIMEOUT)
+        r.raise_for_status()
+        html_text = r.text
+    except Exception as e:
+        print(f"✗ 貿易俱樂部列表: {e}", file=sys.stderr)
+        return None
+
+    # 只抓「綜合評論」文章連結（Type=Publish），排除頁面上方「基本國情」
+    # 那種 Type=Condition 連結，避免抓錯 ID 序列。日期跟 ID 分開抓，
+    # 假設兩份清單順序一致、成對出現（列表本身依日期新到舊排序）。
+    ids = re.findall(r"Type=Publish[^\"'>]*?ID=(\d+)", html_text)
+    dates = re.findall(r"\b(\d{4}/\d{2}/\d{2})\b", html_text)
+    if not ids or not dates:
+        print(
+            "✗ 貿易俱樂部列表: 解析不到任何項目，網站可能改版了，"
+            f"HTML 長度={len(html_text)}",
+            file=sys.stderr,
+        )
+        return None
+
+    latest_id, latest_date = ids[0], dates[0]
+
+    try:
+        last_seen = json.loads(EXIMCLUB_STATE_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        last_seen = {}
+
+    if last_seen.get("id") == latest_id:
+        print(f"- 貿易俱樂部：沒有新報告（最新仍是 {latest_id}，{latest_date}）", file=sys.stderr)
+        return None
+
+    content_url = (
+        f"https://www.eximclub.com.tw/innerContent.aspx?"
+        f"Type=Publish&ID={latest_id}&Continen=3&Country=%E5%9C%9F%E8%80%B3%E5%85%B6"
+    )
+    title = ""
+    excerpt = ""
+    try:
+        r2 = requests.get(content_url, headers=UA, timeout=TIMEOUT)
+        r2.raise_for_status()
+        m_title = re.search(r"<title>([^<]+)</title>", r2.text)
+        if m_title:
+            title = m_title.group(1).strip()
+        text = re.sub(r"<script.*?</script>|<style.*?</style>", " ", r2.text,
+                       flags=re.DOTALL)
+        text = re.sub(r"<[^>]+>", " ", text)
+        text = re.sub(r"\s+", " ", text).strip()
+        excerpt = text[:3000]  # 全文可能很長，先截一段，避免 payload 過大
+    except Exception as e:
+        print(f"✗ 貿易俱樂部內文: {e}", file=sys.stderr)
+
+    EXIMCLUB_STATE_PATH.parent.mkdir(exist_ok=True)
+    EXIMCLUB_STATE_PATH.write_text(
+        json.dumps({"id": latest_id, "date": latest_date, "title": title},
+                   ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    return {
+        "id": latest_id,
+        "date": latest_date,
+        "title": title,
+        "url": content_url,
+        "content_excerpt": excerpt,
+    }
+
+
 def fetch_brent_oil() -> dict | None:
     try:
         r = requests.get(BRENT_CSV_URL, headers=UA, timeout=TIMEOUT)
@@ -704,6 +789,12 @@ def main():
         print(f"✓ 布蘭特原油 ${brent['usd_per_barrel']:.2f}（{brent['date']}）", file=sys.stderr)
     else:
         payload["errors"].append("brent_oil: 抓取失敗")
+
+    # 貿易俱樂部土耳其報告（半年一次，大部分日子這裡是 None，正常現象）
+    eximclub = fetch_eximclub_turkey_report()
+    payload["eximclub_turkey_report"] = eximclub
+    if eximclub:
+        print(f"✓ 貿易俱樂部新報告：{eximclub['date']} {eximclub['title']}", file=sys.stderr)
 
     # EVDS
     key = os.environ.get("EVDS_API_KEY")

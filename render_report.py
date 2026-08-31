@@ -267,6 +267,21 @@ def render_tw_tr_trade(data: dict | None) -> str:
     source_note = html.escape(data.get("source_note", ""))
     month_label = html.escape(latest.get("month", ""))
 
+    exim_line = ""
+    exim = load_eximclub_state()
+    if exim and exim.get("id"):
+        exim_url = (
+            f"https://www.eximclub.com.tw/innerContent.aspx?"
+            f"Type=Publish&ID={html.escape(str(exim['id']), quote=True)}"
+            f"&Continen=3&Country=%E5%9C%9F%E8%80%B3%E5%85%B6"
+        )
+        exim_title = html.escape(exim.get("title") or "土耳其政經概況")
+        exim_date = html.escape(exim.get("date", ""))
+        exim_line = (
+            f'<br>延伸閱讀：<a href="{exim_url}" target="_blank" '
+            f'rel="noopener noreferrer">《{exim_title}》（{exim_date}，中國輸出入銀行貿易俱樂部）</a>'
+        )
+
     return f'''    <div class="indicator-strip" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 0.75rem;">
       <div class="indicator-cell">
         <div class="val">{currency} {fmt_amount(exp)}</div>
@@ -286,7 +301,24 @@ def render_tw_tr_trade(data: dict | None) -> str:
     </div>
     <p class="grp-note">資料來源：{source_note or '未註明'}　·　
       <a href="https://portal.sw.nat.gov.tw/APGA/GA30" target="_blank" rel="noopener noreferrer">
-      查看財政部關務署官方查詢系統（可自行查核或查詢更細分類）</a></p>'''
+      查看財政部關務署官方查詢系統（可自行查核或查詢更細分類）</a>{exim_line}</p>'''
+
+
+# 貿易俱樂部（輸出入銀行）土耳其報告——這是獨立的狀態檔案
+# （data/_eximclub_seen.json，由 fetch_daily.py 每天檢查、只在真的出現
+# 新報告時更新），不是某一天的每日資料，所以不管今天有沒有新報告，
+# 永遠顯示「目前已知最新一期」，不會因為不是剛好更新的那天就消失。
+EXIMCLUB_STATE_PATH = DATA_DIR / "_eximclub_seen.json"
+
+
+def load_eximclub_state() -> dict | None:
+    if not EXIMCLUB_STATE_PATH.exists():
+        return None
+    try:
+        return json.loads(EXIMCLUB_STATE_PATH.read_text(encoding="utf-8"))
+    except Exception as e:
+        print(f"! {EXIMCLUB_STATE_PATH} 讀取失敗，略過：{e}")
+        return None
 
 
 # ── 期間報告列表 ──
