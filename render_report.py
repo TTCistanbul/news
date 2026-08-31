@@ -198,11 +198,19 @@ def main():
         now = dt.datetime.now(dt.timezone.utc) + dt.timedelta(hours=3)
         generated_label = now.strftime("%Y-%m-%d · %H:%M TRT")
 
+    # {{DATE_ZH}}：中文日期（例如「2026年8月31日」），用 resolved_date
+    # （這份報告實際對應的日期）而不是執行當下的系統時間去算，這樣重新
+    # 補跑舊日期的報告（--date 參數）時，畫面上的日期也會跟著正確顯示
+    # 那一天，而不是永遠顯示「今天」。
+    y, m, d = (int(x) for x in resolved_date.split("-"))
+    date_zh = f"{y}年{m}月{d}日"
+
     replacements = {
         "{{USD_TRY}}": usd,
         "{{EUR_TRY}}": eur,
         "{{FUNDING_COST}}": funding_cost,
         "{{GENERATED_AT_LABEL}}": generated_label,
+        "{{DATE_ZH}}": date_zh,
     }
 
     for token, value in replacements.items():
