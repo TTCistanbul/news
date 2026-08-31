@@ -178,6 +178,79 @@ def render_trade_implications(items: list[dict]) -> str:
     return "\n".join(lis) if lis else "      <li>今日無資料</li>"
 
 
+# ── 台灣—Türkiye 雙邊貿易 ──
+# 這份不是每日自動抓取的資料，是使用者每月自己去財政部關務署查完後手動
+# 維護的一個小 JSON 檔案（data/tw-tr-trade.json）。這裡只負責讀取、算出
+# 月變動百分比、渲染成卡片；檔案不存在或格式壞掉都不應該讓整個 render
+# 流程掛掉，只顯示提示文字即可。
+TW_TR_TRADE_PATH = DATA_DIR / "tw-tr-trade.json"
+
+
+def load_tw_tr_trade() -> dict | None:
+    if not TW_TR_TRADE_PATH.exists():
+        return None
+    try:
+        return json.loads(TW_TR_TRADE_PATH.read_text(encoding="utf-8"))
+    except Exception as e:
+        print(f"! {TW_TR_TRADE_PATH.name} 讀取失敗，略過此卡片：{e}")
+        return None
+
+
+def _pct_change(cur, old):
+    if cur is None or old is None or old == 0:
+        return None
+    return (cur - old) / old * 100
+
+
+def render_tw_tr_trade(data: dict | None) -> str:
+    months = (data or {}).get("months") or []
+    if not months:
+        return (
+            '<p class="pending" style="font-size:0.88rem; line-height:1.8;">'
+            "尚未提供台灣—Türkiye 雙邊貿易資料。這份是每月人工查詢後手動維護的"
+            "（財政部關務署統計資料庫查詢系統），不是每日自動抓取——請在 "
+            "<code>data/tw-tr-trade.json</code> 裡新增當月資料。</p>"
+        )
+    latest = months[-1]
+    prev = months[-2] if len(months) >= 2 else None
+    currency = html.escape(data.get("currency", "USD"))
+    exp, imp = latest.get("exports_to_turkey"), latest.get("imports_from_turkey")
+    bal = (exp - imp) if (exp is not None and imp is not None) else None
+    exp_chg = _pct_change(exp, (prev or {}).get("exports_to_turkey"))
+    imp_chg = _pct_change(imp, (prev or {}).get("imports_from_turkey"))
+
+    def fmt_amount(v):
+        return f"{v:,.0f}" if v is not None else "—"
+
+    def fmt_chg(v):
+        if v is None:
+            return ""
+        cls = "up" if v > 0 else ("down" if v < 0 else "flat")
+        return f' <span class="{cls}">({v:+.1f}% 較上月)</span>'
+
+    source_note = html.escape(data.get("source_note", ""))
+    month_label = html.escape(latest.get("month", ""))
+
+    return f'''    <div class="indicator-strip" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 0.75rem;">
+      <div class="indicator-cell">
+        <div class="val">{currency} {fmt_amount(exp)}</div>
+        <div class="lbl">台灣出口至 Türkiye（{month_label}）</div>
+        <div class="delta">{fmt_chg(exp_chg)}</div>
+      </div>
+      <div class="indicator-cell">
+        <div class="val">{currency} {fmt_amount(imp)}</div>
+        <div class="lbl">台灣自 Türkiye 進口（{month_label}）</div>
+        <div class="delta">{fmt_chg(imp_chg)}</div>
+      </div>
+      <div class="indicator-cell">
+        <div class="val {'green' if (bal or 0) >= 0 else 'red'}">{currency} {fmt_amount(bal)}</div>
+        <div class="lbl">台灣對 Türkiye 貿易餘額</div>
+        <div class="delta">正值＝台灣出超</div>
+      </div>
+    </div>
+    <p class="grp-note">資料來源：{source_note or '未註明'}</p>'''
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", help="YYYY-MM-DD，預設用 data/ 裡最新的檔案")
@@ -280,7 +353,12 @@ def main():
         )
         ai_status = f"applied ({analysis_path.name})"
 
-    # 3. 寫入輸出檔案（純產生物，永遠從範本重新產生，不會累積殘留內容）
+    # 3. 台灣—Türkiye 雙邊貿易（人工每月維護，跟上面的 AI 區塊無關，
+    #    不管 analysis 檔案存不存在都要跑）
+    tw_tr_data = load_tw_tr_trade()
+    html_text = replace_block(html_text, "TW_TR_TRADE", render_tw_tr_trade(tw_tr_data))
+
+    # 4. 寫入輸出檔案（純產生物，永遠從範本重新產生，不會累積殘留內容）
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(html_text, encoding="utf-8")
 
@@ -288,6 +366,7 @@ def main():
     print(f"   USD/TRY={usd}  EUR/TRY={eur}  隔夜融資成本={funding_cost}%")
     print(f"   更新時間標籤={generated_label}")
     print(f"   AI 區塊狀態：{ai_status}")
+    print(f"   台土雙邊貿易：{'已提供 ' + str(len(tw_tr_data.get('months', []))) + ' 個月資料' if tw_tr_data else '尚未提供 data/tw-tr-trade.json'}")
 
 
 if __name__ == "__main__":
