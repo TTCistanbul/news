@@ -10,6 +10,26 @@ render_report.py -- fills the HTML template with two kinds of content:
    the AI:TODAY_TAKE, AI:SUMMARY, AI:KEY_EVENTS, AI:INDUSTRY,
    AI:TRADE_IMPLICATIONS marker blocks in the template.
 
+IMPORTANT: the template and the output are two DIFFERENT files.
+templates/report-template.html is the hand-maintained source of truth
+(kept in git, never edited by this script) -- it still has the literal
+{{TOKEN}} placeholders and empty AI:...:START/END blocks. docs/index.html
+is pure generated output, overwritten from the template on every run.
+
+Previously this script read FROM docs/index.html and wrote back TO
+docs/index.html. That meant every {{TOKEN}} got permanently baked in
+after the first successful run (the literal "{{FUNDING_COST}}" string
+is gone after being replaced once, so the next run has nothing left to
+replace and the value freezes forever at whatever it was the first
+time). Splitting template vs. output fixes that: every run starts fresh
+from the never-touched template.
+
+If templates/report-template.html doesn't exist yet, copy your current
+docs/index.html there once, strip out any hand-added content that
+shouldn't be regenerated (e.g. stray hardcoded archive entries), and
+commit it. From that point on, only edit templates/report-template.html
+by hand -- never docs/index.html directly, it will just get overwritten.
+
 Usage:
     python3 render_report.py                 # uses today's data/*.json
     python3 render_report.py --date 2026-08-29
@@ -25,19 +45,11 @@ from pathlib import Path
 ROOT = Path(__file__).parent
 DATA_DIR = ROOT / "data"
 
-# 自動尋找模板：優先讀取 index.html 或 docs/index.html
-def get_default_template_path() -> Path:
-    candidates = [
-        ROOT / "index.html",
-        ROOT / "docs" / "index.html",
-        ROOT / "docs" / "index.html",
-    ]
-    for p in candidates:
-        if p.exists():
-            return p
-    return ROOT / "docs" / "index.html"
+# 範本來源：固定不動的手工維護檔案，跟輸出檔案分開
+TEMPLATE_PATH = ROOT / "templates" / "report-template.html"
 
-# 預設發布輸出至 docs/index.html (對應 GitHub Pages)
+# 輸出目的地：GitHub Pages 實際發布的檔案，每次執行都是全新產生，
+# 不應該手動編輯這個檔案（改了也會在下次執行時被蓋掉）
 OUT_PATH = ROOT / "docs" / "index.html"
 
 DIRECTION_ICON = {"red": "🔴", "green": "🟢", "neutral": "⚪"}
@@ -108,8 +120,15 @@ def render_key_events(events: list[dict]) -> str:
 
 
 def render_industry_items(items: list[dict]) -> str:
+    # 依日期新到舊排序（date 是 YYYY-MM-DD 字串，字串排序結果跟日期排序
+    # 一致）。缺日期的項目排到最後，不讓它們因為空字串排序跑到最前面。
+    sorted_items = sorted(
+        items,
+        key=lambda it: it.get("date") or "0000-00-00",
+        reverse=True,
+    )
     lis = []
-    for it in items[:5]:
+    for it in sorted_items[:5]:
         sentiment = SENTIMENT_CLASS.get(it.get("sentiment", "neu"), "neu")
         sector = html.escape(it.get("sector", ""))
         headline = html.escape(it.get("headline", ""))
@@ -142,7 +161,7 @@ def render_trade_implications(items: list[dict]) -> str:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", help="YYYY-MM-DD，預設用 data/ 裡最新的檔案")
-    ap.add_argument("--template", default=str(get_default_template_path()))
+    ap.add_argument("--template", default=str(TEMPLATE_PATH))
     ap.add_argument("--out", default=str(OUT_PATH))
     args = ap.parse_args()
 
@@ -152,7 +171,14 @@ def main():
     out_path = Path(args.out)
 
     if not template_path.exists():
-        raise SystemExit(f"找不到範本檔案: {template_path}")
+        raise SystemExit(
+            f"找不到範本檔案: {template_path}\n"
+            f"這支腳本現在從固定的範本檔案讀取，不再讀取輸出檔案本身。\n"
+            f"請把一份帶有 {{{{TOKEN}}}} 佔位符跟 <!-- AI:...:START/END --> "
+            f"標記、且不含任何寫死假資料的乾淨版本存成 {template_path}，"
+            f"commit 進 repo 一次即可（之後只手動改這份範本，不要改 "
+            f"{out_path}，它每次執行都會被覆蓋）。"
+        )
 
     html_text = template_path.read_text(encoding="utf-8")
 
@@ -160,7 +186,7 @@ def main():
     rates = (payload.get("fx") or {}).get("rates", {})
     usd = fmt_rate(rates, "USD", fallback="34.15")
     eur = fmt_rate(rates, "EUR", fallback="37.80")
-    
+
     funding = payload.get("macro", {}).get("funding_cost", [])
     if funding and isinstance(funding, list) and "value" in funding[-1]:
         funding_cost = f"{funding[-1]['value']:.1f}"
@@ -190,7 +216,7 @@ def main():
 
         today_take = analysis.get("today_take", "")
         summary = analysis.get("summary", "")
-        
+
         if today_take:
             html_text = replace_block(
                 html_text, "TODAY_TAKE",
@@ -215,16 +241,11 @@ def main():
         )
         ai_status = f"applied ({analysis_path.name})"
 
-    # 3. 確保輸出目錄存在並寫入 docs/index.html
+    # 3. 寫入輸出檔案（純產生物，永遠從範本重新產生，不會累積殘留內容）
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(html_text, encoding="utf-8")
 
-    # 同步更新 docs/index.html (若存在) 確保兩處一致
-    brief_html = ROOT / "docs" / "index.html"
-    if brief_html.exists() and brief_html != out_path:
-        brief_html.write_text(html_text, encoding="utf-8")
-
-    print(f"-> 已成功輸出至 {out_path}")
+    print(f"-> 已從範本 {template_path} 重新產生輸出 {out_path}")
     print(f"   USD/TRY={usd}  EUR/TRY={eur}  隔夜融資成本={funding_cost}%")
     print(f"   更新時間標籤={generated_label}")
     print(f"   AI 區塊狀態：{ai_status}")
