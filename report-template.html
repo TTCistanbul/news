@@ -729,6 +729,15 @@ a:focus-visible { outline: 2px solid var(--accent-blue-deep); outline-offset: 2p
   font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
   color: var(--text-tertiary); letter-spacing: 0.04em;
 }
+.sector-item .src a {
+  color: inherit;
+  border-bottom: 1px dotted var(--text-tertiary);
+  transition: color 0.15s, border-color 0.15s;
+}
+.sector-item .src a:hover {
+  color: var(--accent-blue-deep);
+  border-bottom-color: var(--accent-blue-deep);
+}
 .sector-item .date::before {
   content: "・";
   margin-right: 0.4rem;
@@ -1232,32 +1241,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <tr>
             <td>3</td>
             <td>TWD/TRY（參考）</td>
-            <td class="pending">待接即時報價</td>
+            <td><span class="data">{{TWD_TRY}}</span></td>
             <td class="pending">—</td>
             <td class="pending">—</td>
             <td class="pending">—</td>
-            <td>台幣計價合約換算用</td>
+            <td>交叉匯率（TCMB USD/TRY ÷ 第三方 USD/TWD），非官方直接報價，僅供台幣計價合約換算參考</td>
           </tr>
           <tr>
             <td>4</td>
-            <td>BIST 100 指數</td>
-            <td class="pending">待接即時報價</td>
-            <td class="pending">—</td>
-            <td class="pending">—</td>
-            <td class="pending">—</td>
-            <td>內需景氣的先行參考</td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td>5 年期主權 CDS</td>
-            <td class="pending">待接即時報價</td>
-            <td class="pending">—</td>
-            <td class="pending">—</td>
-            <td class="pending">—</td>
-            <td>影響信用狀開立條件</td>
-          </tr>
-          <tr>
-            <td>6</td>
             <td>布蘭特原油</td>
             <td class="pending">待接即時報價</td>
             <td class="pending">—</td>
@@ -1283,7 +1274,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="row-top">
           <span class="sector-chip">產業別</span>
           <span class="headline">標題</span>
-          <span class="src">來源</span>
+          <span class="src"><a href="URL" target="_blank" rel="noopener noreferrer">來源</a></span>
           <span class="date">YYYY-MM-DD</span>
         </div>
         <div class="body">內容 1-2 句</div>
