@@ -33,12 +33,27 @@ import requests
 ROOT = Path(__file__).parent
 DATA_DIR = ROOT / "data"
 
-GEMINI_MODEL = "gemini-2.5-flash"
-GEMINI_URL = (
-    f"https://generativelanguage.googleapis.com/v1beta/models/"
-    f"{GEMINI_MODEL}:generateContent"
-)
+# Ordered list of models to try. First entry is the "primary" -- the one
+# we expect to actually be used day to day. The rest are fallbacks tried
+# in order ONLY when Gemini returns 404 (model retired/not found), so a
+# future Google-side retirement doesn't take the whole daily pipeline
+# down the way gemini-2.5-flash's early retirement did on 2026-08-30.
+# Update this list occasionally (see https://ai.google.dev/gemini-api/docs/models)
+# -- it's a safety net, not a substitute for keeping the primary current.
+CANDIDATE_MODELS = [
+    "gemini-2.5-flash-lite",
+    "gemini-3.5-flash-lite",
+    "gemini-3.5-flash",
+]
 TIMEOUT = 60
+
+
+def _gemini_url(model: str) -> str:
+    return (
+        f"https://generativelanguage.googleapis.com/v1beta/models/"
+        f"{model}:generateContent"
+    )
+
 
 SYSTEM_PROMPT = """\
 你是台灣外貿協會（TAITRA）駐伊斯坦堡辦事處的產業分析師，負責把當天篩選出的
@@ -147,7 +162,7 @@ def build_user_content(payload: dict) -> str:
     return "\n".join(lines)
 
 
-def call_gemini(prompt: str, api_key: str) -> dict:
+def _call_gemini_once(model: str, prompt: str, api_key: str) -> dict:
     body = {
         "system_instruction": {"parts": [{"text": SYSTEM_PROMPT}]},
         "contents": [{"parts": [{"text": prompt}]}],
@@ -157,7 +172,7 @@ def call_gemini(prompt: str, api_key: str) -> dict:
         },
     }
     r = requests.post(
-        f"{GEMINI_URL}?key={api_key}",
+        f"{_gemini_url(model)}?key={api_key}",
         json=body,
         timeout=TIMEOUT,
     )
@@ -179,6 +194,28 @@ def call_gemini(prompt: str, api_key: str) -> dict:
         ) from e
 
 
+def call_gemini(prompt: str, api_key: str) -> tuple[dict, str]:
+    """Try each model in CANDIDATE_MODELS in order. Only falls through to
+    the next model on a 404 (model retired/not found) -- any other error
+    (bad key, quota, malformed request, malformed JSON reply) is real and
+    should fail loudly rather than silently trying a different model."""
+    last_error: Exception | None = None
+    for i, model in enumerate(CANDIDATE_MODELS):
+        try:
+            result = _call_gemini_once(model, prompt, api_key)
+            if i > 0:
+                print(f"   注意：主要模型無法使用，改用備援模型 {model} 成功產生內容")
+            return result, model
+        except requests.exceptions.HTTPError as e:
+            status = e.response.status_code if e.response is not None else None
+            if status == 404 and i < len(CANDIDATE_MODELS) - 1:
+                print(f"   模型 {model} 回傳 404（可能已下架），改試下一個候選模型...")
+                last_error = e
+                continue
+            raise
+    raise last_error  # pragma: no cover -- unreachable unless list is empty
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", help="YYYY-MM-DD，預設用 data/ 裡最新的檔案")
@@ -191,8 +228,9 @@ def main():
     payload, resolved_date = load_payload(args.date)
     user_content = build_user_content(payload)
 
-    print(f"-> 呼叫 Gemini（{GEMINI_MODEL}），輸入新聞則數見上方 build_user_content 輸出")
-    analysis = call_gemini(user_content, api_key)
+    print(f"-> 呼叫 Gemini（依序嘗試：{', '.join(CANDIDATE_MODELS)}），"
+          f"輸入新聞則數見上方 build_user_content 輸出")
+    analysis, used_model = call_gemini(user_content, api_key)
 
     # 基本結構檢查，缺欄位就直接報錯，不要讓 render_report.py 拿到殘缺資料
     # 才在套版時炸掉，錯誤要在這一步就浮現。
@@ -203,10 +241,10 @@ def main():
 
     out_path = DATA_DIR / f"{resolved_date}-analysis.json"
     analysis["_generated_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
-    analysis["_model"] = GEMINI_MODEL
+    analysis["_model"] = used_model
     analysis["_source_date"] = resolved_date
     out_path.write_text(json.dumps(analysis, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"-> 已寫入 {out_path}")
+    print(f"-> 已寫入 {out_path}（使用模型：{used_model}）")
     print(f"   key_events={len(analysis.get('key_events', []))}  "
           f"industry_items={len(analysis.get('industry_items', []))}  "
           f"trade_implications={len(analysis.get('trade_implications', []))}")
