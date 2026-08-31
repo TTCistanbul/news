@@ -94,7 +94,8 @@ SYSTEM_PROMPT = """\
       "sector": "產業別（例如：紡織成衣、汽車、機械）",
       "sentiment": "pos|neg|neu",
       "headline": "標題",
-      "source": "來源",
+      "source": "來源名稱",
+      "source_url": "來源網址：這則新聞在輸入資料裡如果有標示「連結：」，就一定要把該網址原封不動填進來，不可以省略或留空；輸入裡真的沒有連結欄位才留空字串，絕對不要自己編造網址",
       "date": "YYYY-MM-DD（新聞的發布/報導日期，不是新聞裡提到的生效日或事件日）",
       "body": "內容 1-2 句",
       "business_interpretation": "台商解讀（1-2句，用保留語氣）"
