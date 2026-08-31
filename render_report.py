@@ -463,6 +463,16 @@ def main():
     else:
         twd_try = "待接即時報價"
 
+    brent = payload.get("brent_oil")
+    if brent and brent.get("usd_per_barrel") is not None:
+        brent_value = f"${brent['usd_per_barrel']:.2f}"
+        brent_note = f"每桶美元，資料日期 {brent.get('date','')}"
+        if brent.get("stale"):
+            brent_note += "（超過 5 天沒更新，留意可能過期）"
+    else:
+        brent_value = "待接即時報價"
+        brent_note = "能源進口是 Türkiye 逆差主因"
+
     generated_label = payload.get("generated_at_label")
     if not generated_label:
         now = dt.datetime.now(dt.timezone.utc) + dt.timedelta(hours=3)
@@ -481,6 +491,8 @@ def main():
         "{{EUR_TRY}}": eur,
         "{{FUNDING_COST}}": funding_cost,
         "{{TWD_TRY}}": twd_try,
+        "{{BRENT_VALUE}}": brent_value,
+        "{{BRENT_NOTE}}": brent_note,
         "{{CPI_VALUE}}": cpi_value,
         "{{CPI_COLOR}}": cpi_color,
         "{{CPI_MONTH_LABEL}}": cpi_month_label,

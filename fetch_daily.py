@@ -136,6 +136,62 @@ def fetch_tcmb_fx(day: dt.date | None = None) -> dict:
 TWD_CROSS_URL = "https://open.er-api.com/v6/latest/USD"
 
 
+# ─────────────────────────────────────────────
+# 1c. 布蘭特原油現貨價 — datahub.io 提供的穩定 CSV 端點，來源是 EIA
+#     （美國能源資訊署），不用申請 API 金鑰，資料屬公開領域授權。
+#     2026-08-31 確認這個網址：更新頻率是每個工作日，CSV 裡是歷史全部
+#     資料（1987 年至今），只取最後一筆當作最新現貨價。
+# ─────────────────────────────────────────────
+BRENT_CSV_URL = "https://datahub.io/core/oil-prices/_r/-/data/brent-daily.csv"
+
+
+def fetch_brent_oil() -> dict | None:
+    try:
+        r = requests.get(BRENT_CSV_URL, headers=UA, timeout=TIMEOUT)
+        r.raise_for_status()
+        lines = r.text.strip().splitlines()
+        if len(lines) < 2:
+            print(f"✗ 布蘭特原油: CSV 內容異常（只有 {len(lines)} 行）", file=sys.stderr)
+            return None
+        header = [h.strip().lower() for h in lines[0].split(",")]
+        if header[:2] != ["date", "price"]:
+            print(f"✗ 布蘭特原油: CSV 欄位跟預期不同，實際標頭：{lines[0]}", file=sys.stderr)
+            return None
+
+        # 不假設檔案是按日期排序好的，逐行解析後自己找最新日期，比較保險。
+        best_date, best_price = None, None
+        for line in lines[1:]:
+            parts = line.split(",")
+            if len(parts) < 2:
+                continue
+            date_str, price_str = parts[0].strip(), parts[1].strip()
+            if not date_str or not price_str:
+                continue
+            try:
+                d = dt.date.fromisoformat(date_str)
+                price = float(price_str)
+            except ValueError:
+                continue
+            if best_date is None or d > best_date:
+                best_date, best_price = d, price
+
+        if best_date is None:
+            print("✗ 布蘭特原油: CSV 裡解析不出任何一筆有效資料", file=sys.stderr)
+            return None
+
+        age_days = (dt.date.today() - best_date).days
+        return {
+            "date": best_date.isoformat(),
+            "usd_per_barrel": best_price,
+            "age_days": age_days,
+            "stale": age_days > 5,  # 原油現貨價工作日更新，超過 5 天當作可能卡住
+            "source": "EIA (via datahub.io, public domain)",
+        }
+    except Exception as e:
+        print(f"✗ 布蘭特原油: {e}", file=sys.stderr)
+        return None
+
+
 def fetch_twd_try_cross(usd_try_selling: float | None) -> dict | None:
     """
     open.er-api.com 是免金鑰的開放端點，官方建議一天呼叫一次，剛好符合
@@ -624,6 +680,14 @@ def main():
             print(f"✓ TWD/TRY 交叉匯率 {cross['try_per_twd']:.4f}", file=sys.stderr)
         else:
             payload["errors"].append("twd_try_cross: 抓取失敗或 USD/TRY 尚未取得")
+
+    # 布蘭特原油
+    brent = fetch_brent_oil()
+    payload["brent_oil"] = brent
+    if brent:
+        print(f"✓ 布蘭特原油 ${brent['usd_per_barrel']:.2f}（{brent['date']}）", file=sys.stderr)
+    else:
+        payload["errors"].append("brent_oil: 抓取失敗")
 
     # EVDS
     key = os.environ.get("EVDS_API_KEY")
