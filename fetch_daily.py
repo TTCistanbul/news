@@ -121,8 +121,54 @@ def fetch_tcmb_fx(day: dt.date | None = None) -> dict:
         out["age_days"] = None
         out["stale"] = True
 
-    # TWD 不在 TCMB 清單裡，需另一個 USD/TWD 來源做交叉計算
+    # TWD 不在 TCMB 清單裡，需另一個 USD/TWD 來源做交叉計算（見
+    # fetch_twd_try_cross()）
     return out
+
+
+# ─────────────────────────────────────────────
+# 1b. TWD/TRY 交叉匯率 — TCMB 沒有直接報價，台灣央行也不報 TRY，
+#     兩邊都缺對方，只能用第三方免費匯率 API 抓「1 美元換多少台幣」，
+#     再拿 TCMB 剛抓到的官方 USD/TRY 相除算出交叉匯率。
+#     TRY 那一段仍然用 TCMB 官方數字（跟報告其他匯率同源，一致性較好），
+#     只有 USD/TWD 這一段來自第三方，不是任何央行的正式報價。
+# ─────────────────────────────────────────────
+TWD_CROSS_URL = "https://open.er-api.com/v6/latest/USD"
+
+
+def fetch_twd_try_cross(usd_try_selling: float | None) -> dict | None:
+    """
+    open.er-api.com 是免金鑰的開放端點，官方建議一天呼叫一次，剛好符合
+    這支腳本的執行頻率，不會被限流。第一次上線後，如果 log 裡看到欄位
+    對不上（例如 rates 底下沒有 TWD），把印出來的完整回應內容貼出來，
+    照實際欄位調整即可，不用整段重猜——跟 fetch_evds() 處理 borsapy
+    欄位不確定性的方式是一樣的邏輯。
+    """
+    if usd_try_selling is None:
+        return None
+    try:
+        r = requests.get(TWD_CROSS_URL, headers=UA, timeout=TIMEOUT)
+        r.raise_for_status()
+        data = r.json()
+        rates = data.get("rates") or {}
+        usd_twd = rates.get("TWD")
+        if usd_twd is None:
+            print(
+                f"✗ TWD/TRY 交叉匯率: 回應裡沒有 TWD 欄位，"
+                f"實際 rates keys（前 10 個）: {list(rates.keys())[:10]}",
+                file=sys.stderr,
+            )
+            return None
+        return {
+            "try_per_twd": usd_try_selling / usd_twd,
+            "usd_twd": usd_twd,
+            "usd_try_selling_used": usd_try_selling,
+            "source": "open.er-api.com（交叉匯率，非央行官方報價）",
+            "fetched_at_source": data.get("time_last_update_utc"),
+        }
+    except Exception as e:
+        print(f"✗ TWD/TRY 交叉匯率: {e}", file=sys.stderr)
+        return None
 
 
 # ─────────────────────────────────────────────
@@ -554,6 +600,16 @@ def main():
     except Exception as e:
         payload["errors"].append(f"tcmb_fx: {e}")
         print(f"✗ 匯率: {e}", file=sys.stderr)
+
+    # TWD/TRY 交叉匯率（需要 fx 先抓成功，拿裡面的 USD/TRY 官方賣出價當基準）
+    if payload["fx"]:
+        usd_sel = (payload["fx"].get("rates", {}).get("USD") or {}).get("per_unit_selling")
+        cross = fetch_twd_try_cross(usd_sel)
+        payload["fx"]["twd_try_cross"] = cross
+        if cross:
+            print(f"✓ TWD/TRY 交叉匯率 {cross['try_per_twd']:.4f}", file=sys.stderr)
+        else:
+            payload["errors"].append("twd_try_cross: 抓取失敗或 USD/TRY 尚未取得")
 
     # EVDS
     key = os.environ.get("EVDS_API_KEY")
