@@ -108,13 +108,22 @@ def fmt_rate(rates: dict, code: str, fallback: str = "34.15") -> str:
 
 
 def replace_block(html_text: str, marker: str, new_inner: str) -> str:
-    """Replace everything between <!-- AI:{marker}:START --> and
-    <!-- AI:{marker}:END -->. If marker not found, returns original text."""
+    """Replace everything between <!-- [AI:]{marker}:START --> and
+    <!-- [AI:]{marker}:END -->. The "AI:" prefix is optional so this works
+    for both Gemini-generated blocks (<!-- AI:TODAY_TAKE:START -->) and
+    non-AI blocks like TW_TR_TRADE / REPORTS_LIST (<!-- TW_TR_TRADE:START -->
+    with no "AI:" prefix, deliberately, to signal they're not AI-generated).
+    2026-08-31 實測踩到的坑：這兩個規則沒對齊之前，TW_TR_TRADE 跟
+    REPORTS_LIST 這兩個區塊的 replace 永遠靜默失敗、原封不動回傳，不會報
+    錯，看起來像是資料沒讀到，其實是標記格式對不起來。
+    If marker not found, returns original text."""
     pattern = re.compile(
-        rf"(<!-- AI:{marker}:START.*?-->)(.*?)(<!-- AI:{marker}:END.*?-->)",
+        rf"(<!-- (?:AI:)?{marker}:START.*?-->)(.*?)(<!-- (?:AI:)?{marker}:END.*?-->)",
         re.DOTALL,
     )
     if not pattern.search(html_text):
+        print(f"! replace_block 警告：範本裡找不到 {marker} 的標記註解，"
+              f"這段內容沒有被套進去（保留範本原本的預設文字）")
         return html_text
     return pattern.sub(lambda m: m.group(1) + "\n" + new_inner + "\n" + m.group(3), html_text)
 
