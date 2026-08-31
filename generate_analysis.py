@@ -26,6 +26,7 @@ import json
 import os
 import re
 import sys
+import time
 from pathlib import Path
 
 import requests
@@ -196,24 +197,43 @@ def _call_gemini_once(model: str, prompt: str, api_key: str) -> dict:
 
 
 def call_gemini(prompt: str, api_key: str) -> tuple[dict, str]:
-    """Try each model in CANDIDATE_MODELS in order. Only falls through to
-    the next model on a 404 (model retired/not found) -- any other error
-    (bad key, quota, malformed request, malformed JSON reply) is real and
-    should fail loudly rather than silently trying a different model."""
+    """依序嘗試 CANDIDATE_MODELS。
+
+    - 404（模型已下架/不存在）：直接換下一個候選模型。
+    - 5xx（500-599，Google 那邊暫時性伺服器問題，例如 503 Service
+      Unavailable）：2026-08-31 實測踩到——3.5-flash-lite 回傳 503 讓
+      整支程式直接掛掉，沒有繼續試第三個候選模型。5xx 通常是暫時性的，
+      這裡先原地重試一次（等 3 秒），還是失敗就換下一個候選模型，
+      不要讓一次暫時性過載就搞掛整個每日流程。
+    - 其他錯誤（金鑰無效、額度用完、請求格式錯誤、JSON 格式錯誤等）：
+      這些換模型或重試都沒用，直接往上拋出，不要吞掉真正的問題。
+    """
     last_error: Exception | None = None
     for i, model in enumerate(CANDIDATE_MODELS):
-        try:
-            result = _call_gemini_once(model, prompt, api_key)
-            if i > 0:
-                print(f"   注意：主要模型無法使用，改用備援模型 {model} 成功產生內容")
-            return result, model
-        except requests.exceptions.HTTPError as e:
-            status = e.response.status_code if e.response is not None else None
-            if status == 404 and i < len(CANDIDATE_MODELS) - 1:
-                print(f"   模型 {model} 回傳 404（可能已下架），改試下一個候選模型...")
+        is_last_candidate = i == len(CANDIDATE_MODELS) - 1
+        for attempt in range(2):  # 同一個模型最多試 2 次（原始 + 1 次重試）
+            try:
+                result = _call_gemini_once(model, prompt, api_key)
+                if i > 0 or attempt > 0:
+                    print(f"   注意：改用/重試模型 {model} 成功產生內容")
+                return result, model
+            except requests.exceptions.HTTPError as e:
+                status = e.response.status_code if e.response is not None else None
                 last_error = e
-                continue
-            raise
+                if status == 404:
+                    print(f"   模型 {model} 回傳 404（可能已下架），改試下一個候選模型...")
+                    break  # 換模型，不重試同一個
+                if status is not None and 500 <= status < 600:
+                    if attempt == 0:
+                        print(f"   模型 {model} 回傳 {status}（可能是暫時性伺服器問題），"
+                              f"3 秒後重試同一個模型...")
+                        time.sleep(3)
+                        continue  # 原地重試同一個模型一次
+                    print(f"   模型 {model} 重試後仍是 {status}，改試下一個候選模型...")
+                    break
+                raise  # 其他狀態碼（401/403/429 等）不是換模型能解決的，直接拋出
+        if is_last_candidate:
+            raise last_error
     raise last_error  # pragma: no cover -- unreachable unless list is empty
 
 
