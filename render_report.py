@@ -25,11 +25,11 @@ from pathlib import Path
 ROOT = Path(__file__).parent
 DATA_DIR = ROOT / "data"
 
-# 自動尋找模板：優先讀取 turkey-econ-brief.html 或 docs/index.html
+# 自動尋找模板：優先讀取 index.html 或 docs/index.html
 def get_default_template_path() -> Path:
     candidates = [
-        ROOT / "turkey-econ-brief.html",
-        ROOT / "docs" / "turkey-econ-brief.html",
+        ROOT / "index.html",
+        ROOT / "docs" / "index.html",
         ROOT / "docs" / "index.html",
     ]
     for p in candidates:
@@ -219,8 +219,8 @@ def main():
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(html_text, encoding="utf-8")
 
-    # 同步更新 docs/turkey-econ-brief.html (若存在) 確保兩處一致
-    brief_html = ROOT / "docs" / "turkey-econ-brief.html"
+    # 同步更新 docs/index.html (若存在) 確保兩處一致
+    brief_html = ROOT / "docs" / "index.html"
     if brief_html.exists() and brief_html != out_path:
         brief_html.write_text(html_text, encoding="utf-8")
 
