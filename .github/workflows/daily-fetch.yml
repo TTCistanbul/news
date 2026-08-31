@@ -35,13 +35,11 @@ jobs:
 
       - name: Fill in template (rates, funding cost, AI blocks)
         run: python render_report.py
-
       - name: Commit and push data and report
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-    
-            git add data/ docs/index.html templates/
-          git diff --cached --quiet || git commit -m "Daily data fetch $(date -u +%Y-%m-%d)"
+          git add data/ docs/index.html templates/
+          git commit -m "Daily data fetch $(date +%F)" || echo "no changes"
+          git pull --rebase --autostash
           git push
-        
