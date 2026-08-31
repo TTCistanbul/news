@@ -335,6 +335,11 @@ FEED_CANDIDATES = {
     "Hürriyet Ekonomi":     ["https://www.hurriyet.com.tr/rss/ekonomi"],                # 100
     "Sözcü Ekonomi":        ["https://www.sozcu.com.tr/feeds-rss-category-ekonomi"],    # 50
     "Webrazzi":             ["https://webrazzi.com/feed/"],                             # 20，科技/新創/ICT
+    # 2026-08-31 新增：CNN Business 專版（不是 CNN 首頁綜合新聞，那個已經
+    # 測過內容完全跟財經無關）。內容是國際財經新聞（Fed、關稅、企業財報
+    # 等），幾乎不會直接提到土耳其，預期大部分會被 scope=global 濾掉，
+    # 只有間接寫到土耳其的稿子才會真的進簡報，屬於「偶爾撿到」的來源。
+    "CNN Business":         ["https://rss.app/feeds/wke4uYhkyqednFgF.xml"],              # 30，國際財經
     # rss.app 自訂 feed，discover 抓內容後確認實際來源如下：
     # LLwADw0l2yOISF9h.xml → OSD 官網 + Instagram 混合（真正的新聞條目很少，
     #   多數是社群賀節／獲獎貼文，訊噪比不高，但仍是汽車產業一手來源）
@@ -421,6 +426,12 @@ TOPICS = {
         "yatirimci*", "spk", "bddk", "gsyh",
         "market", "stock exchange", "shares", "capital", "credit",
         "bank", "investor",
+        # 2026-08-31 實測：「Türkiye's economy grows 2.3 percent」「Rusya ve
+        # ABD, finans alanındaki işbirliğini görüştü」這類明顯是經濟/金融
+        # 新聞的標題完全沒命中——清單裡從頭到尾沒有「經濟／economy」本身，
+        # 也沒有「grow／growth」「finans／financial」，照實測落網標題補上。
+        "ekonomi*", "economy", "economic", "grow*", "growth",
+        "finans*", "financial",
     ],
     "industry": [
         "sanayi*", "uretim*", "otomotiv*", "tekstil*", "makine*", "kimya*",
@@ -430,6 +441,11 @@ TOPICS = {
         # 2026-08-29 實測：「Türkiye's crude steel output rises 7 percent」
         # 這種標題完全沒命中，原清單漏了「產出/鋼鐵/能源」這幾個常見詞。
         "celik*", "petrol*", "enerji*", "steel", "oil", "energy",
+        # 2026-08-31 實測：「European gas prices hit highest since January
+        # 2023」這種天然氣價格新聞沒命中——原清單只有 oil/energy，漏了 gas。
+        # 裸字 "gas" 誤判風險較低（tr_norm 後跟其他字混淆機率不高），但仍
+        # 優先用明確詞組降低風險。
+        "dogalgaz*", "natural gas", "gas",
         # 2026-08-29 新增，配合 Webrazzi（科技/新創/ICT）來源，
         # 原本清單完全沒有科技/新創詞，Webrazzi 內容會整批被判「無主題」丟掉。
         "teknoloji*", "girisim*", "yazilim*", "yapay zeka", "surdurulebilir*",
