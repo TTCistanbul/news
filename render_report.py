@@ -209,7 +209,9 @@ def render_tw_tr_trade(data: dict | None) -> str:
             '<p class="pending" style="font-size:0.88rem; line-height:1.8;">'
             "尚未提供台灣—Türkiye 雙邊貿易資料。這份是每月人工查詢後手動維護的"
             "（財政部關務署統計資料庫查詢系統），不是每日自動抓取——請在 "
-            "<code>data/tw-tr-trade.json</code> 裡新增當月資料。</p>"
+            "<code>data/tw-tr-trade.json</code> 裡新增當月資料。"
+            '<br><a href="https://portal.sw.nat.gov.tw/APGA/GA30" target="_blank" '
+            'rel="noopener noreferrer">前往官方查詢系統</a></p>'
         )
     latest = months[-1]
     prev = months[-2] if len(months) >= 2 else None
@@ -248,7 +250,9 @@ def render_tw_tr_trade(data: dict | None) -> str:
         <div class="delta">正值＝台灣出超</div>
       </div>
     </div>
-    <p class="grp-note">資料來源：{source_note or '未註明'}</p>'''
+    <p class="grp-note">資料來源：{source_note or '未註明'}　·　
+      <a href="https://portal.sw.nat.gov.tw/APGA/GA30" target="_blank" rel="noopener noreferrer">
+      查看財政部關務署官方查詢系統（可自行查核或查詢更細分類）</a></p>'''
 
 
 def main():
