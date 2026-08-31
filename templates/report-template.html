@@ -1,1 +1,1676 @@
 
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Türkiye 經濟情報簡報</title>
+<!-- TODO: 換成自己的 favicon 路徑 -->
+<link rel="icon" type="image/png" href="taitra-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@200;300;400;500;700&family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-page: #eef0f2;
+  --bg-page-top: #f6f7f8;
+  --bg-page-bot: #e4e6e9;
+  --bg-card: #ffffff;
+  --bg-frost: rgba(255, 255, 255, 0.55);
+  --bg-frost-strong: rgba(255, 255, 255, 0.78);
+  --bg-subtle: #f3f4f6;
+  --bg-table-header: #fafbfc;
+  --bg-table-odd: #ffffff;
+  --bg-table-even: #fafbfc;
+  --bg-table-hover: #f1f5f9;
+
+  --border: #e4e7ec;
+  --border-soft: #eef0f3;
+
+  --text-primary: #111418;
+  --text-heading: #000000;
+  --text-secondary: #5a6370;
+  --text-tertiary: #8a94a3;
+
+  --accent-blue: #4FB3FF;
+  --accent-blue-deep: #1d8ae6;
+  --accent-red: #e5484d;
+  --accent-green: #30a46c;
+  --accent-amber: #f0a326;
+  --accent-ink: #0a0c10;
+
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow-md: 0 1px 3px rgba(16, 24, 40, 0.06), 0 8px 24px -12px rgba(16, 24, 40, 0.08);
+  --shadow-frost: 0 1px 0 rgba(255,255,255,0.9) inset, 0 1px 2px rgba(16, 24, 40, 0.04), 0 24px 48px -24px rgba(16, 24, 40, 0.12);
+
+  --radius-lg: 28px;
+  --radius-md: 18px;
+  --radius-sm: 10px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body { background: var(--bg-page); }
+
+body {
+  font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  color: var(--text-primary);
+  line-height: 1.75;
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(79, 179, 255, 0.10), transparent 60%),
+    radial-gradient(900px 500px at -10% 20%, rgba(255, 255, 255, 0.8), transparent 60%),
+    linear-gradient(180deg, var(--bg-page-top) 0%, var(--bg-page) 40%, var(--bg-page-bot) 100%);
+  background-attachment: fixed;
+  padding: 2.5rem 1.25rem 4rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+/* ===== Top nav strip ===== */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.25rem 0.5rem 2.5rem;
+  gap: 1rem;
+  font-family: 'Archivo', sans-serif;
+}
+.topbar .brand {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+.topbar .brand img {
+  height: 44px;
+  width: auto;
+  display: block;
+}
+.topbar .brand .brand-text {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  color: var(--text-heading);
+  line-height: 1;
+}
+.footer-brand {
+  opacity: 0.75;
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+.footer-brand img {
+  height: 36px;
+  width: auto;
+  display: inline-block;
+}
+.topbar .brand .divider {
+  width: 1px;
+  height: 26px;
+  background: var(--border);
+}
+.topbar .status {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+.topbar .status .dot {
+  display: inline-block;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent-blue-deep);
+  margin-right: 0.55rem;
+  box-shadow: 0 0 0 3px rgba(29, 138, 230, 0.15);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(29, 138, 230, 0.15); }
+  50% { box-shadow: 0 0 0 7px rgba(29, 138, 230, 0.05); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .topbar .status .dot { animation: none; }
+  * { transition-duration: 0.01ms !important; }
+}
+.topbar .meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+}
+
+.topbar .right {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+/* ===== Hamburger button ===== */
+.menu-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--bg-frost-strong);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.8);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  z-index: 1001;
+}
+.menu-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -4px rgba(16,24,40,0.12);
+}
+.menu-btn:focus-visible { outline: 2px solid var(--accent-blue-deep); outline-offset: 2px; }
+.menu-btn .bars {
+  position: relative;
+  width: 18px;
+  height: 12px;
+}
+.menu-btn .bars span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1.8px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.2s ease, top 0.3s ease;
+}
+.menu-btn .bars span:nth-child(1) { top: 0; }
+.menu-btn .bars span:nth-child(2) { top: 5px; width: 70%; }
+.menu-btn .bars span:nth-child(3) { top: 10px; }
+
+.menu-btn.open .bars span:nth-child(1) { top: 5px; transform: rotate(45deg); }
+.menu-btn.open .bars span:nth-child(2) { opacity: 0; }
+.menu-btn.open .bars span:nth-child(3) { top: 5px; transform: rotate(-45deg); }
+
+/* ===== Archive panel ===== */
+.archive-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 24, 40, 0.25);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 999;
+}
+.archive-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.archive-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: min(440px, 90vw);
+  background: #ffffff;
+  box-shadow: -24px 0 48px -12px rgba(16,24,40,0.15);
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0.24, 1);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.archive-panel.open { transform: translateX(0); }
+
+.archive-head {
+  padding: 1.75rem 1.75rem 1.25rem;
+  border-bottom: 1px solid var(--border-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+}
+.archive-head h3 {
+  font-family: 'Archivo', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text-heading);
+  line-height: 1.1;
+}
+.archive-head .sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 0.35rem;
+}
+.archive-head .count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  padding: 0.3rem 0.6rem;
+  background: var(--bg-subtle);
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.archive-search {
+  padding: 1rem 1.75rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+.archive-search input {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--bg-subtle);
+  padding: 0.7rem 0.9rem;
+  border-radius: 10px;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+.archive-search input:focus {
+  border-color: var(--accent-blue);
+  background: #fff;
+}
+.archive-search input::placeholder { color: var(--text-tertiary); }
+
+.archive-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem 0;
+}
+
+.archive-item {
+  display: block;
+  padding: 1rem 1.75rem;
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--text-primary);
+  border-bottom-color: var(--border-soft) !important;
+  text-decoration: none;
+  transition: background 0.12s;
+  cursor: pointer;
+}
+.archive-item:last-child { border-bottom: none; }
+.archive-item:hover { background: var(--bg-subtle); }
+.archive-item:focus-visible { outline: 2px solid var(--accent-blue-deep); outline-offset: -2px; }
+
+.archive-item .row1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+.archive-item .date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.06em;
+}
+.archive-item .day-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--accent-blue-deep);
+  background: rgba(79, 179, 255, 0.1);
+  padding: 0.15rem 0.45rem;
+  border-radius: 5px;
+  letter-spacing: 0.05em;
+}
+.archive-item .title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-heading);
+  line-height: 1.5;
+  margin-bottom: 0.3rem;
+}
+.archive-item .meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+.archive-item .dot-ind {
+  display: inline-block;
+  width: 7px; height: 7px; border-radius: 50%;
+}
+.dot-ind.red { background: var(--accent-red); }
+.dot-ind.amber { background: var(--accent-amber); }
+.dot-ind.green { background: var(--accent-green); }
+.archive-item .is-current {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--accent-green);
+  margin-left: auto;
+  letter-spacing: 0.08em;
+}
+
+.archive-foot {
+  padding: 1rem 1.75rem;
+  border-top: 1px solid var(--border-soft);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+/* ===== Hero ===== */
+.hero {
+  position: relative;
+  padding: 1rem 0 3.5rem;
+  margin-bottom: 2rem;
+}
+
+.hero .eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.hero .eyebrow::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
+}
+
+.hero h1 {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 900;
+  font-size: clamp(2.8rem, 7.5vw, 5.75rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--text-heading);
+  margin-bottom: 0.1em;
+}
+
+.hero h1 .accent {
+  color: var(--accent-blue);
+  font-style: normal;
+}
+
+.hero .zh-title {
+  font-size: clamp(1.15rem, 1.9vw, 1.45rem);
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: 0.04em;
+  margin-top: 1.2rem;
+}
+
+.hero .lede {
+  max-width: 640px;
+  font-size: 0.98rem;
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  margin-top: 1rem;
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  align-items: center;
+}
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 1rem;
+  background: var(--bg-frost-strong);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.8);
+  border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text-primary);
+  letter-spacing: 0.04em;
+  box-shadow: var(--shadow-sm);
+}
+.meta-chip .lbl {
+  color: var(--text-tertiary);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+.meta-chip.sample {
+  background: rgba(240, 163, 38, 0.12);
+  border-color: rgba(240, 163, 38, 0.3);
+  color: #b57514;
+}
+
+/* ===== Indicator strip ===== */
+.indicator-strip {
+  background: var(--bg-frost);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.75);
+  border-radius: 999px;
+  padding: 1.5rem 2rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  box-shadow: var(--shadow-frost);
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.indicator-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 1rem;
+  border-right: 1px solid rgba(16, 24, 40, 0.06);
+}
+.indicator-cell:last-child { border-right: none; }
+
+.indicator-cell .val {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-size: 1.8rem;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  color: var(--text-heading);
+}
+.indicator-cell .val.red { color: var(--accent-red); }
+.indicator-cell .val.amber { color: var(--accent-amber); }
+.indicator-cell .val.green { color: var(--accent-green); }
+
+.indicator-cell .lbl {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-top: 0.3rem;
+  letter-spacing: 0.02em;
+}
+.indicator-cell .delta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  margin-top: 0.2rem;
+}
+
+/* Assessment rationale */
+.assessment-text {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.9;
+  max-width: 820px;
+  margin: 0.5rem auto 1.25rem;
+  padding: 0 1rem;
+}
+.assessment-text strong { color: var(--text-primary); font-weight: 600; }
+
+/* Colour-key legend */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.25rem;
+  margin: 0 auto 2.5rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+.legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+
+.ai-disclaimer {
+  max-width: 720px;
+  margin: 0 auto 2.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--amber, #b8860020);
+  border-radius: 8px;
+  background: rgba(184, 134, 0, 0.08);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* ===== Cards ===== */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem 2.25rem 2rem;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow-md);
+}
+
+.card > .card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.6rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.card h2 {
+  font-family: 'Archivo', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text-heading);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.card h2 .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--accent-blue);
+  background: rgba(79, 179, 255, 0.1);
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  letter-spacing: 0.08em;
+}
+
+.card-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.summary-text {
+  font-size: 1rem;
+  line-height: 2;
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+/* ===== Tables ===== */
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -0.5rem;
+  padding: 0 0.5rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  min-width: 820px;
+}
+/* 欄位較多的表格單獨放寬，避免擠壓 */
+table.tbl-wide { min-width: 960px; }
+/* 欄位較少的表格收窄，手機端少一點橫向捲動 */
+table.tbl-narrow { min-width: 700px; }
+
+thead th {
+  background: transparent;
+  color: var(--text-tertiary);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+tbody tr { transition: background 0.15s; }
+tbody tr:nth-child(odd) { background: var(--bg-table-odd); }
+tbody tr:nth-child(even) { background: var(--bg-table-even); }
+tbody tr:hover { background: var(--bg-table-hover); }
+
+tbody td {
+  padding: 1rem 1rem;
+  border-bottom: 1px solid var(--border-soft);
+  vertical-align: top;
+  line-height: 1.75;
+  color: var(--text-primary);
+  font-size: 0.88rem;
+}
+
+tbody tr:last-child td { border-bottom: none; }
+
+tbody td:first-child {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  text-align: center;
+  width: 2.5rem;
+  font-size: 0.8rem;
+}
+
+/* 影響方向指示 */
+.dir-red, .dir-green, .dir-neutral {
+  font-size: 1.1rem;
+  width: 3rem;
+  text-align: center;
+}
+
+/* 尚未接上資料源的欄位 */
+.pending {
+  color: var(--text-tertiary);
+  font-style: italic;
+  font-size: 0.82rem;
+}
+
+/* 數值漲跌（僅用於數字欄，與影響方向分開） */
+.up { color: var(--accent-red); font-family: 'JetBrains Mono', monospace; }
+.down { color: var(--accent-green); font-family: 'JetBrains Mono', monospace; }
+.flat { color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; }
+
+a {
+  color: var(--accent-blue-deep);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(29, 138, 230, 0.25);
+  transition: border-color 0.2s, color 0.2s;
+}
+a:hover {
+  border-bottom-color: var(--accent-blue-deep);
+  color: var(--accent-ink);
+}
+a:focus-visible { outline: 2px solid var(--accent-blue-deep); outline-offset: 2px; }
+
+/* ===== 產業動態 ===== */
+.sector-list { list-style: none; padding: 0; display: grid; gap: 0.6rem; }
+.sector-item {
+  padding: 1.25rem 1.4rem;
+  background: var(--bg-subtle);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--border);
+}
+.sector-item.pos { border-left-color: var(--accent-green); }
+.sector-item.neg { border-left-color: var(--accent-red); }
+.sector-item.neu { border-left-color: var(--accent-amber); }
+.sector-item .row-top {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: 0.6rem; margin-bottom: 0.4rem;
+}
+.sector-chip {
+  font-size: 0.72rem; font-weight: 600;
+  padding: 0.15rem 0.55rem; border-radius: 5px;
+  background: #fff; border: 1px solid var(--border);
+  color: var(--text-secondary); white-space: nowrap;
+}
+.sector-item .headline {
+  font-size: 0.98rem; font-weight: 600; color: var(--text-heading);
+  line-height: 1.6; flex: 1 1 auto; min-width: 12rem;
+}
+.sector-item .body { font-size: 0.88rem; color: var(--text-primary); line-height: 1.8; }
+.sector-item .impact {
+  font-size: 0.85rem; color: var(--text-secondary); line-height: 1.75;
+  margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed var(--border);
+}
+.sector-item .impact b { color: var(--text-primary); font-weight: 600; }
+.sector-item .src,
+.sector-item .date {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+  color: var(--text-tertiary); letter-spacing: 0.04em;
+}
+.sector-item .date::before {
+  content: "・";
+  margin-right: 0.4rem;
+  color: var(--border);
+}
+
+/* ===== Implications ===== */
+.implications-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+  counter-reset: imp;
+}
+
+.implications-list li {
+  padding: 1.4rem 1.6rem;
+  background: var(--bg-subtle);
+  border-radius: var(--radius-md);
+  line-height: 1.9;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  position: relative;
+  counter-increment: imp;
+}
+
+.implications-list li::before {
+  content: counter(imp, decimal-leading-zero);
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--accent-blue-deep);
+  background: rgba(79, 179, 255, 0.12);
+  padding: 0.15rem 0.5rem;
+  border-radius: 5px;
+  margin-right: 0.7rem;
+  letter-spacing: 0.06em;
+  vertical-align: 0.15em;
+}
+
+.implications-list li strong {
+  color: var(--text-heading);
+  font-weight: 700;
+}
+
+/* ===== Sources ===== */
+.src-group {
+  margin-bottom: 1.75rem;
+}
+.src-group:last-child { margin-bottom: 0; }
+.src-group h3 {
+  font-family: 'Archivo', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin-bottom: 0.15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.src-group .grp-note {
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+  margin-bottom: 0.9rem;
+  line-height: 1.6;
+}
+.src-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  padding: 0.15rem 0.45rem;
+  border-radius: 5px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.tag-primary { background: rgba(48,164,108,0.12); color: #1f7a4f; border: 1px solid rgba(48,164,108,0.25); }
+.tag-media   { background: rgba(79,179,255,0.12); color: var(--accent-blue-deep); border: 1px solid rgba(79,179,255,0.28); }
+.tag-official{ background: rgba(240,163,38,0.12); color: #b57514; border: 1px solid rgba(240,163,38,0.28); }
+.sources-list li .desc {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--text-tertiary);
+  line-height: 1.55;
+  margin-top: 0.1rem;
+}
+
+.sources-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.5rem 1.5rem;
+}
+
+.sources-list li {
+  padding: 0.5rem 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  border-bottom: 1px dashed var(--border-soft);
+}
+
+.sources-list li a {
+  border-bottom: none;
+  color: var(--text-primary);
+}
+.sources-list li a:hover { color: var(--accent-blue-deep); }
+
+.sources-list li::before {
+  content: '↗';
+  margin-right: 0.5rem;
+  color: var(--accent-blue);
+  font-weight: 500;
+}
+
+/* ===== Footer ===== */
+.footer {
+  text-align: center;
+  padding: 3rem 1rem 1rem;
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+  margin-top: 2rem;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.08em;
+}
+.footer .divider {
+  width: 40px; height: 1px;
+  background: var(--border);
+  margin: 0 auto 1.5rem;
+}
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.badge-major {
+  background: rgba(229, 72, 77, 0.1);
+  color: var(--accent-red);
+  border: 1px solid rgba(229, 72, 77, 0.2);
+}
+.badge-medium {
+  background: rgba(240, 163, 38, 0.12);
+  color: #b57514;
+  border: 1px solid rgba(240, 163, 38, 0.25);
+}
+
+.data {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  color: var(--accent-ink);
+  background: rgba(79, 179, 255, 0.08);
+  padding: 0.05em 0.35em;
+  border-radius: 4px;
+  font-size: 0.92em;
+}
+
+@media print {
+  body {
+    background: #fff !important;
+    color: #111 !important;
+    padding: 1rem;
+  }
+  .topbar, .hero-meta { display: none; }
+  .indicator-strip {
+    background: #fff !important;
+    border: 1px solid #ccc !important;
+    border-radius: 12px !important;
+    box-shadow: none !important;
+  }
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .hero h1 .accent { color: #1d8ae6 !important; }
+  tbody tr:hover { background: transparent !important; }
+  a { color: #1d8ae6 !important; border-bottom: none !important; }
+  .badge-major { background: #fdecee !important; color: #c0392b !important; }
+  .badge-medium { background: #fdf3e2 !important; color: #b57514 !important; }
+}
+
+@media (max-width: 768px) {
+  body { padding: 1.5rem 0.75rem 2rem; }
+  .topbar { padding-bottom: 1.5rem; }
+  .hero { padding: 0.5rem 0 2rem; }
+  .hero h1 { font-size: 2.6rem; }
+  .card { padding: 1.5rem 1.25rem; border-radius: 20px; }
+  .indicator-strip {
+    border-radius: 24px;
+    padding: 1.25rem 0.75rem;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .indicator-cell { border-right: none; border-bottom: 1px solid rgba(16,24,40,0.06); padding-bottom: 1.25rem; }
+  .indicator-cell:last-child { border-bottom: none; padding-bottom: 0; }
+  .sources-list { grid-template-columns: 1fr; }
+  .card h2 { font-size: 1.15rem; }
+  .legend { gap: 0.75rem; font-size: 0.75rem; }
+}
+</style>
+<!-- TODO: 換成自己的 GTM 容器 ID，或整段移除 -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<div class="container">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="brand">
+      <!-- TODO: 換成自己的 logo -->
+      <img src="taitra-logo.png" alt="TAITRA 中華民國對外貿易發展協會">
+      <span class="divider"></span>
+      <span class="status"><span class="dot"></span>DAILY&nbsp;ECON</span>
+    </div>
+    <div class="right">
+      <div class="meta">{{GENERATED_AT_LABEL}}</div>
+      <button class="menu-btn" id="menuBtn" aria-label="歷史簡報" aria-expanded="false">
+        <span class="bars"><span></span><span></span><span></span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Archive -->
+  <div class="archive-overlay" id="archiveOverlay"></div>
+  <aside class="archive-panel" id="archivePanel" aria-hidden="true">
+    <div class="archive-head">
+      <div>
+        <h3>歷史簡報</h3>
+        <div class="sub">Archive · Past Briefings</div>
+      </div>
+      <span class="count" id="archiveCount">0 篇</span>
+    </div>
+    <div class="archive-search">
+      <input type="text" id="archiveSearch" placeholder="搜尋日期或關鍵字…">
+    </div>
+    <div class="archive-list" id="archiveList"></div>
+    <div class="archive-foot">TAITRA İSTANBUL · TÜRKİYE ECON ARCHIVE</div>
+  </aside>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="eyebrow">Daily economic brief · 每日經濟簡報</div>
+    <h1>
+      TÜRKİYE<br>
+      ECONOMY<br>
+      <span class="accent">Daily</span> BRIEF
+    </h1>
+    <div class="zh-title">Türkiye 經濟情報簡報</div>
+    <p class="lede">每日 Türkiye 時間上午 8:30 更新。彙整過去 24 小時 Türkiye 總體經濟數據、貨幣與財政政策動向、里拉匯率與市場價格變化，以及對台土雙邊貿易的實質影響。</p>
+
+    <div class="hero-meta">
+      <span class="meta-chip"><span class="lbl">DATE</span>{{DATE_ZH}}</span>
+      <span class="meta-chip"><span class="lbl">UPDATED</span>08:30 TRT</span>
+      <span class="meta-chip"><span class="lbl">SUBJECT</span>Türkiye 總體經濟</span>
+      <!-- 匯率／指數等即時報價尚未接資料源，接上後請刪掉這顆 chip -->
+      <span class="meta-chip sample"><span class="lbl">STATUS</span>即時報價待接</span>
+    </div>
+  </header>
+
+  <!-- 核心指標 -->
+  <div class="indicator-strip">
+    <div class="indicator-cell">
+      <div class="val green">31.75%</div>
+      <div class="lbl">年通膨率（TÜİK CPI，7月）</div>
+      <div class="delta">前值 32.11%　核心 29.91%</div>
+    </div>
+    <div class="indicator-cell">
+      <div class="val amber">37% / {{FUNDING_COST}}%</div>
+      <div class="lbl">政策利率 / 隔夜拆借（TCMB）</div>
+      <div class="delta">一週附賣回已於 8/23 恢復，隔夜利率回落至政策利率附近</div>
+    </div>
+    <div class="indicator-cell">
+      <div class="val red">73.4 億</div>
+      <div class="lbl">7月貿易逆差（美元）</div>
+      <div class="delta">年增 13.6%　1–7月累計 605 億</div>
+    </div>
+  </div>
+
+  <!-- AI:TODAY_TAKE:START 每天由 generate_analysis.py 整段覆寫，不要手動編輯這段文字本身 -->
+  <p class="assessment-text">
+    今日判讀內容由每日排程自動產生。
+  </p>
+  <!-- AI:TODAY_TAKE:END -->
+
+  <!-- 顏色語意說明：避免「數字漲跌」與「對台商好壞」混淆 -->
+  <p class="legend">
+    <span><span class="dot-ind red"></span>🔴 對台土貿易不利</span>
+    <span><span class="dot-ind amber"></span>⚪ 中性／待觀察</span>
+    <span><span class="dot-ind green"></span>🟢 對台土貿易有利</span>
+  </p>
+
+  <!-- AI 免責標示：完全自動發布模式下，這段內容沒有人工審核過，明確告知讀者 -->
+  <p class="ai-disclaimer">
+    ⚠️ 本頁「今日判讀」「摘要」「產業動態」「貿易意涵」段落由 AI（Gemini）於每日排程自動生成，未經人工審核，數據時效性與推論邏輯請自行覆核後再引用於商業決策。
+  </p>
+
+  <!-- 摘要 -->
+  <div class="card">
+    <div class="card-head">
+      <h2><span class="num">00</span>摘要</h2>
+      <span class="card-sub">Executive Summary</span>
+    </div>
+    <!-- AI:SUMMARY:START -->
+    <p class="summary-text">
+ 摘要內容由每日排程自動產生。
+    </p>
+    <!-- AI:SUMMARY:END -->
+  </div>
+
+  <!-- 表一：關鍵事件 -->
+  <div class="card">
+    <div class="card-head">
+      <h2><span class="num">01</span>關鍵事件與觀點</h2>
+      <span class="card-sub">Key Events &amp; Analysis</span>
+    </div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>影響方向</th>
+            <th>重要性</th>
+            <th>來源</th>
+            <th>事件</th>
+            <th>重點摘要</th>
+            <th>對台商與貿易影響</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- AI:KEY_EVENTS:START 每天由 generate_analysis.py 整段覆寫 tbody 內容 -->
+          <!-- 每列格式：
+          <tr>
+            <td>1</td>
+            <td class="dir-red">🔴</td>
+            <td><span class="badge badge-major">重大</span></td>
+            <td><a href="URL" target="_blank" rel="noopener noreferrer">來源</a></td>
+            <td>事件標題</td>
+            <td>重點摘要（1-2 句）</td>
+            <td>對台商影響</td>
+          </tr>
+          方向 class：dir-red（不利）／dir-green（有利）／dir-neutral（中性）
+          重要性 class：badge-major（重大）／badge-medium（中等）
+          -->
+          <tr><td colspan="7">今日無資料</td></tr>
+          <!-- AI:KEY_EVENTS:END -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 表二：經濟指標追蹤 -->
+  <div class="card">
+    <div class="card-head">
+      <h2><span class="num">02</span>主要經濟指標追蹤</h2>
+      <span class="card-sub">Macro Indicator Tracker</span>
+    </div>
+    <div class="table-wrapper">
+      <table class="tbl-wide">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>指標</th>
+            <th>最新值</th>
+            <th>較上期</th>
+            <th>年增率</th>
+            <th>市場預期</th>
+            <th>發布機構</th>
+            <th>下次發布</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- 漲跌用 .up（紅／上升）／.down（綠／下降）／.flat（持平）-->
+          <tr>
+            <td>1</td>
+            <td>消費者物價指數（CPI）</td>
+            <td><span class="data">31.75%</span></td>
+            <td><span class="down">−0.36pp</span></td>
+            <td>31.75%</td>
+            <td>31.8%</td>
+            <td>TÜİK</td>
+            <td>每月首週</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>核心通膨（B 指標）</td>
+            <td><span class="data">29.91%</span></td>
+            <td><span class="down">下降</span></td>
+            <td>29.91%</td>
+            <td>—</td>
+            <td>TÜİK</td>
+            <td>每月首週</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>政策利率（一週附賣回）</td>
+            <td><span class="data">37.0%</span></td>
+            <td><span class="flat">持平</span></td>
+            <td>—</td>
+            <td>維持不變</td>
+            <td>TCMB</td>
+            <td>每 6–8 週 MPC</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>隔夜拆借利率（實際融資成本）</td>
+            <td><span class="data">{{FUNDING_COST}}%</span></td>
+            <td><span class="flat">持平</span></td>
+            <td>—</td>
+            <td>維持不變</td>
+            <td>TCMB</td>
+            <td>每 6–8 週 MPC</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>月貿易逆差</td>
+            <td><span class="data">73.4 億美元</span></td>
+            <td><span class="down">−30.3 億</span></td>
+            <td><span class="up">+13.6%</span></td>
+            <td>—</td>
+            <td>TÜİK／貿易部</td>
+            <td>每月下旬</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>月出口</td>
+            <td><span class="data">256.2 億美元</span></td>
+            <td><span class="up">上升</span></td>
+            <td><span class="up">+2.9%</span></td>
+            <td>—</td>
+            <td>TÜİK／貿易部</td>
+            <td>每月下旬</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>出口對進口涵蓋率</td>
+            <td><span class="data">77.7%</span></td>
+            <td><span class="down">−1.7pp</span></td>
+            <td><span class="down">−1.7pp</span></td>
+            <td>—</td>
+            <td>TÜİK</td>
+            <td>每月下旬</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 表三：市場價格快照 -->
+  <div class="card">
+    <div class="card-head">
+      <h2><span class="num">03</span>市場價格快照</h2>
+      <span class="card-sub">Market Snapshot</span>
+    </div>
+    <div class="table-wrapper">
+      <table class="tbl-narrow">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>項目</th>
+            <th>現值</th>
+            <th>週變動</th>
+            <th>月變動</th>
+            <th>年初至今</th>
+            <th>備註</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>USD/TRY</td>
+            <td><span class="data">{{USD_TRY}}</span></td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td><span class="up">約 −7%（里拉，至6月）</span></td>
+            <td>TRY 匯率變化需與 CPI、利率、外匯流動性及央行市場操作一併觀察</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>EUR/TRY</td>
+            <td><span class="data">{{EUR_TRY}}</span></td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td>歐系競爭對手報價的相對變化</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>TWD/TRY（參考）</td>
+            <td class="pending">待接即時報價</td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td>台幣計價合約換算用</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>BIST 100 指數</td>
+            <td class="pending">待接即時報價</td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td>內需景氣的先行參考</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>5 年期主權 CDS</td>
+            <td class="pending">待接即時報價</td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td>影響信用狀開立條件</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>布蘭特原油</td>
+            <td class="pending">待接即時報價</td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td>能源進口是 Türkiye 逆差主因</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 產業動態 -->
+  <div class="card">
+    <div class="card-head">
+      <h2><span class="num">04</span>產業動態</h2>
+      <span class="card-sub">Sector Watch</span>
+    </div>
+    <ul class="sector-list">
+      <!-- AI:INDUSTRY:START 每天由 generate_analysis.py 整段覆寫 ul 內容（<li> 清單） -->
+      <!-- 每則格式：
+      <li class="sector-item pos|neg|neu">
+        <div class="row-top">
+          <span class="sector-chip">產業別</span>
+          <span class="headline">標題</span>
+          <span class="src">來源</span>
+          <span class="date">YYYY-MM-DD</span>
+        </div>
+        <div class="body">內容 1-2 句</div>
+        <div class="impact"><b>台商解讀：</b>…</div>
+      </li>
+      左側色條：pos 綠（機會）／neg 紅（風險）／neu 琥珀（觀察）
+      date 一律填「來源報導/發布日期」，不是新聞事件裡提到的生效日或事件日——
+      這兩者常常不同（例如關稅生效日 vs. 報導刊出日），別填錯。
+      -->
+      <li>今日無資料</li>
+      <!-- AI:INDUSTRY:END -->
+    </ul>
+    <p class="grp-note" style="margin-top:1.25rem;">
+      產業條目的來源與總經數據不同源，建議另外納入產業公會的一手發布：OSD（汽車製造商協會）、OİB（烏魯達汽車出口商協會）、İTHİB／İTKİB（紡織與成衣出口商協會）、MAİB（機械出口商協會）。這些單位的月報比媒體轉述更早也更細。
+    </p>
+  </div>
+
+  <!-- 貿易意涵：id 不可改，回饋彈窗的 IntersectionObserver 綁在這裡 -->
+  <div class="card" id="card-04-implications">
+    <div class="card-head">
+      <h2><span class="num">05</span>貿易意涵</h2>
+      <span class="card-sub">Trade Implications</span>
+    </div>
+    <ul class="implications-list">
+      <!-- AI:TRADE_IMPLICATIONS:START 每天由 generate_analysis.py 整段覆寫 ul 內容 -->
+      <!-- 每項格式：<li><strong>標題：</strong>分析內容。</li> -->
+      <li>今日無資料</li>
+      <!-- AI:TRADE_IMPLICATIONS:END -->
+    </ul>
+  </div>
+
+  <!-- 資料來源 -->
+  <div class="card">
+    <div class="card-head">
+      <h2><span class="num">06</span>資料來源</h2>
+      <span class="card-sub">Sources</span>
+    </div>
+    <div class="src-group">
+      <h3>官方統計與一手數據 <span class="src-tag tag-primary">一手</span></h3>
+      <p class="grp-note">數字的唯一源頭。表二、表三的所有數據都應追溯到這一層，媒體轉述僅供交叉查核。</p>
+      <ul class="sources-list">
+        <li><a href="https://www.tuik.gov.tr/" target="_blank" rel="noopener noreferrer">TÜİK Türkiye 統計局</a><span class="desc">CPI、PPI、失業率、工業生產。英土雙語，每月首週發布物價數據</span></li>
+        <li><a href="https://data.tuik.gov.tr/" target="_blank" rel="noopener noreferrer">TÜİK 資料入口（外貿統計）</a><span class="desc">每月底發布正式進出口統計、前五大貿易夥伴、HS Code 分類分析</span></li>
+        <li><a href="https://www.tcmb.gov.tr/" target="_blank" rel="noopener noreferrer">TCMB Türkiye 中央銀行</a><span class="desc">政策利率、MPC 決議、通膨報告；EVDS 系統提供時間序列 API</span></li>
+        <li><a href="https://www.ticaret.gov.tr/" target="_blank" rel="noopener noreferrer">T.C. Ticaret Bakanlığı 商務部</a><span class="desc">進出口法規、關稅變動、反傾銷等貿易救濟措施、月初進出口初估值</span></li>
+      </ul>
+    </div>
+
+    <div class="src-group">
+      <h3>貿易與產業組織 <span class="src-tag tag-official">官方公告</span></h3>
+      <p class="grp-note">產業別與國別的細分數據，以及法規、制裁、供應鏈變動的官方警示。</p>
+      <ul class="sources-list">
+        <li><a href="https://tim.org.tr/" target="_blank" rel="noopener noreferrer">TİM Türkiye 出口商大會</a><span class="desc">代表逾 10 萬家出口企業。每月發布按產業、國家、省份劃分的出口報告</span></li>
+        <li><a href="https://www.tobb.org.tr/" target="_blank" rel="noopener noreferrer">TOBB 商會與商品交易所聯盟</a><span class="desc">最大民間經濟代表機構。國際貿易媒合、在地產業報告、制裁與供應鏈警示</span></li>
+      </ul>
+    </div>
+
+    <div class="src-group">
+      <h3>Türkiye 財經專業媒體（土文） <span class="src-tag tag-media">媒體</span></h3>
+      <p class="grp-note">本土市場、企業動態與政策解讀的深度來源，多數僅有土文版本。</p>
+      <ul class="sources-list">
+        <li><a href="https://www.ekonomim.com/" target="_blank" rel="noopener noreferrer">Ekonomim</a><span class="desc">最頂級的每日經濟專業報，由《Dünya Gazetesi》核心班底轉型創立。Borsa İstanbul、里拉匯率、KOBİ 與產業分析</span></li>
+        <li><a href="https://www.dunya.com/" target="_blank" rel="noopener noreferrer">Dünya Gazetesi</a><span class="desc">老牌財經大報，金融界與商界領袖必讀。國內外金融數據、進出口貿易、商品期貨</span></li>
+        <li><a href="https://www.ekonomist.com.tr/" target="_blank" rel="noopener noreferrer">Ekonomist</a><span class="desc">最主流的經濟商業週刊。企業動態、投資機會、高科技產業、財經人物專訪</span></li>
+        <li><a href="https://www.bloomberght.com/" target="_blank" rel="noopener noreferrer">Bloomberg HT</a><span class="desc">Ciner 集團與 Bloomberg 合作。24 小時即時金融快訊、看盤數據、專家訪談</span></li>
+        <li><a href="https://www.hurriyet.com.tr/ekonomi/" target="_blank" rel="noopener noreferrer">Hürriyet Ekonomi</a><span class="desc">最大主流大報《自由報》財經板塊，對大眾市場觀點有高度引導作用</span></li>
+        <li><a href="https://www.sozcu.com.tr/ekonomi/" target="_blank" rel="noopener noreferrer">Sözcü Ekonomi</a><span class="desc">瀏覽量數一數二的獨立報紙。多從民生、消費者與在野監督角度報導通膨與工資</span></li>
+      </ul>
+    </div>
+
+    <div class="src-group">
+      <h3>英文媒體與通訊社 <span class="src-tag tag-media">媒體</span></h3>
+      <p class="grp-note">追蹤商務法規與外資動態，也是快速取得官方聲明英文版的管道。</p>
+      <ul class="sources-list">
+        <li><a href="https://www.aa.com.tr/en/economy" target="_blank" rel="noopener noreferrer">Anadolu Ajansı — Economy</a><span class="desc">國家官方通訊社英文財經版。央行利率、GDP、FTA 簽署、國際制裁第一時間推播</span></li>
+        <li><a href="https://www.dailysabah.com/economy" target="_blank" rel="noopener noreferrer">Daily Sabah — Economy</a><span class="desc">本土主流英文日報，商務法規與外資動態</span></li>
+        <li><a href="https://www.hurriyetdailynews.com/economy" target="_blank" rel="noopener noreferrer">Hürriyet Daily News — Economy</a><span class="desc">本土主流英文日報，Hürriyet 集團英文版</span></li>
+      </ul>
+    </div>
+
+    <p class="grp-note" style="margin-top:1.5rem; padding-top:1.25rem; border-top:1px solid var(--border-soft);">
+      <strong style="color:var(--text-secondary);">交叉查核原則：</strong>數字一律以「一手」層為準，媒體僅用於補上脈絡與判讀。同一組數據在不同媒體可能因比較基期不同而導出相反結論（如「逆差年增 13.6%」與「逆差較上月收窄」同時成立），引用時務必註明比較基期。
+    </p>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <div class="footer-brand"><img src="taitra-logo.png" alt="TAITRA"></div>
+    <div>Türkiye 經濟情報簡報 · {{GENERATED_AT_LABEL}}</div>
+    <div style="margin-top:0.4rem; opacity:0.7;">本報告僅供參考，不構成任何投資或商業決策建議</div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  // ============ 歷史簡報清單 ============
+  // 每筆：{ date, day, title, ind?, label?, href, current? }
+  // ind 僅接受 'red' | 'amber' | 'green'（見下方 INDICATOR_CLASSES 白名單）
+  // label 語彙已改為 惡化／持平／改善
+  //
+  // 這裡原本被塞了 4 筆寫死的假資料（連結指向根本不存在的
+  // /archive/turkey-econ-2026xxxx.html），已清空。等真正的歷史簡報存檔
+  // 功能做好之前，這份清單就先保持空陣列，面板會顯示「尚無過往簡報」。
+  const ARCHIVE_ITEMS = [];
+
+
+  const panel = document.getElementById('archivePanel');
+  const overlay = document.getElementById('archiveOverlay');
+  const btn = document.getElementById('menuBtn');
+  const list = document.getElementById('archiveList');
+  const search = document.getElementById('archiveSearch');
+  const countEl = document.getElementById('archiveCount');
+
+  // href 白名單：只允許站內絕對路徑或錨點，擋掉 javascript:、data:、外部來源
+  function safeHref(h) {
+    const s = String(h || '');
+    return (s.startsWith('/') || s.startsWith('#')) ? s : '#';
+  }
+  const INDICATOR_CLASSES = new Set(['red', 'amber', 'green']);
+
+  function render(filter) {
+    const q = (filter || '').trim().toLowerCase();
+    const items = ARCHIVE_ITEMS.filter(it =>
+      !q ||
+      (it.date || '').toLowerCase().includes(q) ||
+      (it.day || '').toLowerCase().includes(q) ||
+      (it.title || '').toLowerCase().includes(q)
+    );
+    countEl.textContent = items.length + ' 篇';
+    list.textContent = '';
+    if (!items.length) {
+      const msg = q ? '無符合結果' : '尚無過往簡報';
+      const empty = document.createElement('div');
+      empty.style.cssText = 'padding:3rem 1.75rem; text-align:center; color:var(--text-tertiary); font-size:0.85rem;';
+      empty.textContent = msg;
+      list.appendChild(empty);
+      return;
+    }
+    for (const it of items) {
+      const a = document.createElement('a');
+      a.className = 'archive-item';
+      a.setAttribute('href', safeHref(it.href));
+      a.dataset.date = it.date || '';
+
+      const row1 = document.createElement('div');
+      row1.className = 'row1';
+      const dateSpan = document.createElement('span');
+      dateSpan.className = 'date';
+      dateSpan.textContent = it.date || '';
+      const daySpan = document.createElement('span');
+      daySpan.className = 'day-tag';
+      daySpan.textContent = it.day || '';
+      row1.appendChild(dateSpan);
+      row1.appendChild(daySpan);
+
+      const titleDiv = document.createElement('div');
+      titleDiv.className = 'title';
+      titleDiv.textContent = it.title || '';
+
+      const metaRow = document.createElement('div');
+      metaRow.className = 'meta-row';
+      if (it.ind && INDICATOR_CLASSES.has(it.ind)) {
+        const dot = document.createElement('span');
+        dot.className = 'dot-ind ' + it.ind;
+        const labelSpan = document.createElement('span');
+        labelSpan.textContent = it.label || '';
+        metaRow.appendChild(dot);
+        metaRow.appendChild(labelSpan);
+      } else {
+        const noIndSpan = document.createElement('span');
+        noIndSpan.style.color = 'var(--text-tertiary)';
+        noIndSpan.textContent = '標準簡報';
+        metaRow.appendChild(noIndSpan);
+      }
+      if (it.current) {
+        const curSpan = document.createElement('span');
+        curSpan.className = 'is-current';
+        curSpan.textContent = '● CURRENT';
+        metaRow.appendChild(curSpan);
+      }
+
+      a.appendChild(row1);
+      a.appendChild(titleDiv);
+      a.appendChild(metaRow);
+      list.appendChild(a);
+    }
+  }
+
+  function toggle(force) {
+    const shouldOpen = typeof force === 'boolean' ? force : !panel.classList.contains('open');
+    panel.classList.toggle('open', shouldOpen);
+    overlay.classList.toggle('open', shouldOpen);
+    btn.classList.toggle('open', shouldOpen);
+    btn.setAttribute('aria-expanded', shouldOpen);
+    panel.setAttribute('aria-hidden', !shouldOpen);
+    document.body.style.overflow = shouldOpen ? 'hidden' : '';
+  }
+
+  btn.addEventListener('click', () => toggle());
+  overlay.addEventListener('click', () => toggle(false));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && panel.classList.contains('open')) toggle(false);
+  });
+  search.addEventListener('input', (e) => render(e.target.value));
+  list.addEventListener('click', (e) => {
+    const a = e.target.closest('.archive-item');
+    if (!a) return;
+    const href = a.getAttribute('href');
+    if (!href || href === '#') {
+      e.preventDefault();
+    }
+  });
+
+  render('');
+})();
+</script>
+
+<!-- feedback-widget:v1 -->
+<style>
+.fb-overlay {
+  position: fixed; inset: 0;
+  background: rgba(16,24,40,0.35);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 2000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem;
+}
+.fb-overlay.open { opacity: 1; pointer-events: auto; }
+.fb-modal {
+  background: #fff;
+  border-radius: 28px;
+  padding: 2.25rem 2rem 2rem;
+  max-width: 440px;
+  width: 100%;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset, 0 1px 2px rgba(16,24,40,0.04), 0 24px 48px -24px rgba(16,24,40,0.12);
+  position: relative;
+  transform: scale(0.96) translateY(8px);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.32,0.72,0.24,1), opacity 0.3s ease;
+  font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+  text-align: center;
+}
+.fb-overlay.open .fb-modal { transform: scale(1) translateY(0); opacity: 1; }
+.fb-close {
+  position: absolute; top: 1rem; right: 1rem;
+  width: 32px; height: 32px;
+  border: none; background: #f3f4f6;
+  border-radius: 8px;
+  font-size: 1.2rem; line-height: 1; color: #5a6370;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.fb-close:hover { background: #e4e7ec; color: #111418; }
+.fb-modal h3 {
+  font-family: 'Archivo', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #000;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.01em;
+}
+.fb-sub {
+  font-size: 0.9rem;
+  color: #5a6370;
+  margin: 0 0 1.75rem;
+  line-height: 1.6;
+}
+.fb-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+.fb-btn {
+  display: inline-flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 1.1rem 0.5rem;
+  border: 1px solid #e4e7ec;
+  border-radius: 18px;
+  background: #fff;
+  color: #111418;
+  font-family: inherit; font-size: 0.95rem; font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s, background 0.15s, color 0.15s;
+}
+.fb-btn:hover { transform: translateY(-2px); }
+.fb-like:hover { border-color: rgba(48,164,108,0.4); background: rgba(48,164,108,0.06); color: #30a46c; }
+.fb-dislike:hover { border-color: rgba(229,72,77,0.4); background: rgba(229,72,77,0.06); color: #e5484d; }
+.fb-btn:active { transform: translateY(0); }
+.fb-btn svg { flex-shrink: 0; }
+.fb-thanks {
+  padding: 2rem 0 0.5rem;
+  font-size: 1.05rem;
+  color: #30a46c;
+  font-weight: 500;
+}
+@media (max-width: 480px) {
+  .fb-overlay { align-items: flex-end; padding: 0; }
+  .fb-modal {
+    border-radius: 20px 20px 0 0;
+    max-width: 100%;
+    padding: 1.75rem 1.5rem 2rem;
+    transform: translateY(100%);
+  }
+  .fb-overlay.open .fb-modal { transform: translateY(0); }
+}
+</style>
+<div class="fb-overlay" id="fbOverlay" aria-hidden="true">
+  <div class="fb-modal" role="dialog" aria-labelledby="fbTitle" aria-describedby="fbSub">
+    <button type="button" class="fb-close" id="fbClose" aria-label="關閉">×</button>
+    <h3 id="fbTitle">這篇簡報對你有幫助嗎？</h3>
+    <p id="fbSub" class="fb-sub">你的回饋會幫助我們改善每日經濟簡報的內容</p>
+    <div class="fb-actions">
+      <button type="button" class="fb-btn fb-like" data-reaction="like">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 22V11"/><path d="M2 13v7a2 2 0 002 2h3"/><path d="M20.5 11H13l1.5-5.5a1.5 1.5 0 00-2.9-.8L7 11v11h11.7a2 2 0 001.98-1.7l1.3-7A2 2 0 0020.5 11z"/></svg>
+        <span>喜歡</span>
+      </button>
+      <button type="button" class="fb-btn fb-dislike" data-reaction="dislike">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2v11"/><path d="M22 11V4a2 2 0 00-2-2h-3"/><path d="M3.5 13H11l-1.5 5.5a1.5 1.5 0 002.9.8L17 13V2H5.3a2 2 0 00-1.98 1.7l-1.3 7A2 2 0 003.5 13z"/></svg>
+        <span>不喜歡</span>
+      </button>
+    </div>
+    <div class="fb-thanks" hidden>謝謝你的回饋！</div>
+  </div>
+</div>
+<script>
+(function(){
+  var KEY = 'fb_shown_' + location.pathname;
+  try { if (localStorage.getItem(KEY)) return; } catch (_) {}
+
+  var overlay = document.getElementById('fbOverlay');
+  // 綁在「貿易意涵」卡片上；若改動該卡片的 id，這裡要同步改
+  var target  = document.getElementById('card-04-implications');
+  var closeBtn = document.getElementById('fbClose');
+  if (!overlay || !target || !closeBtn) return;
+
+  var thanks = overlay.querySelector('.fb-thanks');
+  var actions = overlay.querySelector('.fb-actions');
+
+  function openModal(){
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden','false');
+    try { localStorage.setItem(KEY, String(Date.now())); } catch (_) {}
+    try { closeBtn.focus(); } catch (_) {}
+  }
+  function closeModal(){
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden','true');
+  }
+
+  if (!('IntersectionObserver' in window)) return;
+
+  var io = new IntersectionObserver(function(entries){
+    for (var i = 0; i < entries.length; i++) {
+      if (entries[i].isIntersecting) { openModal(); io.disconnect(); break; }
+    }
+  }, { threshold: 0.3 });
+  io.observe(target);
+
+  overlay.addEventListener('click', function(e){ if (e.target === overlay) closeModal(); });
+  closeBtn.addEventListener('click', closeModal);
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
+  });
+
+  var btns = overlay.querySelectorAll('.fb-btn');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].addEventListener('click', function(ev){
+      var reaction = ev.currentTarget.getAttribute('data-reaction');
+      actions.style.display = 'none';
+      thanks.hidden = false;
+      try {
+        fetch('/api/feedback', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ page: location.pathname, reaction: reaction })
+        }).catch(function(){});
+      } catch (_) {}
+      setTimeout(closeModal, 1200);
+    }, { once: true });
+  }
+})();
+</script>
+<!-- /feedback-widget:v1 -->
+
+</body>
+</html>
