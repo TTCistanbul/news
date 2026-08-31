@@ -255,6 +255,46 @@ def render_tw_tr_trade(data: dict | None) -> str:
       查看財政部關務署官方查詢系統（可自行查核或查詢更細分類）</a></p>'''
 
 
+# ── 期間報告列表 ──
+# generate_period_report.py 每次產生週/月/季/年報告時，會順便維護
+# docs/reports/_index.json 這份索引。這裡只負責讀取、渲染成連結列表，
+# 索引檔不存在或是空的都要正常顯示「尚無報告」，不能讓整個 render 掛掉。
+REPORTS_INDEX_PATH = ROOT / "docs" / "reports" / "_index.json"
+PERIOD_LABEL_ZH = {"week": "週報", "month": "月報", "quarter": "季報", "year": "年報"}
+
+
+def load_reports_index() -> list:
+    if not REPORTS_INDEX_PATH.exists():
+        return []
+    try:
+        return json.loads(REPORTS_INDEX_PATH.read_text(encoding="utf-8"))
+    except Exception as e:
+        print(f"! {REPORTS_INDEX_PATH} 讀取失敗，略過此區塊：{e}")
+        return []
+
+
+def render_reports_list(index: list) -> str:
+    if not index:
+        return (
+            '<p class="pending" style="font-size:0.88rem;">尚未產生過任何期間報告。'
+            "到 GitHub Actions 手動觸發 “Generate Period Report” 即可產生。</p>"
+        )
+    sorted_idx = sorted(index, key=lambda e: e.get("end", ""), reverse=True)[:12]
+    lis = []
+    for e in sorted_idx:
+        label = html.escape(PERIOD_LABEL_ZH.get(e.get("period", ""), e.get("period", "")))
+        href = html.escape(f"reports/{e.get('file','')}", quote=True)
+        start = html.escape(e.get("start", ""))
+        end = html.escape(e.get("end", ""))
+        lis.append(f'''      <li class="sector-item neu">
+        <div class="row-top">
+          <span class="sector-chip">{label}</span>
+          <span class="headline"><a href="{href}" target="_blank" rel="noopener noreferrer">{start} ～ {end}</a></span>
+        </div>
+      </li>''')
+    return "\n".join(lis)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", help="YYYY-MM-DD，預設用 data/ 裡最新的檔案")
@@ -361,6 +401,9 @@ def main():
     #    不管 analysis 檔案存不存在都要跑）
     tw_tr_data = load_tw_tr_trade()
     html_text = replace_block(html_text, "TW_TR_TRADE", render_tw_tr_trade(tw_tr_data))
+
+    reports_index = load_reports_index()
+    html_text = replace_block(html_text, "REPORTS_LIST", render_reports_list(reports_index))
 
     # 4. 寫入輸出檔案（純產生物，永遠從範本重新產生，不會累積殘留內容）
     out_path.parent.mkdir(parents=True, exist_ok=True)
