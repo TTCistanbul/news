@@ -119,20 +119,40 @@ def render_key_events(events: list[dict]) -> str:
     return "\n".join(rows) if rows else '          <tr><td colspan="7">今日無資料</td></tr>'
 
 
-def render_industry_items(items: list[dict]) -> str:
+def render_industry_items(items: list[dict], as_of: dt.date, window_days: int = 7) -> str:
+    # 只保留「發布日期」落在 as_of 往前推 window_days 天內的項目（含 as_of
+    # 當天），超過範圍的直接丟棄，不管 Gemini 排多前面。用 as_of（這份
+    # 報告對應的日期，即 resolved_date）而不是系統當下時間去算，這樣用
+    # --date 補跑舊日期報告時，篩選範圍也會正確對應那一天，不會被「今天」
+    # 的系統時鐘帶偏。缺日期或日期格式看不懂的項目一律丟棄，不猜測納入。
+    cutoff = as_of - dt.timedelta(days=window_days - 1)
+    in_window = []
+    for it in items:
+        raw = (it.get("date") or "").strip()
+        try:
+            item_date = dt.date.fromisoformat(raw)
+        except ValueError:
+            continue
+        if cutoff <= item_date <= as_of:
+            in_window.append(it)
+
     # 依日期新到舊排序（date 是 YYYY-MM-DD 字串，字串排序結果跟日期排序
-    # 一致）。缺日期的項目排到最後，不讓它們因為空字串排序跑到最前面。
-    sorted_items = sorted(
-        items,
-        key=lambda it: it.get("date") or "0000-00-00",
-        reverse=True,
-    )
+    # 一致）
+    sorted_items = sorted(in_window, key=lambda it: it.get("date", ""), reverse=True)
     lis = []
     for it in sorted_items[:5]:
         sentiment = SENTIMENT_CLASS.get(it.get("sentiment", "neu"), "neu")
         sector = html.escape(it.get("sector", ""))
         headline = html.escape(it.get("headline", ""))
         source = html.escape(it.get("source", ""))
+        source_url = (it.get("source_url") or "").strip()
+        if source_url:
+            src_html = (
+                f'<a href="{html.escape(source_url, quote=True)}" '
+                f'target="_blank" rel="noopener noreferrer">{source}</a>'
+            )
+        else:
+            src_html = source
         date = html.escape(it.get("date", ""))
         body = html.escape(it.get("body", ""))
         interp = html.escape(it.get("business_interpretation", ""))
@@ -140,13 +160,13 @@ def render_industry_items(items: list[dict]) -> str:
         <div class="row-top">
           <span class="sector-chip">{sector}</span>
           <span class="headline">{headline}</span>
-          <span class="src">{source}</span>
+          <span class="src">{src_html}</span>
           <span class="date">{date}</span>
         </div>
         <div class="body">{body}</div>
         <div class="impact"><b>台商解讀：</b>{interp}</div>
       </li>''')
-    return "\n".join(lis) if lis else "      <li>今日無資料</li>"
+    return "\n".join(lis) if lis else "      <li>近 7 天無符合資料</li>"
 
 
 def render_trade_implications(items: list[dict]) -> str:
@@ -193,22 +213,33 @@ def main():
     else:
         funding_cost = "37.0"
 
+    # TWD/TRY：不是任何央行的官方報價，是 fetch_daily.py 用 TCMB 官方
+    # USD/TRY 跟第三方免費 API 的 USD/TWD 算出來的交叉匯率。抓取失敗時
+    # 顯示跟其他「還沒接上」欄位一致的提示文字，不要留著空白或舊數字。
+    twd_cross = (payload.get("fx") or {}).get("twd_try_cross")
+    if twd_cross and twd_cross.get("try_per_twd") is not None:
+        twd_try = f"{twd_cross['try_per_twd']:.4f}"
+    else:
+        twd_try = "待接即時報價"
+
     generated_label = payload.get("generated_at_label")
     if not generated_label:
         now = dt.datetime.now(dt.timezone.utc) + dt.timedelta(hours=3)
         generated_label = now.strftime("%Y-%m-%d · %H:%M TRT")
 
-    # {{DATE_ZH}}：中文日期（例如「2026年8月31日」），用 resolved_date
-    # （這份報告實際對應的日期）而不是執行當下的系統時間去算，這樣重新
-    # 補跑舊日期的報告（--date 參數）時，畫面上的日期也會跟著正確顯示
-    # 那一天，而不是永遠顯示「今天」。
-    y, m, d = (int(x) for x in resolved_date.split("-"))
-    date_zh = f"{y}年{m}月{d}日"
+    # {{DATE_ZH}}：中文日期（例如「2026年8月31日」），也拿來當「產業動態」
+    # 7 天篩選窗口的基準日。用 resolved_date（這份報告實際對應的日期）
+    # 而不是執行當下的系統時間去算，這樣重新補跑舊日期的報告（--date
+    # 參數）時，日期顯示跟篩選範圍都會正確對應那一天，而不是永遠對應
+    # 「今天」。
+    report_date = dt.date.fromisoformat(resolved_date)
+    date_zh = f"{report_date.year}年{report_date.month}月{report_date.day}日"
 
     replacements = {
         "{{USD_TRY}}": usd,
         "{{EUR_TRY}}": eur,
         "{{FUNDING_COST}}": funding_cost,
+        "{{TWD_TRY}}": twd_try,
         "{{GENERATED_AT_LABEL}}": generated_label,
         "{{DATE_ZH}}": date_zh,
     }
@@ -241,7 +272,7 @@ def main():
         )
         html_text = replace_block(
             html_text, "INDUSTRY",
-            render_industry_items(analysis.get("industry_items", []))
+            render_industry_items(analysis.get("industry_items", []), report_date)
         )
         html_text = replace_block(
             html_text, "TRADE_IMPLICATIONS",
