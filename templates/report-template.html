@@ -729,6 +729,15 @@ a:focus-visible { outline: 2px solid var(--accent-blue-deep); outline-offset: 2p
   font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
   color: var(--text-tertiary); letter-spacing: 0.04em;
 }
+.sector-item .src a {
+  color: inherit;
+  border-bottom: 1px dotted var(--text-tertiary);
+  transition: color 0.15s, border-color 0.15s;
+}
+.sector-item .src a:hover {
+  color: var(--accent-blue-deep);
+  border-bottom-color: var(--accent-blue-deep);
+}
 .sector-item .date::before {
   content: "・";
   margin-right: 0.4rem;
@@ -1006,9 +1015,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- 核心指標 -->
   <div class="indicator-strip">
     <div class="indicator-cell">
-      <div class="val green">31.75%</div>
-      <div class="lbl">年通膨率（TÜİK CPI，7月）</div>
-      <div class="delta">前值 32.11%　核心 29.91%</div>
+      <div class="val {{CPI_COLOR}}">{{CPI_VALUE}}%</div>
+      <div class="lbl">年通膨率（TÜİK CPI，{{CPI_MONTH_LABEL}}）</div>
+      <div class="delta">{{CPI_DELTA}}</div>
     </div>
     <div class="indicator-cell">
       <div class="val amber">37% / {{FUNDING_COST}}%</div>
@@ -1016,9 +1025,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="delta">一週附賣回已於 8/23 恢復，隔夜利率回落至政策利率附近</div>
     </div>
     <div class="indicator-cell">
-      <div class="val red">73.4 億</div>
-      <div class="lbl">7月貿易逆差（美元）</div>
-      <div class="delta">年增 13.6%　1–7月累計 605 億</div>
+      <div class="val {{TWTR_COLOR}}">{{TWTR_VALUE}}</div>
+      <div class="lbl">台灣對 Türkiye 貿易{{TWTR_LABEL}}（{{TWTR_MONTH_LABEL}}）</div>
+      <div class="delta">{{TWTR_DELTA}}</div>
     </div>
   </div>
 
@@ -1232,32 +1241,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <tr>
             <td>3</td>
             <td>TWD/TRY（參考）</td>
-            <td class="pending">待接即時報價</td>
+            <td><span class="data">{{TWD_TRY}}</span></td>
             <td class="pending">—</td>
             <td class="pending">—</td>
             <td class="pending">—</td>
-            <td>台幣計價合約換算用</td>
+            <td>交叉匯率（TCMB USD/TRY ÷ 第三方 USD/TWD），非官方直接報價，僅供台幣計價合約換算參考</td>
           </tr>
           <tr>
             <td>4</td>
-            <td>BIST 100 指數</td>
-            <td class="pending">待接即時報價</td>
-            <td class="pending">—</td>
-            <td class="pending">—</td>
-            <td class="pending">—</td>
-            <td>內需景氣的先行參考</td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td>5 年期主權 CDS</td>
-            <td class="pending">待接即時報價</td>
-            <td class="pending">—</td>
-            <td class="pending">—</td>
-            <td class="pending">—</td>
-            <td>影響信用狀開立條件</td>
-          </tr>
-          <tr>
-            <td>6</td>
             <td>布蘭特原油</td>
             <td class="pending">待接即時報價</td>
             <td class="pending">—</td>
@@ -1283,7 +1274,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="row-top">
           <span class="sector-chip">產業別</span>
           <span class="headline">標題</span>
-          <span class="src">來源</span>
+          <span class="src"><a href="URL" target="_blank" rel="noopener noreferrer">來源</a></span>
           <span class="date">YYYY-MM-DD</span>
         </div>
         <div class="body">內容 1-2 句</div>
@@ -1315,10 +1306,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </ul>
   </div>
 
+  <!-- 台灣—Türkiye 雙邊貿易：人工每月維護的資料，跟上面 AI 生成的區塊不同來源 -->
+  <div class="card">
+    <div class="card-head">
+      <h2><span class="num">06</span>台灣—Türkiye 雙邊貿易</h2>
+      <span class="card-sub">Taiwan–Türkiye Bilateral Trade</span>
+    </div>
+    <!-- TW_TR_TRADE:START 由 render_report.py 讀取 data/tw-tr-trade.json 產生，
+         人工每月維護，不是每日自動抓取，也不是 AI 生成 -->
+    <p class="pending" style="font-size:0.88rem;">尚未提供資料。</p>
+    <!-- TW_TR_TRADE:END -->
+  </div>
+
   <!-- 資料來源 -->
   <div class="card">
     <div class="card-head">
-      <h2><span class="num">06</span>資料來源</h2>
+      <h2><span class="num">07</span>資料來源</h2>
       <span class="card-sub">Sources</span>
     </div>
     <div class="src-group">
@@ -1367,6 +1370,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="grp-note" style="margin-top:1.5rem; padding-top:1.25rem; border-top:1px solid var(--border-soft);">
       <strong style="color:var(--text-secondary);">交叉查核原則：</strong>數字一律以「一手」層為準，媒體僅用於補上脈絡與判讀。同一組數據在不同媒體可能因比較基期不同而導出相反結論（如「逆差年增 13.6%」與「逆差較上月收窄」同時成立），引用時務必註明比較基期。
     </p>
+  </div>
+
+  <!-- 期間報告列表：由 render_report.py 讀取 docs/reports/_index.json 產生，
+       generate_period_report.py 每次產生新報告時會維護這份索引 -->
+  <div class="card">
+    <div class="card-head">
+      <h2><span class="num">08</span>期間報告</h2>
+      <span class="card-sub">Period Reports</span>
+    </div>
+    <ul class="sector-list">
+      <!-- REPORTS_LIST:START 由 render_report.py 產生，不是 AI 生成 -->
+      <li>尚未產生過任何期間報告。</li>
+      <!-- REPORTS_LIST:END -->
+    </ul>
   </div>
 
   <div class="footer">
