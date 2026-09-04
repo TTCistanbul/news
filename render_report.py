@@ -381,6 +381,80 @@ def render_reports_list(index: list) -> str:
     return "\n".join(lis)
 
 
+# ── 表 03「市場價格快照」的週／月／年初至今變動 ──
+# 這三欄原本是範本裡寫死的「—」，從來沒有算過。EVDS 那邊沒有現成的歷史
+# 匯率序列可用，但 data/ 裡每天都留了一份當日快照，把過去的檔案讀回來
+# 就是現成的時間序列。
+#
+# 找基準日的規則：取「日期 <= 目標日」之中最接近的那一份，而且不能離目標
+# 日太遠（tolerance）。假日或抓取失敗會讓某幾天沒有檔案，容忍幾天是必要
+# 的；但容忍過頭就會拿一個月前的數字當「週變動」，所以寧可顯示 — 。
+def load_daily_snapshots() -> list[tuple[dt.date, dict]]:
+    out = []
+    for f in sorted(DATA_DIR.glob("*.json")):
+        if not re.match(r"\d{4}-\d{2}-\d{2}\.json$", f.name):
+            continue
+        try:
+            out.append((dt.date.fromisoformat(f.stem), load_json(f)))
+        except Exception:
+            continue
+    return out
+
+
+def _metric_value(payload: dict, key: str):
+    """從一份每日快照裡取出某個市場價格。取不到回 None。"""
+    try:
+        if key == "USD":
+            return (payload.get("fx") or {}).get("rates", {}).get("USD", {}).get("per_unit_selling")
+        if key == "EUR":
+            return (payload.get("fx") or {}).get("rates", {}).get("EUR", {}).get("per_unit_selling")
+        if key == "TWD":
+            return (payload.get("fx") or {}).get("twd_try_cross", {}).get("try_per_twd")
+        if key == "BRENT":
+            return (payload.get("brent_oil") or {}).get("usd_per_barrel")
+    except Exception:
+        return None
+    return None
+
+
+def _snapshot_on_or_before(snaps, target: dt.date, tolerance_days: int):
+    best = None
+    for d, payload in snaps:
+        if d <= target and (target - d).days <= tolerance_days:
+            if best is None or d > best[0]:
+                best = (d, payload)
+    return best
+
+
+def market_changes(snaps, key: str, current, as_of: dt.date) -> dict:
+    """回傳 {week, week_cls, month, month_cls, ytd, ytd_cls}，算不出來就是 —。"""
+    out = {}
+
+    def pct(old):
+        if old in (None, 0) or current is None:
+            return None
+        return (current - old) / abs(old) * 100
+
+    def cell(v):
+        if v is None:
+            return "—", "flat"
+        txt = f"{v:+.1f}%".replace("-", "\u2212")
+        return txt, ("up" if v > 0 else ("down" if v < 0 else "flat"))
+
+    for name, delta, tol in (("week", 7, 4), ("month", 30, 8)):
+        snap = _snapshot_on_or_before(snaps, as_of - dt.timedelta(days=delta), tol)
+        out[name], out[name + "_cls"] = cell(pct(_metric_value(snap[1], key)) if snap else None)
+
+    # 年初至今：要有夠靠近年初的快照才算，否則「年初至今」名不副實。
+    jan = [(d, p) for d, p in snaps if d.year == as_of.year]
+    if jan and min(d for d, _ in jan) <= dt.date(as_of.year, 1, 15):
+        first = min(jan, key=lambda x: x[0])
+        out["ytd"], out["ytd_cls"] = cell(pct(_metric_value(first[1], key)))
+    else:
+        out["ytd"], out["ytd_cls"] = "—", "flat"
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", help="YYYY-MM-DD，預設用 data/ 裡最新的檔案")
@@ -676,6 +750,15 @@ def main():
         coverage_value = coverage_delta = coverage_yoy = "—"
         coverage_delta_cls = coverage_yoy_cls = "flat"
 
+    # 表 03 的週／月／年初至今變動
+    snaps = load_daily_snapshots()
+    mkt = {
+        "USD":   market_changes(snaps, "USD",   (rates.get("USD") or {}).get("per_unit_selling"), report_date),
+        "EUR":   market_changes(snaps, "EUR",   (rates.get("EUR") or {}).get("per_unit_selling"), report_date),
+        "TWD":   market_changes(snaps, "TWD",   (twd_cross or {}).get("try_per_twd"), report_date),
+        "BRENT": market_changes(snaps, "BRENT", (brent or {}).get("usd_per_barrel"), report_date),
+    }
+
     replacements = {
         "{{USD_TRY}}": usd,
         "{{EUR_TRY}}": eur,
@@ -728,6 +811,30 @@ def main():
         "{{COVERAGE_DELTA_CLS}}": coverage_delta_cls,
         "{{COVERAGE_YOY}}": coverage_yoy,
         "{{COVERAGE_YOY_CLS}}": coverage_yoy_cls,
+        "{{USD_WEEK}}": mkt["USD"]["week"],
+        "{{USD_WEEK_CLS}}": mkt["USD"]["week_cls"],
+        "{{USD_MONTH}}": mkt["USD"]["month"],
+        "{{USD_MONTH_CLS}}": mkt["USD"]["month_cls"],
+        "{{USD_YTD}}": mkt["USD"]["ytd"],
+        "{{USD_YTD_CLS}}": mkt["USD"]["ytd_cls"],
+        "{{EUR_WEEK}}": mkt["EUR"]["week"],
+        "{{EUR_WEEK_CLS}}": mkt["EUR"]["week_cls"],
+        "{{EUR_MONTH}}": mkt["EUR"]["month"],
+        "{{EUR_MONTH_CLS}}": mkt["EUR"]["month_cls"],
+        "{{EUR_YTD}}": mkt["EUR"]["ytd"],
+        "{{EUR_YTD_CLS}}": mkt["EUR"]["ytd_cls"],
+        "{{TWD_WEEK}}": mkt["TWD"]["week"],
+        "{{TWD_WEEK_CLS}}": mkt["TWD"]["week_cls"],
+        "{{TWD_MONTH}}": mkt["TWD"]["month"],
+        "{{TWD_MONTH_CLS}}": mkt["TWD"]["month_cls"],
+        "{{TWD_YTD}}": mkt["TWD"]["ytd"],
+        "{{TWD_YTD_CLS}}": mkt["TWD"]["ytd_cls"],
+        "{{BRENT_WEEK}}": mkt["BRENT"]["week"],
+        "{{BRENT_WEEK_CLS}}": mkt["BRENT"]["week_cls"],
+        "{{BRENT_MONTH}}": mkt["BRENT"]["month"],
+        "{{BRENT_MONTH_CLS}}": mkt["BRENT"]["month_cls"],
+        "{{BRENT_YTD}}": mkt["BRENT"]["ytd"],
+        "{{BRENT_YTD_CLS}}": mkt["BRENT"]["ytd_cls"],
     }
 
     for token, value in replacements.items():

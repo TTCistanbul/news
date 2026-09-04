@@ -75,6 +75,16 @@ SYSTEM_PROMPT = """\
    「值得觀察」等保留語氣。
 5. 全部輸出繁體中文（地名、機構名可保留原文，如 TCMB、TÜİK）。
 6. 內容不夠寫滿的欄位就回傳較短的陣列，不要為了湊數量而編造。
+7. 金額單位換算務必正確，這是最常出錯的地方：
+   - 土耳其文 milyar ＝ 英文 billion ＝ 中文「十億」＝「10 億」。
+     所以 23,47 milyar dolar 要寫成「234.7 億美元」，不是「23.47 億美元」。
+   - 土耳其文 milyon ＝ 英文 million ＝ 中文「百萬」＝「100 萬」。
+     所以 6,3 milyon dolar 要寫成「630 萬美元」，不是「6.3 萬美元」。
+   - 土耳其文用逗號當小數點（23,47 就是 23.47），用點當千分位
+     （1.850 就是 1850）。看到逗號不要當成千分位。
+   換算前先把原文數字唸出來確認量級：一個國家的單月出口通常是幾百億美元，
+   央行外匯儲備通常是一兩千億美元。算出來的數字如果比常識小十倍或大十倍，
+   就是換算錯了，重算一次再寫。
 
 只輸出符合以下 JSON schema 的內容，不要有任何其他文字：
 
@@ -112,6 +122,16 @@ SYSTEM_PROMPT = """\
 key_developments 最多 8 則，依重要性排序。industry_trends 最多 6 則。
 trade_implications 最多 4 則。
 """
+
+
+# 金額單位換算檢查沿用 generate_analysis.py 的實作，規則只維護一份。
+# 那支檔案不在或改名時不讓週報整支掛掉，只是少了這道檢查。
+try:
+    from generate_analysis import check_unit_conversion
+except Exception as _e:  # pragma: no cover
+    print(f"!  無法載入 generate_analysis.check_unit_conversion，略過單位檢查：{_e}",
+          file=sys.stderr)
+    check_unit_conversion = None
 
 
 def load_daily_files(start: dt.date, end: dt.date) -> list[dict]:
@@ -371,6 +391,31 @@ def main():
     print("-> 呼叫 Gemini 產生期間分析...", file=sys.stderr)
     analysis, used_model = call_gemini(prompt, api_key)
     print(f"-> Gemini 完成（{used_model}）", file=sys.stderr)
+
+    # 金額單位換算檢查（milyar/billion 對「億」、milyon/million 對「萬」）。
+    # 抓到疑似照抄沒換算時，帶著具體錯誤請模型重寫一次；重寫後仍有問題就
+    # 照樣輸出報告，但把警告印在 log 裡。
+    unit_problems = []
+    if check_unit_conversion is not None:
+        unit_problems = check_unit_conversion(prompt, analysis)
+        if unit_problems:
+            print("!  偵測到疑似金額單位換算錯誤：", file=sys.stderr)
+            for p in unit_problems:
+                print(f"   - {p}", file=sys.stderr)
+            print("   請模型重寫一次...", file=sys.stderr)
+            fix_prompt = (
+                prompt
+                + "\n\n以上是原始資料。你剛才產生的內容有金額單位換算錯誤：\n"
+                + "\n".join(f"- {p}" for p in unit_problems)
+                + "\n\n請重新產生完整 JSON，其他內容維持一樣的判斷，只把金額換算改正確。"
+            )
+            try:
+                analysis, used_model = call_gemini(fix_prompt, api_key)
+                unit_problems = check_unit_conversion(prompt, analysis)
+                print("   重寫後已無單位問題" if not unit_problems
+                      else "   重寫後仍有單位問題，保留內容但請人工覆核", file=sys.stderr)
+            except Exception as e:
+                print(f"!  重寫失敗，沿用原本內容：{e}", file=sys.stderr)
 
     if not TEMPLATE_PATH.exists():
         raise SystemExit(
