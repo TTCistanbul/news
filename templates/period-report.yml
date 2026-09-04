@@ -1,0 +1,61 @@
+name: Generate Period Report
+
+on:
+  workflow_dispatch:
+    inputs:
+      period:
+        description: '報告週期'
+        required: true
+        type: choice
+        options:
+          - week
+          - month
+          - quarter
+          - year
+        default: week
+      end_date:
+        description: '結束日（YYYY-MM-DD，留空＝用 data/ 裡最新一天）'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run generate_period_report.py
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          if [ -n "${{ inputs.end_date }}" ]; then
+            python3 generate_period_report.py --period "${{ inputs.period }}" --end "${{ inputs.end_date }}"
+          else
+            python3 generate_period_report.py --period "${{ inputs.period }}"
+          fi
+
+      # 新增這一步：報告產生後，重新渲染首頁，讓 08 期間報告的清單
+      # 反映 docs/reports/_index.json 的最新內容。沒有這一步的話，
+      # 新報告只會躺在 docs/reports/ 裡，首頁看不到它。
+      - name: Re-render docs/index.html
+        run: python3 render_report.py
+
+      - name: Commit and push report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/reports/ docs/index.html
+          git commit -m "Generate ${{ inputs.period }} report" || echo "no changes"
+          git push
