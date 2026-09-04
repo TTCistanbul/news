@@ -46,10 +46,16 @@ jobs:
             python3 generate_period_report.py --period "${{ inputs.period }}"
           fi
 
+      # 新增這一步：報告產生後，重新渲染首頁，讓 08 期間報告的清單
+      # 反映 docs/reports/_index.json 的最新內容。沒有這一步的話，
+      # 新報告只會躺在 docs/reports/ 裡，首頁看不到它。
+      - name: Re-render docs/index.html
+        run: python3 render_report.py
+
       - name: Commit and push report
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/reports/
+          git add docs/reports/ docs/index.html
           git commit -m "Generate ${{ inputs.period }} report" || echo "no changes"
           git push
