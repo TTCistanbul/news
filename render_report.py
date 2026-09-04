@@ -347,16 +347,22 @@ def load_eximclub_state() -> dict | None:
 # 索引檔不存在或是空的都要正常顯示「尚無報告」，不能讓整個 render 掛掉。
 REPORTS_INDEX_PATH = ROOT / "docs" / "reports" / "_index.json"
 PERIOD_LABEL_ZH = {"week": "週報", "month": "月報", "quarter": "季報", "year": "年報"}
+python
+# ── 歷史簡報封存 ──
+# 每次 render 都把當天的完整輸出另存一份到 docs/archive/YYYY-MM-DD.html，
+# 並在 docs/archive/_index.json 維護清單（同一天重複執行要覆蓋，不要
+# 累積重複項）。跟 docs/reports/_index.json（週期報告）是分開的兩份索引，
+# 這份是「每日」的。
+ARCHIVE_DIR = ROOT / "docs" / "archive"
+ARCHIVE_INDEX_PATH = ARCHIVE_DIR / "_index.json"
 
+reports_index = load_reports_index()
+    html_text = replace_block(html_text, "REPORTS_LIST", render_reports_list(reports_index))
 
-def load_reports_index() -> list:
-    if not REPORTS_INDEX_PATH.exists():
-        return []
-    try:
-        return json.loads(REPORTS_INDEX_PATH.read_text(encoding="utf-8"))
-    except Exception as e:
-        print(f"! {REPORTS_INDEX_PATH} 讀取失敗，略過此區塊：{e}")
-        return []
+    # 歷史簡報：先更新索引（用今天的 headline），再把清單渲染進 html_text，
+    # 最後才把這個「完成品」存成 archive 裡的今日快照
+    archive_entries = save_to_archive(html_text, resolved_date, archive_headline)
+    html_text = replace_block(html_text, "ARCHIVE", render_archive_list(archive_entries))
 
 
 def render_reports_list(index: list) -> str:
@@ -379,7 +385,49 @@ def render_reports_list(index: list) -> str:
         </div>
       </li>''')
     return "\n".join(lis)
+def load_archive_index() -> list:
+    if not ARCHIVE_INDEX_PATH.exists():
+        return []
+    try:
+        return json.loads(ARCHIVE_INDEX_PATH.read_text(encoding="utf-8"))
+    except Exception as e:
+        print(f"! {ARCHIVE_INDEX_PATH} 讀取失敗，視為空清單：{e}")
+        return []
 
+
+def save_to_archive(rendered_html: str, resolved_date: str, headline: str) -> list:
+    """把當天最終產生的完整報告另存一份到 docs/archive/，並更新索引。
+    同一天重複執行（例如手動補跑 --date）要覆蓋舊的那一筆，不能累積
+    出兩筆同一天的紀錄。"""
+    ARCHIVE_DIR.mkdir(parents=True, exist_ok=True)
+    (ARCHIVE_DIR / f"{resolved_date}.html").write_text(rendered_html, encoding="utf-8")
+
+    entries = load_archive_index()
+    entries = [e for e in entries if e.get("date") != resolved_date]
+    entries.append({"date": resolved_date, "file": f"{resolved_date}.html", "headline": headline})
+    entries.sort(key=lambda e: e.get("date", ""), reverse=True)
+
+    ARCHIVE_INDEX_PATH.write_text(
+        json.dumps(entries, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    return entries
+
+
+def render_archive_list(entries: list, limit: int = 30) -> str:
+    if not entries:
+        return '<p class="pending" style="font-size:0.88rem;">尚無歷史簡報。</p>'
+    lis = []
+    for e in entries[:limit]:
+        date = html.escape(e.get("date", ""))
+        headline = html.escape(e.get("headline", ""))
+        href = html.escape(f"archive/{e.get('file', '')}", quote=True)
+        lis.append(f'''      <li class="sector-item neu">
+        <div class="row-top">
+          <span class="date">{date}</span>
+          <span class="headline"><a href="{href}" target="_blank" rel="noopener noreferrer">{headline}</a></span>
+        </div>
+      </li>''')
+    return "\n".join(lis)
 
 # ── 表 03「市場價格快照」的週／月／年初至今變動 ──
 # 這三欄原本是範本裡寫死的「—」，從來沒有算過。EVDS 那邊沒有現成的歷史
@@ -842,6 +890,18 @@ def main():
 
     # 2. AI 判斷區塊：從 {date}-analysis.json 讀取並替換
     analysis_path = DATA_DIR / f"{resolved_date}-analysis.json"
+       # 3. 台灣—Türkiye 雙邊貿易 ...（原本這段不動）
+    ...
+
+    # 歷史簡報封存：headline 優先取當天第一則關鍵事件，沒有分析檔案
+    # 或裡面沒有 key_events 就退回顯示日期本身，不讓存檔動作卡住。
+    archive_headline = date_zh
+    if analysis_path.exists():
+        _events = analysis.get("key_events", [])
+        if _events and _events[0].get("headline"):
+            archive_headline = _events[0]["headline"]
+
+    archive_index = load_archive_index()  # 只是先讀出來給 REPORTS 用不到，這行可省略
     ai_status = "skipped (no analysis file)"
     if analysis_path.exists():
         analysis = load_json(analysis_path)
