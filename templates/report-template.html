@@ -1431,11 +1431,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </ul>
 
     <!-- ============================================================
-         CHIEF_NOTES:START
-         手動維護區。這一段沒有被任何排程腳本的標記包住
-         （generate_analysis.py / render_report.py 都不會動到）。
-         這裡是範本，保持空狀態，不要放實際筆記內容。
-         實際筆記寫在 docs/index.html 的同一個位置。
+         CHIEF_NOTES:START — 組長筆記（唯一的手動維護位置）
+         這裡就是要寫筆記的地方。render_report.py 不認識 CHIEF_NOTES
+         這個標記，所以整段會原封不動被複製到 docs/index.html。
+
+         新增：複製一整個 <li class="note-item"> ... </li>，貼在
+               <ul class="note-list"> 最上面，改日期和內文。
+         強調：class 改成 "note-item warn"，左邊色條變琥珀色。
+         清空：把 <ul> 內容換成
+               <li><p class="note-empty">目前沒有新的筆記。</p></li>
+
+         注意：改完這裡不會立刻上線，要等 render_report.py 執行過
+         （每日 08:30，或到 Actions 手動觸發 Refresh Site）。
          ============================================================ -->
     <div class="chief-notes">
       <div class="chief-notes-head">
@@ -1443,7 +1450,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="s">NOTES · 人工撰寫，非 AI 生成</span>
       </div>
       <ul class="note-list">
-        <li><p class="note-empty">目前沒有新的筆記。</p></li>
+
+        <li class="note-item">
+          <div class="row-top">
+            <span class="sector-chip">公告</span>
+            <span class="note-date">2026-09-04</span>
+          </div>
+          <p class="note-body">把組長提供的訊息換掉這一行。</p>
+        </li>
+
       </ul>
     </div>
     <!-- CHIEF_NOTES:END -->
