@@ -356,6 +356,16 @@ PERIOD_LABEL_ZH = {"week": "週報", "month": "月報", "quarter": "季報", "ye
 ARCHIVE_DIR = ROOT / "docs" / "archive"
 ARCHIVE_INDEX_PATH = ARCHIVE_DIR / "_index.json"
 
+# 範本裡的「歷史簡報」面板不是伺服器端組 <li> HTML，是前端 JS 讀取
+# script 裡一個 ARCHIVE_ITEMS 陣列自己 render（見 report-template.html
+# 裡的 render()/safeHref()）。safeHref() 只放行以 "/" 或 "#" 開頭的
+# 站內絕對路徑（刻意擋掉外部連結與 javascript: 之類的危險 href），所以
+# 這裡產生的 href 一定要包含 GitHub Pages 專案路徑這一層，不能只給
+# "archive/xxx.html" 這種相對路徑（會被 safeHref 擋成 "#"，點了沒反應）。
+# 如果之後改了 repo 名稱或換成自訂網域，這個常數要跟著改。
+SITE_BASE_PATH = "/news"
+_WEEKDAY_ZH = ["一", "二", "三", "四", "五", "六", "日"]
+
 
 def render_reports_list(index: list) -> str:
     if not index:
@@ -377,6 +387,8 @@ def render_reports_list(index: list) -> str:
         </div>
       </li>''')
     return "\n".join(lis)
+
+
 def load_archive_index() -> list:
     if not ARCHIVE_INDEX_PATH.exists():
         return []
@@ -405,21 +417,26 @@ def save_to_archive(rendered_html: str, resolved_date: str, headline: str) -> li
     return entries
 
 
-def render_archive_list(entries: list, limit: int = 30) -> str:
-    if not entries:
-        return '<p class="pending" style="font-size:0.88rem;">尚無歷史簡報。</p>'
-    lis = []
+def render_archive_items_js(entries: list, resolved_date: str, limit: int = 60) -> str:
+    """把 archive/_index.json 的內容轉成範本 <script> 裡
+    `const ARCHIVE_ITEMS = [...]` 這行要用的 JS 陣列。用 json.dumps
+    產生，不用手拼字串，避免標題裡出現引號、反斜線等字元時把 JS 弄壞。
+    resolved_date 對應的那一筆標成 current，面板上會顯示「● CURRENT」。"""
+    items = []
     for e in entries[:limit]:
-        date = html.escape(e.get("date", ""))
-        headline = html.escape(e.get("headline", ""))
-        href = html.escape(f"archive/{e.get('file', '')}", quote=True)
-        lis.append(f'''      <li class="sector-item neu">
-        <div class="row-top">
-          <span class="date">{date}</span>
-          <span class="headline"><a href="{href}" target="_blank" rel="noopener noreferrer">{headline}</a></span>
-        </div>
-      </li>''')
-    return "\n".join(lis)
+        date_str = e.get("date", "")
+        try:
+            day_label = f"週{_WEEKDAY_ZH[dt.date.fromisoformat(date_str).weekday()]}"
+        except ValueError:
+            day_label = ""
+        items.append({
+            "date": date_str,
+            "day": day_label,
+            "title": e.get("headline", ""),
+            "href": f"{SITE_BASE_PATH}/archive/{e.get('file', '')}",
+            "current": date_str == resolved_date,
+        })
+    return "const ARCHIVE_ITEMS = " + json.dumps(items, ensure_ascii=False, indent=2) + ";"
 
 # ── 表 03「市場價格快照」的週／月／年初至今變動 ──
 # 這三欄原本是範本裡寫死的「—」，從來沒有算過。EVDS 那邊沒有現成的歷史
@@ -935,8 +952,10 @@ def main():
     # 歷史簡報：先更新索引（用今天的 headline），再把清單渲染進 html_text，
     # 最後才把這個「完成品」存成 archive 裡的今日快照
     archive_entries = save_to_archive(html_text, resolved_date, archive_headline)
-    html_text = replace_block(html_text, "ARCHIVE", render_archive_list(archive_entries))
-    html_text = html_text.replace("{{ARCHIVE_COUNT}}", str(len(archive_entries)))
+    html_text = replace_block(
+        html_text, "ARCHIVE_ITEMS",
+        render_archive_items_js(archive_entries, resolved_date)
+    )
 
     # 4. 寫入輸出檔案（純產生物，永遠從範本重新產生，不會累積殘留內容）
     out_path.parent.mkdir(parents=True, exist_ok=True)
