@@ -744,23 +744,32 @@ a:focus-visible { outline: 2px solid var(--accent-blue-deep); outline-offset: 2p
   color: var(--border);
 }
 
-/* ===== 組長筆記（人工維護） ===== */
-.chief-notes {
+/* ===== 經濟組資訊 ===== */
+.econ-notes {
   margin-top: 1.5rem;
   padding-top: 1.25rem;
   border-top: 1px solid var(--border-soft);
 }
-.chief-notes-head {
+.econ-notes-head {
   display: flex; flex-wrap: wrap; align-items: baseline;
   gap: 0.6rem; margin-bottom: 0.9rem;
 }
-.chief-notes-head .t {
+.econ-notes-head .t {
   font-size: 0.95rem; font-weight: 700; color: var(--text-heading);
 }
-.chief-notes-head .s {
+.econ-notes-head .s {
   font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
   letter-spacing: 0.08em; color: var(--text-tertiary);
 }
+.econ-edit-btn {
+  margin-left: auto; font-size: 0.72rem; font-family: inherit;
+  padding: 0.2rem 0.7rem; border-radius: 5px; cursor: pointer;
+  background: #fff; border: 1px solid var(--border); color: var(--text-secondary);
+  transition: border-color 0.15s, color 0.15s;
+}
+.econ-edit-btn:hover { border-color: var(--accent-blue); color: var(--accent-blue-deep); }
+.econ-edit-btn:focus-visible { outline: 2px solid var(--accent-blue-deep); outline-offset: 2px; }
+
 .note-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.6rem; }
 .note-item {
   padding: 0.95rem 1.2rem;
@@ -779,15 +788,77 @@ a:focus-visible { outline: 2px solid var(--accent-blue-deep); outline-offset: 2p
 }
 .note-item .note-body {
   font-size: 0.88rem; color: var(--text-primary);
-  line-height: 1.8; margin: 0;
+  line-height: 1.8; margin: 0; white-space: pre-wrap;
 }
-.note-item .note-body a {
-  color: var(--accent-blue-deep);
-  border-bottom: 1px dotted var(--accent-blue-deep);
+.note-empty { font-size: 0.82rem; color: var(--text-tertiary); margin: 0; }
+
+/* 編輯視窗 */
+.econ-modal[hidden] { display: none; }
+.econ-modal {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(16, 24, 40, 0.45);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
 }
-.note-empty {
-  font-size: 0.82rem; color: var(--text-tertiary); margin: 0;
+.econ-dialog {
+  background: var(--bg-card); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-frost);
+  width: min(680px, 100%); max-height: 88vh; overflow-y: auto;
+  padding: 1.75rem;
 }
+.econ-dialog h3 {
+  margin: 0 0 1rem; font-size: 1.05rem; color: var(--text-heading);
+}
+.econ-dialog label {
+  display: block; font-size: 0.72rem; color: var(--text-tertiary);
+  margin-bottom: 0.25rem; letter-spacing: 0.04em;
+}
+.econ-dialog input[type="text"],
+.econ-dialog input[type="password"],
+.econ-dialog input[type="date"],
+.econ-dialog textarea {
+  width: 100%; box-sizing: border-box;
+  padding: 0.5rem 0.7rem; font: inherit; font-size: 0.85rem;
+  color: var(--text-primary); background: var(--bg-subtle);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+.econ-dialog textarea { min-height: 5rem; resize: vertical; line-height: 1.7; }
+.econ-dialog input:focus, .econ-dialog textarea:focus {
+  outline: none; border-color: var(--accent-blue); background: #fff;
+}
+.econ-row {
+  border: 1px solid var(--border-soft); border-radius: var(--radius-md);
+  padding: 1rem; margin-bottom: 0.75rem; background: var(--bg-table-even);
+}
+.econ-row-grid {
+  display: grid; grid-template-columns: 1fr 1fr auto;
+  gap: 0.75rem; align-items: end; margin-bottom: 0.6rem;
+}
+@media (max-width: 560px) {
+  .econ-row-grid { grid-template-columns: 1fr; align-items: stretch; }
+}
+.econ-check {
+  display: flex; align-items: center; gap: 0.4rem;
+  font-size: 0.78rem; color: var(--text-secondary); white-space: nowrap;
+}
+.econ-actions {
+  display: flex; flex-wrap: wrap; gap: 0.6rem;
+  margin-top: 1.25rem; padding-top: 1rem;
+  border-top: 1px solid var(--border-soft);
+}
+.econ-btn {
+  font: inherit; font-size: 0.82rem; padding: 0.45rem 1.1rem;
+  border-radius: var(--radius-sm); cursor: pointer;
+  border: 1px solid var(--border); background: #fff; color: var(--text-secondary);
+}
+.econ-btn.primary {
+  background: var(--accent-blue-deep); border-color: var(--accent-blue-deep); color: #fff;
+}
+.econ-btn.danger { color: var(--accent-red); border-color: #f3c4c6; }
+.econ-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.econ-msg { font-size: 0.78rem; margin: 0.75rem 0 0; min-height: 1.2em; }
+.econ-msg.err { color: var(--accent-red); }
+.econ-msg.ok { color: var(--accent-green); }
 
 /* ===== Implications ===== */
 .implications-list {
@@ -1060,9 +1131,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- 核心指標 -->
   <div class="indicator-strip">
     <div class="indicator-cell">
-      <div class="val red">134.75%</div>
+      <div class="val green">31.50%</div>
       <div class="lbl">年通膨率（TÜİK CPI，8月）</div>
-      <div class="delta">前值 132.31%</div>
+      <div class="delta">前值 31.76%</div>
     </div>
     <div class="indicator-cell">
       <div class="val amber">37% / 37.0%</div>
@@ -1203,11 +1274,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <!-- 漲跌用 .up（紅／上升）／.down（綠／下降）／.flat（持平）-->
           <tr>
             <td>1</td>
-            <td>消費者物價指數（CPI）</td>
-            <td><span class="data">31.75%</span></td>
-            <td><span class="down">−0.36pp</span></td>
-            <td>31.75%</td>
-            <td>31.8%</td>
+            <td>消費者物價指數（CPI，8月）</td>
+            <td><span class="data">31.50%</span></td>
+            <td><span class="down">−0.25pp</span></td>
+            <td>月增 +1.84%</td>
+            <td>—</td>
             <td>TÜİK</td>
             <td>每月首週</td>
           </tr>
@@ -1244,9 +1315,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <tr>
             <td>5</td>
             <td>月貿易逆差</td>
-            <td><span class="data">73.4 億美元</span></td>
-            <td><span class="down">−30.3 億</span></td>
-            <td><span class="up">+13.6%</span></td>
+            <td><span class="data">85.3 億美元</span></td>
+            <td><span class="up">+41.1 億</span></td>
+            <td><span class="flat">—</span></td>
             <td>—</td>
             <td>TÜİK／貿易部</td>
             <td>每月下旬</td>
@@ -1254,9 +1325,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <tr>
             <td>6</td>
             <td>月出口</td>
-            <td><span class="data">256.2 億美元</span></td>
-            <td><span class="up">上升</span></td>
-            <td><span class="up">+2.9%</span></td>
+            <td><span class="data">244.3 億美元</span></td>
+            <td><span class="up">+25.9 億</span></td>
+            <td><span class="flat">—</span></td>
             <td>—</td>
             <td>TÜİK／貿易部</td>
             <td>每月下旬</td>
@@ -1264,9 +1335,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <tr>
             <td>7</td>
             <td>出口對進口涵蓋率</td>
-            <td><span class="data">77.7%</span></td>
-            <td><span class="down">−1.7pp</span></td>
-            <td><span class="down">−1.7pp</span></td>
+            <td><span class="data">74.1%</span></td>
+            <td><span class="down">−9.04pp</span></td>
+            <td><span class="flat">—</span></td>
             <td>—</td>
             <td>TÜİK</td>
             <td>每月下旬</td>
@@ -1302,7 +1373,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <td><span class="data">48.3107</span></td>
             <td class="pending">—</td>
             <td class="pending">—</td>
-            <td><span class="up">約 −7%（里拉，至6月）</span></td>
+            <td><span class="up">—</span></td>
             <td>TRY 匯率變化需與 CPI、利率、外匯流動性及央行市場操作一併觀察</td>
           </tr>
           <tr>
@@ -1513,68 +1584,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <li class="sector-item neu">
         <div class="row-top">
           <span class="sector-chip">週報</span>
-          <span class="headline"><a href="reports/week-2026-09-04.html" target="_blank" rel="noopener noreferrer">2026-09-01 ～ 2026-09-04</a></span>
+          <span class="headline"><a href="reports/week-2026-09-04.html" target="_blank" rel="noopener noreferrer">2026-08-29 ～ 2026-09-04</a></span>
         </div>
       </li>
       <li class="sector-item neu">
         <div class="row-top">
           <span class="sector-chip">週報</span>
           <span class="headline"><a href="reports/week-2026-08-31.html" target="_blank" rel="noopener noreferrer">2026-08-25 ～ 2026-08-31</a></span>
-       
         </div>
       </li>
 <!-- REPORTS_LIST:END -->
     </ul>
 
     <!-- ============================================================
-         CHIEF_NOTES:START
-         手動維護區。這一段沒有被任何排程腳本的標記包住
-         （generate_analysis.py / render_report.py 都不會動到），
-         每天早上排程跑完之後內容會原樣保留。
-
-         新增一則筆記 = 複製一整個 <li class="note-item"> ... </li>，
-         貼在 <ul class="note-list"> 的最上面（新的在上），改日期和內文即可。
-         要標成重點就把 class 改成 "note-item warn"（左邊變琥珀色）。
-         全部清空時，把 <ul> 內容換成
-         <li><p class="note-empty">目前沒有新的筆記。</p></li>
+         ECON_NOTES:START — 經濟組資訊
+         這一段沒有內容，只有骨架。實際文字存在 Firestore，由頁面載入時
+         抓取。所以：不用改這個檔案、不用跑 render_report.py，在首頁按
+         「編輯」輸入密碼即可更新，存檔後立即生效。
+         Firebase 設定寫在頁面最下方那段 module 腳本的開頭。
          ============================================================ -->
-    <div class="chief-notes">
-      <div class="chief-notes-head">
-        <span class="t">組長筆記</span>
-        <span class="s">NOTES · 人工撰寫，非 AI 生成</span>
+    <div class="econ-notes">
+      <div class="econ-notes-head">
+        <span class="t">經濟組資訊</span>
+        <span class="s">ECON DESK · 人工撰寫，非 AI 生成</span>
+        <button type="button" class="econ-edit-btn" id="econEditBtn">編輯</button>
       </div>
-      <ul class="note-list">
-
-        <li class="note-item">
-          <div class="row-top">
-            <span class="sector-chip">週報補充</span>
-            <span class="note-date">2026-09-04</span>
-          </div>
-          <p class="note-body">（土耳其經濟連續24季呈現正成長
-一、土耳其統計局(TÜİK)公布，本(2026)年第2季實質國內生產毛額(GDP)較上年同季成長2.3%，為自2020年第3季以來連續第24季成長。土國經濟上一次出現負成長為2020年第2季，當時受COVID-19疫情影響，GDP較上年同季減少10.1%。本年第2季按當期價格計算之GDP為19兆8,697億4,700萬里拉，較上年同季增加36.0%，約合4,383億4,700萬美元。
-二、2020年第3季至本年第2季，資訊及通訊業累計成長58.0%，高於整體經濟的52.0%，居各業之首；其次為其他服務業53.2%、批發零售、運輸、住宿及餐飲服務業51.7%，以及專業、行政及支援服務業48.2%。不動產業、工業、公共行政、教育、醫療保健及社會工作服務業，分別成長33.2%、23.0%及19.4%；金融及保險業與營造業分別成長14.0%及13.5%，農、林、漁業成長3.0%。安納杜魯通訊社分析，資訊及通訊業成長，與疫後數位化、遠距工作、電子商務，以及電信及軟體服務需求增加有關。
-三、本年第2季民間消費較上年同季成長3.5%，國內固定資本形成成長0.6%，政府消費減少1.8%；貨品及服務輸出、輸入分別減少3.4%及6.4%。受僱人員報酬增加36.7%，營業盈餘及混合所得增加38.7%；受僱人員報酬占當期價格毛附加價值之比率，由上年同季38.3%降至38.1%，營業盈餘及混合所得占比則由41.3%升至41.6%。</p>
-        </li>
-
-        <li class="note-item warn">
-          <div class="row-top">
-            <span class="sector-chip">提醒</span>
-            <span class="note-date">2026-09-04</span>
-          </div>
-          <p class="note-body">（土耳其2025年服務業貿易出口值達1249億美元
-
-土耳其統計局（TÜİK）本月4日公布2025年服務業貿易統計顯示，服務業出口金額自2024年的1,173億美元增加6.5%，2025年達1,249 億美元。進口方面，2024年為 564 億美元，去年則增加9.6%，達到619億美元。
-
-上述服務業成長，主要貢獻源自旅遊業約佔總出口的48.1%。依據土耳其國際收支服務分類，旅遊業在總出口中的占比自2024年的48% 增加到2025年的48.1%。排名第二為運輸服務，其占比則自2024 年的35.1%下降至2025 年的34.1%。在僅次於旅遊服務，排名第二之運輸服務中，出口額在 2024 年達到 411.25 億美元，並在 2025 年增長3.5%，達425.71億美元。電信、電腦與資訊服務的出口額在2025年較前一年增加 25.3%，上升至 67.24 億美元。在服務業進口方面，運輸佔總服務進口，在 2024 年為38.1%，2025年為32%。排名前二的其他商業服務占比在 2024 年為16.1%，2025年為16.9%。
-
-土耳其大部分的服務業出口皆以歐盟國家為主，在排除旅遊服務的服務項目中，2025年對歐盟國家服務出口額達 253.3億美元，而對其他歐洲國家的出口總額則為92.59 億美元。在進口方面，2025年來自歐盟國家的進口額達247億美元，而來自其他歐洲國家的進口總額則為64億美元。歐盟是去年土耳其服務出口與進口貿易往來，佔總服務出口的37.9%，同時總服務進口45.3%來自歐盟國家。
-
-旅遊服務業除外，2025年總出口的31%是對美國、德國及英國之出口。美國以 12.9% 的占比，約83.38億美元在服務出口中排名第一，其次是德國的11.5% 以及英國的6.6%。在進口方面，愛爾蘭在 2025年以 12.6% 的占比，約66億美元排名第一，其次為英國47.97億美元與9.1%占比，美國則以8.3%占比，約43億美元排名第三。</p>
-        </li>
-
+      <ul class="note-list" id="econNoteList">
+        <li><p class="note-empty">載入中…</p></li>
       </ul>
     </div>
-    <!-- CHIEF_NOTES:END -->
+    <!-- ECON_NOTES:END -->
   </div>
 
   <div class="footer">
@@ -1878,6 +1917,243 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 })();
 </script>
 <!-- /feedback-widget:v1 -->
+
+
+<!-- 編輯視窗：經濟組資訊 -->
+<div class="econ-modal" id="econModal" hidden>
+  <div class="econ-dialog" role="dialog" aria-modal="true" aria-labelledby="econDialogTitle">
+
+    <div id="econLoginView">
+      <h3 id="econDialogTitle">經濟組資訊 · 登入</h3>
+      <label for="econPw">密碼</label>
+      <input type="password" id="econPw" autocomplete="current-password">
+      <p class="econ-msg" id="econLoginMsg"></p>
+      <div class="econ-actions">
+        <button type="button" class="econ-btn primary" id="econLoginBtn">登入</button>
+        <button type="button" class="econ-btn" data-econ-close>取消</button>
+      </div>
+    </div>
+
+    <div id="econEditView" hidden>
+      <h3>編輯經濟組資訊</h3>
+      <div id="econRows"></div>
+      <button type="button" class="econ-btn" id="econAddBtn">＋ 新增一則</button>
+      <p class="econ-msg" id="econEditMsg"></p>
+      <div class="econ-actions">
+        <button type="button" class="econ-btn primary" id="econSaveBtn">儲存並發布</button>
+        <button type="button" class="econ-btn" data-econ-close>關閉</button>
+        <button type="button" class="econ-btn" id="econLogoutBtn" style="margin-left:auto">登出</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="module">
+// ============================================================
+// 經濟組資訊 — Firestore 讀寫
+//
+// 讀取是公開的（訪客都看得到），寫入需要登入。權限是 Firestore
+// 安全規則在伺服器端擋的，不是靠前端藏東西，所以看原始碼也繞不過去。
+//
+// 設定步驟見 firebase-setup.md。下面這段 firebaseConfig 換成你自己
+// 專案的（Firebase 主控台 → 專案設定 → 你的應用程式）。
+// ============================================================
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBQY5JLUViXiVl4O5YWKcjAlqLU94xH9Mk",
+  authDomain: "news-48469.firebaseapp.com",
+  projectId: "news-48469",
+  storageBucket: "news-48469.firebasestorage.app",
+  messagingSenderId: "103652472378",
+  appId: "1:103652472378:web:0d735b4f21c3d2e369e703"
+};
+
+// 編輯者的帳號。密碼不寫在這裡，是使用者每次輸入的。
+const EDITOR_EMAIL = "evatzeng@taitra.org.tw";
+
+const DOC_PATH = ["site", "econ-notes"];
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+const ref  = doc(db, ...DOC_PATH);
+
+const $ = (id) => document.getElementById(id);
+const listEl = $("econNoteList");
+let items = [];
+
+// ── 顯示 ──
+function esc(s) {
+  return String(s == null ? "" : s).replace(/[&<>"']/g,
+    c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+}
+
+function paint() {
+  if (!items.length) {
+    listEl.innerHTML = '<li><p class="note-empty">目前沒有新的資訊。</p></li>';
+    return;
+  }
+  listEl.innerHTML = items.map(it => `
+    <li class="note-item${it.important ? " warn" : ""}">
+      <div class="row-top">
+        ${it.label ? `<span class="sector-chip">${esc(it.label)}</span>` : ""}
+        <span class="note-date">${esc(it.date || "")}</span>
+      </div>
+      <p class="note-body">${esc(it.body || "")}</p>
+    </li>`).join("");
+}
+
+async function load() {
+  try {
+    const snap = await getDoc(ref);
+    items = (snap.exists() && Array.isArray(snap.data().items)) ? snap.data().items : [];
+  } catch (e) {
+    console.error("經濟組資訊讀取失敗", e);
+    listEl.innerHTML = '<li><p class="note-empty">資訊載入失敗，請稍後重新整理。</p></li>';
+    return;
+  }
+  paint();
+}
+load();
+
+// ── 編輯視窗 ──
+const modal = $("econModal");
+const loginView = $("econLoginView");
+const editView  = $("econEditView");
+
+function openModal() {
+  modal.hidden = false;
+  const signedIn = !!auth.currentUser;
+  loginView.hidden = signedIn;
+  editView.hidden  = !signedIn;
+  if (signedIn) renderRows(); else $("econPw").focus();
+}
+function closeModal() {
+  modal.hidden = true;
+  $("econPw").value = "";
+  msg($("econLoginMsg"), "");
+  msg($("econEditMsg"), "");
+}
+function msg(el, text, kind) {
+  el.textContent = text;
+  el.className = "econ-msg" + (kind ? " " + kind : "");
+}
+
+$("econEditBtn").addEventListener("click", openModal);
+modal.addEventListener("click", (e) => {
+  if (e.target === modal || e.target.hasAttribute("data-econ-close")) closeModal();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !modal.hidden) closeModal();
+});
+
+// ── 登入 ──
+async function doLogin() {
+  const pw = $("econPw").value;
+  if (!pw) { msg($("econLoginMsg"), "請輸入密碼", "err"); return; }
+  $("econLoginBtn").disabled = true;
+  msg($("econLoginMsg"), "登入中…");
+  try {
+    await signInWithEmailAndPassword(auth, EDITOR_EMAIL, pw);
+    loginView.hidden = true;
+    editView.hidden = false;
+    renderRows();
+  } catch (e) {
+    msg($("econLoginMsg"), "密碼錯誤或登入失敗", "err");
+  } finally {
+    $("econLoginBtn").disabled = false;
+  }
+}
+$("econLoginBtn").addEventListener("click", doLogin);
+$("econPw").addEventListener("keydown", (e) => { if (e.key === "Enter") doLogin(); });
+$("econLogoutBtn").addEventListener("click", async () => { await signOut(auth); closeModal(); });
+
+onAuthStateChanged(auth, (user) => {
+  $("econEditBtn").textContent = user ? "編輯（已登入）" : "編輯";
+});
+
+// ── 編輯列 ──
+function todayISO() {
+  const d = new Date();
+  return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+}
+
+function renderRows() {
+  const box = $("econRows");
+  box.innerHTML = "";
+  const data = items.length ? items : [{ date: todayISO(), label: "公告", body: "", important: false }];
+  data.forEach((it, i) => box.appendChild(rowEl(it, i)));
+}
+
+function rowEl(it, i) {
+  const wrap = document.createElement("div");
+  wrap.className = "econ-row";
+  wrap.innerHTML = `
+    <div class="econ-row-grid">
+      <div>
+        <label for="econDate${i}">日期</label>
+        <input type="date" id="econDate${i}" class="js-date" value="${esc(it.date || todayISO())}">
+      </div>
+      <div>
+        <label for="econLabel${i}">標籤</label>
+        <input type="text" id="econLabel${i}" class="js-label" value="${esc(it.label || "")}" placeholder="公告／提醒／更正">
+      </div>
+      <label class="econ-check">
+        <input type="checkbox" class="js-imp"${it.important ? " checked" : ""}> 標為重點
+      </label>
+    </div>
+    <label for="econBody${i}">內容</label>
+    <textarea id="econBody${i}" class="js-body" placeholder="經濟組要公布的訊息">${esc(it.body || "")}</textarea>
+    <div style="margin-top:0.6rem">
+      <button type="button" class="econ-btn danger js-del">刪除這則</button>
+    </div>`;
+  wrap.querySelector(".js-del").addEventListener("click", () => {
+    wrap.remove();
+    if (!$("econRows").children.length) addRow();
+  });
+  return wrap;
+}
+
+function addRow() {
+  $("econRows").appendChild(
+    rowEl({ date: todayISO(), label: "公告", body: "", important: false },
+          $("econRows").children.length)
+  );
+}
+$("econAddBtn").addEventListener("click", addRow);
+
+// ── 儲存 ──
+$("econSaveBtn").addEventListener("click", async () => {
+  const rows = [...$("econRows").children].map(r => ({
+    date:      r.querySelector(".js-date").value.trim(),
+    label:     r.querySelector(".js-label").value.trim(),
+    body:      r.querySelector(".js-body").value.trim(),
+    important: r.querySelector(".js-imp").checked
+  })).filter(r => r.body);
+
+  $("econSaveBtn").disabled = true;
+  msg($("econEditMsg"), "儲存中…");
+  try {
+    await setDoc(ref, { items: rows, updatedAt: new Date().toISOString() });
+    items = rows;
+    paint();
+    msg($("econEditMsg"), "已發布，首頁立即生效。", "ok");
+    setTimeout(closeModal, 900);
+  } catch (e) {
+    console.error(e);
+    msg($("econEditMsg"), "儲存失敗，請確認網路或重新登入。", "err");
+  } finally {
+    $("econSaveBtn").disabled = false;
+  }
+});
+</script>
 
 </body>
 </html>
