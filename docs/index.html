@@ -510,26 +510,7 @@ body {
   color: var(--text-tertiary);
   margin-top: 0.2rem;
 }
-@media (max-width: 640px) {
-  .indicator-strip {
-    grid-template-columns: 1fr;
-    border-radius: 24px;
-    padding: 1.25rem 1.25rem;
-    gap: 1.25rem;
-  }
-  .indicator-cell {
-    border-right: none;
-    border-bottom: 1px solid rgba(16, 24, 40, 0.06);
-    padding: 0 0 1rem 0;
-  }
-  .indicator-cell:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-  .indicator-cell .val {
-    font-size: clamp(1.3rem, 6vw, 1.8rem);
-  }
-}
+
 /* Assessment rationale */
 .assessment-text {
   text-align: center;
@@ -1652,9 +1633,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   // label 語彙已改為 惡化／持平／改善
   //
   // 這裡原本被塞了 4 筆寫死的假資料（連結指向根本不存在的
-  // /archive/turkey-econ-2026xxxx.html），已清空。等真正的歷史簡報存檔
-  // 功能做好之前，這份清單就先保持空陣列，面板會顯示「尚無過往簡報」。
-  const ARCHIVE_ITEMS = [];
+  // /archive/turkey-econ-2026xxxx.html），已清空。這份清單現在由
+  // render_report.py 在每次產生報告時自動注入，內容對應
+  // docs/archive/_index.json。在真正開始累積歷史簡報之前，面板會
+  // 顯示「尚無過往簡報」。
+  <!-- ARCHIVE_ITEMS:START -->
+const ARCHIVE_ITEMS = [
+  {
+    "date": "2026-09-04",
+    "day": "週五",
+    "title": "土耳其8月份創下三項出口新高紀錄",
+    "href": "/news/archive/2026-09-04.html",
+    "current": true
+  }
+];
+<!-- ARCHIVE_ITEMS:END -->
 
 
   const panel = document.getElementById('archivePanel');
