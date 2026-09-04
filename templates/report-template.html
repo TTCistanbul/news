@@ -744,6 +744,51 @@ a:focus-visible { outline: 2px solid var(--accent-blue-deep); outline-offset: 2p
   color: var(--border);
 }
 
+/* ===== 組長筆記（人工維護） ===== */
+.chief-notes {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-soft);
+}
+.chief-notes-head {
+  display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: 0.6rem; margin-bottom: 0.9rem;
+}
+.chief-notes-head .t {
+  font-size: 0.95rem; font-weight: 700; color: var(--text-heading);
+}
+.chief-notes-head .s {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+  letter-spacing: 0.08em; color: var(--text-tertiary);
+}
+.note-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.6rem; }
+.note-item {
+  padding: 0.95rem 1.2rem;
+  background: var(--bg-subtle);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--accent-blue);
+}
+.note-item.warn { border-left-color: var(--accent-amber); }
+.note-item .row-top {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: 0.5rem; margin-bottom: 0.35rem;
+}
+.note-item .note-date {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+  color: var(--text-tertiary); letter-spacing: 0.04em;
+}
+.note-item .note-body {
+  font-size: 0.88rem; color: var(--text-primary);
+  line-height: 1.8; margin: 0;
+}
+.note-item .note-body a {
+  color: var(--accent-blue-deep);
+  border-bottom: 1px dotted var(--accent-blue-deep);
+}
+.note-empty {
+  font-size: 0.82rem; color: var(--text-tertiary); margin: 0;
+}
+
 /* ===== Implications ===== */
 .implications-list {
   list-style: none;
@@ -1384,6 +1429,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <li>尚未產生過任何期間報告。</li>
       <!-- REPORTS_LIST:END -->
     </ul>
+
+    <!-- ============================================================
+         CHIEF_NOTES:START
+         手動維護區。這一段沒有被任何排程腳本的標記包住
+         （generate_analysis.py / render_report.py 都不會動到）。
+         這裡是範本，保持空狀態，不要放實際筆記內容。
+         實際筆記寫在 docs/index.html 的同一個位置。
+         ============================================================ -->
+    <div class="chief-notes">
+      <div class="chief-notes-head">
+        <span class="t">組長筆記</span>
+        <span class="s">NOTES · 人工撰寫，非 AI 生成</span>
+      </div>
+      <ul class="note-list">
+        <li><p class="note-empty">目前沒有新的筆記。</p></li>
+      </ul>
+    </div>
+    <!-- CHIEF_NOTES:END -->
   </div>
 
   <div class="footer">
