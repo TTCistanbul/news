@@ -367,6 +367,16 @@ SITE_BASE_PATH = "/news"
 _WEEKDAY_ZH = ["一", "二", "三", "四", "五", "六", "日"]
 
 
+def load_reports_index() -> list:
+    if not REPORTS_INDEX_PATH.exists():
+        return []
+    try:
+        return json.loads(REPORTS_INDEX_PATH.read_text(encoding="utf-8"))
+    except Exception as e:
+        print(f"! {REPORTS_INDEX_PATH} 讀取失敗，略過此區塊：{e}")
+        return []
+
+
 def render_reports_list(index: list) -> str:
     if not index:
         return (
