@@ -510,7 +510,26 @@ body {
   color: var(--text-tertiary);
   margin-top: 0.2rem;
 }
-
+@media (max-width: 640px) {
+  .indicator-strip {
+    grid-template-columns: 1fr;
+    border-radius: 24px;
+    padding: 1.25rem 1.25rem;
+    gap: 1.25rem;
+  }
+  .indicator-cell {
+    border-right: none;
+    border-bottom: 1px solid rgba(16, 24, 40, 0.06);
+    padding: 0 0 1rem 0;
+  }
+  .indicator-cell:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .indicator-cell .val {
+    font-size: clamp(1.3rem, 6vw, 1.8rem);
+  }
+}
 /* Assessment rationale */
 .assessment-text {
   text-align: center;
