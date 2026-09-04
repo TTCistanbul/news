@@ -1,0 +1,19 @@
+{
+  "_note": "表 02 裡沒有自動資料來源的兩列。TÜİK／TCMB 公布後手動更新這個檔案即可，不要再去改 templates/report-template.html。delta_class 只接受 up（紅／上升）、down（綠／下降）、flat（持平）三個值。",
+  "core_cpi": {
+    "value": "29.91%",
+    "delta": "下降",
+    "delta_class": "down",
+    "yoy": "29.91%",
+    "as_of": "2026-08",
+    "source": "TÜİK 核心通膨 B 指標"
+  },
+  "policy_rate": {
+    "value": "37.0%",
+    "delta": "持平",
+    "delta_class": "flat",
+    "expectation": "維持不變",
+    "as_of": "2026-08",
+    "source": "TCMB 一週附賣回利率"
+  }
+}
