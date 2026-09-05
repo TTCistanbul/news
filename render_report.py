@@ -387,7 +387,7 @@ def render_reports_list(index: list) -> str:
     lis = []
     for e in sorted_idx:
         label = html.escape(PERIOD_LABEL_ZH.get(e.get("period", ""), e.get("period", "")))
-        href = html.escape(f"reports/{e.get('file','')}", quote=True)
+        href = html.escape(f"{SITE_BASE_PATH}/reports/{e.get('file','')}", quote=True)
         start = html.escape(e.get("start", ""))
         end = html.escape(e.get("end", ""))
         lis.append(f'''      <li class="sector-item neu">
