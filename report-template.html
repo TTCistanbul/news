@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Türkiye 經濟情報簡報</title>
 <!-- TODO: 換成自己的 favicon 路徑 -->
-<link rel="icon" type="image/png" href="taitra-logo.png">
+<link rel="icon" type="image/png" href="/news/taitra-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@200;300;400;500;700&family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
@@ -1079,7 +1079,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="topbar">
     <div class="brand">
       <!-- TODO: 換成自己的 logo -->
-      <img src="taitra-logo.png" alt="TAITRA 中華民國對外貿易發展協會">
+      <img src="/news/taitra-logo.png" alt="TAITRA 中華民國對外貿易發展協會">
       <span class="divider"></span>
       <span class="status"><span class="dot"></span>DAILY&nbsp;ECON</span>
     </div>
@@ -1099,9 +1099,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <h3>歷史簡報</h3>
         <div class="sub">Archive · Past Briefings</div>
       </div>
-      <span class="count" id="archiveCount"><!-- ARCHIVE:START -->
-      <li>尚無歷史簡報</li>
-<!-- ARCHIVE:END --></span>
+      <span class="count" id="archiveCount">0 篇</span>
     </div>
     <div class="archive-search">
       <input type="text" id="archiveSearch" placeholder="搜尋日期或關鍵字…">
@@ -1525,7 +1523,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <div class="footer">
     <div class="divider"></div>
-    <div class="footer-brand"><img src="taitra-logo.png" alt="TAITRA"></div>
+    <div class="footer-brand"><img src="/news/taitra-logo.png" alt="TAITRA"></div>
     <div>Türkiye 經濟情報簡報 · {{GENERATED_AT_LABEL}}</div>
     <div style="margin-top:0.4rem; opacity:0.7;">本報告僅供參考，不構成任何投資或商業決策建議</div>
   </div>
@@ -1540,9 +1538,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   // label 語彙已改為 惡化／持平／改善
   //
   // 這裡原本被塞了 4 筆寫死的假資料（連結指向根本不存在的
-  // /archive/turkey-econ-2026xxxx.html），已清空。等真正的歷史簡報存檔
-  // 功能做好之前，這份清單就先保持空陣列，面板會顯示「尚無過往簡報」。
+  // /archive/turkey-econ-2026xxxx.html），已清空。這份清單現在由
+  // render_report.py 在每次產生報告時自動注入，內容對應
+  // docs/archive/_index.json。在真正開始累積歷史簡報之前，面板會
+  // 顯示「尚無過往簡報」。
+  <!-- ARCHIVE_ITEMS:START -->
   const ARCHIVE_ITEMS = [];
+  <!-- ARCHIVE_ITEMS:END -->
 
 
   const panel = document.getElementById('archivePanel');
