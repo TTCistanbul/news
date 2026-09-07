@@ -230,6 +230,42 @@ def load_tw_tr_trade() -> dict | None:
         return None
 
 
+# ── Türkiye 整體月度貿易統計（出口／進口／貿易差額／涵蓋率）──
+# 2026-09 發現原本用 EVDS「出口/進口」時間序列自己相減算出的貿易差額，
+# 跟貿易部/TÜİK 官方新聞稿公布的數字對不起來（差距超過 6 成，不是單純
+# 月份落後可以解釋），懷疑是統計口徑不同。改成跟 tw-tr-trade.json 同一套
+# 做法：每月人工對照貿易部新聞稿（ticaret.gov.tr/istatistikler/
+# dis-ticaret-istatistikleri）手動填一次 data/turkey-trade-manual.json。
+# 格式（單位：百萬美元，跟新聞稿原始單位一致，換算成「億」在渲染時才做）：
+# {
+#   "months": [
+#     {
+#       "month": "2026-08",
+#       "exports": 23467,
+#       "imports": 28706,
+#       "coverage_pct": 81.8,        // 出口對進口涵蓋率，新聞稿裡的「karşılama oranı」
+#       "exports_yoy_pct": 8.1,      // 新聞稿裡的出口年增率，直接抄，不要自己重算
+#       "imports_yoy_pct": 10.5,     // 新聞稿裡的進口年增率
+#       "balance_yoy_pct": 22.3      // 新聞稿裡的貿易逆差年增率（如果有提到的話，沒有就留 null）
+#     }
+#   ]
+# }
+# 年增率優先採用新聞稿裡直接寫的數字，不用自己拿 12 個月前的手動資料去
+# 算——一來手動資料要累積滿 13 個月才算得出來，二來官方新聞稿的年增率
+# 本身可能用了修正後的基期數字，比我們自己算的更準。
+TURKEY_TRADE_MANUAL_PATH = DATA_DIR / "turkey-trade-manual.json"
+
+
+def load_turkey_trade_manual() -> dict | None:
+    if not TURKEY_TRADE_MANUAL_PATH.exists():
+        return None
+    try:
+        return json.loads(TURKEY_TRADE_MANUAL_PATH.read_text(encoding="utf-8"))
+    except Exception as e:
+        print(f"! {TURKEY_TRADE_MANUAL_PATH.name} 讀取失敗，略過：{e}")
+        return None
+
+
 # ── 表 02 裡沒有自動資料來源的欄位 ──
 # 核心通膨（B 指標）與政策利率（一週附賣回）目前沒有任何自動抓取的來源，
 # 原本是直接寫死在範本 HTML 裡的靜態文字，永遠不會更新。改成從這份小
@@ -613,32 +649,48 @@ def main():
     else:
         cpi_value, cpi_delta, cpi_color = "—", "資料尚未取得", "amber"
 
-    # 貿易差額 = 出口序列 - 進口序列（EVDS 沒有現成乾淨的「淨額」序列可用，
-    # 2026-08-31 使用者確認過 Q16「Net Exports...Merchanting」其實是轉口
-    # 貿易這種小眾特殊項目，改用出口/進口兩支序列自己相減）。兩個序列都
-    # 是 borsapy 抓回來的，用日期字串對齊，不能直接假設兩邊筆數/順序一樣。
-    exp_series = payload.get("macro", {}).get("trade_exports") or []
-    imp_series = payload.get("macro", {}).get("trade_imports") or []
-    exp_by_date = {e["date"]: e["value"] for e in exp_series if "date" in e and "value" in e}
-    imp_by_date = {e["date"]: e["value"] for e in imp_series if "date" in e and "value" in e}
-    common_dates = sorted(set(exp_by_date) & set(imp_by_date))
-    tb_points = [(d, exp_by_date[d] - imp_by_date[d]) for d in common_dates]
+    # 貿易差額 = 出口 - 進口。
+    # 2026-09 發現：EVDS「出口/進口」時間序列跟貿易部/TÜİK 官方新聞稿公布
+    # 的月度數字對不起來（差距達 6 成以上，不像單純的月份落後可以解釋，
+    # 較可能是統計口徑不同——EVDS 序列與貿易部「一般貿易系統(GTS)」新聞
+    # 稿用的可能是不同版本/計價基礎）。與其冒著顯示錯誤數字的風險，改成
+    # 跟 06 台灣—Türkiye 雙邊貿易（tw-tr-trade.json）同一套做法：每月人工
+    # 對照貿易部新聞稿（ticaret.gov.tr/istatistikler/dis-ticaret-istatistikleri）
+    # 手動填一次 data/turkey-trade-manual.json，不再依賴 EVDS 這兩個序列。
+    turkey_trade_data = load_turkey_trade_manual()
+    tt_months = (turkey_trade_data or {}).get("months") or []
 
-    if tb_points:
-        tb_date, tb_val = tb_points[-1]  # 單位：百萬美元
-        tb_label = "順差" if tb_val >= 0 else "逆差"
-        tb_value = f"{abs(tb_val) / 100:.1f} 億美元"
-        tb_color = "green" if tb_val >= 0 else "red"
-        tb_month_label = _month_label(tb_date)
-        if len(tb_points) >= 2:
-            prev_date, prev_val = tb_points[-2]
-            prev_label = "順差" if prev_val >= 0 else "逆差"
-            tb_delta = f"上月：{abs(prev_val) / 100:.1f} 億美元{prev_label}　（資料月份：{tb_date}）"
+    if tt_months:
+        tt_latest = tt_months[-1]
+        tt_exp, tt_imp = tt_latest.get("exports"), tt_latest.get("imports")
+        tt_month = tt_latest.get("month", "")
+        tb_month_label = _month_label(tt_month)
+        if tt_exp is not None and tt_imp is not None:
+            tt_bal = tt_exp - tt_imp
+            tb_label = "順差" if tt_bal >= 0 else "逆差"
+            tb_value = f"{abs(tt_bal) / 100:.1f} 億美元"
+            tb_color = "green" if tt_bal >= 0 else "red"
         else:
-            tb_delta = f"尚無前一期資料可比較　（資料月份：{tb_date}）"
+            tb_value, tb_label, tb_color = "—", "", "amber"
+            tt_bal = None
+        if len(tt_months) >= 2:
+            tt_prev = tt_months[-2]
+            p_exp, p_imp = tt_prev.get("exports"), tt_prev.get("imports")
+            if p_exp is not None and p_imp is not None and tt_bal is not None:
+                p_bal = p_exp - p_imp
+                p_label = "順差" if p_bal >= 0 else "逆差"
+                tb_delta = f"上月：{abs(p_bal) / 100:.1f} 億美元{p_label}　（資料月份：{tt_month}）"
+            else:
+                tb_delta = f"上月資料不完整　（資料月份：{tt_month}）"
+        else:
+            tb_delta = f"尚無前一期資料可比較　（資料月份：{tt_month}）"
     else:
         tb_value, tb_label, tb_color = "—", "", "amber"
-        tb_month_label, tb_delta = "—", "資料尚未取得"
+        tb_month_label = "—"
+        tb_delta = (
+            "尚未提供 data/turkey-trade-manual.json——請對照貿易部新聞稿"
+            "（ticaret.gov.tr/istatistikler/dis-ticaret-istatistikleri）手動填入"
+        )
 
     # 「核心指標」第三格改顯示台灣—Türkiye 雙邊貿易餘額的簡短版（不是
     # Türkiye 對全世界的整體貿易差額——那個算好了但不放在這一格顯示，
@@ -770,50 +822,69 @@ def main():
     policy_rate_delta_cls = _manual("policy_rate", "delta_class", "flat")
     policy_rate_expect = _manual("policy_rate", "expectation", "—")
 
-    # 第 5、6、7 列：出口、進口序列（單位：百萬美元）
-    exp_vals = [exp_by_date[d] for d in common_dates]
-    imp_vals = [imp_by_date[d] for d in common_dates]
-    tb_vals = [e - i for e, i in zip(exp_vals, imp_vals)]
+    # 第 5、6、7 列：貿易差額、出口、涵蓋率。
+    # 改用上面 turkey_trade_data／tt_months（人工維護，見該處註解說明原因），
+    # 不再用 EVDS 的 exp_vals/imp_vals。年增率優先用新聞稿裡直接寫的數字
+    # （exports_yoy_pct 等），沒有才留 —，不用自己算（手動資料要累積 13
+    # 個月才夠算年增率，而且官方數字通常比自算的更準）。
+    if tt_months:
+        cur_exp = tt_latest.get("exports")
+        cur_imp = tt_latest.get("imports")
+        cur_cov = tt_latest.get("coverage_pct")
+        prev_month = tt_months[-2] if len(tt_months) >= 2 else None
 
-    if tb_vals:
-        cur_tb = tb_vals[-1]
-        tb_row_name = "月貿易順差" if cur_tb >= 0 else "月貿易逆差"
-        tb_row_value = f"{abs(cur_tb) / 100:.1f} 億美元"
-        if len(tb_vals) >= 2:
-            d = (abs(cur_tb) - abs(tb_vals[-2])) / 100
-            tb_row_delta = f"{d:+.1f} 億".replace("-", "−")
-            tb_row_delta_cls = "up" if d > 0 else ("down" if d < 0 else "flat")
+        if cur_exp is not None and cur_imp is not None:
+            cur_bal = cur_exp - cur_imp
+            tb_row_name = "月貿易順差" if cur_bal >= 0 else "月貿易逆差"
+            tb_row_value = f"{abs(cur_bal) / 100:.1f} 億美元"
+            if prev_month is not None:
+                p_exp, p_imp = prev_month.get("exports"), prev_month.get("imports")
+                if p_exp is not None and p_imp is not None:
+                    d = (abs(cur_bal) - abs(p_exp - p_imp)) / 100
+                    tb_row_delta = f"{d:+.1f} 億".replace("-", "−")
+                    tb_row_delta_cls = "up" if d > 0 else ("down" if d < 0 else "flat")
+                else:
+                    tb_row_delta, tb_row_delta_cls = "—", "flat"
+            else:
+                tb_row_delta, tb_row_delta_cls = "—", "flat"
+            balance_yoy = tt_latest.get("balance_yoy_pct")
+            tb_row_yoy, tb_row_yoy_cls = _pct(balance_yoy), _delta_cls(balance_yoy)
         else:
-            tb_row_delta, tb_row_delta_cls = "—", "flat"
-        y = _yoy([abs(v) for v in tb_vals])
-        tb_row_yoy, tb_row_yoy_cls = _pct(y), _delta_cls(y)
+            tb_row_name = "月貿易差額"
+            tb_row_value = tb_row_delta = tb_row_yoy = "—"
+            tb_row_delta_cls = tb_row_yoy_cls = "flat"
+
+        if cur_exp is not None:
+            export_row_value = f"{cur_exp / 100:.1f} 億美元"
+            if prev_month is not None and prev_month.get("exports") is not None:
+                d = (cur_exp - prev_month["exports"]) / 100
+                export_row_delta = f"{d:+.1f} 億".replace("-", "−")
+                export_row_delta_cls = "up" if d > 0 else ("down" if d < 0 else "flat")
+            else:
+                export_row_delta, export_row_delta_cls = "—", "flat"
+            exports_yoy = tt_latest.get("exports_yoy_pct")
+            export_row_yoy, export_row_yoy_cls = _pct(exports_yoy), _delta_cls(exports_yoy)
+        else:
+            export_row_value = export_row_delta = export_row_yoy = "—"
+            export_row_delta_cls = export_row_yoy_cls = "flat"
+
+        if cur_cov is not None:
+            coverage_value = f"{cur_cov:.1f}%"
+            prev_cov = prev_month.get("coverage_pct") if prev_month is not None else None
+            pp = (cur_cov - prev_cov) if prev_cov is not None else None
+            coverage_delta, coverage_delta_cls = _pp(pp), _delta_cls(pp)
+            # 涵蓋率的年增率貿易部新聞稿沒有直接給，沒有 13 個月人工資料
+            # 累積起來之前就先留 —，不硬算。
+            coverage_yoy, coverage_yoy_cls = "—", "flat"
+        else:
+            coverage_value = coverage_delta = coverage_yoy = "—"
+            coverage_delta_cls = coverage_yoy_cls = "flat"
     else:
         tb_row_name = "月貿易差額"
         tb_row_value = tb_row_delta = tb_row_yoy = "—"
         tb_row_delta_cls = tb_row_yoy_cls = "flat"
-
-    if exp_vals:
-        export_row_value = f"{exp_vals[-1] / 100:.1f} 億美元"
-        if len(exp_vals) >= 2:
-            d = (exp_vals[-1] - exp_vals[-2]) / 100
-            export_row_delta = f"{d:+.1f} 億".replace("-", "−")
-            export_row_delta_cls = "up" if d > 0 else ("down" if d < 0 else "flat")
-        else:
-            export_row_delta, export_row_delta_cls = "—", "flat"
-        y = _yoy(exp_vals)
-        export_row_yoy, export_row_yoy_cls = _pct(y), _delta_cls(y)
-    else:
         export_row_value = export_row_delta = export_row_yoy = "—"
         export_row_delta_cls = export_row_yoy_cls = "flat"
-
-    cov = [e / i * 100 for e, i in zip(exp_vals, imp_vals) if i]
-    if cov:
-        coverage_value = f"{cov[-1]:.1f}%"
-        pp = (cov[-1] - cov[-2]) if len(cov) >= 2 else None
-        coverage_delta, coverage_delta_cls = _pp(pp), _delta_cls(pp)
-        pp_y = (cov[-1] - cov[-13]) if len(cov) >= 13 else None
-        coverage_yoy, coverage_yoy_cls = _pp(pp_y), _delta_cls(pp_y)
-    else:
         coverage_value = coverage_delta = coverage_yoy = "—"
         coverage_delta_cls = coverage_yoy_cls = "flat"
 
