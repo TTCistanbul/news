@@ -40,6 +40,7 @@ import datetime as dt
 import html
 import json
 import re
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).parent
@@ -873,6 +874,8 @@ def _metric_value(payload: dict, key: str):
             return (payload.get("fx") or {}).get("rates", {}).get("EUR", {}).get("per_unit_selling")
         if key == "TWD":
             return (payload.get("fx") or {}).get("twd_try_cross", {}).get("try_per_twd")
+        # BRENT 這支表 03 已經不用了（改讀 brent_oil.changes，見 brent_changes()），
+        # 留著是為了讓 market_changes() 還能被拿來對照除錯，不要當成現行邏輯。
         if key == "BRENT":
             return (payload.get("brent_oil") or {}).get("usd_per_barrel")
     except Exception:
@@ -889,6 +892,38 @@ def _snapshot_on_or_before(snaps, target: dt.date, tolerance_days: int):
     return best
 
 
+def _pct_cell(v):
+    """把一個百分比變成表格用的 (文字, 顏色 class)。算不出來就是 —。"""
+    if v is None:
+        return "—", "flat"
+    txt = f"{v:+.1f}%".replace("-", "\u2212")
+    return txt, ("up" if v > 0 else ("down" if v < 0 else "flat"))
+
+
+def brent_changes(brent: dict | None) -> dict:
+    """
+    布蘭特的週／月／年初至今直接讀 fetch_daily 算好的 brent_oil.changes，
+    不走下面 market_changes() 那條從 data/*.json 每日快照回推的路。
+
+    2026-09-09 改成這樣，原因：快照回推等於假設「檔名日期＝報價日期」，
+    但 datahub 這個來源常常卡好幾天不更新（實際踩到：09-03～09-09 六份
+    快照裡都是同一筆 09-01 的報價）。假設一破，區間就整個歪掉——當時頁面
+    上的「週變動 +8.8%」實際比的是 08-25 → 09-01，一段結束在 8 天前的
+    期間；運氣不好時兩份快照還會撞到同一筆報價，算出漂亮的 0.0%，看起來
+    像油價一週沒動，其實是資料沒更新，比 +8.8% 更難發現。
+
+    改用 CSV 自己的歷史（1987 年至今全都在裡面）找基準日，區間永遠正確，
+    也不受簡報有沒有天天跑到影響。匯率那幾列維持原邏輯不動——TCMB 每個
+    營業日都更新，快照回推對它成立。
+    """
+    out = {}
+    changes = (brent or {}).get("changes") or {}
+    for name in ("week", "month", "ytd"):
+        c = changes.get(name)
+        out[name], out[name + "_cls"] = _pct_cell(c.get("pct") if c else None)
+    return out
+
+
 def market_changes(snaps, key: str, current, as_of: dt.date) -> dict:
     """回傳 {week, week_cls, month, month_cls, ytd, ytd_cls}，算不出來就是 —。"""
     out = {}
@@ -899,10 +934,7 @@ def market_changes(snaps, key: str, current, as_of: dt.date) -> dict:
         return (current - old) / abs(old) * 100
 
     def cell(v):
-        if v is None:
-            return "—", "flat"
-        txt = f"{v:+.1f}%".replace("-", "\u2212")
-        return txt, ("up" if v > 0 else ("down" if v < 0 else "flat"))
+        return _pct_cell(v)
 
     for name, delta, tol in (("week", 7, 4), ("month", 30, 8)):
         snap = _snapshot_on_or_before(snaps, as_of - dt.timedelta(days=delta), tol)
@@ -953,6 +985,18 @@ def main():
     else:
         funding_cost = "37.0"
 
+    # 表 02 第 4 列的「較上期」原本在範本裡寫死成「持平」，融資成本真的動了
+    # 也不會變——這種寫死的欄位錯起來完全看不出來，比數字錯更難發現。改成
+    # 從序列自己的前一筆算。這條是 Business 頻率，「上期」就是前一個營業日。
+    funding_delta, funding_delta_cls = "—", "flat"
+    if len(funding) >= 2 and "value" in funding[-2]:
+        _d = funding[-1]["value"] - funding[-2]["value"]
+        if abs(_d) < 0.005:
+            funding_delta, funding_delta_cls = "持平", "flat"
+        else:
+            funding_delta = f"{_d:+.2f} 個百分點".replace("-", "\u2212")
+            funding_delta_cls = "up" if _d > 0 else "down"
+
     # 核心指標區塊：CPI、商品貿易差額。這兩個原本是 8/29 手寫的靜態樣本
     # 文字，從來沒有真的接資料，這裡改成讀 EVDS 抓到的真實序列。日期字串
     # 格式來自 borsapy，實機沒驗證過長怎樣，所以月份標籤用寬鬆的方式解析，
@@ -993,6 +1037,23 @@ def main():
     cpi_series = payload.get("macro", {}).get("cpi") or []
     cpi_vals = [e["value"] for e in cpi_series if "value" in e]
 
+    # data/indicators-manual.json 提前在這裡載入（原本在下面表 02 才讀）——
+    # 因為官方公布的 CPI 年增率要在這裡就用來覆蓋自算值，首頁核心指標跟
+    # 表 02 第 1 列才會是同一個數字。
+    manual = load_manual_indicators()
+
+    def _manual_months(key: str) -> list[tuple[str, float]]:
+        """讀出 {key: {months: [{month, yoy}, ...]}}，依月份排序。
+        沒有 months 欄位（舊格式）就回空 list，呼叫端自己退回原本的算法。"""
+        entries = (manual.get(key) or {}).get("months") or []
+        out = []
+        for e in entries:
+            m, v = e.get("month"), e.get("yoy")
+            if m and isinstance(v, (int, float)):
+                out.append((str(m), float(v)))
+        out.sort(key=lambda x: x[0])
+        return out
+
     def _cpi_yoy(i: int):
         """第 i 筆（負索引）相對去年同月的年增率，資料不足回 None。"""
         j = i - 12
@@ -1007,6 +1068,31 @@ def main():
         cpi_month_label = _month_label(cpi_series[-1].get("date", ""))
     else:
         cpi_month_label = "—"
+
+    # 官方公布值優先。自算是拿 EVDS 指數除去年同月，但那個指數只給到小數
+    # 第二位（134.75 / 102.47 = 31.5019%），TÜİK 用未四捨五入的指數算會是
+    # 31.51%——顯示到小數第二位等於報出了輸入撐不起的精度。indicators-manual
+    # .json 的 headline_cpi 有填對應月份就用官方數字，沒填才退回自算。
+    #
+    # 另外 EVDS 只留 14 個月，序列剛起步時 cpi_yoy_prev 會算不出來（要 14
+    # 筆才夠算前一個月的年增率），官方序列則是一路往回填的，順便也把「前值」
+    # 補起來。
+    _official_cpi = _manual_months("headline_cpi")
+    if _official_cpi:
+        _evds_month = ""
+        if cpi_series:
+            _m = re.match(r"^(\d{4}-\d{2})", str(cpi_series[-1].get("date", "")))
+            _evds_month = _m.group(1) if _m else ""
+        _idx = None
+        if _evds_month and any(m == _evds_month for m, _ in _official_cpi):
+            _idx = [m for m, _ in _official_cpi].index(_evds_month)
+        elif not _evds_month or _official_cpi[-1][0] > _evds_month:
+            # 官方已經公布、但 EVDS 序列還沒跟上（或整個抓失敗）
+            _idx = len(_official_cpi) - 1
+        if _idx is not None:
+            cpi_yoy_now = _official_cpi[_idx][1]
+            cpi_yoy_prev = _official_cpi[_idx - 1][1] if _idx >= 1 else None
+            cpi_month_label = f"{int(_official_cpi[_idx][0].split('-')[1])}月"
 
     if cpi_yoy_now is not None:
         cpi_value = f"{cpi_yoy_now:.2f}"
@@ -1094,6 +1180,33 @@ def main():
     else:
         ytd_period_label = "—"
         export_ytd_value = import_ytd_value = "—"
+
+    # 累計那一行只有在真的加總到兩個月以上時才印。turkey-trade-manual.json
+    # 目前只填一個月時，加總＝單月，會渲染成「累計 2026年8月：234.7 億美元」
+    # ——數字沒錯，但讀者會以為那是全年累計（2026-09-09 稽核實際被誤讀）。
+    # 只有一個月就整行不印，等月份補齊了自己會出現。
+    def _ytd_line(label: str, value: str) -> str:
+        return ('<br><span class="flat" style="font-size:0.8em;">'
+                f'{label}：{value}</span>')
+
+    if len(ytd_tt_months) >= 2:
+        export_ytd_line = _ytd_line(ytd_period_label, export_ytd_value)
+        import_ytd_line = _ytd_line(ytd_period_label, import_ytd_value)
+    else:
+        export_ytd_line = import_ytd_line = ""
+
+    # 表 03 的資料日期：TCMB 每個營業日約 15:30 TRT 才發布，所以簡報上
+    # 顯示的必然是前一營業日的官方價。不標日期的話，9/9 的頁面掛著 9/8
+    # 的匯率，讀者會以為那是即時報價。
+    fx_date = html.escape((payload.get("fx") or {}).get("date") or "—")
+    twd_src_date = "—"
+    _twd_raw = ((payload.get("fx") or {}).get("twd_try_cross") or {}).get("fetched_at_source")
+    if _twd_raw:
+        try:
+            from email.utils import parsedate_to_datetime
+            twd_src_date = parsedate_to_datetime(_twd_raw).date().isoformat()
+        except Exception:
+            twd_src_date = html.escape(str(_twd_raw)[:16])
 
     # 「核心指標」第三格：2026-09 從「台灣—Türkiye 雙邊貿易餘額」換成
     # 「土耳其季度 GDP 成長率」——前兩格本來就是土耳其總經數據（CPI、
@@ -1235,21 +1348,45 @@ def main():
         cpi_row_value = cpi_row_delta = cpi_row_yoy = "—"
         cpi_row_delta_cls = "flat"
 
-    # 第 2、3 列：手動維護
-    manual = load_manual_indicators()
+    # 第 2、3 列：手動維護（manual 已在上面 CPI 區塊載入）
 
     def _manual(key, field, default="待更新"):
         v = (manual.get(key) or {}).get(field)
         return html.escape(str(v)) if v not in (None, "") else default
 
-    core_cpi_value = _manual("core_cpi", "value")
-    core_cpi_delta = _manual("core_cpi", "delta", "—")
-    core_cpi_delta_cls = _manual("core_cpi", "delta_class", "flat")
-    core_cpi_yoy = _manual("core_cpi", "yoy", "—")
+    # 核心通膨改成讀逐月序列，「較上期」由程式跟前一個月比，不再手寫
+    # 「下降」這種沒有數字的字串（手寫的那種，數字更新了但字忘了改也
+    # 看不出來）。舊格式（單一 value/delta 欄位）仍然吃得下，退回去讀。
+    _core_months = _manual_months("core_cpi")
+    if _core_months:
+        _cm, _cv = _core_months[-1]
+        core_cpi_value = f"{_cv:.2f}%"
+        core_cpi_yoy = f"{_cv:.2f}%"
+        core_cpi_month = f"{int(_cm.split('-')[1])}月"
+        if len(_core_months) >= 2:
+            _cd = _cv - _core_months[-2][1]
+            core_cpi_delta = _pp(_cd)
+            core_cpi_delta_cls = _delta_cls(_cd)
+        else:
+            core_cpi_delta, core_cpi_delta_cls = "—", "flat"
+    else:
+        core_cpi_value = _manual("core_cpi", "value")
+        core_cpi_delta = _manual("core_cpi", "delta", "—")
+        core_cpi_delta_cls = _manual("core_cpi", "delta_class", "flat")
+        core_cpi_yoy = _manual("core_cpi", "yoy", "—")
+        core_cpi_month = _manual("core_cpi", "as_of", "—")
     policy_rate_value = _manual("policy_rate", "value")
     policy_rate_delta = _manual("policy_rate", "delta", "—")
     policy_rate_delta_cls = _manual("policy_rate", "delta_class", "flat")
     policy_rate_expect = _manual("policy_rate", "expectation", "—")
+    # 核心指標第二格的說明文字。原本是寫死在範本裡的一句敘述（「一週附賣回
+    # 已於 8/23 恢復…」），利率環境一變就變成錯的、而且不會有人發現。改成
+    # 讀 indicators-manual.json 的 note 欄位（沒填就用下面這句中性的說明），
+    # 要寫當期的利率走廊狀況，跟改核心通膨數字一樣改那個 JSON 就好。
+    policy_rate_note = _manual(
+        "policy_rate", "note",
+        "左為 TCMB 一週附賣回政策利率，右為 EVDS 加權平均融資成本",
+    )
 
     # 第 5、6、7 列：貿易差額、出口、涵蓋率。
     # 改用上面 turkey_trade_data／tt_months（人工維護，見該處註解說明原因），
@@ -1339,8 +1476,13 @@ def main():
         "USD":   market_changes(snaps, "USD",   (rates.get("USD") or {}).get("per_unit_selling"), report_date),
         "EUR":   market_changes(snaps, "EUR",   (rates.get("EUR") or {}).get("per_unit_selling"), report_date),
         "TWD":   market_changes(snaps, "TWD",   (twd_cross or {}).get("try_per_twd"), report_date),
-        "BRENT": market_changes(snaps, "BRENT", (brent or {}).get("usd_per_barrel"), report_date),
+        # 布蘭特不走快照回推，理由見 brent_changes() 的說明。
+        "BRENT": brent_changes(brent),
     }
+    if brent and not brent.get("changes"):
+        print("! brent_oil 裡沒有 changes 欄位（這份是舊格式的 data/*.json），"
+              "表 03 的布蘭特變動會顯示 —。重跑 fetch_daily.py 就會有。",
+              file=sys.stderr)
 
     replacements = {
         "{{USD_TRY}}": usd,
@@ -1374,10 +1516,16 @@ def main():
         "{{CORE_CPI_DELTA}}": core_cpi_delta,
         "{{CORE_CPI_DELTA_CLS}}": core_cpi_delta_cls,
         "{{CORE_CPI_YOY}}": core_cpi_yoy,
+        "{{CORE_CPI_MONTH}}": core_cpi_month,
         "{{POLICY_RATE_VALUE}}": policy_rate_value,
         "{{POLICY_RATE_DELTA}}": policy_rate_delta,
         "{{POLICY_RATE_DELTA_CLS}}": policy_rate_delta_cls,
         "{{POLICY_RATE_EXPECT}}": policy_rate_expect,
+        "{{POLICY_RATE_NOTE}}": policy_rate_note,
+        "{{FUNDING_COST_DELTA}}": funding_delta,
+        "{{FUNDING_COST_DELTA_CLS}}": funding_delta_cls,
+        "{{FX_DATE}}": fx_date,
+        "{{TWD_SRC_DATE}}": twd_src_date,
         "{{TB_ROW_NAME}}": tb_row_name,
         "{{TB_ROW_VALUE}}": tb_row_value,
         "{{TB_ROW_DELTA}}": tb_row_delta,
@@ -1394,9 +1542,11 @@ def main():
         "{{IMPORT_ROW_DELTA_CLS}}": import_row_delta_cls,
         "{{IMPORT_ROW_YOY}}": import_row_yoy,
         "{{IMPORT_ROW_YOY_CLS}}": import_row_yoy_cls,
-        "{{EXPORT_YTD_VALUE}}": export_ytd_value,
-        "{{IMPORT_YTD_VALUE}}": import_ytd_value,
-        "{{YTD_PERIOD_LABEL}}": ytd_period_label,
+        # 累計那一整行（含 <br> 與 <span>）現在由 render 端組，只有一個月時
+        # 是空字串——所以範本裡是 {{EXPORT_YTD_LINE}} 一個 token，不再是
+        # 「累計 {{YTD_PERIOD_LABEL}}：{{EXPORT_YTD_VALUE}}」那三段拼字。
+        "{{EXPORT_YTD_LINE}}": export_ytd_line,
+        "{{IMPORT_YTD_LINE}}": import_ytd_line,
         "{{COVERAGE_VALUE}}": coverage_value,
         "{{COVERAGE_DELTA}}": coverage_delta,
         "{{COVERAGE_DELTA_CLS}}": coverage_delta_cls,
