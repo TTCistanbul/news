@@ -346,19 +346,21 @@ EVDS_SERIES = {
     # 「轉口貿易淨額」這種很小眾的特殊項目，數字量級差了幾十倍，不要用。
     "trade_exports": ("TP.ODEAYRSUNUM6.Q5", 5),
     "trade_imports": ("TP.ODEAYRSUNUM6.Q6", 5),
-    # 季度實質 GDP（TÜİK，支出面法，鏈式不變價格）——2026-09 使用者在
-    # EVDS 網頁「Ara」搜尋「GSYH」手動確認取得，分類路徑：DÖNEMSEL
-    # GAYRİSAFİ YURT İÇİ HASILA (TÜİK) → HARCAMA YÖNTEMİ İLE GAYRİSAFİ
-    # YURT İÇİ HASILA → Gayrisafi Yurt İçi Hasıla - Harcama Yöntemiyle,
-    # Zincirlenmiş Hacim (Üç Aylık)。單位千里拉，是「實質量」不是成長率
-    # 本身——年增率/季增率都是 render_report.py 拿這條序列自己算，跟
-    # TCMB 通膨報告引用 GSYH 年增/季增的算法一致（該報告原文：GSYH，
-    # yıllık bazda ...，çeyreklik bazda ...，兩個數字都是從這條序列
-    # 算出來的）。frequency=6（quarterly）——序列本身就是季度發布，
-    # 网頁上「Frekans」選單顯示的「Aylık」只是畫表格時的顯示轉換，不是
-    # 序列真實更新頻率，這裡要用季度、不要沿用月頻/年頻的轉換規則，
-    # 否則會把同一季的值重複灌成 3 個月，抓到假的月資料。
-    "gdp_growth": ("bie_gsyhhrczinc", 6),
+    # 季度實質 GDP（TÜİK，支出面法，鏈式不變價格，未經季節調整）——
+    # 2026-09-08 使用者第一次用網址列上的 slug「bie_gsyhhrczinc」抓，
+    # EVDS API 回 400「Series does not exist」——那個 slug 是給人看的
+    # 網址代稱，不是真正的 API 序列代碼。後來使用者在 EVDS 網頁上重新
+    # 勾選「Gayrisafi Yurt İçi Hasıla (Harcama Yöntemiyle, Zincirlenmiş
+    # Hacim)」、匯出表格，欄位標題顯示的才是真正代碼：
+    # TP_GSYIH20_CY_B1GQ（畫面上底線對應真正代碼裡的點，所以是
+    # TP.GSYIH20.CY.B1GQ）。frequency=6（quarterly）不變。
+    #
+    # 這個序列沒有做季節調整（序列名稱裡沒有「Mevsim Etkisinden
+    # Arındırılmış」字樣），render_report.py 算季增率時要加註提醒——
+    # 土耳其 GDP 季節性明顯（Q1 傳統低、Q2/Q3 回溫是常態），未調整的
+    # 季增率單獨看容易誤判成真實成長。年增率（跟去年同一季比）季節性
+    # 因素會互相抵銷，可以直接當主要指標。
+    "gdp_growth": ("TP.GSYIH20.CY.B1GQ", 6),
 }
 
 # EVDS v2 → v3 frequency 對照（v2 是舊 evds/evdspy 系列套件慣用的 1-8 編號，
