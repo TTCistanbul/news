@@ -1097,21 +1097,33 @@ def main():
     # 本來就在下面「06 台灣—Türkiye 雙邊貿易」那張卡片，拿掉這裡不影響
     # 資訊完整性。
     #
-    # 資料來源：EVDS「bie_gsyhhrczinc」（TÜİK 支出面法、鏈式不變價格
-    # 季度 GDP，序列本身是「實質量」不是成長率）。年增率／季增率都是
-    # 自己拿這條序列算，算法跟 TCMB 通膨報告引用 GSYH 時一致：年增率
-    # 跟去年同一季比（往前推 4 筆），季增率跟上一季比（往前推 1 筆）。
+    # 資料來源：EVDS「TP.GSYIH20.CY.B1GQ」（TÜİK 支出面法、鏈式不變價格
+    # 季度 GDP，未經季節調整）算年增率——跟去年同一季比，季節性因素會
+    # 互相抵銷，2026-09-08 用官方新聞稿核對過 2026 Q2 算出 +2.3%，跟
+    # TÜİK 公布的數字一致。
+    #
+    # 季增率改用另一條序列「TP.GSYIH30.HY.B1GQ」（季節與工作日調整後
+    # 版本）——2026-09-08 一開始直接拿上面那條未調整序列算季增率，
+    # 算出 +7.2%，但 TÜİK 官方公布的季增率其實是 +1.1%，差了 6 倍，
+    # 因為土耳其 GDP 季節性明顯（Q1 傳統低、Q2/Q3 回溫是常態），未調整
+    # 序列的季增率會把季節性誤判成真實成長。換成這條調整後序列重算，
+    # 2026 Q2 (245.18) vs 2026 Q1 (242.47) 得到 +1.1%，跟官方一致——
+    # 這也是 TÜİK 自己的算法慣例：年增率用原始序列、季增率用調整後
+    # 序列，兩條序列分工明確，不要混用（例如不要拿調整後序列算年增
+    # 率，官方公布年增率時本來就是用原始序列算的）。
     gdp_series = payload.get("macro", {}).get("gdp_growth") or []
     gdp_vals = [e["value"] for e in gdp_series if "value" in e]
+    gdp_sa_series = payload.get("macro", {}).get("gdp_growth_sa") or []
+    gdp_sa_vals = [e["value"] for e in gdp_sa_series if "value" in e]
 
-    def _gdp_change(back: int):
+    def _series_change(vals: list, back: int):
         j = -1 - back
-        if len(gdp_vals) >= abs(j) and gdp_vals[j]:
-            return (gdp_vals[-1] - gdp_vals[j]) / gdp_vals[j] * 100
+        if len(vals) >= abs(j) and vals[j]:
+            return (vals[-1] - vals[j]) / vals[j] * 100
         return None
 
-    gdp_yoy = _gdp_change(4) if gdp_vals else None
-    gdp_qoq = _gdp_change(1) if gdp_vals else None
+    gdp_yoy = _series_change(gdp_vals, 4) if gdp_vals else None
+    gdp_qoq = _series_change(gdp_sa_vals, 1) if gdp_sa_vals else None
     gdp_quarter_label = _quarter_label(gdp_series[-1].get("date", "")) if gdp_series else "—"
 
     # 2026-09 改成跟隔壁「政策利率 / 隔夜拆借」卡片同樣的格式並排顯示
@@ -1125,10 +1137,12 @@ def main():
 
     gdp_qoq_value = f"{gdp_qoq:+.1f}" if gdp_qoq is not None else "—"
 
-    if gdp_qoq is not None:
-        gdp_delta = "年增／季增　·　季增未經季節調整，僅供參考"
-    elif gdp_vals:
-        gdp_delta = "尚無足夠歷史資料計算季增率"
+    if gdp_yoy is not None and gdp_qoq is not None:
+        gdp_delta = "年增／季增（季增已經季節調整）"
+    elif gdp_yoy is not None:
+        gdp_delta = "季增率資料尚未取得（gdp_growth_sa 序列抓取失敗）"
+    elif gdp_vals or gdp_sa_vals:
+        gdp_delta = "尚無足夠歷史資料計算年增／季增率"
     else:
         gdp_delta = "資料尚未取得（尚未設定 EVDS_API_KEY 或序列抓取失敗）"
 
