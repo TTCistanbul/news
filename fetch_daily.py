@@ -137,11 +137,27 @@ TWD_CROSS_URL = "https://open.er-api.com/v6/latest/USD"
 
 
 # ─────────────────────────────────────────────
-# 1c. 布蘭特原油現貨價 — datahub.io 提供的穩定 CSV 端點，來源是 EIA
-#     （美國能源資訊署），不用申請 API 金鑰，資料屬公開領域授權。
-#     2026-08-31 確認這個網址：更新頻率是每個工作日，CSV 裡是歷史全部
-#     資料（1987 年至今），只取最後一筆當作最新現貨價。
+# 1c. 布蘭特原油現貨價 — 主要來源是 EIA（美國能源資訊署）自己的 Open Data
+#     API v2，序列 RBRTE（Europe Brent Spot Price FOB，每桶美元，日頻）。
+#     免費金鑰在 https://www.eia.gov/opendata/register.php 申請，設成環境
+#     變數 EIA_API_KEY。
+#
+#     2026-09-09 改用官方 API，原因：原本走 datahub.io 的 CSV 鏡像，那份
+#     鏡像自己就落後好幾天（實測 09-03～09-09 六天，最新一筆都停在 09-01，
+#     age_days 一路長到 7 天），等於在 EIA 本來就有的發布時差上又疊一層。
+#     直接打 EIA 至少把鏡像那一層拿掉。
+#
+#     ⚠ 就算接了官方 API，這條仍然是「現貨」而且天生落後——EIA 不是即時
+#     報價來源。頁面上要跟新聞區的期貨行情（例如「Brent 逼近 100 美元」）
+#     對得起來，要的是期貨報價，不是這條。這裡只解決鏡像多出來的落後，
+#     沒有解決現貨與期貨口徑不同的問題。
+#
+#     沒有金鑰或 API 抓失敗時，退回原本的 datahub CSV（下面 BRENT_CSV_URL），
+#     資料屬公開領域授權，不用金鑰。兩條路徑產出的欄位完全一樣，只有
+#     source / source_kind 不同。
 # ─────────────────────────────────────────────
+BRENT_EIA_URL = "https://api.eia.gov/v2/petroleum/pri/spt/data/"
+BRENT_EIA_SERIES = "RBRTE"
 BRENT_CSV_URL = "https://datahub.io/core/oil-prices/_r/-/data/brent-daily.csv"
 
 
@@ -260,95 +276,179 @@ def _brent_change(observations, latest_date: dt.date, latest_price: float,
     }
 
 
-def fetch_brent_oil() -> dict | None:
-    try:
-        r = requests.get(BRENT_CSV_URL, headers=UA, timeout=TIMEOUT)
-        r.raise_for_status()
-        lines = r.text.strip().splitlines()
-        if len(lines) < 2:
-            print(f"✗ 布蘭特原油: CSV 內容異常（只有 {len(lines)} 行）", file=sys.stderr)
-            return None
-        header = [h.strip().lower() for h in lines[0].split(",")]
-        if header[:2] != ["date", "price"]:
-            print(f"✗ 布蘭特原油: CSV 欄位跟預期不同，實際標頭：{lines[0]}", file=sys.stderr)
-            return None
+def _fetch_brent_eia(api_key: str) -> list[tuple[dt.date, float]]:
+    """EIA Open Data API v2，回傳 [(日期, 每桶美元), ...]，抓不到就丟例外
+    讓呼叫端退回 CSV。sort 用 period desc + length 取最近 800 筆（約三年
+    的交易日），足夠算年初至今，又不用把 1987 年至今整份拉下來。"""
+    params = {
+        "api_key": api_key,
+        "frequency": "daily",
+        "data[0]": "value",
+        "facets[series][]": BRENT_EIA_SERIES,
+        "sort[0][column]": "period",
+        "sort[0][direction]": "desc",
+        "offset": 0,
+        "length": 800,
+    }
+    r = requests.get(BRENT_EIA_URL, params=params, headers=UA, timeout=TIMEOUT)
+    r.raise_for_status()
+    body = r.json()
+    rows = ((body.get("response") or {}).get("data")) or []
+    if not rows:
+        # API 對錯誤的金鑰／參數會回 200 加一個 error 欄位，不是 HTTP 4xx，
+        # 所以這裡要把原始回應印出來，不然只會看到「0 筆」不知道為什麼。
+        raise RuntimeError(f"EIA 回應沒有資料：{str(body)[:300]}")
+    out = []
+    for row in rows:
+        period, value = row.get("period"), row.get("value")
+        if not period or value in (None, ""):
+            continue
+        try:
+            out.append((dt.date.fromisoformat(str(period)[:10]), float(value)))
+        except (ValueError, TypeError):
+            continue
+    if not out:
+        raise RuntimeError(f"EIA 回應解析不出任何一筆：{str(rows[:2])[:300]}")
+    return out
 
-        # 不假設檔案是按日期排序好的，逐行解析後自己排序。
-        # 這份 CSV 是 1987 年至今的完整歷史，不是只有最新一筆——週／月／
-        # 年初至今的變動全部在這裡面算完（見下方 changes），不要讓
-        # render_report 去用 data/*.json 每日快照回推。
-        observations = []
-        for line in lines[1:]:
-            parts = line.split(",")
-            if len(parts) < 2:
-                continue
-            date_str, price_str = parts[0].strip(), parts[1].strip()
-            if not date_str or not price_str:
-                continue
-            try:
-                d = dt.date.fromisoformat(date_str)
-                price = float(price_str)
-            except ValueError:
-                continue
-            observations.append((d, price))
 
-        if not observations:
-            print("✗ 布蘭特原油: CSV 裡解析不出任何一筆有效資料", file=sys.stderr)
-            return None
+def _fetch_brent_datahub() -> list[tuple[dt.date, float]]:
+    """備援：datahub.io 的 CSV 鏡像（1987 年至今全部歷史）。"""
+    r = requests.get(BRENT_CSV_URL, headers=UA, timeout=TIMEOUT)
+    r.raise_for_status()
+    lines = r.text.strip().splitlines()
+    if len(lines) < 2:
+        raise RuntimeError(f"CSV 內容異常（只有 {len(lines)} 行）")
+    header = [h.strip().lower() for h in lines[0].split(",")]
+    if header[:2] != ["date", "price"]:
+        raise RuntimeError(f"CSV 欄位跟預期不同，實際標頭：{lines[0]}")
 
-        observations.sort(key=lambda x: x[0])
-        best_date, best_price = observations[-1]
-        previous_date, previous_price = (observations[-2] if len(observations) >= 2
-                                          else (None, None))
+    out = []
+    for line in lines[1:]:
+        parts = line.split(",")
+        if len(parts) < 2:
+            continue
+        date_str, price_str = parts[0].strip(), parts[1].strip()
+        if not date_str or not price_str:
+            continue
+        try:
+            out.append((dt.date.fromisoformat(date_str), float(price_str)))
+        except ValueError:
+            continue
+    if not out:
+        raise RuntimeError("CSV 裡解析不出任何一筆有效資料")
+    return out
 
-        # 日變動：對「前一個真的有報價的交易日」，不是對「昨天」，
-        # 所以週末與假日不會被誤算成持平。
-        change_pct = None
-        if previous_price:
-            change_pct = round((best_price - previous_price) / previous_price * 100, 2)
 
-        # 週／月／年初至今。三個區間的「終點」一律是 best_date（最後一筆
-        # 報價日），不是今天——資料卡住時，區間會誠實地停在報價日，而不是
-        # 拿一筆舊報價去跟今天湊出一段名不副實的期間。
-        #
-        # 年初至今的基準取「去年最後一個交易日」的收盤價（YTD 的標準定義）；
-        # 萬一 CSV 裡沒有去年的資料，退而取今年第一筆。
-        prev_year = [o for o in observations if o[0].year == best_date.year - 1]
-        this_year = [o for o in observations if o[0].year == best_date.year]
-        ytd_base = prev_year[-1] if prev_year else (this_year[0] if this_year else None)
-        ytd = None
-        if ytd_base and ytd_base[1] and ytd_base[0] != best_date:
-            ytd = {
-                "pct": round((best_price - ytd_base[1]) / abs(ytd_base[1]) * 100, 2),
-                "base_date": ytd_base[0].isoformat(),
-                "base_price": ytd_base[1],
-            }
+def _obs_on_or_before(observations, target: dt.date, tolerance_days: int):
+    """
+    在（依日期遞增排序的）觀測值裡，找「日期 <= target」之中最接近的一筆。
+    離 target 超過 tolerance_days 就回 None——寧可讓那一格顯示「—」，也不要
+    拿一個月前的價格冒充「一週前」。假日與資料空窗是常態，所以要容忍幾天，
+    但容忍過頭就失去意義。
+    """
+    best = None
+    for d, price in observations:
+        if d <= target and (target - d).days <= tolerance_days:
+            if best is None or d > best[0]:
+                best = (d, price)
+    return best
 
-        age_days = (dt.date.today() - best_date).days
-        return {
-            "date": best_date.isoformat(),
-            "usd_per_barrel": best_price,
-            "previous_date": previous_date.isoformat() if previous_date else None,
-            "previous_usd_per_barrel": previous_price,
-            "change_pct": change_pct,
-            "changes": {
-                # 容忍天數：一週抓 5 天（吃得下連假），一個月抓 10 天。
-                "week": _brent_change(observations, best_date, best_price, 7, 5),
-                "month": _brent_change(observations, best_date, best_price, 30, 10),
-                "ytd": ytd,
-            },
-            "changes_anchor_date": best_date.isoformat(),
-            "age_days": age_days,
-            # 2026-09-08 從 5 天收緊到 3 天。原本 5 天太寬鬆，資料卡住
-            # 三四天都還不會被標記，容易沒注意到。收到 2 天又太緊——EIA
-            # 只在工作日更新，週五收盤後到週一之間本來就有 2-3 天的正常
-            # 空窗（六、日不更新，週一的資料通常也要等到當天收盤後才有），
-            # 訂在 2 天會導致每週一早上都被誤判成「過期」，反而製造假警報。
-            # 3 天可以吃下這個正常的週末空窗，只有真的卡超過一個週末才會
-            # 觸發。
-            "stale": age_days > 3,
-            "source": "EIA (via datahub.io, public domain)",
+
+def _brent_change(observations, latest_date: dt.date, latest_price: float,
+                   days_back: int, tolerance_days: int) -> dict | None:
+    """回傳 {pct, base_date, base_price}，找不到合適基準就回 None。"""
+    base = _obs_on_or_before(observations,
+                             latest_date - dt.timedelta(days=days_back),
+                             tolerance_days)
+    if base is None or not base[1]:
+        return None
+    return {
+        "pct": round((latest_price - base[1]) / abs(base[1]) * 100, 2),
+        "base_date": base[0].isoformat(),
+        "base_price": base[1],
+    }
+
+
+def _build_brent_payload(observations, source: str, source_kind: str) -> dict:
+    """兩條取得路徑（EIA API／datahub CSV）共用的計算，產出的欄位一模一樣，
+    render_report 不需要知道資料是從哪條路來的。"""
+    observations = sorted(observations, key=lambda x: x[0])
+    best_date, best_price = observations[-1]
+    previous_date, previous_price = (observations[-2] if len(observations) >= 2
+                                      else (None, None))
+
+    # 日變動：對「前一個真的有報價的交易日」，不是對「昨天」，
+    # 所以週末與假日不會被誤算成持平。
+    change_pct = None
+    if previous_price:
+        change_pct = round((best_price - previous_price) / previous_price * 100, 2)
+
+    # 週／月／年初至今。三個區間的「終點」一律是 best_date（最後一筆
+    # 報價日），不是今天——資料卡住時，區間會誠實地停在報價日，而不是
+    # 拿一筆舊報價去跟今天湊出一段名不副實的期間。
+    #
+    # 年初至今的基準取「去年最後一個交易日」的收盤價（YTD 的標準定義）；
+    # 萬一序列裡沒有去年的資料，退而取今年第一筆。
+    prev_year = [o for o in observations if o[0].year == best_date.year - 1]
+    this_year = [o for o in observations if o[0].year == best_date.year]
+    ytd_base = prev_year[-1] if prev_year else (this_year[0] if this_year else None)
+    ytd = None
+    if ytd_base and ytd_base[1] and ytd_base[0] != best_date:
+        ytd = {
+            "pct": round((best_price - ytd_base[1]) / abs(ytd_base[1]) * 100, 2),
+            "base_date": ytd_base[0].isoformat(),
+            "base_price": ytd_base[1],
         }
+
+    age_days = (dt.date.today() - best_date).days
+    return {
+        "date": best_date.isoformat(),
+        "usd_per_barrel": best_price,
+        "previous_date": previous_date.isoformat() if previous_date else None,
+        "previous_usd_per_barrel": previous_price,
+        "change_pct": change_pct,
+        "changes": {
+            # 容忍天數：一週抓 5 天（吃得下連假），一個月抓 10 天。
+            "week": _brent_change(observations, best_date, best_price, 7, 5),
+            "month": _brent_change(observations, best_date, best_price, 30, 10),
+            "ytd": ytd,
+        },
+        "changes_anchor_date": best_date.isoformat(),
+        "age_days": age_days,
+        # 2026-09-08 從 5 天收緊到 3 天。原本 5 天太寬鬆，資料卡住
+        # 三四天都還不會被標記，容易沒注意到。收到 2 天又太緊——EIA
+        # 只在工作日更新，週五收盤後到週一之間本來就有 2-3 天的正常
+        # 空窗（六、日不更新，週一的資料通常也要等到當天收盤後才有），
+        # 訂在 2 天會導致每週一早上都被誤判成「過期」，反而製造假警報。
+        # 3 天可以吃下這個正常的週末空窗，只有真的卡超過一個週末才會
+        # 觸發。
+        "stale": age_days > 3,
+        "source": source,
+        "source_kind": source_kind,
+        "observations_used": len(observations),
+    }
+
+
+def fetch_brent_oil() -> dict | None:
+    """先打 EIA 官方 API，失敗才退回 datahub CSV。兩條路徑的輸出格式相同。"""
+    api_key = os.environ.get("EIA_API_KEY")
+    if api_key:
+        try:
+            obs = _fetch_brent_eia(api_key)
+            return _build_brent_payload(
+                obs, "EIA Open Data API v2 (series RBRTE)", "eia_api")
+        except Exception as e:
+            print(f"! 布蘭特原油: EIA API 失敗，改用 datahub CSV 備援：{e}",
+                  file=sys.stderr)
+    else:
+        print("! 未設定 EIA_API_KEY，布蘭特原油改用 datahub CSV 備援"
+              "（那份鏡像通常比 EIA 官方慢幾天）", file=sys.stderr)
+
+    try:
+        obs = _fetch_brent_datahub()
+        return _build_brent_payload(
+            obs, "EIA (via datahub.io, public domain)", "datahub_csv")
     except Exception as e:
         print(f"✗ 布蘭特原油: {e}", file=sys.stderr)
         return None
@@ -451,6 +551,16 @@ EVDS_SERIES = {
     # (245.18) vs 2026 Q1 (242.47) 算出季增 +1.12%，跟 TÜİK 官方公布的
     # +1.1% 一致，確認選對序列。
     "gdp_growth_sa": ("TP.GSYIH30.HY.B1GQ", 6),
+    # 核心通膨 B 指標（TÜİK 特定涵蓋範圍 CPI／Özel Kapsamlı TÜFE
+    # Göstergeleri，2025=100）：不含未加工食品、能源、酒精飲料與菸草、黃金。
+    # 2026-09-09 使用者從 EVDS 網頁勾選後匯出表格取得代碼（欄位標題
+    # TP_FE25_OKTG03，底線換成點），跟上面 gdp 那兩條同一套做法。
+    # 驗證：用這條算出的 2026 年 6/7/8 月年增率為 31.18／30.97／30.68，
+    # 跟 TÜİK 公布的核心通膨完全吻合，確認勾對的是 B 不是 A 或 C。
+    # 同一組裡 TP.FE25.OKTG04 是 C 指標（再扣掉全部食品與非酒精飲料），
+    # 土耳其媒體講「çekirdek enflasyon」有時是指 C，要換就換這支。
+    # 跟 cpi 一樣是月頻，frequency=5。
+    "core_cpi_b": ("TP.FE25.OKTG03", 5),
 }
 
 # EVDS v2 → v3 frequency 對照（v2 是舊 evds/evdspy 系列套件慣用的 1-8 編號，
@@ -891,7 +1001,9 @@ def main():
     brent = fetch_brent_oil()
     payload["brent_oil"] = brent
     if brent:
-        print(f"✓ 布蘭特原油 ${brent['usd_per_barrel']:.2f}（{brent['date']}）", file=sys.stderr)
+        _src = "EIA API" if brent.get("source_kind") == "eia_api" else "datahub CSV 備援"
+        print(f"✓ 布蘭特原油 ${brent['usd_per_barrel']:.2f}（{brent['date']}，"
+              f"{_src}，落後 {brent['age_days']} 天）", file=sys.stderr)
         ch = brent.get("changes") or {}
         parts = []
         for label, key in (("週", "week"), ("月", "month"), ("年初至今", "ytd")):
@@ -912,7 +1024,11 @@ def main():
     key = os.environ.get("EVDS_API_KEY")
     if not args.no_evds and key:
         end = dt.date.today()
-        start = end - dt.timedelta(days=400)
+        # 2026-09-09 從 400 天放寬到 500 天。月頻序列要 13 筆才算得出最新
+        # 一個月的年增率、14 筆才算得出「前一個月」的年增率；400 天實測只
+        # 拿到 13 筆，所以首頁的 CPI「前值」一直是空的（後來被手填的官方
+        # 序列蓋過去才看不出來）。核心通膨 B 指標接進來會踩到同一個坑。
+        start = end - dt.timedelta(days=500)
         # 季度序列（目前只有 gdp_growth）算年增率要往前推 4 筆，400 天大約
         # 只夠抓到 4-5 季，index 不夠長會讓年增率算不出來（2026-09-08 實測
         # 踩到：季增率有算出來但年增率是空的，因為季增只需要往前推 1 筆，
