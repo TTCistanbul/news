@@ -1,18 +1,37 @@
 {
-  "_note": "表 02 裡沒有自動資料來源的兩列。TÜİK／TCMB 公布後手動更新這個檔案即可，不要再去改 templates/report-template.html。delta_class 只接受 up（紅／上升）、down（綠／下降）、flat（持平）三個值。",
+  "_note": "表 02 裡沒有自動資料來源的欄位。TÜİK／TCMB 公布後手動更新這個檔案即可，不要再去改 templates/report-template.html。core_cpi 與 headline_cpi 是逐月序列：每月公布後在 months 陣列最後面新增一筆，「較上期」由程式自己跟前一筆比，不要手寫「上升／下降」。headline_cpi 是 TÜİK 官方公布的 CPI 年增率，會覆蓋掉程式用 EVDS 指數自算的值（EVDS 指數只有兩位小數，自算會出現 31.50 vs 官方 31.51 這種尾差）；沒填的月份就退回自算。policy_rate 的 delta_class 只接受 up（紅／上升）、down（綠／下降）、flat（持平）三個值。",
   "core_cpi": {
-    "value": "30.1%",
-    "delta": "前值29.91%",
-    "delta_class": "down",
-    "yoy": "30.07%",
-    "as_of": "2026-08",
-    "source": "TÜİK 核心通膨 B 指標"
+    "source": "TÜİK 核心通膨 B 指標",
+    "months": [
+      { "month": "2026-01", "yoy": 29.35 },
+      { "month": "2026-02", "yoy": 29.51 },
+      { "month": "2026-03", "yoy": 29.74 },
+      { "month": "2026-04", "yoy": 31.12 },
+      { "month": "2026-05", "yoy": 30.81 },
+      { "month": "2026-06", "yoy": 31.18 },
+      { "month": "2026-07", "yoy": 30.98 },
+      { "month": "2026-08", "yoy": 30.68 }
+    ]
+  },
+  "headline_cpi": {
+    "source": "TÜİK 消費者物價指數（官方公布年增率）",
+    "months": [
+      { "month": "2026-01", "yoy": 30.65 },
+      { "month": "2026-02", "yoy": 31.53 },
+      { "month": "2026-03", "yoy": 30.87 },
+      { "month": "2026-04", "yoy": 32.37 },
+      { "month": "2026-05", "yoy": 32.61 },
+      { "month": "2026-06", "yoy": 32.11 },
+      { "month": "2026-07", "yoy": 31.75 },
+      { "month": "2026-08", "yoy": 31.51 }
+    ]
   },
   "policy_rate": {
     "value": "37.0%",
     "delta": "持平",
     "delta_class": "flat",
     "expectation": "維持不變",
+    "note": "一週附賣回已於 8/23 恢復，隔夜利率回落至政策利率附近",
     "as_of": "2026-08",
     "source": "TCMB 一週附賣回利率"
   }
