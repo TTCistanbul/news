@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-09T00:19:16.617385+03:00",
-  "generated_at_label": "2026-09-09 00:19 TRT",
+  "generated_at": "2026-09-09T01:35:34.530351+03:00",
+  "generated_at_label": "2026-09-09 01:35 TRT",
   "fx": {
     "date": "2026-09-08",
     "date_raw": "08.09.2026",
@@ -366,25 +366,22 @@
   "news": [
     {
       "source": "Ekonomim",
-      "title": "SPK’dan borsada pay sahipliği ve fiili dolaşıma yeni düzenleme",
-      "url": "https://www.ekonomim.com/ekonomi/spkdan-borsada-pay-sahipligi-ve-fiili-dolasima-yeni-duzenleme-haberi-917056",
-      "published": "2026-09-08T21:07:00+00:00",
+      "title": "New York borsası günü düşüşle kapattı",
+      "url": "https://www.ekonomim.com/ekonomi/new-york-borsasi-gunu-dususle-kapatti-haberi-917058",
+      "published": "2026-09-08T21:35:00+00:00",
       "no_date": false,
       "late": false,
-      "summary": "Sermaye Piyasası Kurulu (SPK), borsada işlem gören şirketlerin pay sahipliği bildirim yükümlülük sınırını yüzde 3 olarak belirlerken, fiili dolaşımdaki pay tanımına ve MKK süreçlerine ilişkin yeni düzenlemeleri duyurdu.",
-      "scope": "domestic",
-      "tr_markers": [
-        "spk"
-      ],
+      "summary": "Orta Doğu&amp;#039;da süren gerilimlerin petrol fiyatlarını tırmandırmasıyla New York borsası günü düşüşle tamamladı.",
+      "scope": "global",
+      "tr_markers": [],
       "primary_topic": "macro",
       "topics": [
-        "macro"
+        "macro",
+        "industry"
       ],
       "matched": [
         "borsa*",
-        "piyasa*",
-        "sermaye*",
-        "spk"
+        "petrol*"
       ]
     }
   ],
@@ -448,16 +445,16 @@
       "kept": 0,
       "domestic": 0,
       "window_hours": 24,
-      "newest": "2026-09-08T21:13:00+00:00",
-      "oldest": "2026-09-08T18:08:00+00:00",
+      "newest": "2026-09-08T21:50:00+00:00",
+      "oldest": "2026-09-08T18:30:00+00:00",
       "no_date": 0,
-      "dedup_skipped": 17,
+      "dedup_skipped": 16,
       "no_topic_samples": [
+        "Trump'tan Kanada ürünlerine ihale yasağı",
+        "BM Genel Kurulunun 81. dönemi açıldı",
         "THY'den İngiltere seferleri için yolcularına uyarı",
         "Yunanistan, İtalya'dan fırkateyn alımı için anlaşma imzaladı",
-        "Ersoy'dan Antalya'daki yangınlara ilişkin mesaj: Tüm imkanlar seferber edildi",
-        "Türkiye'den Husilerin Suudi Arabistan saldırılarına kınama",
-        "Arakçi'den ABD'ye yaptırım tepkisi: Yeni çözüm daha fazla yaptırım"
+        "Ersoy'dan Antalya'daki yangınlara ilişkin mesaj: Tüm imkanlar seferber edildi"
       ],
       "error": null
     },
@@ -465,18 +462,18 @@
       "total": 25,
       "recent": 25,
       "kept": 1,
-      "domestic": 1,
+      "domestic": 0,
       "window_hours": 24,
-      "newest": "2026-09-08T21:07:00+00:00",
-      "oldest": "2026-09-08T17:03:00+00:00",
+      "newest": "2026-09-08T22:17:00+00:00",
+      "oldest": "2026-09-08T17:41:00+00:00",
       "no_date": 0,
       "dedup_skipped": 13,
       "no_topic_samples": [
+        "Trump'tan Kanada'ya ticaret hamlesi: Kamu ihalelerinden çıkarılacak",
+        "BİM’DE YENİ HAFTA HAREKETLİLİĞİ! RAFLARA GELECEK ÜRÜNLER BELLİ OLDU (BİM 15-21 EYLÜL)",
         "Tarihte bugün: 9 Eylül",
         "Dev şirketler, Türk gıdasındaki değişimi siparişe çevirecek",
-        "Yılmaz: 2 milyar Müslüman nüfusun yarısı 25 yaşın altında",
-        "JUNIOSHOW’da hedef dünya pazarlarında büyümek",
-        "Bakan Fidan, Suriyeli mevkidaşı Şeybani ile görüştü"
+        "Yılmaz: 2 milyar Müslüman nüfusun yarısı 25 yaşın altında"
       ],
       "error": null
     },
@@ -587,6 +584,27 @@
   "brent_oil": {
     "date": "2026-09-01",
     "usd_per_barrel": 96.02,
+    "previous_date": "2026-08-28",
+    "previous_usd_per_barrel": 89.75,
+    "change_pct": 6.99,
+    "changes": {
+      "week": {
+        "pct": 8.82,
+        "base_date": "2026-08-25",
+        "base_price": 88.24
+      },
+      "month": {
+        "pct": -0.96,
+        "base_date": "2026-07-31",
+        "base_price": 96.95
+      },
+      "ytd": {
+        "pct": 56.51,
+        "base_date": "2025-12-31",
+        "base_price": 61.35
+      }
+    },
+    "changes_anchor_date": "2026-09-01",
     "age_days": 7,
     "stale": true,
     "source": "EIA (via datahub.io, public domain)"
