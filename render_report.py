@@ -1164,7 +1164,7 @@ def main():
         brent_value = f"${brent['usd_per_barrel']:.2f}"
         brent_note = f"每桶美元，資料日期 {brent.get('date','')}"
         if brent.get("stale"):
-            brent_note += "（超過 5 天沒更新，留意可能過期）"
+            brent_note += "（超過 3 天沒更新，留意可能過期）"
     else:
         brent_value = "待接即時報價"
         brent_note = "能源進口是 Türkiye 逆差主因"
