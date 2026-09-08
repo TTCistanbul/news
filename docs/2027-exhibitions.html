@@ -96,6 +96,91 @@
   .scale div.s1{background:var(--t1-bg);color:var(--t1-fg);}
   .scale div.active{outline:2px solid var(--ink); outline-offset:-2px;}
 
+  /* ---------- STRATEGY ---------- */
+  .strategy{
+    max-width:920px;
+    margin:0 auto;
+    padding:44px 24px 8px;
+  }
+  .strategy .intro{
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:15px;
+    color:var(--ink-soft);
+    max-width:64ch;
+    margin:0 0 8px;
+  }
+  .strategy h2{
+    font-size:26px;
+    font-weight:600;
+    margin:28px 0 22px;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--ink);
+  }
+  .strategy-item{
+    display:grid;
+    grid-template-columns:64px 1fr;
+    gap:0 20px;
+    padding:28px 0;
+    border-bottom:1px solid var(--paper-line);
+  }
+  .strategy-item:first-of-type{padding-top:0;}
+  .strategy-item .num{
+    font-size:40px;
+    font-weight:600;
+    color:var(--brick-deep);
+    line-height:1;
+    opacity:.35;
+  }
+  .strategy-item h3{
+    font-size:19px;
+    font-weight:600;
+    margin:0 0 4px;
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .strategy-item h3 .best{
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:12px;
+    font-weight:600;
+    color:var(--t5-fg);
+    background:var(--t5-bg);
+    padding:3px 9px;
+  }
+  .strategy-item dl{
+    margin:14px 0 0;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:14px;
+  }
+  .strategy-item dt{
+    color:var(--brick);
+    font-weight:700;
+    font-size:12.5px;
+    margin-top:12px;
+  }
+  .strategy-item dt:first-child{margin-top:0;}
+  .strategy-item dd{
+    margin:4px 0 0;
+    color:var(--ink);
+  }
+  .strategy-item .shows{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:4px;
+  }
+  .strategy-item .shows span{
+    border:1px solid var(--ink-soft);
+    padding:4px 10px;
+    font-size:12.5px;
+    color:var(--ink);
+  }
+  @media(max-width:600px){
+    .strategy-item{grid-template-columns:1fr;}
+    .strategy-item .num{font-size:28px; opacity:.5;}
+  }
+
   /* ---------- CONTROLS ---------- */
   .controls{
     max-width:920px;
@@ -256,7 +341,101 @@
     <div class="s5" data-filter="5"><span class="n">★★★★★</span>最高相關</div>
     <div class="s4" data-filter="4"><span class="n">★★★★</span>高度相關</div>
     <div class="s3" data-filter="3"><span class="n">★★★</span>中度相關</div>
+    <div class="s2" data-filter="2"><span class="n">★★</span>低度相關</div>
+    <div class="s1" data-filter="1"><span class="n">★</span>較不相關</div>
   </div>
+</div>
+
+<div class="strategy">
+  <p class="intro">土耳其作為歐亞貿易樞紐與中東／東歐的製造中心，其市場特點是製造業發達但高度依賴進口「高階加工設備」與「核心工業零組件」。綜合台灣產業優勢（精密機械、半導體／電子、ICT）與土耳其製造業的強烈需求，以下為台灣企業最具競爭力、最容易打進土耳其市場的五大核心切入點。</p>
+  <h2>五大核心切入點</h2>
+
+  <article class="strategy-item">
+    <div class="num">1</div>
+    <div>
+      <h3>工具機與高階金屬加工設備 <span class="best">最佳切入點</span></h3>
+      <dl>
+        <dt>市場痛點</dt>
+        <dd>土耳其是歐洲前幾大的汽車零部件、國防航太、家電及鋼鐵加工基地。當地政府積極推動製造業升級，對高精密度、高穩定度的金屬切削與加工設備需求極大。</dd>
+        <dt>台灣優勢產品</dt>
+        <dd>五軸加工中心、CNC 車床／銑床、放電加工機（EDM）、鈑金加工設備與自動化刀庫。</dd>
+        <dt>市場效益</dt>
+        <dd>台灣工具機在土耳其已有長期極高口碑（性價比優於德日，品質遠高於當地或低價競爭者），是台灣對土耳其出口的最大宗之一。</dd>
+        <dt>推薦展覽</dt>
+        <dd class="shows"><span>Konya Maktek（康亞工具機展）</span><span>WIN EURASIA（歐亞工業自動化展）</span></dd>
+      </dl>
+    </div>
+  </article>
+
+  <article class="strategy-item">
+    <div class="num">2</div>
+    <div>
+      <h3>智慧製造與工業 4.0 解決方案（軟硬整合）</h3>
+      <dl>
+        <dt>市場痛點</dt>
+        <dd>土耳其傳統製造廠正面臨勞工成本上升與歐洲客戶對「碳足跡／能源效益」的嚴格要求，急需數位轉型以符合歐盟供應鏈標準。</dd>
+        <dt>台灣優勢產品</dt>
+        <dd>工業控制與感測器：可程式控制器（PLC）、變頻器、伺服馬達、工業電腦（IPC）；智慧工廠系統：MES（製造執行系統）、SCADA 監控系統、AI 瑕疵檢測系統（AOI）、智慧能源管理。</dd>
+        <dt>市場效益</dt>
+        <dd>以軟硬體整合方案切入，能避開單純硬體的價格戰，幫助土耳其在地大廠（如汽車、紡織、家電廠）升級。</dd>
+        <dt>推薦展覽</dt>
+        <dd class="shows"><span>WIN EURASIA</span><span>Smart Factory Show（智慧工廠展）</span></dd>
+      </dl>
+    </div>
+  </article>
+
+  <article class="strategy-item">
+    <div class="num">3</div>
+    <div>
+      <h3>汽車零組件、汽配維修設備與電動車（EV）供應鏈</h3>
+      <dl>
+        <dt>市場痛點</dt>
+        <dd>土耳其是 Ford、Fiat、Renault、Toyota 等國際車廠的歐洲生產基地，且土耳其自創電動車品牌 TOGG 正快速擴張，極力建構在地供應鏈。</dd>
+        <dt>台灣優勢產品</dt>
+        <dd>AM（售後維修）零組件：車燈、衝壓件、保險桿、橡塑膠件；車電子：車載資訊系統（In-Vehicle Infotainment）、電池管理系統（BMS）、ADAS 驅動模組、充電樁內部關鍵模組。</dd>
+        <dt>市場效益</dt>
+        <dd>台灣 AM 車用零組件全球第一，同時在電動車電子模組具備強大研發能量，非常契合土耳其傳統汽配與新興 EV 供應鏈的需求。</dd>
+        <dt>推薦展覽</dt>
+        <dd class="shows"><span>Automechanika Istanbul（國際汽配展）</span><span>World of Mobility（未來移動出行展）</span></dd>
+      </dl>
+    </div>
+  </article>
+
+  <article class="strategy-item">
+    <div class="num">4</div>
+    <div>
+      <h3>塑膠與包裝加工機械關鍵零組件</h3>
+      <dl>
+        <dt>市場痛點</dt>
+        <dd>土耳其是歐洲第二大塑膠加工國，食品與消費品包裝出口強勁，但高階射出成型與包裝機械的螺桿、模具及控制模組仍仰賴外購。</dd>
+        <dt>台灣優勢產品</dt>
+        <dd>全電式射出成型機、高精密塑膠模具、擠出機螺桿料管、自動化包裝機械。</dd>
+        <dt>市場效益</dt>
+        <dd>台灣塑膠機械以高耐用度、節能（全電式）著稱，極具競爭優勢。</dd>
+        <dt>推薦展覽</dt>
+        <dd class="shows"><span>Plast Eurasia İstanbul（國際塑膠展）</span><span>Avrasya Ambalaj（歐亞包裝工業展）</span></dd>
+      </dl>
+    </div>
+  </article>
+
+  <article class="strategy-item">
+    <div class="num">5</div>
+    <div>
+      <h3>綠色能源、儲能與環保回收技術</h3>
+      <dl>
+        <dt>市場痛點</dt>
+        <dd>受限於歐盟「碳邊境調整機制（CBAM）」，土耳其鋼鐵、鋁業、紡織及塑膠業面臨巨大的減碳壓力，且土耳其太陽能與風力發電蓬勃發展，亟需儲能系統（BESS）。</dd>
+        <dt>台灣優勢產品</dt>
+        <dd>太陽能逆變器（Inverter）、工業用儲能系統、綠能管理系統、廢塑膠／廢布料的高效回收再利用設備。</dd>
+        <dt>市場效益</dt>
+        <dd>掌握「減碳與綠能」議題，能迅速打開土耳其高科技與出口型大廠的採購大門。</dd>
+        <dt>推薦展覽</dt>
+        <dd class="shows"><span>Replast Eurasia（塑膠與纖維回收展）</span><span>ISK-SODEX（暖通與綠能系統展）</span></dd>
+      </dl>
+    </div>
+  </article>
+
+  <h2 style="margin-top:36px;">2027 展覽清單</h2>
 </div>
 
 <div class="controls">
@@ -301,12 +480,41 @@ const DATA = [
   {tier:3, name:"Comvex", tr:"Comvex Ticari Araçlar Ve Mobilite Fuarı", date:"2027/09/09–09/11", city:"İSTANBUL · İstanbul Fuar Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"商用車零配件展，與台灣汽配業有部分重疊。"},
   {tier:3, name:"Roadxpo", tr:"Roadxpo Araç Üstü Ekipmanları Fuarı", date:"2027/09/22–09/25", city:"KONYA · Tüyap Konya Uluslararası Fuar Merkezi", org:"Tüyap Konya Fuarcılık", url:"http://www.tuyap.com.tr", why:"車載特種設備，屬較利基型市場。"},
   {tier:3, name:"Zuchex", tr:"Zuchex Uluslararası Ev Ve Mutfak Eşyaları Fuarı", date:"2027/09/15–09/18", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"", url:"", why:"家用品／餐廚具，台灣中小型出口商有涉入。"},
+
+  // ---- 2 stars ----
+  {tier:2, name:"Asansör İstanbul", tr:"Asansör İstanbul Uluslararası Asansör Fuarı", date:"2027/05/06–05/09", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Informa Markets", url:"http://www.asansoristanbul.com", why:"電梯零組件，台灣廠商出口較少涉入。"},
+  {tier:2, name:"伊斯坦堡國際傢俱展 (IFF)", tr:"Uluslararası İstanbul Mobilya Fuarı", date:"2027/01/19–01/23", city:"İSTANBUL · Tüyap Fuar Center / Istanbul Expo Center", org:"Tüyap & Mos Fuarcılık", url:"http://www.tuyap.com.tr", why:"家具貿易以在地採購為主，非台灣製造強項。"},
+  {tier:2, name:"Avrasya Cam", tr:"Avrasya Cam Uluslararası Cam Ürünleri Fuarı", date:"2027/11/20–11/23", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Reed Tüyap Fuarcılık", url:"http://www.tuyap.com.tr", why:"玻璃產品，台灣涉入程度低。"},
+  {tier:2, name:"Avrasya Pencere & Kapı", tr:"Avrasya Pencere & Avrasya Kapı Fuarı", date:"2027/11/20–11/23", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Reed Tüyap Fuarcılık", url:"http://www.tuyap.com.tr", why:"門窗建材，多為在地供應鏈。"},
+  {tier:2, name:"Turkeybuild Istanbul", tr:"Yapı Fuarı - Turkeybuild İstanbul 2027", date:"2027/04/27–04/30", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"ICA Events", url:"http://www.icaevents.com.tr", why:"建材以在地供應為主，台灣涉入有限。"},
+  {tier:2, name:"Tentexpo World", tr:"Tentexpo World - Tente, Çadır Sistemleri Fuarı", date:"2027/11/10–11/13", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Tüyap & Teknik Fuarcılık", url:"https://tentexpoworld.com", why:"遮陽帳篷系統，屬利基市場。"},
+  {tier:2, name:"Foodist İstanbul", tr:"Foodist İstanbul Gıda Ve İçecek Ürünleri Fuarı", date:"2027/09/01–09/04", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Tüyap & ALZ Grup", url:"http://www.tuyap.com.tr", why:"食品貿易非台灣對土出口大宗。"},
+  {tier:2, name:"Beauty Istanbul", tr:"Beauty İstanbul Uluslararası Kozmetik Fuarı", date:"2027/06/03–06/05", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"İpekyolu Fuarcılık", url:"http://www.beauty-istanbul.com", why:"美容美髮消費品，相關度較低。"},
+  {tier:2, name:"Franchise İstanbul", tr:"Franchıse İstanbul Expo", date:"2027/03/18–03/21", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Tüyap İhtisas Fuarları", url:"http://www.tuyap.com.tr", why:"連鎖加盟屬服務業性質，與貿易促進關聯較弱。"},
+  {tier:2, name:"Karavanist İstanbul", tr:"Karavanist İstanbul Uluslararası Karavan Ve Kamp Fuarı", date:"2027/02/02–02/07", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"消費性戶外用品，與貿易推廣關聯度低。"},
+  {tier:2, name:"Nobel Master Shoes", tr:"Nobel Master Shoes - Ayakkabı & Çanta Moda Fuarı", date:"2027/10/06–10/09", city:"KONYA · Tüyap Konya Uluslararası Fuar Merkezi", org:"Nobel Expo", url:"http://www.nobelexpo.com", why:"時尚消費品，非貿易中心典型業務範疇。"},
+
+  // ---- 1 star ----
+  {tier:1, name:"Konya Tarım（康亞國際農機展）", tr:"Konya Tarım - Uluslararası Tarım Fuarı", date:"2027/04/06–04/10", city:"KONYA · Tüyap Konya Uluslararası Fuar Merkezi", org:"Tüyap Konya Fuarcılık", url:"http://www.tuyap.com.tr", why:"農機非台灣出口強項，土耳其本身農業機械產業發達。"},
+  {tier:1, name:"Eskişehir 農牧科技展", tr:"Eskişehir Tarım, Hayvancılık Ve Teknolojileri Fuarı", date:"2027/09/07–09/11", city:"ESKİŞEHİR · ETO-Tüyap Fuar Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"農牧產業，台灣出口關聯度低。"},
+  {tier:1, name:"Agroshow Eurasia", tr:"Agroshow Eurasıa Tarım Makineleri Fuarı", date:"2027/09/29–10/02", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"農機展，非台灣主力出口項目。"},
+  {tier:1, name:"Adana 農業展", tr:"Adana Tarım – Sera & Bahçe Fuarı", date:"2027/11/03–11/07", city:"ADANA · Adana Uluslararası Fuar Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"溫室園藝與畜牧展，關聯度低。"},
+  {tier:1, name:"中國出口商品展", tr:"Çin İhraç Ürünleri Fuarı", date:"2027/05/06–05/09", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"MCA Expo", url:"http://www.mcaexpo.com", why:"中國廠商展會，與台灣貿易推廣關聯不大，甚至可能為競爭關係。"},
+  {tier:1, name:"第 19 屆庫庫羅瓦圖書展", tr:"Çukurova Kitap Fuarı", date:"2027/01/09–01/17", city:"ADANA · Adana Uluslararası Fuar Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"圖書出版展，與貿易促進業務關聯性最低。"},
+  {tier:1, name:"第 24 屆布爾薩圖書展", tr:"Bursa Kitap Fuarı", date:"2027/04/10–04/18", city:"BURSA · Merinos Atatürk Kongre Merkezi", org:"Tüyap Fuarlar Yapım", url:"http://www.tuyapbursa.com.tr", why:"圖書出版類，與貿易業務關聯性低。"},
+  {tier:1, name:"第 6 屆埃斯基謝希爾圖書展", tr:"Eskişehir Kitap Fuarı", date:"2027/05/08–05/16", city:"ESKİŞEHİR · ETO-Tüyap Fuar Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"圖書出版類，與貿易業務關聯性低。"},
+  {tier:1, name:"第 11 屆迪亞巴克爾圖書展", tr:"Diyarbakır Kitap Fuarı", date:"2027/09/25–10/03", city:"DİYARBAKIR · Mezopotamya Fuar Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"圖書出版類，與貿易業務關聯性低。"},
+  {tier:1, name:"代尼茲利圖書展", tr:"Denizli Kitap Fuarı", date:"2027/10/16–10/24", city:"DENİZLİ · EGS Fuar Alanı", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"圖書出版類，與貿易業務關聯性低。"},
+  {tier:1, name:"第 44 屆伊斯坦堡國際圖書展", tr:"İstanbul Uluslararası Kitap Fuarı", date:"2027/12/11–12/19", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"圖書出版類，與貿易業務關聯性低。"},
+  {tier:1, name:"Icfe 2027（國際地毯與地面鋪設展）", tr:"International Carpet And Flooring Expo", date:"2027/01/05–01/08", city:"İSTANBUL · İstanbul Fuar Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"地毯地板類消費建材，與台灣出口關聯度低。"},
 ];
 
 const TIER_META = {
   5:{label:"最高相關", desc:"台灣強項產業，建議重點布局"},
   4:{label:"高度相關", desc:"具實質出口對接機會"},
   3:{label:"中度相關", desc:"部分產業重疊，可視資源評估"},
+  2:{label:"低度相關", desc:"間接關聯或新興觀察領域"},
+  1:{label:"較不相關", desc:"與現行出口結構重疊度低"},
 };
 
 const tiersEl = document.getElementById('tiers');
@@ -331,7 +539,7 @@ function render(){
   const q = searchInput.value.trim().toLowerCase();
   let shown = 0;
 
-  for(let t = 5; t >= 3; t--){
+  for(let t = 5; t >= 1; t--){
     if(activeTier && activeTier !== t) continue;
     const items = DATA.filter(d => d.tier === t && (
       !q || (d.name + d.tr + d.city + d.why + d.org).toLowerCase().includes(q)
