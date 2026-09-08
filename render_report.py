@@ -292,7 +292,7 @@ def _pct_change(cur, old):
     return (cur - old) / old * 100
 
 
-def render_tw_tr_trade(data: dict | None) -> str:
+def render_tw_tr_trade(data: dict | None, sectors_data: dict | None = None) -> str:
     months = (data or {}).get("months") or []
     if not months:
         return (
@@ -355,12 +355,195 @@ def render_tw_tr_trade(data: dict | None) -> str:
         <div class="delta">正值＝台灣出超</div>
       </div>
     </div>
+    {render_tw_tr_annual_chart(sectors_data)}
+    {render_tw_tr_sector_table(sectors_data)}
     <p class="grp-note">資料來源：{source_note or '未註明'}　·　
       <a href="https://portal.sw.nat.gov.tw/APGA/GA30" target="_blank" rel="noopener noreferrer">
       查看財政部關務署官方查詢系統（可自行查核或查詢更細分類）</a>{exim_line}</p>'''
 
 
-# 貿易俱樂部（輸出入銀行）土耳其報告——這是獨立的狀態檔案
+# ── 台灣—Türkiye 貿易：主要出口產業（HS 21 類）＋ 年度趨勢 ──
+# 2026-09 新增。跟 tw-tr-trade.json（單月出口/進口總額）是分開的檔案，
+# 因為這份是按 HS 21 類拆分、且橫跨多個年度（GA30 查詢系統可以查「按年」
+# 不限當年），資料形狀完全不同：tw-tr-trade.json 是「逐月一筆」，這份是
+# 「逐年一筆，年內再拆 21 類」。一樣是人工查詢後手動維護，不是自動抓取。
+#
+# 格式（單位：千美元，年份用西元年）：
+# {
+#   "sections": {"01": "活動物；動物產品", "02": "植物產品", ...},  // HS 21 類官方名稱，GA30 查詢畫面下拉選單裡就有
+#   "years": [
+#     {
+#       "year": "2026",
+#       "period_label": "115年1-7月（初步值）",
+#       "partial": true,            // 是否為未滿一整年的資料
+#       "months_covered": 7,        // 涵蓋幾個月，用來判斷能不能跟另一年比較年增率
+#       "exports_by_section": {"01": 123, "02": 456, ...},
+#       "imports_by_section": {"01": 78, ...}
+#     },
+#     ...
+#   ]
+# }
+TW_TR_SECTORS_PATH = DATA_DIR / "tw-tr-trade-sectors.json"
+
+
+def load_tw_tr_sectors() -> dict | None:
+    if not TW_TR_SECTORS_PATH.exists():
+        return None
+    try:
+        return json.loads(TW_TR_SECTORS_PATH.read_text(encoding="utf-8"))
+    except Exception as e:
+        print(f"! {TW_TR_SECTORS_PATH.name} 讀取失敗，略過：{e}")
+        return None
+
+
+def _tw_tr_top5(direction_key: str, latest: dict, prev: dict | None,
+                 sections: dict, comparable: bool) -> tuple[list[dict], int]:
+    """算某一年（latest）某個方向（出口或進口）的前五大類別排名。
+    年增率只在 comparable=True（跟上一筆資料涵蓋的月數一致）時才計算，
+    否則整批都回傳 None，前端顯示「—」，不要拿「7個月」跟「12個月」
+    硬算出一個看似合理、實則誤導的成長率。"""
+    by_sec = latest.get(direction_key) or {}
+    total = sum(by_sec.values())
+    ranked = sorted(by_sec.items(), key=lambda kv: kv[1], reverse=True)[:5]
+    rows = []
+    for code, val in ranked:
+        pct = (val / total * 100) if total else 0
+        yoy = None
+        if comparable and prev:
+            prev_val = (prev.get(direction_key) or {}).get(code)
+            if prev_val:
+                yoy = (val - prev_val) / prev_val * 100
+        rows.append({
+            "code": code,
+            "name": sections.get(code, f"第{code}類"),
+            "value": val,
+            "share_pct": pct,
+            "yoy_pct": yoy,
+        })
+    return rows, total
+
+
+def render_tw_tr_annual_chart(sectors_data: dict | None) -> str:
+    """年度出口／進口／貿易餘額趨勢圖，Chart.js 長條圖(出口/進口)疊加
+    折線圖(貿易餘額)，樣式比照使用者提供的 Excel 圖範例。"""
+    years = (sectors_data or {}).get("years") or []
+    # comparison_only=True 的項目（例如額外查的「114年1-7月」，純粹是為了
+    # 讓 115年1-7月 有同期資料可算年增率）不畫進年度趨勢圖——夾在兩個
+    # 全年度長條中間會顯得莫名變矮，誤導讀者，這種輔助資料只給
+    # render_tw_tr_sector_table() 的年增率計算用。
+    years = [y for y in years if not y.get("comparison_only")]
+    if not years:
+        return ""
+
+    labels, exp_vals, imp_vals, bal_vals = [], [], [], []
+    for y in years:
+        exp_total = sum((y.get("exports_by_section") or {}).values()) / 1000  # 千美元 -> 百萬美元
+        imp_total = sum((y.get("imports_by_section") or {}).values()) / 1000
+        labels.append(y.get("period_label") or y.get("year", ""))
+        exp_vals.append(round(exp_total, 1))
+        imp_vals.append(round(imp_total, 1))
+        bal_vals.append(round(exp_total - imp_total, 1))
+
+    chart_data = {
+        "labels": labels,
+        "datasets": [
+            {"type": "bar", "label": "出口金額（百萬美元）", "data": exp_vals,
+             "backgroundColor": "#3b82f6", "yAxisID": "y", "order": 2},
+            {"type": "bar", "label": "進口金額（百萬美元）", "data": imp_vals,
+             "backgroundColor": "#f59e0b", "yAxisID": "y", "order": 2},
+            {"type": "line", "label": "貿易餘額／出超（百萬美元）", "data": bal_vals,
+             "borderColor": "#16a34a", "backgroundColor": "#16a34a",
+             "yAxisID": "y1", "tension": 0.3, "order": 1},
+        ],
+    }
+    chart_json = json.dumps(chart_data, ensure_ascii=False)
+
+    return f'''    <div class="table-wrapper" style="margin-top: 1.25rem; margin-bottom: 0.5rem;">
+      <canvas id="twTrAnnualChart" height="110"></canvas>
+    </div>
+    <script>
+    (function() {{
+      var el = document.getElementById('twTrAnnualChart');
+      if (!el || typeof Chart === 'undefined') return;
+      var d = {chart_json};
+      new Chart(el.getContext('2d'), {{
+        data: {{ labels: d.labels, datasets: d.datasets }},
+        options: {{
+          responsive: true,
+          interaction: {{ mode: 'index', intersect: false }},
+          scales: {{
+            y: {{ position: 'left', title: {{ display: true, text: '出口／進口（百萬美元）' }} }},
+            y1: {{ position: 'right', title: {{ display: true, text: '貿易餘額（百萬美元）' }},
+                   grid: {{ drawOnChartArea: false }} }}
+          }},
+          plugins: {{ legend: {{ position: 'bottom' }} }}
+        }}
+      }});
+    }})();
+    </script>'''
+
+
+def render_tw_tr_sector_table(sectors_data: dict | None) -> str:
+    """出口前五大 HS 類別排名表，放在「06 台灣—Türkiye 雙邊貿易」卡片裡，
+    緊接在貿易出超那三張指標卡下面。"""
+    years = (sectors_data or {}).get("years") or []
+    if not years:
+        return ""
+    sections = sectors_data.get("sections") or {}
+    latest = years[-1]
+    prev = years[-2] if len(years) >= 2 else None
+    comparable = (
+        prev is not None
+        and prev.get("partial") == latest.get("partial")
+        and prev.get("months_covered") == latest.get("months_covered")
+    )
+    rows, _total = _tw_tr_top5("exports_by_section", latest, prev, sections, comparable)
+    if not rows:
+        return ""
+
+    period_label = html.escape(latest.get("period_label") or latest.get("year", ""))
+    trs = []
+    for i, r in enumerate(rows, 1):
+        name = html.escape(r["name"])
+        if r["yoy_pct"] is None:
+            yoy_html = '<span class="flat">—</span>'
+        else:
+            cls = "up" if r["yoy_pct"] > 0 else ("down" if r["yoy_pct"] < 0 else "flat")
+            yoy_html = f'<span class="{cls}">{r["yoy_pct"]:+.1f}%</span>'
+        trs.append(f'''          <tr>
+            <td>{i}</td>
+            <td>第{r["code"]}類</td>
+            <td>{name}</td>
+            <td>{r["value"]:,} 千美元</td>
+            <td>{r["share_pct"]:.2f}%</td>
+            <td>{yoy_html}</td>
+          </tr>''')
+
+    yoy_note = "" if comparable else (
+        f'<p class="grp-note" style="margin-top:0.4rem;">'
+        f'年增率因對比期間資料涵蓋月份不一致（例如今年僅到 {latest.get("months_covered", "?")} 月、'
+        f'去年為全年 12 個月），無法公平比較，暫顯示「—」；如需完整年增率，'
+        f'請額外查詢去年同期（1 月至 {latest.get("months_covered", "?")} 月）資料補齊。</p>'
+    )
+
+    return f'''    <p class="grp-note" style="margin-top:1.1rem; margin-bottom:0.4rem; font-weight:600;">
+      台灣出口 Türkiye 前五大產業（{period_label}）</p>
+    <div class="table-wrapper">
+      <table class="tbl-narrow">
+        <thead>
+          <tr>
+            <th>排名</th><th>貨品號列</th><th>產業別</th>
+            <th>累計出口金額</th><th>出口占比</th><th>年增率</th>
+          </tr>
+        </thead>
+        <tbody>
+{chr(10).join(trs)}
+        </tbody>
+      </table>
+    </div>
+    {yoy_note}'''
+
+
 # （data/_eximclub_seen.json，由 fetch_daily.py 每天檢查、只在真的出現
 # 新報告時更新），不是某一天的每日資料，所以不管今天有沒有新報告，
 # 永遠顯示「目前已知最新一期」，不會因為不是剛好更新的那天就消失。
@@ -1017,7 +1200,11 @@ def main():
     # 3. 台灣—Türkiye 雙邊貿易（人工每月維護，跟上面的 AI 區塊無關，
     #    不管 analysis 檔案存不存在都要跑）
     tw_tr_data = tw_tr_data_early
-    html_text = replace_block(html_text, "TW_TR_TRADE", render_tw_tr_trade(tw_tr_data))
+    tw_tr_sectors_data = load_tw_tr_sectors()
+    html_text = replace_block(
+        html_text, "TW_TR_TRADE",
+        render_tw_tr_trade(tw_tr_data, tw_tr_sectors_data)
+    )
 
     # 產業動態：彙整過去 7 天各天的分析檔案，獨立於「今天」有沒有分析檔案，
     # 就算今天 Gemini 那步失敗、沒有今天的 -analysis.json，前幾天有資料
