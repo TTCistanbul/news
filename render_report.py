@@ -1090,6 +1090,14 @@ def main():
             # 官方已經公布、但 EVDS 序列還沒跟上（或整個抓失敗）
             _idx = len(_official_cpi) - 1
         if _idx is not None:
+            # 覆蓋之前先對照：官方值跟自算值差太多，代表其中一邊填錯了
+            # （手填最容易打錯字，或月份填錯行）。兩者本來只該差在四捨五入
+            # 的尾數上，超過 0.1pp 就值得看一眼。
+            if cpi_yoy_now is not None and abs(_official_cpi[_idx][1] - cpi_yoy_now) > 0.1:
+                print(f"! CPI 對照不符：indicators-manual.json 手填 "
+                      f"{_official_cpi[_idx][1]:.2f}%，EVDS 指數自算 "
+                      f"{cpi_yoy_now:.2f}%（{_official_cpi[_idx][0]}）——"
+                      f"請確認手填的月份與數字", file=sys.stderr)
             cpi_yoy_now = _official_cpi[_idx][1]
             cpi_yoy_prev = _official_cpi[_idx - 1][1] if _idx >= 1 else None
             cpi_month_label = f"{int(_official_cpi[_idx][0].split('-')[1])}月"
@@ -1354,11 +1362,41 @@ def main():
         v = (manual.get(key) or {}).get(field)
         return html.escape(str(v)) if v not in (None, "") else default
 
-    # 核心通膨改成讀逐月序列，「較上期」由程式跟前一個月比，不再手寫
-    # 「下降」這種沒有數字的字串（手寫的那種，數字更新了但字忘了改也
-    # 看不出來）。舊格式（單一 value/delta 欄位）仍然吃得下，退回去讀。
+    # 核心通膨 B 指標。優先用 EVDS 序列（TP.FE25.OKTG03）自己算年增率，
+    # 抓不到才退回 indicators-manual.json 的手填序列，再退回舊格式的
+    # 單一 value/delta 欄位。三層都吃得下，換來源不會讓頁面開天窗。
+    _core_series = payload.get("macro", {}).get("core_cpi_b") or []
+    _core_vals = [e["value"] for e in _core_series if "value" in e]
+
+    def _core_yoy(i: int):
+        """核心通膨指數第 i 筆（負索引）相對去年同月的年增率。"""
+        j = i - 12
+        if len(_core_vals) >= abs(j) and _core_vals[j]:
+            return (_core_vals[i] - _core_vals[j]) / _core_vals[j] * 100
+        return None
+
+    _core_now = _core_yoy(-1) if _core_vals else None
+    _core_prev = _core_yoy(-2) if _core_vals else None
     _core_months = _manual_months("core_cpi")
-    if _core_months:
+
+    if _core_now is not None:
+        core_cpi_value = f"{_core_now:.2f}%"
+        core_cpi_yoy = f"{_core_now:.2f}%"
+        core_cpi_month = _month_label(str(_core_series[-1].get("date", "")))
+        if _core_prev is not None:
+            _cd = _core_now - _core_prev
+            core_cpi_delta, core_cpi_delta_cls = _pp(_cd), _delta_cls(_cd)
+        else:
+            core_cpi_delta, core_cpi_delta_cls = "—", "flat"
+        # 跟手填值對照（有填同一個月的話），差太多就在 log 提醒
+        _cm_match = re.match(r"^(\d{4}-\d{2})", str(_core_series[-1].get("date", "")))
+        if _cm_match:
+            for _mm, _vv in _core_months:
+                if _mm == _cm_match.group(1) and abs(_vv - _core_now) > 0.1:
+                    print(f"! 核心通膨對照不符：indicators-manual.json 手填 "
+                          f"{_vv:.2f}%，EVDS 序列自算 {_core_now:.2f}%"
+                          f"（{_mm}）", file=sys.stderr)
+    elif _core_months:
         _cm, _cv = _core_months[-1]
         core_cpi_value = f"{_cv:.2f}%"
         core_cpi_yoy = f"{_cv:.2f}%"
