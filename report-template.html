@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -9,10 +10,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@200;300;400;500;700&family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-<!-- 06 台灣—Türkiye 雙邊貿易的年度趨勢圖用，render_report.py 的
-     render_tw_tr_annual_chart() 會產生 <canvas id="twTrAnnualChart"> 跟
-     初始化用的 <script>，需要 Chart.js 先載入才能執行 -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <style>
 :root {
   --bg-page: #eef0f2;
@@ -1145,9 +1142,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="delta">一週附賣回已於 8/23 恢復，隔夜利率回落至政策利率附近</div>
     </div>
     <div class="indicator-cell">
-      <div class="val {{TWTR_COLOR}}">{{TWTR_VALUE}}</div>
-      <div class="lbl">台灣對 Türkiye 貿易{{TWTR_LABEL}}（{{TWTR_MONTH_LABEL}}）</div>
-      <div class="delta">{{TWTR_DELTA}}</div>
+      <div class="val {{GDP_COLOR}}">{{GDP_VALUE}}</div>
+      <div class="lbl">Türkiye 季度 GDP 年增率（{{GDP_QUARTER_LABEL}}）</div>
+      <div class="delta">{{GDP_DELTA}}</div>
     </div>
   </div>
 
