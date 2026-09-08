@@ -1123,7 +1123,7 @@ def main():
         gdp_value, gdp_color = "—", "amber"
 
     if gdp_qoq is not None:
-        gdp_delta = f"季增 {gdp_qoq:+.1f}%"
+        gdp_delta = f"季增 {gdp_qoq:+.1f}%（未經季節調整，僅供參考）"
     elif gdp_vals:
         gdp_delta = "尚無足夠歷史資料計算季增率"
     else:
