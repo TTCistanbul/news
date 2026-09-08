@@ -230,6 +230,36 @@ def fetch_eximclub_turkey_report() -> dict | None:
     }
 
 
+def _obs_on_or_before(observations, target: dt.date, tolerance_days: int):
+    """
+    在（依日期遞增排序的）觀測值裡，找「日期 <= target」之中最接近的一筆。
+    離 target 超過 tolerance_days 就回 None——寧可讓那一格顯示「—」，也不要
+    拿一個月前的價格冒充「一週前」。假日與資料空窗是常態，所以要容忍幾天，
+    但容忍過頭就失去意義。
+    """
+    best = None
+    for d, price in observations:
+        if d <= target and (target - d).days <= tolerance_days:
+            if best is None or d > best[0]:
+                best = (d, price)
+    return best
+
+
+def _brent_change(observations, latest_date: dt.date, latest_price: float,
+                   days_back: int, tolerance_days: int) -> dict | None:
+    """回傳 {pct, base_date, base_price}，找不到合適基準就回 None。"""
+    base = _obs_on_or_before(observations,
+                             latest_date - dt.timedelta(days=days_back),
+                             tolerance_days)
+    if base is None or not base[1]:
+        return None
+    return {
+        "pct": round((latest_price - base[1]) / abs(base[1]) * 100, 2),
+        "base_date": base[0].isoformat(),
+        "base_price": base[1],
+    }
+
+
 def fetch_brent_oil() -> dict | None:
     try:
         r = requests.get(BRENT_CSV_URL, headers=UA, timeout=TIMEOUT)
@@ -243,8 +273,11 @@ def fetch_brent_oil() -> dict | None:
             print(f"✗ 布蘭特原油: CSV 欄位跟預期不同，實際標頭：{lines[0]}", file=sys.stderr)
             return None
 
-        # 不假設檔案是按日期排序好的，逐行解析後自己找最新日期，比較保險。
-        best_date, best_price = None, None
+        # 不假設檔案是按日期排序好的，逐行解析後自己排序。
+        # 這份 CSV 是 1987 年至今的完整歷史，不是只有最新一筆——週／月／
+        # 年初至今的變動全部在這裡面算完（見下方 changes），不要讓
+        # render_report 去用 data/*.json 每日快照回推。
+        observations = []
         for line in lines[1:]:
             parts = line.split(",")
             if len(parts) < 2:
@@ -257,17 +290,54 @@ def fetch_brent_oil() -> dict | None:
                 price = float(price_str)
             except ValueError:
                 continue
-            if best_date is None or d > best_date:
-                best_date, best_price = d, price
+            observations.append((d, price))
 
-        if best_date is None:
+        if not observations:
             print("✗ 布蘭特原油: CSV 裡解析不出任何一筆有效資料", file=sys.stderr)
             return None
+
+        observations.sort(key=lambda x: x[0])
+        best_date, best_price = observations[-1]
+        previous_date, previous_price = (observations[-2] if len(observations) >= 2
+                                          else (None, None))
+
+        # 日變動：對「前一個真的有報價的交易日」，不是對「昨天」，
+        # 所以週末與假日不會被誤算成持平。
+        change_pct = None
+        if previous_price:
+            change_pct = round((best_price - previous_price) / previous_price * 100, 2)
+
+        # 週／月／年初至今。三個區間的「終點」一律是 best_date（最後一筆
+        # 報價日），不是今天——資料卡住時，區間會誠實地停在報價日，而不是
+        # 拿一筆舊報價去跟今天湊出一段名不副實的期間。
+        #
+        # 年初至今的基準取「去年最後一個交易日」的收盤價（YTD 的標準定義）；
+        # 萬一 CSV 裡沒有去年的資料，退而取今年第一筆。
+        prev_year = [o for o in observations if o[0].year == best_date.year - 1]
+        this_year = [o for o in observations if o[0].year == best_date.year]
+        ytd_base = prev_year[-1] if prev_year else (this_year[0] if this_year else None)
+        ytd = None
+        if ytd_base and ytd_base[1] and ytd_base[0] != best_date:
+            ytd = {
+                "pct": round((best_price - ytd_base[1]) / abs(ytd_base[1]) * 100, 2),
+                "base_date": ytd_base[0].isoformat(),
+                "base_price": ytd_base[1],
+            }
 
         age_days = (dt.date.today() - best_date).days
         return {
             "date": best_date.isoformat(),
             "usd_per_barrel": best_price,
+            "previous_date": previous_date.isoformat() if previous_date else None,
+            "previous_usd_per_barrel": previous_price,
+            "change_pct": change_pct,
+            "changes": {
+                # 容忍天數：一週抓 5 天（吃得下連假），一個月抓 10 天。
+                "week": _brent_change(observations, best_date, best_price, 7, 5),
+                "month": _brent_change(observations, best_date, best_price, 30, 10),
+                "ytd": ytd,
+            },
+            "changes_anchor_date": best_date.isoformat(),
             "age_days": age_days,
             # 2026-09-08 從 5 天收緊到 3 天。原本 5 天太寬鬆，資料卡住
             # 三四天都還不會被標記，容易沒注意到。收到 2 天又太緊——EIA
@@ -822,6 +892,13 @@ def main():
     payload["brent_oil"] = brent
     if brent:
         print(f"✓ 布蘭特原油 ${brent['usd_per_barrel']:.2f}（{brent['date']}）", file=sys.stderr)
+        ch = brent.get("changes") or {}
+        parts = []
+        for label, key in (("週", "week"), ("月", "month"), ("年初至今", "ytd")):
+            c = ch.get(key)
+            parts.append(f"{label} {c['pct']:+.1f}%（基準 {c['base_date']} ${c['base_price']:.2f}）"
+                          if c else f"{label} —")
+        print("   ↳ " + "  ".join(parts), file=sys.stderr)
     else:
         payload["errors"].append("brent_oil: 抓取失敗")
 
