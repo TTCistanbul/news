@@ -269,7 +269,14 @@ def fetch_brent_oil() -> dict | None:
             "date": best_date.isoformat(),
             "usd_per_barrel": best_price,
             "age_days": age_days,
-            "stale": age_days > 5,  # 原油現貨價工作日更新，超過 5 天當作可能卡住
+            # 2026-09-08 從 5 天收緊到 3 天。原本 5 天太寬鬆，資料卡住
+            # 三四天都還不會被標記，容易沒注意到。收到 2 天又太緊——EIA
+            # 只在工作日更新，週五收盤後到週一之間本來就有 2-3 天的正常
+            # 空窗（六、日不更新，週一的資料通常也要等到當天收盤後才有），
+            # 訂在 2 天會導致每週一早上都被誤判成「過期」，反而製造假警報。
+            # 3 天可以吃下這個正常的週末空窗，只有真的卡超過一個週末才會
+            # 觸發。
+            "stale": age_days > 3,
             "source": "EIA (via datahub.io, public domain)",
         }
     except Exception as e:
