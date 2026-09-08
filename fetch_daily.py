@@ -3,7 +3,7 @@
 Türkiye 經濟簡報 — 每日資料抓取
 
 輸出 data/YYYY-MM-DD.json，供模板套用。
-排程：排程：每天 05:30 UTC = 08:30 TRT（Türkiye 全年 UTC+3，不換日光節約時間）
+排程：每天 07:30 UTC = 10:30 TRT（Türkiye 全年 UTC+3，不換日光節約時間）
 　　　此檔案本身不含排程邏輯，實際觸發時間由外部排程器（如 Windows工作排程器）
 　　　設定，這裡的時間只是文件記錄，改排程請直接去排程器改觸發器。
 
@@ -816,9 +816,16 @@ def main():
     if not args.no_evds and key:
         end = dt.date.today()
         start = end - dt.timedelta(days=400)
+        # 季度序列（目前只有 gdp_growth）算年增率要往前推 4 筆，400 天大約
+        # 只夠抓到 4-5 季，index 不夠長會讓年增率算不出來（2026-09-08 實測
+        # 踩到：季增率有算出來但年增率是空的，因為季增只需要往前推 1 筆，
+        # 資料再少都夠用，年增率的門檻比較高）。季度序列改抓 3 年（約
+        # 12-13 季），留足夠的緩衝。
+        start_quarterly = end - dt.timedelta(days=1100)
         for name, (code, freq) in EVDS_SERIES.items():
+            series_start = start_quarterly if freq == 6 else start
             try:
-                payload["macro"][name] = fetch_evds(code, start, end, key, freq)[-14:]
+                payload["macro"][name] = fetch_evds(code, series_start, end, key, freq)[-14:]
                 print(f"✓ EVDS {name}", file=sys.stderr)
                 if name == "trade_imports" and payload["macro"].get("trade_exports") and payload["macro"][name]:
                     exp_v = payload["macro"]["trade_exports"][-1].get("value")
