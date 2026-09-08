@@ -5,10 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Türkiye 經濟情報簡報</title>
 <!-- TODO: 換成自己的 favicon 路徑 -->
-<link rel="icon" type="image/png" href="taitra-logo.png">
+<link rel="icon" type="image/png" href="/news/taitra-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@200;300;400;500;700&family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<!-- 06 台灣—Türkiye 雙邊貿易的年度趨勢圖用，render_report.py 的
+     render_tw_tr_annual_chart() 會產生 <canvas id="twTrAnnualChart"> 跟
+     初始化用的 <script>，需要 Chart.js 先載入才能執行 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <style>
 :root {
   --bg-page: #eef0f2;
@@ -1079,12 +1083,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="topbar">
     <div class="brand">
       <!-- TODO: 換成自己的 logo -->
-      <img src="taitra-logo.png" alt="TAITRA 中華民國對外貿易發展協會">
+      <img src="/news/taitra-logo.png" alt="TAITRA 中華民國對外貿易發展協會">
       <span class="divider"></span>
       <span class="status"><span class="dot"></span>DAILY&nbsp;ECON</span>
     </div>
     <div class="right">
-      <div class="meta">2026-09-08 13:13 TRT</div>
+      <div class="meta">2026-09-08 15:09 TRT</div>
       <button class="menu-btn" id="menuBtn" aria-label="歷史簡報" aria-expanded="false">
         <span class="bars"><span></span><span></span><span></span></span>
       </button>
@@ -1149,7 +1153,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- AI:TODAY_TAKE:START 每天由 generate_analysis.py 整段覆寫，不要手動編輯這段文字本身 -->
   <p class="assessment-text">
-    今日土耳其匯率與外匯市場持續波動，美元與歐元雙雙觸及新高，引發市場對貨幣政策走向的關注。同時，最新發布的經濟數據顯示化學與整體出口表現穩健，但企業面臨的融資與營運成本壓力仍需持續追蹤。
+    今日土耳其市場聚焦於供應鏈與原物料成本變動，其中鋼鐵與肥料供應管道受到關注。<strong>同時，多項產業外資投入與國防技術轉移至民間領域的計畫，展現出土耳其在製造業升級的企圖心。</strong>對台商而言，相關原物料價格波動與外人投資政策值得持續追蹤。
   </p>
 <!-- AI:TODAY_TAKE:END -->
 
@@ -1173,7 +1177,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <!-- AI:SUMMARY:START -->
     <p class="summary-text">
- 根據最新統計，土耳其今年前 <span class="data">8</span> 個月整體出口額達到 <span class="data">1,850</span> 億美元，其中化學產業出口額較去年同期成長 <span class="data">4.6%</span> 至 <span class="data">228</span> 億美元。在總體經濟方面，TÜİK 指出黃金在 <span class="data">8</span> 月份為各金融投資工具中帶來最高實際報酬率，而外匯市場上美元兌土耳其里拉匯率逼近 <span class="data">48.45</span>，市場正密切關注 TCMB 即將公布的利率決策。
+ 根據土耳其最新經濟與貿易動態，土耳其與俄羅斯正協商解除部分肥料出口限制以緩解供應挑戰；同時，建築材料產業在7月達成 <span class="data">32 億美元</span>的出口額。在製造與融資方面，亞洲基礎設施投資銀行向土耳其提供 <span class="data">7,500 萬美元</span>貸款，用於興建綠色先進製造廠，而土耳其民航機隊則擴增至 <span class="data">846</span> 架。
     </p>
 <!-- AI:SUMMARY:END -->
   </div>
@@ -1201,39 +1205,48 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <!-- AI:KEY_EVENTS:START 每天由 generate_analysis.py 整段覆寫 tbody 內容 -->
           <tr>
             <td>1</td>
-            <td class="dir-neutral">⚪</td>
+            <td class="dir-red">🔴</td>
             <td><span class="badge badge-major">重大</span></td>
-            <td><a href="https://www.sozcu.com.tr/euro-ve-dolar-pes-pese-kirdi-p356327" target="_blank" rel="noopener noreferrer">Sözcü Ekonomi</a></td>
-            <td>土耳其外匯市場再創新高，歐元與美元雙雙走升</td>
-            <td>匯市開盤呈現走高趨勢，其中歐元兌里拉升至 56.30 創下新高紀錄，美元兌里拉也攀升至 48.45 左右。</td>
-            <td>匯率波動可能增加台商在當地的匯兌風險與採購成本，建議密切評估報價與避險策略。</td>
+            <td><a href="https://www.dunya.com/ekonomi/rusya-turkiyeye-ozel-kapiyi-aciyor-kritik-urun-kisitlama-kalkiyor-haberi-839192" target="_blank" rel="noopener noreferrer">Dünya</a></td>
+            <td>俄羅斯擬解除對土耳其特定肥料之出口限制</td>
+            <td>由於伊朗戰爭後荷姆茲海峽關閉及俄羅斯出口限制導致土耳其 gübre（肥料）供應管道緊縮，安卡拉與莫斯科正透過新協議解除氮肥與磷肥的出口限制。</td>
+            <td>這可能緩解土耳其農業與相關化學原料的進口壓力，相關台商可密切觀察當地農業投入成本的變化。</td>
           </tr>
           <tr>
             <td>2</td>
-            <td class="dir-green">🟢</td>
+            <td class="dir-neutral">⚪</td>
             <td><span class="badge badge-major">重大</span></td>
-            <td><a href="https://www.ekonomim.com/sektorler/kimya-ihracati-8-ayda-228-milyar-dolara-ulasti-hedef-35-milyar-dolar-haberi-916931" target="_blank" rel="noopener noreferrer">Ekonomim</a></td>
-            <td>土耳其前 8 個月化學產業出口達 228 億美元</td>
-            <td>土耳其化學產業在 2026 年前 8 個月出口額較去年同期增加 4.6%，達到 228 億美元，單月 8 月出口則為 27 億美元。</td>
-            <td>顯示當地化學原物料與相關供應鏈需求保持一定韌性，台商可持續關注當地石化與化學下游的採購機會。</td>
+            <td><a href="https://www.aa.com.tr/en/turkiye/turkiye-lands-75m-from-asian-infrastructure-investment-bank-for-advanced-manufacturing-plant/4050630" target="_blank" rel="noopener noreferrer">Anadolu Ajansı (EN)</a></td>
+            <td>亞投行融資 7,500 萬美元助土耳其建置先進製造廠</td>
+            <td>中國 Great Rich Technology 獲得亞洲基礎設施投資銀行（AIIB）7,500 萬美元貸款，將於西北部的克爾克拉雷利省（Kirklareli）建立其首座海外綠色製造廠。</td>
+            <td>外資持續投入土耳其先進製造業，可能改變當地供應鏈生態，值得台商觀察其對零組件在地採購的需求。</td>
           </tr>
           <tr>
             <td>3</td>
-            <td class="dir-neutral">⚪</td>
-            <td><span class="badge badge-major">重大</span></td>
-            <td><a href="https://www.dunya.com/foto-galeri/ekonomi/tcmb-icin-4-yabanci-kurumdan-iki-farkli-senaryo-galeri-839165" target="_blank" rel="noopener noreferrer">Dünya</a></td>
-            <td>外資機構對土耳其央行（TCMB）9 月利率決策出現兩極預測</td>
-            <td>在 TCMB 於 9 月 10 日公布利率決策前，有 3 家機構預期利率將維持不變，另有 1 家銀行認為降息循環可能於 9 月重新展開。</td>
-            <td>利率政策動向可能牽動當地融資成本與里拉走勢，企業在規劃資金調度時宜保持彈性。</td>
+            <td class="dir-red">🔴</td>
+            <td><span class="badge badge-medium">中等</span></td>
+            <td><a href="https://www.ekonomim.com/sektorler/tedarik-sikisti-hurda-ve-demir-fiyati-ton-basina-1000-lira-yukseldi-haberi-916963" target="_blank" rel="noopener noreferrer">Ekonomim</a></td>
+            <td>土耳其鋼鐵與廢鋼供應緊縮，價格每噸上漲 1,000 里拉</td>
+            <td>受供應緊縮影響，過去 3 週內土耳其鋼鐵生產商的廢鋼與鐵類成本增加，每噸價格攀升 1,000 里拉。</td>
+            <td>原料成本上升可能對土耳其金屬加工及營建相關產業造成成本壓力，台商在報價時宜將原料波動納入考量。</td>
           </tr>
           <tr>
             <td>4</td>
             <td class="dir-green">🟢</td>
             <td><span class="badge badge-medium">中等</span></td>
-            <td><a href="https://www.dunya.com/ihracat/ihracat-56-ilde-yukseldi-25-il-1-milyar-dolari-asti-haberi-839174" target="_blank" rel="noopener noreferrer">Dünya</a></td>
-            <td>土耳其今年前 8 個月總出口額達 1,850 億美元，56 省出口成長</td>
-            <td>根據貿易部數據，前 8 個月全國出口成長 4% 至 1850 億美元，其中 25 個省份出口超過 10 億美元，Ankara 為出口成長最顯著的省份。</td>
-            <td>地方製造與出口能量的分散，可能為台商在不同區域拓展經貿合作帶來新的觀察點。</td>
+            <td><a href="https://www.dunya.com/sektorler/insaat-malzemesi-ihracati-32-milyar-dolara-ulasti-sektorden-176-milyar-dolarlik-fazla-haberi-839186" target="_blank" rel="noopener noreferrer">Dünya</a></td>
+            <td>土耳其 7 月建築材料出口達 32 億美元</td>
+            <td>根據土耳其 İMSAD 與 KPMG 合作編製的指數，7 月建築材料產業出口額達 32 億美元，進口額為 14.4 億美元，實現 17.6 億美元貿易順差。</td>
+            <td>土耳其建材產業維持貿易順差與出口規模，相關設備或原物料供應商可持續關注該產業之國際競爭力。</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td class="dir-neutral">⚪</td>
+            <td><span class="badge badge-medium">中等</span></td>
+            <td><a href="https://www.dailysabah.com/business/finance/turkiye-to-continue-policies-promoting-turkish-lira-under-new-mtp" target="_blank" rel="noopener noreferrer">Daily Sabah</a></td>
+            <td>土耳其新中期計畫（MTP）將延續促進里拉政策</td>
+            <td>經濟政策制定者旨在繼續推動減少外幣存款吸引力、提高土耳其里拉比重的政策。</td>
+            <td>外匯與貨幣政策的持續可能影響企業財務規劃與匯率避險策略，台商在當地進行定價與收付款時宜多加評估。</td>
           </tr>
 <!-- AI:KEY_EVENTS:END -->
         </tbody>
@@ -1409,6 +1422,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <!-- AI:INDUSTRY:START 每天由 generate_analysis.py 整段覆寫 ul 內容（<li> 清單） -->
       <li class="sector-item pos">
         <div class="row-top">
+          <span class="sector-chip">國防與民用科技</span>
+          <span class="headline">土耳其計劃將國防工業技術轉移至民用領域</span>
+          <span class="src"><a href="https://www.aa.com.tr/en/turkiye/turkiye-to-reduce-foreign-dependence-in-civilian-sectors-with-defense-industry-s-tech-gains/4050632" target="_blank" rel="noopener noreferrer">Anadolu Ajansı (EN)</a></span>
+          <span class="date">2026-09-08</span>
+        </div>
+        <div class="body">土耳其國防工業的技術 know-how 將轉移至民用應用，同時擴大製藥與疫苗生產能力，並規劃建立國內晶片生產廠以減少對外依賴。</div>
+        <div class="impact"><b>台商解讀：</b>若當地晶片與高科技在地生產推進，可能逐步改變相關零組件的進口依賴結構，值得科技與半導體供應鏈台商追蹤。</div>
+      </li>
+      <li class="sector-item pos">
+        <div class="row-top">
+          <span class="sector-chip">航空與物流</span>
+          <span class="headline">土耳其民航機隊規模擴增至 846 架</span>
+          <span class="src"><a href="https://www.aa.com.tr/en/turkiye/turkiye-s-civil-aviation-fleet-grows-to-846-aircraft-with-seating-capacity-of-166-000/4050630" target="_blank" rel="noopener noreferrer">Anadolu Ajansı (EN)</a></span>
+          <span class="date">2026-09-08</span>
+        </div>
+        <div class="body">土耳其民航機隊已增至 846 架、總座位數達 16.6 萬個，上半年承載 1.11 億名乘客與近 250 萬噸貨物，並獲得加拿大新的貨運權。</div>
+        <div class="impact"><b>台商解讀：</b>航空運能擴增有助於國際物流與貨運暢通，可能對跨境供應鏈的運輸效率帶來正面助益。</div>
+      </li>
+      <li class="sector-item pos">
+        <div class="row-top">
+          <span class="sector-chip">經貿外交</span>
+          <span class="headline">土耳其與捷克尋求加強戰略夥伴關係並提升雙邊貿易額</span>
+          <span class="src"><a href="https://www.dailysabah.com/politics/turkiye-czechia-move-to-strengthen-strategic-partnership/news" target="_blank" rel="noopener noreferrer">Daily Sabah</a></span>
+          <span class="date">2026-09-08</span>
+        </div>
+        <div class="body">土耳其與捷克正尋求擴大在國防、科技及其他領域的合作，並將雙邊貿易額提升至 100 億美元（約合 4,842.1 億里拉）。</div>
+        <div class="impact"><b>台商解讀：</b>歐洲國家與土耳其深化雙邊經貿鏈結，可能牽動區域供應鏈版圖，台商可留意歐洲企業在當地的動向。</div>
+      </li>
+      <li class="sector-item pos">
+        <div class="row-top">
           <span class="sector-chip">機械工業</span>
           <span class="headline">Lothbrog Makine 在布爾薩開設全球第三大 showroom</span>
           <span class="src"><a href="https://www.ekonomim.com/sektorler/makine/lothbrog-makineden-dunyanin-en-buyuk-3-showroomu-bursada-acildi-haberi-916667" target="_blank" rel="noopener noreferrer">Ekonomim</a></span>
@@ -1427,36 +1470,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="body">土耳其貿易部與 Hepsiburada、N11、PttAVM、Pazarama、Trendyol 等電商平台簽署協議，協助女性合作社拓展數位市場。</div>
         <div class="impact"><b>台商解讀：</b>此政策有助於推動當地零售電商生態系的多樣化，數位行銷與物流需求值得關注。</div>
       </li>
-      <li class="sector-item pos">
-        <div class="row-top">
-          <span class="sector-chip">汽車產業</span>
-          <span class="headline">土耳其汽車產業前八個月出口額達 272 億美元</span>
-          <span class="src"><a href="https://www.hurriyetdailynews.com/turkiyes-automotive-exports-stay-strong-through-august-226498" target="_blank" rel="noopener noreferrer">Hürriyet Daily News</a></span>
-          <span class="date">2026-09-06</span>
-        </div>
-        <div class="body">根據 TIM 數據，土耳其汽車業在 2026 年前八個月出口額達到 272 億美元，寫下歷史同期最佳表現。</div>
-        <div class="impact"><b>台商解讀：</b>汽車零組件相關台商可關注當地整車廠的海外出口表現，訂單動能可能具有持續性。</div>
-      </li>
-      <li class="sector-item neu">
-        <div class="row-top">
-          <span class="sector-chip">能源與電力</span>
-          <span class="headline">土耳其公布 9 月 6 日日常電力生產與消費數據</span>
-          <span class="src"><a href="https://www.sozcu.com.tr/gunluk-elektrik-uretim-ve-tuketim-verileri-6-eylul-2026-p355800" target="_blank" rel="noopener noreferrer">Sözcü Ekonomi</a></span>
-          <span class="date">2026-09-06</span>
-        </div>
-        <div class="body">土耳其單日發電量約 109 萬 2979 兆瓦時，消費量約 107 萬 4537 兆瓦時。</div>
-        <div class="impact"><b>台商解讀：</b>基礎能源數據維持日常波動，可作為評估工業用電與總體經濟活動的參考指標。</div>
-      </li>
-      <li class="sector-item pos">
-        <div class="row-top">
-          <span class="sector-chip">交通與航空</span>
-          <span class="headline">土耳其航空目標躋身全球百大最具價值品牌</span>
-          <span class="src"><a href="https://www.hurriyetdailynews.com/turkish-airlines-aims-to-join-worlds-100-most-valuable-brands-226484" target="_blank" rel="noopener noreferrer">Hürriyet Daily News</a></span>
-          <span class="date">2026-09-05</span>
-        </div>
-        <div class="body">土耳其航空執行長 Ahmet Olmuştur 表示，公司計畫推出高級經濟艙客艙、區域飛機及改善旅客服務，目標加入全球百大最具價值品牌行列。</div>
-        <div class="impact"><b>台商解讀：</b>此發展方向可能帶動相關航空配套服務、機內設施升級與航材供應需求，相關供應鏈台商值得留意後續採購動向。</div>
-      </li>
 <!-- AI:INDUSTRY:END -->
     </ul>
     <p class="grp-note" style="margin-top:1.25rem;">
@@ -1472,8 +1485,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <ul class="implications-list">
       <!-- AI:TRADE_IMPLICATIONS:START 每天由 generate_analysis.py 整段覆寫 ul 內容 -->
-      <li><strong>匯率波動與融資環境緊縮下，需加強應收帳款風險控管</strong>鑑於美元與歐元匯率頻創新高，加上紡織指標企業破產案例浮現，顯示部分當地企業在資金與營運上面臨壓力。台商在對土出口或當地內銷時，可能需要採取更為審慎的信用審查與收款條件。</li>
-      <li><strong>特定產業出口展現韌性，可持續關注原物料與化學領域需求</strong>儘管總體經濟環境受高利率與匯率波動影響，化學與整體出口數據仍維持成長動能。相關產業的台商供應商或許能從中尋找分散市場或切入當地供應鏈的機會，但仍需評估市場變數。</li>
+      <li><strong>原料成本與供應鏈在地化趨勢需持續追蹤</strong>近期土耳其國內廢鋼與鐵類價格上漲，加上肥料供應管道尋求調整，顯示部分原物料成本面臨變動。對台商而言，評估當地採購成本與合約定價時，宜將此類波動納入風險管理考量。</li>
+      <li><strong>先進製造與外人投資可能帶動當地產業結構轉型</strong>隨著亞投行貸款支持綠色製造廠設立，以及土耳其推動國防技術轉移至民用與國內晶片生產計畫，當地製造能量可能逐步升級。台商可觀察其後續對零組件自製率或進口替代的實際影響。</li>
 <!-- AI:TRADE_IMPLICATIONS:END -->
     </ul>
   </div>
@@ -1687,8 +1700,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <div class="footer">
     <div class="divider"></div>
-    <div class="footer-brand"><img src="taitra-logo.png" alt="TAITRA"></div>
-    <div>Türkiye 經濟情報簡報 · 2026-09-08 13:13 TRT</div>
+    <div class="footer-brand"><img src="/news/taitra-logo.png" alt="TAITRA"></div>
+    <div>Türkiye 經濟情報簡報 · 2026-09-08 15:09 TRT</div>
     <div style="margin-top:0.4rem; opacity:0.7;">本報告僅供參考，不構成任何投資或商業決策建議</div>
   </div>
 
