@@ -1503,6 +1503,84 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="delta">正值＝台灣出超</div>
       </div>
     </div>
+        <div class="table-wrapper" style="margin-top: 1.25rem; margin-bottom: 0.5rem;">
+      <canvas id="twTrAnnualChart" height="110"></canvas>
+    </div>
+    <script>
+    (function() {
+      var el = document.getElementById('twTrAnnualChart');
+      if (!el || typeof Chart === 'undefined') return;
+      var d = {"labels": ["111年（全年）", "112年（全年）", "113年（全年）", "114年（全年）", "115年1-7月（初步值）"], "datasets": [{"type": "bar", "label": "出口金額（百萬美元）", "data": [1575.4, 1471.6, 1214.4, 1066.9, 680.6], "backgroundColor": "#3b82f6", "yAxisID": "y", "order": 2}, {"type": "bar", "label": "進口金額（百萬美元）", "data": [394.7, 347.6, 301.8, 378.2, 275.9], "backgroundColor": "#f59e0b", "yAxisID": "y", "order": 2}, {"type": "line", "label": "貿易餘額／出超（百萬美元）", "data": [1180.7, 1124.1, 912.6, 688.6, 404.7], "borderColor": "#16a34a", "backgroundColor": "#16a34a", "yAxisID": "y1", "tension": 0.3, "order": 1}]};
+      new Chart(el.getContext('2d'), {
+        data: { labels: d.labels, datasets: d.datasets },
+        options: {
+          responsive: true,
+          interaction: { mode: 'index', intersect: false },
+          scales: {
+            y: { position: 'left', title: { display: true, text: '出口／進口（百萬美元）' } },
+            y1: { position: 'right', title: { display: true, text: '貿易餘額（百萬美元）' },
+                   grid: { drawOnChartArea: false } }
+          },
+          plugins: { legend: { position: 'bottom' } }
+        }
+      });
+    })();
+    </script>
+        <p class="grp-note" style="margin-top:1.1rem; margin-bottom:0.4rem; font-weight:600;">
+      台灣出口 Türkiye 前五大產業（115年1-7月（初步值））</p>
+    <div class="table-wrapper">
+      <table class="tbl-narrow">
+        <thead>
+          <tr>
+            <th>排名</th><th>貨品號列</th><th>產業別</th>
+            <th>累計出口金額</th><th>出口占比</th><th>年增率</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>第16類</td>
+            <td>機器及機械用具；電機設備；及其零件；錄音機及聲音重放機，電視影像、聲音記錄機及重放機，上述各物之零件及附件</td>
+            <td>393,302 千美元</td>
+            <td>57.79%</td>
+            <td><span class="up">+17.5%</span></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>第15類</td>
+            <td>卑金屬及卑金屬製品</td>
+            <td>82,985 千美元</td>
+            <td>12.19%</td>
+            <td><span class="up">+47.2%</span></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>第07類</td>
+            <td>塑膠及其製品；橡膠及其製品</td>
+            <td>78,525 千美元</td>
+            <td>11.54%</td>
+            <td><span class="down">-13.2%</span></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>第06類</td>
+            <td>化學或有關工業產品</td>
+            <td>61,423 千美元</td>
+            <td>9.03%</td>
+            <td><span class="up">+2.4%</span></td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>第17類</td>
+            <td>車輛、航空器、船舶及有關運輸設備</td>
+            <td>25,142 千美元</td>
+            <td>3.69%</td>
+            <td><span class="up">+32.5%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
     <p class="grp-note">資料來源：財政部關務署 統計資料庫查詢系統（人工每月查詢輸入，非自動抓取）　·　
       <a href="https://portal.sw.nat.gov.tw/APGA/GA30" target="_blank" rel="noopener noreferrer">
       查看財政部關務署官方查詢系統（可自行查核或查詢更細分類）</a><br>延伸閱讀：<a href="https://www.eximclub.com.tw/innerContent.aspx?Type=Publish&ID=6632&Continen=3&Country=%E5%9C%9F%E8%80%B3%E5%85%B6" target="_blank" rel="noopener noreferrer">《貿易俱樂部》（2026/08/14，中國輸出入銀行貿易俱樂部）</a></p>
