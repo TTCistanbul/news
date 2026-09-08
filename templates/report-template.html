@@ -1136,9 +1136,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="delta">{{CPI_DELTA}}</div>
     </div>
     <div class="indicator-cell">
-      <div class="val amber">37% / {{FUNDING_COST}}%</div>
-      <div class="lbl">政策利率 / 隔夜拆借（TCMB）</div>
-      <div class="delta">一週附賣回已於 8/23 恢復，隔夜利率回落至政策利率附近</div>
+      <div class="val amber">{{POLICY_RATE_VALUE}} / {{FUNDING_COST}}%</div>
+      <div class="lbl">政策利率 / 加權平均融資成本（TCMB）</div>
+      <div class="delta">{{POLICY_RATE_NOTE}}</div>
     </div>
     <div class="indicator-cell">
       <div class="val {{GDP_COLOR}}">{{GDP_VALUE}}% / {{GDP_QOQ_VALUE}}%</div>
@@ -1270,7 +1270,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </tr>
           <tr>
             <td>2</td>
-            <td>核心通膨（B 指標）</td>
+            <td>核心通膨（B 指標，{{CORE_CPI_MONTH}}）</td>
             <td><span class="data">{{CORE_CPI_VALUE}}</span></td>
             <td><span class="{{CORE_CPI_DELTA_CLS}}">{{CORE_CPI_DELTA}}</span></td>
             <td>{{CORE_CPI_YOY}}</td>
@@ -1290,13 +1290,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </tr>
           <tr>
             <td>4</td>
-            <td>隔夜拆借利率（實際融資成本）</td>
+            <td>加權平均融資成本（TCMB）</td>
             <td><span class="data">{{FUNDING_COST}}%</span></td>
-            <td><span class="flat">持平</span></td>
+            <td><span class="{{FUNDING_COST_DELTA_CLS}}">{{FUNDING_COST_DELTA}}</span></td>
             <td>—</td>
-            <td>維持不變</td>
+            <td>—</td>
             <td>TCMB</td>
-            <td>每 6–8 週 MPC</td>
+            <td>每營業日</td>
           </tr>
           <tr>
             <td>5</td>
@@ -1311,8 +1311,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <tr>
             <td>6</td>
             <td>月出口</td>
-            <td><span class="data">{{EXPORT_ROW_VALUE}}</span><br>
-                <span class="flat" style="font-size:0.8em;">累計 {{YTD_PERIOD_LABEL}}：{{EXPORT_YTD_VALUE}}</span></td>
+            <td><span class="data">{{EXPORT_ROW_VALUE}}</span>{{EXPORT_YTD_LINE}}</td>
             <td><span class="{{EXPORT_ROW_DELTA_CLS}}">{{EXPORT_ROW_DELTA}}</span></td>
             <td><span class="{{EXPORT_ROW_YOY_CLS}}">{{EXPORT_ROW_YOY}}</span></td>
             <td>—</td>
@@ -1322,8 +1321,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <tr>
             <td>7</td>
             <td>月進口</td>
-            <td><span class="data">{{IMPORT_ROW_VALUE}}</span><br>
-                <span class="flat" style="font-size:0.8em;">累計 {{YTD_PERIOD_LABEL}}：{{IMPORT_YTD_VALUE}}</span></td>
+            <td><span class="data">{{IMPORT_ROW_VALUE}}</span>{{IMPORT_YTD_LINE}}</td>
             <td><span class="{{IMPORT_ROW_DELTA_CLS}}">{{IMPORT_ROW_DELTA}}</span></td>
             <td><span class="{{IMPORT_ROW_YOY_CLS}}">{{IMPORT_ROW_YOY}}</span></td>
             <td>—</td>
@@ -1372,7 +1370,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <td><span class="{{USD_WEEK_CLS}}">{{USD_WEEK}}</span></td>
             <td><span class="{{USD_MONTH_CLS}}">{{USD_MONTH}}</span></td>
             <td><span class="{{USD_YTD_CLS}}">{{USD_YTD}}</span></td>
-            <td>TRY 匯率變化需與 CPI、利率、外匯流動性及央行市場操作一併觀察</td>
+            <td>TCMB 官方賣出價 · 資料日 {{FX_DATE}}｜TRY 匯率變化需與 CPI、利率、外匯流動性及央行市場操作一併觀察</td>
           </tr>
           <tr>
             <td>2</td>
@@ -1381,7 +1379,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <td><span class="{{EUR_WEEK_CLS}}">{{EUR_WEEK}}</span></td>
             <td><span class="{{EUR_MONTH_CLS}}">{{EUR_MONTH}}</span></td>
             <td><span class="{{EUR_YTD_CLS}}">{{EUR_YTD}}</span></td>
-            <td>歐系競爭對手報價的相對變化</td>
+            <td>TCMB 官方賣出價 · 資料日 {{FX_DATE}}｜歐系競爭對手報價的相對變化</td>
           </tr>
           <tr>
             <td>3</td>
@@ -1390,7 +1388,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <td><span class="{{TWD_WEEK_CLS}}">{{TWD_WEEK}}</span></td>
             <td><span class="{{TWD_MONTH_CLS}}">{{TWD_MONTH}}</span></td>
             <td><span class="{{TWD_YTD_CLS}}">{{TWD_YTD}}</span></td>
-            <td>交叉匯率（TCMB USD/TRY ÷ 第三方 USD/TWD），非官方直接報價，僅供台幣計價合約換算參考</td>
+            <td>交叉匯率（TCMB USD/TRY 資料日 {{FX_DATE}} ÷ 第三方 USD/TWD 資料日 {{TWD_SRC_DATE}}），非官方直接報價，僅供台幣計價合約換算參考</td>
           </tr>
           <tr>
             <td>4</td>
@@ -1668,6 +1666,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     btn.setAttribute('aria-expanded', shouldOpen);
     panel.setAttribute('aria-hidden', !shouldOpen);
     document.body.style.overflow = shouldOpen ? 'hidden' : '';
+    // 手機窄螢幕上，變成「×」的漢堡鈕跟面板右上角的「N 篇」計數字卡
+    // 位置會疊在一起（兩者都貼齊螢幕右側）。開啟時把按鈕壓到面板
+    // （z-index:1000）跟遮罩（999）下面，面板不透明的背景會直接把它
+    // 蓋住，同一個位置的點擊會落到遮罩上，一樣能關閉面板，不影響操作。
+    btn.style.zIndex = shouldOpen ? '998' : '';
   }
 
   btn.addEventListener('click', () => toggle());
