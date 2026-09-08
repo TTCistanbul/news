@@ -379,7 +379,11 @@ def render_tw_tr_trade(data: dict | None, sectors_data: dict | None = None,
             f'rel="noopener noreferrer">《{exim_title}》（{exim_date}，中國輸出入銀行貿易俱樂部）</a>'
         )
 
-    return f'''    <div class="indicator-strip" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 0.75rem;">
+    # 這裡不要再寫 inline 的 grid-template-columns：inline style 優先權高於
+    # media query，會蓋掉 report-template.html 裡 @media (max-width: 768px)
+    # 把 .indicator-strip 疊成一欄的規則，手機上三欄硬撐、大數字又不能斷行，
+    # 整頁就會被推爆變成可以左右滑（2026-09 實測）。欄數交給 CSS 決定。
+    return f'''    <div class="indicator-strip" style="margin-bottom: 0.75rem;">
       <div class="indicator-cell">
         <div class="val">{currency} {fmt_amount(exp)}</div>
         <div class="lbl">台灣出口至 Türkiye（{period_label_html}）</div>
