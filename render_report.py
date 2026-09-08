@@ -1062,6 +1062,35 @@ def main():
             "（ticaret.gov.tr/istatistikler/dis-ticaret-istatistikleri）手動填入"
         )
 
+    # Türkiye 本年度累計出口／進口——直接加總 turkey_trade_data 裡「今年」
+    # 已經有的月份，不假設 1 月到最新月都填齊，標籤誠實反映實際加總的
+    # 月份範圍（跟 06 台灣—Türkiye 雙邊貿易卡片「年初至今累計」用的是
+    # 同一套邏輯）。這裡只是加總既有的 exports/imports 欄位，沒有引入
+    # 新的資料來源，你原本每月填一筆的維護方式不用變。
+    if tt_months:
+        cur_year_prefix = tt_months[-1].get("month", "")[:4]
+        ytd_tt_months = sorted(
+            (m for m in tt_months if m.get("month", "").startswith(f"{cur_year_prefix}-")),
+            key=lambda m: m["month"],
+        )
+    else:
+        ytd_tt_months = []
+
+    if ytd_tt_months:
+        _ytd_exp_sum = sum((m.get("exports") or 0) for m in ytd_tt_months)
+        _ytd_imp_sum = sum((m.get("imports") or 0) for m in ytd_tt_months)
+        _first_m = int(ytd_tt_months[0]["month"].split("-")[1])
+        _last_m = int(ytd_tt_months[-1]["month"].split("-")[1])
+        ytd_period_label = (
+            f"{cur_year_prefix}年{_last_m}月" if _first_m == _last_m
+            else f"{cur_year_prefix}年{_first_m}-{_last_m}月累計"
+        )
+        export_ytd_value = f"{_ytd_exp_sum / 100:.1f} 億美元"
+        import_ytd_value = f"{_ytd_imp_sum / 100:.1f} 億美元"
+    else:
+        ytd_period_label = "—"
+        export_ytd_value = import_ytd_value = "—"
+
     # 「核心指標」第三格：2026-09 從「台灣—Türkiye 雙邊貿易餘額」換成
     # 「土耳其季度 GDP 成長率」——前兩格本來就是土耳其總經數據（CPI、
     # 政策利率），雙邊貿易餘額放這裡風格上比較跳；雙邊貿易的完整版本
@@ -1343,6 +1372,9 @@ def main():
         "{{IMPORT_ROW_DELTA_CLS}}": import_row_delta_cls,
         "{{IMPORT_ROW_YOY}}": import_row_yoy,
         "{{IMPORT_ROW_YOY_CLS}}": import_row_yoy_cls,
+        "{{EXPORT_YTD_VALUE}}": export_ytd_value,
+        "{{IMPORT_YTD_VALUE}}": import_ytd_value,
+        "{{YTD_PERIOD_LABEL}}": ytd_period_label,
         "{{COVERAGE_VALUE}}": coverage_value,
         "{{COVERAGE_DELTA}}": coverage_delta,
         "{{COVERAGE_DELTA_CLS}}": coverage_delta_cls,
