@@ -1247,6 +1247,20 @@ def main():
             export_row_value = export_row_delta = export_row_yoy = "—"
             export_row_delta_cls = export_row_yoy_cls = "flat"
 
+        if cur_imp is not None:
+            import_row_value = f"{cur_imp / 100:.1f} 億美元"
+            if prev_month is not None and prev_month.get("imports") is not None:
+                d = (cur_imp - prev_month["imports"]) / 100
+                import_row_delta = f"{d:+.1f} 億".replace("-", "−")
+                import_row_delta_cls = "up" if d > 0 else ("down" if d < 0 else "flat")
+            else:
+                import_row_delta, import_row_delta_cls = "—", "flat"
+            imports_yoy = tt_latest.get("imports_yoy_pct")
+            import_row_yoy, import_row_yoy_cls = _pct(imports_yoy), _delta_cls(imports_yoy)
+        else:
+            import_row_value = import_row_delta = import_row_yoy = "—"
+            import_row_delta_cls = import_row_yoy_cls = "flat"
+
         if cur_cov is not None:
             coverage_value = f"{cur_cov:.1f}%"
             prev_cov = prev_month.get("coverage_pct") if prev_month is not None else None
@@ -1264,6 +1278,8 @@ def main():
         tb_row_delta_cls = tb_row_yoy_cls = "flat"
         export_row_value = export_row_delta = export_row_yoy = "—"
         export_row_delta_cls = export_row_yoy_cls = "flat"
+        import_row_value = import_row_delta = import_row_yoy = "—"
+        import_row_delta_cls = import_row_yoy_cls = "flat"
         coverage_value = coverage_delta = coverage_yoy = "—"
         coverage_delta_cls = coverage_yoy_cls = "flat"
 
@@ -1322,6 +1338,11 @@ def main():
         "{{EXPORT_ROW_DELTA_CLS}}": export_row_delta_cls,
         "{{EXPORT_ROW_YOY}}": export_row_yoy,
         "{{EXPORT_ROW_YOY_CLS}}": export_row_yoy_cls,
+        "{{IMPORT_ROW_VALUE}}": import_row_value,
+        "{{IMPORT_ROW_DELTA}}": import_row_delta,
+        "{{IMPORT_ROW_DELTA_CLS}}": import_row_delta_cls,
+        "{{IMPORT_ROW_YOY}}": import_row_yoy,
+        "{{IMPORT_ROW_YOY_CLS}}": import_row_yoy_cls,
         "{{COVERAGE_VALUE}}": coverage_value,
         "{{COVERAGE_DELTA}}": coverage_delta,
         "{{COVERAGE_DELTA_CLS}}": coverage_delta_cls,
