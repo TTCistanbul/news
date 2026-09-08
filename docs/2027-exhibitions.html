@@ -68,12 +68,13 @@
     max-width:56ch;
     margin:0 0 30px;
   }
-  .hero .scale{
+  .scale{
     display:flex;
     gap:0;
     border:1px solid var(--ink);
     max-width:560px;
     overflow:hidden;
+    margin:20px auto 28px;
   }
   .scale div{
     flex:1;
@@ -170,11 +171,28 @@
     gap:8px;
     margin-top:4px;
   }
-  .strategy-item .shows span{
+  .strategy-item .shows a{
     border:1px solid var(--ink-soft);
     padding:4px 10px;
     font-size:12.5px;
     color:var(--ink);
+    text-decoration:none;
+    transition:background .15s, border-color .15s;
+  }
+  .strategy-item .shows a:hover{
+    background:var(--brick);
+    color:#fff;
+    border-color:var(--brick);
+  }
+  /* 從「推薦展覽」點過去之後，短暫高亮該張卡片，讓使用者知道跳到哪裡了 */
+  .card:target{
+    outline:2px solid var(--brick);
+    outline-offset:2px;
+    animation:expo-flash 1.6s ease-out;
+  }
+  @keyframes expo-flash{
+    0%{background:#fbe9c9;}
+    100%{background:transparent;}
   }
   @media(max-width:600px){
     .strategy-item{grid-template-columns:1fr;}
@@ -337,13 +355,6 @@
   <p class="kicker sans">伊斯坦堡台灣貿易中心　業務評估　2027 展會年曆</p>
   <h1>與台土進出口貿易<br><em>關聯性分級</em></h1>
   <p class="lede">依台灣對土耳其出口結構（機械、塑膠橡膠、汽配、五金自動化為主力），將 2027 年伊斯坦堡及周邊城市展覽逐一評分。點擊星級可篩選對應分級。</p>
-  <div class="scale sans" id="scaleFilter">
-    <div class="s5" data-filter="5"><span class="n">★★★★★</span>最高相關</div>
-    <div class="s4" data-filter="4"><span class="n">★★★★</span>高度相關</div>
-    <div class="s3" data-filter="3"><span class="n">★★★</span>中度相關</div>
-    <div class="s2" data-filter="2"><span class="n">★★</span>低度相關</div>
-    <div class="s1" data-filter="1"><span class="n">★</span>較不相關</div>
-  </div>
 </div>
 
 <div class="strategy">
@@ -362,7 +373,7 @@
         <dt>市場效益</dt>
         <dd>台灣工具機在土耳其已有長期極高口碑（性價比優於德日，品質遠高於當地或低價競爭者），是台灣對土耳其出口的最大宗之一。</dd>
         <dt>推薦展覽</dt>
-        <dd class="shows"><span>Konya Maktek（康亞工具機展）</span><span>WIN EURASIA（歐亞工業自動化展）</span></dd>
+        <dd class="shows"><a href="#expo-konya-maktek">Konya Maktek（康亞工具機展）</a><a href="#expo-win-eurasia">WIN EURASIA（歐亞工業自動化展）</a></dd>
       </dl>
     </div>
   </article>
@@ -379,7 +390,7 @@
         <dt>市場效益</dt>
         <dd>以軟硬體整合方案切入，能避開單純硬體的價格戰，幫助土耳其在地大廠（如汽車、紡織、家電廠）升級。</dd>
         <dt>推薦展覽</dt>
-        <dd class="shows"><span>WIN EURASIA</span><span>Smart Factory Show（智慧工廠展）</span></dd>
+        <dd class="shows"><a href="#expo-win-eurasia">WIN EURASIA</a><a href="#expo-smart-factory-show">Smart Factory Show（智慧工廠展）</a></dd>
       </dl>
     </div>
   </article>
@@ -396,7 +407,7 @@
         <dt>市場效益</dt>
         <dd>台灣 AM 車用零組件全球第一，同時在電動車電子模組具備強大研發能量，非常契合土耳其傳統汽配與新興 EV 供應鏈的需求。</dd>
         <dt>推薦展覽</dt>
-        <dd class="shows"><span>Automechanika Istanbul（國際汽配展）</span><span>World of Mobility（未來移動出行展）</span></dd>
+        <dd class="shows"><a href="#expo-automechanika-istanbul">Automechanika Istanbul（國際汽配展）</a><a href="#expo-world-of-mobility">World of Mobility（未來移動出行展）</a></dd>
       </dl>
     </div>
   </article>
@@ -413,7 +424,7 @@
         <dt>市場效益</dt>
         <dd>台灣塑膠機械以高耐用度、節能（全電式）著稱，極具競爭優勢。</dd>
         <dt>推薦展覽</dt>
-        <dd class="shows"><span>Plast Eurasia İstanbul（國際塑膠展）</span><span>Avrasya Ambalaj（歐亞包裝工業展）</span></dd>
+        <dd class="shows"><a href="#expo-plast-eurasia-istanbul">Plast Eurasia İstanbul（國際塑膠展）</a><a href="#expo-avrasya-ambalaj">Avrasya Ambalaj（歐亞包裝工業展）</a></dd>
       </dl>
     </div>
   </article>
@@ -430,7 +441,7 @@
         <dt>市場效益</dt>
         <dd>掌握「減碳與綠能」議題，能迅速打開土耳其高科技與出口型大廠的採購大門。</dd>
         <dt>推薦展覽</dt>
-        <dd class="shows"><span>Replast Eurasia（塑膠與纖維回收展）</span><span>ISK-SODEX（暖通與綠能系統展）</span></dd>
+        <dd class="shows"><a href="#expo-replast-eurasia">Replast Eurasia（塑膠與纖維回收展）</a><a href="#expo-isk-sodex">ISK-SODEX（暖通與綠能系統展）</a></dd>
       </dl>
     </div>
   </article>
@@ -438,12 +449,14 @@
   <h2 style="margin-top:36px;">2027 展覽清單</h2>
 </div>
 
+<div class="scale sans" id="scaleFilter">
+  <div class="s5" data-filter="5"><span class="n">★★★★★</span>最高相關</div>
+  <div class="s4" data-filter="4"><span class="n">★★★★</span>高度相關</div>
+  <div class="s3" data-filter="3"><span class="n">★★★</span>中度相關</div>
+</div>
+
 <div class="controls">
   <input type="text" id="search" placeholder="搜尋展覽名稱、城市、產業關鍵字…" />
-  <div class="sort-toggle sans" id="sortToggle">
-    <button data-sort="date" class="active">依日期</button>
-    <button data-sort="tier">依分級</button>
-  </div>
   <button class="reset" id="resetBtn">清除篩選</button>
   <span class="count sans" id="countLabel"></span>
 </div>
@@ -481,40 +494,36 @@ const DATA = [
   {tier:3, name:"Roadxpo", tr:"Roadxpo Araç Üstü Ekipmanları Fuarı", date:"2027/09/22–09/25", city:"KONYA · Tüyap Konya Uluslararası Fuar Merkezi", org:"Tüyap Konya Fuarcılık", url:"http://www.tuyap.com.tr", why:"車載特種設備，屬較利基型市場。"},
   {tier:3, name:"Zuchex", tr:"Zuchex Uluslararası Ev Ve Mutfak Eşyaları Fuarı", date:"2027/09/15–09/18", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"", url:"", why:"家用品／餐廚具，台灣中小型出口商有涉入。"},
 
-  // ---- 2 stars ----
-  {tier:2, name:"Asansör İstanbul", tr:"Asansör İstanbul Uluslararası Asansör Fuarı", date:"2027/05/06–05/09", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Informa Markets", url:"http://www.asansoristanbul.com", why:"電梯零組件，台灣廠商出口較少涉入。"},
-  {tier:2, name:"伊斯坦堡國際傢俱展 (IFF)", tr:"Uluslararası İstanbul Mobilya Fuarı", date:"2027/01/19–01/23", city:"İSTANBUL · Tüyap Fuar Center / Istanbul Expo Center", org:"Tüyap & Mos Fuarcılık", url:"http://www.tuyap.com.tr", why:"家具貿易以在地採購為主，非台灣製造強項。"},
-  {tier:2, name:"Avrasya Cam", tr:"Avrasya Cam Uluslararası Cam Ürünleri Fuarı", date:"2027/11/20–11/23", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Reed Tüyap Fuarcılık", url:"http://www.tuyap.com.tr", why:"玻璃產品，台灣涉入程度低。"},
-  {tier:2, name:"Avrasya Pencere & Kapı", tr:"Avrasya Pencere & Avrasya Kapı Fuarı", date:"2027/11/20–11/23", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Reed Tüyap Fuarcılık", url:"http://www.tuyap.com.tr", why:"門窗建材，多為在地供應鏈。"},
-  {tier:2, name:"Turkeybuild Istanbul", tr:"Yapı Fuarı - Turkeybuild İstanbul 2027", date:"2027/04/27–04/30", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"ICA Events", url:"http://www.icaevents.com.tr", why:"建材以在地供應為主，台灣涉入有限。"},
-  {tier:2, name:"Tentexpo World", tr:"Tentexpo World - Tente, Çadır Sistemleri Fuarı", date:"2027/11/10–11/13", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Tüyap & Teknik Fuarcılık", url:"https://tentexpoworld.com", why:"遮陽帳篷系統，屬利基市場。"},
-  {tier:2, name:"Foodist İstanbul", tr:"Foodist İstanbul Gıda Ve İçecek Ürünleri Fuarı", date:"2027/09/01–09/04", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Tüyap & ALZ Grup", url:"http://www.tuyap.com.tr", why:"食品貿易非台灣對土出口大宗。"},
-  {tier:2, name:"Beauty Istanbul", tr:"Beauty İstanbul Uluslararası Kozmetik Fuarı", date:"2027/06/03–06/05", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"İpekyolu Fuarcılık", url:"http://www.beauty-istanbul.com", why:"美容美髮消費品，相關度較低。"},
-  {tier:2, name:"Franchise İstanbul", tr:"Franchıse İstanbul Expo", date:"2027/03/18–03/21", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Tüyap İhtisas Fuarları", url:"http://www.tuyap.com.tr", why:"連鎖加盟屬服務業性質，與貿易促進關聯較弱。"},
-  {tier:2, name:"Karavanist İstanbul", tr:"Karavanist İstanbul Uluslararası Karavan Ve Kamp Fuarı", date:"2027/02/02–02/07", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"消費性戶外用品，與貿易推廣關聯度低。"},
-  {tier:2, name:"Nobel Master Shoes", tr:"Nobel Master Shoes - Ayakkabı & Çanta Moda Fuarı", date:"2027/10/06–10/09", city:"KONYA · Tüyap Konya Uluslararası Fuar Merkezi", org:"Nobel Expo", url:"http://www.nobelexpo.com", why:"時尚消費品，非貿易中心典型業務範疇。"},
-
-  // ---- 1 star ----
-  {tier:1, name:"Konya Tarım（康亞國際農機展）", tr:"Konya Tarım - Uluslararası Tarım Fuarı", date:"2027/04/06–04/10", city:"KONYA · Tüyap Konya Uluslararası Fuar Merkezi", org:"Tüyap Konya Fuarcılık", url:"http://www.tuyap.com.tr", why:"農機非台灣出口強項，土耳其本身農業機械產業發達。"},
-  {tier:1, name:"Eskişehir 農牧科技展", tr:"Eskişehir Tarım, Hayvancılık Ve Teknolojileri Fuarı", date:"2027/09/07–09/11", city:"ESKİŞEHİR · ETO-Tüyap Fuar Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"農牧產業，台灣出口關聯度低。"},
-  {tier:1, name:"Agroshow Eurasia", tr:"Agroshow Eurasıa Tarım Makineleri Fuarı", date:"2027/09/29–10/02", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"農機展，非台灣主力出口項目。"},
-  {tier:1, name:"Adana 農業展", tr:"Adana Tarım – Sera & Bahçe Fuarı", date:"2027/11/03–11/07", city:"ADANA · Adana Uluslararası Fuar Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"溫室園藝與畜牧展，關聯度低。"},
-  {tier:1, name:"中國出口商品展", tr:"Çin İhraç Ürünleri Fuarı", date:"2027/05/06–05/09", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"MCA Expo", url:"http://www.mcaexpo.com", why:"中國廠商展會，與台灣貿易推廣關聯不大，甚至可能為競爭關係。"},
-  {tier:1, name:"第 19 屆庫庫羅瓦圖書展", tr:"Çukurova Kitap Fuarı", date:"2027/01/09–01/17", city:"ADANA · Adana Uluslararası Fuar Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"圖書出版展，與貿易促進業務關聯性最低。"},
-  {tier:1, name:"第 24 屆布爾薩圖書展", tr:"Bursa Kitap Fuarı", date:"2027/04/10–04/18", city:"BURSA · Merinos Atatürk Kongre Merkezi", org:"Tüyap Fuarlar Yapım", url:"http://www.tuyapbursa.com.tr", why:"圖書出版類，與貿易業務關聯性低。"},
-  {tier:1, name:"第 6 屆埃斯基謝希爾圖書展", tr:"Eskişehir Kitap Fuarı", date:"2027/05/08–05/16", city:"ESKİŞEHİR · ETO-Tüyap Fuar Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"圖書出版類，與貿易業務關聯性低。"},
-  {tier:1, name:"第 11 屆迪亞巴克爾圖書展", tr:"Diyarbakır Kitap Fuarı", date:"2027/09/25–10/03", city:"DİYARBAKIR · Mezopotamya Fuar Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"圖書出版類，與貿易業務關聯性低。"},
-  {tier:1, name:"代尼茲利圖書展", tr:"Denizli Kitap Fuarı", date:"2027/10/16–10/24", city:"DENİZLİ · EGS Fuar Alanı", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"圖書出版類，與貿易業務關聯性低。"},
-  {tier:1, name:"第 44 屆伊斯坦堡國際圖書展", tr:"İstanbul Uluslararası Kitap Fuarı", date:"2027/12/11–12/19", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"圖書出版類，與貿易業務關聯性低。"},
-  {tier:1, name:"Icfe 2027（國際地毯與地面鋪設展）", tr:"International Carpet And Flooring Expo", date:"2027/01/05–01/08", city:"İSTANBUL · İstanbul Fuar Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"地毯地板類消費建材，與台灣出口關聯度低。"},
 ];
 
 const TIER_META = {
   5:{label:"最高相關", desc:"台灣強項產業，建議重點布局"},
   4:{label:"高度相關", desc:"具實質出口對接機會"},
   3:{label:"中度相關", desc:"部分產業重疊，可視資源評估"},
-  2:{label:"低度相關", desc:"間接關聯或新興觀察領域"},
-  1:{label:"較不相關", desc:"與現行出口結構重疊度低"},
+};
+
+// 展覽名稱 -> 錨點 id 對照表，跟上方「推薦展覽」的連結 href 要對得上
+const EXPO_SLUGS = {
+  "Plast Eurasia İstanbul": "expo-plast-eurasia-istanbul",
+  "Automechanika Istanbul": "expo-automechanika-istanbul",
+  "WIN EURASIA": "expo-win-eurasia",
+  "Tube Eurasia – Wire Eurasia": "expo-tube-eurasia-wire-eurasia",
+  "Aluexpo": "expo-aluexpo",
+  "Konya Maktek": "expo-konya-maktek",
+  "Smtech Eurasia": "expo-smtech-eurasia",
+  "Replast Eurasia": "expo-replast-eurasia",
+  "HOW – Hub of Warehouse": "expo-how-hub-of-warehouse",
+  "Smart Factory Show": "expo-smart-factory-show",
+  "Avrasya Ambalaj": "expo-avrasya-ambalaj",
+  "Garment Tech İstanbul": "expo-garment-tech-istanbul",
+  "Expomed Eurasia": "expo-expomed-eurasia",
+  "伊斯坦堡國際紗線展": "expo-13",
+  "ISK-SODEX": "expo-isk-sodex",
+  "Woodtech & Intermob": "expo-woodtech-intermob",
+  "World of Mobility": "expo-world-of-mobility",
+  "Comvex": "expo-comvex",
+  "Roadxpo": "expo-roadxpo",
+  "Zuchex": "expo-zuchex"
 };
 
 const tiersEl = document.getElementById('tiers');
@@ -534,14 +543,30 @@ function startDate(d){
   return new Date(first.replace(/\//g, '-'));
 }
 
+function endDate(d){
+  // 結束日期只有「月/日」，年份跟開始日期共用（同一年內的展會）
+  const [startRaw, endRaw] = d.date.split('–').map(s => s.trim());
+  const year = startRaw.split('/')[0];
+  const endParts = endRaw.split('/');
+  const [em, ed] = endParts.length === 2 ? endParts : [endParts[1], endParts[2]];
+  return new Date(`${year}-${em}-${ed}`);
+}
+
+// 過期展覽自動從清單移除：只要「結束日期」已經是今天以前，就不再顯示，
+// 不用手動去刪 DATA 裡的項目。用結束日期而不是開始日期，是因為展會期間
+// 還沒完全結束前，都還算「進行中／有效」，不該提早消失。
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+const ACTIVE_DATA = DATA.filter(d => endDate(d) >= today);
+
 function render(){
   tiersEl.innerHTML = "";
   const q = searchInput.value.trim().toLowerCase();
   let shown = 0;
 
-  for(let t = 5; t >= 1; t--){
+  for(let t = 5; t >= 3; t--){
     if(activeTier && activeTier !== t) continue;
-    const items = DATA.filter(d => d.tier === t && (
+    const items = ACTIVE_DATA.filter(d => d.tier === t && (
       !q || (d.name + d.tr + d.city + d.why + d.org).toLowerCase().includes(q)
     )).sort((a, b) => startDate(a) - startDate(b));
     if(items.length === 0) continue;
@@ -560,6 +585,7 @@ function render(){
       shown++;
       const card = document.createElement('div');
       card.className = 'card';
+      if (EXPO_SLUGS[d.name]) card.id = EXPO_SLUGS[d.name];
       card.innerHTML = `
         <div class="name">${d.name}<span class="tr">${d.tr}</span></div>
         <div class="date">${d.date}</div>
@@ -577,7 +603,7 @@ function render(){
   }
 
   emptyMsg.style.display = shown === 0 ? 'block' : 'none';
-  countLabel.textContent = `共 ${shown} / ${DATA.length} 檔展覽`;
+  countLabel.textContent = `共 ${shown} / ${ACTIVE_DATA.length} 檔展覽`;
 }
 
 scaleFilter.addEventListener('click', e => {
