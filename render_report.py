@@ -304,12 +304,52 @@ def render_tw_tr_trade(data: dict | None, sectors_data: dict | None = None) -> s
             'rel="noopener noreferrer">前往官方查詢系統</a></p>'
         )
     latest = months[-1]
-    prev = months[-2] if len(months) >= 2 else None
     currency = html.escape(data.get("currency", "USD"))
-    exp, imp = latest.get("exports_to_turkey"), latest.get("imports_from_turkey")
+
+    # 2026-09 改成「年初至今累計」而不是單月數字——使用者要求開頭的卡片
+    # 顯示「1-7月」這種累計值，不是只顯示最新一個月（7月）單月進出口。
+    # 期間標籤直接從實際存在的月份資料反推（取最小/最大月份），不是寫死
+    # 「1-N月」，這樣如果 tw-tr-trade.json 裡今年的月份有缺（例如漏填某
+    # 個月），標籤會誠實反映實際加總的範圍，不會謊稱涵蓋到還沒填的月份。
+    latest_month_str = latest.get("month", "")
+    cur_year = latest_month_str.split("-")[0] if "-" in latest_month_str else ""
+    ytd_months = sorted(
+        (m for m in months if m.get("month", "").startswith(f"{cur_year}-")),
+        key=lambda m: m["month"],
+    )
+    if ytd_months:
+        exp = sum((m.get("exports_to_turkey") or 0) for m in ytd_months)
+        imp = sum((m.get("imports_from_turkey") or 0) for m in ytd_months)
+        first_m = int(ytd_months[0]["month"].split("-")[1])
+        last_m = int(ytd_months[-1]["month"].split("-")[1])
+        period_label = (
+            f"{cur_year}年{last_m}月" if first_m == last_m
+            else f"{cur_year}年{first_m}-{last_m}月累計"
+        )
+    else:
+        exp = imp = None
+        period_label = latest_month_str
+
     bal = (exp - imp) if (exp is not None and imp is not None) else None
-    exp_chg = _pct_change(exp, (prev or {}).get("exports_to_turkey"))
-    imp_chg = _pct_change(imp, (prev or {}).get("imports_from_turkey"))
+
+    # 跟去年同期比較（年增率）：來源是 tw-tr-trade-sectors.json 裡標記
+    # comparison_only 的那筆同期資料（例如額外查的「114年1-7月」）。只有
+    # 涵蓋月數（months_covered）跟今年這裡實際加總的月數完全一致時才拿來
+    # 算年增率，避免「7個月」跟「6個月」硬比出一個誤導的百分比；月數對
+    # 不上或找不到這筆資料，年增率就不顯示。sectors 檔案單位是千美元，
+    # 這裡要乘 1000 換算成原始美元金額才能跟 tw-tr-trade.json 的數字比。
+    exp_chg = imp_chg = None
+    if sectors_data and ytd_months:
+        comp_entry = next(
+            (y for y in (sectors_data.get("years") or [])
+             if y.get("comparison_only") and y.get("months_covered") == len(ytd_months)),
+            None
+        )
+        if comp_entry:
+            prev_exp = sum((comp_entry.get("exports_by_section") or {}).values()) * 1000
+            prev_imp = sum((comp_entry.get("imports_by_section") or {}).values()) * 1000
+            exp_chg = _pct_change(exp, prev_exp)
+            imp_chg = _pct_change(imp, prev_imp)
 
     def fmt_amount(v):
         return f"{v:,.0f}" if v is not None else "—"
@@ -318,10 +358,10 @@ def render_tw_tr_trade(data: dict | None, sectors_data: dict | None = None) -> s
         if v is None:
             return ""
         cls = "up" if v > 0 else ("down" if v < 0 else "flat")
-        return f' <span class="{cls}">({v:+.1f}% 較上月)</span>'
+        return f' <span class="{cls}">({v:+.1f}% 較去年同期)</span>'
 
     source_note = html.escape(data.get("source_note", ""))
-    month_label = html.escape(latest.get("month", ""))
+    period_label_html = html.escape(period_label)
 
     exim_line = ""
     exim = load_eximclub_state()
@@ -341,17 +381,17 @@ def render_tw_tr_trade(data: dict | None, sectors_data: dict | None = None) -> s
     return f'''    <div class="indicator-strip" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 0.75rem;">
       <div class="indicator-cell">
         <div class="val">{currency} {fmt_amount(exp)}</div>
-        <div class="lbl">台灣出口至 Türkiye（{month_label}）</div>
+        <div class="lbl">台灣出口至 Türkiye（{period_label_html}）</div>
         <div class="delta">{fmt_chg(exp_chg)}</div>
       </div>
       <div class="indicator-cell">
         <div class="val">{currency} {fmt_amount(imp)}</div>
-        <div class="lbl">台灣自 Türkiye 進口（{month_label}）</div>
+        <div class="lbl">台灣自 Türkiye 進口（{period_label_html}）</div>
         <div class="delta">{fmt_chg(imp_chg)}</div>
       </div>
       <div class="indicator-cell">
         <div class="val {'green' if (bal or 0) >= 0 else 'red'}">{currency} {fmt_amount(bal)}</div>
-        <div class="lbl">台灣對 Türkiye 貿易餘額</div>
+        <div class="lbl">台灣對 Türkiye 貿易餘額（{period_label_html}）</div>
         <div class="delta">正值＝台灣出超</div>
       </div>
     </div>
