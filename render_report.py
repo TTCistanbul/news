@@ -964,6 +964,20 @@ def main():
             return f"{int(m.group(1))}月"
         return date_str
 
+    def _quarter_label(date_str: str) -> str:
+        """EVDS 季度序列的日期字串沒實機驗證過確切格式，寬鬆解析
+        「YYYY-MM」開頭的部分，用月份推回是第幾季（常見做法是用該季
+        最後一個月當日期戳，例如 Q2 標成 2026-06）；解析不出來就直接
+        顯示原始字串，不要讓整段掛掉或算出錯的季別。"""
+        if not date_str:
+            return "最新"
+        m = re.match(r"^(\d{4})-(\d{1,2})", date_str)
+        if m:
+            year, month = int(m.group(1)), int(m.group(2))
+            q = (month - 1) // 3 + 1
+            return f"{year} Q{q}"
+        return date_str
+
     # EVDS 抓回來的 cpi 序列是「消費者物價指數點數」，不是年通膨率。
     # 2026-09-05 確認：2025-07=100.42、2025-08=102.47，是重新基期後的指數。
     # 之前這裡直接把指數點數當百分比顯示，首頁核心指標因此出現「年通膨率
@@ -1048,38 +1062,47 @@ def main():
             "（ticaret.gov.tr/istatistikler/dis-ticaret-istatistikleri）手動填入"
         )
 
-    # 「核心指標」第三格改顯示台灣—Türkiye 雙邊貿易餘額的簡短版（不是
-    # Türkiye 對全世界的整體貿易差額——那個算好了但不放在這一格顯示，
-    # tb_value 等變數保留著沒有刪，下面完整版卡片＝06 台灣—Türkiye 雙邊
-    # 貿易，或之後有別的地方要用整體差額還可以接）。
-    tw_tr_data_early = load_tw_tr_trade()
-    tw_months = (tw_tr_data_early or {}).get("months") or []
-    if tw_months:
-        tw_latest = tw_months[-1]
-        tw_exp, tw_imp = tw_latest.get("exports_to_turkey"), tw_latest.get("imports_from_turkey")
-        if tw_exp is not None and tw_imp is not None:
-            tw_bal = tw_exp - tw_imp
-            twtr_label = "出超" if tw_bal >= 0 else "入超"
-            twtr_value = f"${abs(tw_bal) / 1_000_000:,.1f}M"
-            twtr_color = "green" if tw_bal >= 0 else "red"
-            twtr_month_label = html.escape(tw_latest.get("month", ""))
-            if len(tw_months) >= 2:
-                prev = tw_months[-2]
-                p_exp, p_imp = prev.get("exports_to_turkey"), prev.get("imports_from_turkey")
-                if p_exp is not None and p_imp is not None:
-                    p_bal = p_exp - p_imp
-                    p_label = "出超" if p_bal >= 0 else "入超"
-                    twtr_delta = f"上月：台灣{p_label} ${abs(p_bal) / 1_000_000:,.1f}M"
-                else:
-                    twtr_delta = "上月資料不完整"
-            else:
-                twtr_delta = "尚無前一期資料可比較"
-        else:
-            twtr_value, twtr_label, twtr_color = "—", "", "amber"
-            twtr_month_label, twtr_delta = "—", "當月出口/進口資料不完整"
+    # 「核心指標」第三格：2026-09 從「台灣—Türkiye 雙邊貿易餘額」換成
+    # 「土耳其季度 GDP 成長率」——前兩格本來就是土耳其總經數據（CPI、
+    # 政策利率），雙邊貿易餘額放這裡風格上比較跳；雙邊貿易的完整版本
+    # 本來就在下面「06 台灣—Türkiye 雙邊貿易」那張卡片，拿掉這裡不影響
+    # 資訊完整性。
+    #
+    # 資料來源：EVDS「bie_gsyhhrczinc」（TÜİK 支出面法、鏈式不變價格
+    # 季度 GDP，序列本身是「實質量」不是成長率）。年增率／季增率都是
+    # 自己拿這條序列算，算法跟 TCMB 通膨報告引用 GSYH 時一致：年增率
+    # 跟去年同一季比（往前推 4 筆），季增率跟上一季比（往前推 1 筆）。
+    gdp_series = payload.get("macro", {}).get("gdp_growth") or []
+    gdp_vals = [e["value"] for e in gdp_series if "value" in e]
+
+    def _gdp_change(back: int):
+        j = -1 - back
+        if len(gdp_vals) >= abs(j) and gdp_vals[j]:
+            return (gdp_vals[-1] - gdp_vals[j]) / gdp_vals[j] * 100
+        return None
+
+    gdp_yoy = _gdp_change(4) if gdp_vals else None
+    gdp_qoq = _gdp_change(1) if gdp_vals else None
+    gdp_quarter_label = _quarter_label(gdp_series[-1].get("date", "")) if gdp_series else "—"
+
+    if gdp_yoy is not None:
+        gdp_value = f"{gdp_yoy:+.1f}%"
+        gdp_color = "green" if gdp_yoy >= 0 else "red"
+    elif gdp_vals:
+        gdp_value, gdp_color = "—", "amber"
     else:
-        twtr_value, twtr_label, twtr_color = "—", "", "amber"
-        twtr_month_label, twtr_delta = "—", "尚未提供 data/tw-tr-trade.json"
+        gdp_value, gdp_color = "—", "amber"
+
+    if gdp_qoq is not None:
+        gdp_delta = f"季增 {gdp_qoq:+.1f}%"
+    elif gdp_vals:
+        gdp_delta = "尚無足夠歷史資料計算季增率"
+    else:
+        gdp_delta = "資料尚未取得（尚未設定 EVDS_API_KEY 或序列抓取失敗）"
+
+    # 台灣—Türkiye 雙邊貿易的資料照樣讀進來（下面 06 那張卡片、跟這裡
+    # 拿掉的 twtr_* 核心指標卡是兩回事，不要一起刪掉）。
+    tw_tr_data_early = load_tw_tr_trade()
 
     # TWD/TRY：不是任何央行的官方報價，是 fetch_daily.py 用 TCMB 官方
     # USD/TRY 跟第三方免費 API 的 USD/TWD 算出來的交叉匯率。抓取失敗時
@@ -1269,11 +1292,10 @@ def main():
         "{{TRADE_BALANCE_LABEL}}": tb_label,
         "{{TRADE_BALANCE_MONTH_LABEL}}": tb_month_label,
         "{{TRADE_BALANCE_DELTA}}": tb_delta,
-        "{{TWTR_VALUE}}": twtr_value,
-        "{{TWTR_COLOR}}": twtr_color,
-        "{{TWTR_LABEL}}": twtr_label,
-        "{{TWTR_MONTH_LABEL}}": twtr_month_label,
-        "{{TWTR_DELTA}}": twtr_delta,
+        "{{GDP_VALUE}}": gdp_value,
+        "{{GDP_COLOR}}": gdp_color,
+        "{{GDP_QUARTER_LABEL}}": gdp_quarter_label,
+        "{{GDP_DELTA}}": gdp_delta,
         "{{GENERATED_AT_LABEL}}": generated_label,
         "{{DATE_ZH}}": date_zh,
         "{{CPI_ROW_NAME}}": cpi_row_name,
