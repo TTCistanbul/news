@@ -1114,16 +1114,19 @@ def main():
     gdp_qoq = _gdp_change(1) if gdp_vals else None
     gdp_quarter_label = _quarter_label(gdp_series[-1].get("date", "")) if gdp_series else "—"
 
+    # 2026-09 改成跟隔壁「政策利率 / 隔夜拆借」卡片同樣的格式並排顯示
+    # （年增 / 季增），token 本身不含 % 符號，% 寫死在範本裡跟在 token
+    # 後面——寫法要跟 {{FUNDING_COST}} 那組一致，不要自己在這裡加 %。
     if gdp_yoy is not None:
-        gdp_value = f"{gdp_yoy:+.1f}%"
+        gdp_value = f"{gdp_yoy:+.1f}"
         gdp_color = "green" if gdp_yoy >= 0 else "red"
-    elif gdp_vals:
-        gdp_value, gdp_color = "—", "amber"
     else:
         gdp_value, gdp_color = "—", "amber"
 
+    gdp_qoq_value = f"{gdp_qoq:+.1f}" if gdp_qoq is not None else "—"
+
     if gdp_qoq is not None:
-        gdp_delta = f"季增 {gdp_qoq:+.1f}%（未經季節調整，僅供參考）"
+        gdp_delta = "年增／季增　·　季增未經季節調整，僅供參考"
     elif gdp_vals:
         gdp_delta = "尚無足夠歷史資料計算季增率"
     else:
@@ -1338,6 +1341,7 @@ def main():
         "{{TRADE_BALANCE_MONTH_LABEL}}": tb_month_label,
         "{{TRADE_BALANCE_DELTA}}": tb_delta,
         "{{GDP_VALUE}}": gdp_value,
+        "{{GDP_QOQ_VALUE}}": gdp_qoq_value,
         "{{GDP_COLOR}}": gdp_color,
         "{{GDP_QUARTER_LABEL}}": gdp_quarter_label,
         "{{GDP_DELTA}}": gdp_delta,
