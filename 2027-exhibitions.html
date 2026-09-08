@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台灣—土耳其 2027 展覽關聯性分級</title>
+<style>
+  :root{
+    --paper:#EFEAE0;
+    --paper-line:#DDD5C6;
+    --ink:#1E2A3D;
+    --ink-soft:#5B6B80;
+    --brick:#AE3B31;
+    --brick-deep:#7E241C;
+    --gold:#B9902E;
+    --t5-bg:#7E241C;
+    --t5-fg:#F7EEE3;
+    --t4-bg:#AE3B31;
+    --t4-fg:#F7EEE3;
+    --t3-bg:#C98A4B;
+    --t3-fg:#2A1B0E;
+    --t2-bg:#8E8A73;
+    --t2-fg:#F7F5EE;
+    --t1-bg:#B7B2A2;
+    --t1-fg:#2A2A24;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Noto Serif TC","Georgia",serif;
+    line-height:1.6;
+  }
+  .sans{font-family:"Noto Sans TC","Helvetica Neue",Arial,sans-serif;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding:76px 24px 56px;
+    max-width:920px;
+    margin:0 auto;
+    border-bottom:1px solid var(--paper-line);
+  }
+  .hero .kicker{
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:13px;
+    letter-spacing:.04em;
+    color:var(--brick);
+    margin:0 0 14px;
+  }
+  .hero h1{
+    font-size:clamp(34px,6vw,58px);
+    line-height:1.15;
+    margin:0 0 18px;
+    font-weight:600;
+    letter-spacing:.01em;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--brick);
+  }
+  .hero p.lede{
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:16px;
+    color:var(--ink-soft);
+    max-width:56ch;
+    margin:0 0 30px;
+  }
+  .hero .scale{
+    display:flex;
+    gap:0;
+    border:1px solid var(--ink);
+    max-width:560px;
+    overflow:hidden;
+  }
+  .scale div{
+    flex:1;
+    text-align:center;
+    padding:10px 4px;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:12px;
+    cursor:pointer;
+    user-select:none;
+    border-right:1px solid rgba(0,0,0,.15);
+    transition:transform .12s ease;
+  }
+  .scale div:last-child{border-right:none;}
+  .scale div:hover{transform:translateY(-2px);}
+  .scale div .n{display:block;font-size:16px;font-weight:700;margin-bottom:2px;}
+  .scale div.s5{background:var(--t5-bg);color:var(--t5-fg);}
+  .scale div.s4{background:var(--t4-bg);color:var(--t4-fg);}
+  .scale div.s3{background:var(--t3-bg);color:var(--t3-fg);}
+  .scale div.s2{background:var(--t2-bg);color:var(--t2-fg);}
+  .scale div.s1{background:var(--t1-bg);color:var(--t1-fg);}
+  .scale div.active{outline:2px solid var(--ink); outline-offset:-2px;}
+
+  /* ---------- CONTROLS ---------- */
+  .controls{
+    max-width:920px;
+    margin:0 auto;
+    padding:22px 24px 0;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    flex-wrap:wrap;
+    font-family:"Noto Sans TC",sans-serif;
+  }
+  .controls input{
+    flex:1;
+    min-width:200px;
+    padding:11px 14px;
+    border:1px solid var(--ink-soft);
+    background:transparent;
+    font-family:inherit;
+    font-size:14px;
+    color:var(--ink);
+  }
+  .controls input:focus{outline:2px solid var(--brick); outline-offset:1px;}
+  .count{
+    font-size:13px;
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  .reset{
+    background:none;
+    border:1px solid var(--ink-soft);
+    color:var(--ink-soft);
+    font-family:inherit;
+    font-size:13px;
+    padding:10px 14px;
+    cursor:pointer;
+  }
+  .reset:hover{border-color:var(--ink); color:var(--ink);}
+
+  /* ---------- TIERS ---------- */
+  .tiers{
+    max-width:920px;
+    margin:0 auto;
+    padding:36px 24px 100px;
+  }
+  .tier{
+    margin-bottom:8px;
+  }
+  .tier-head{
+    display:flex;
+    align-items:baseline;
+    gap:16px;
+    padding:18px 20px;
+    margin-top:26px;
+    font-family:"Noto Sans TC",sans-serif;
+  }
+  .tier-head .stars{font-size:20px; letter-spacing:2px;}
+  .tier-head .label{font-size:15px; font-weight:700;}
+  .tier-head .desc{font-size:13px; opacity:.85;}
+  .tier[data-tier="5"] .tier-head{background:var(--t5-bg); color:var(--t5-fg);}
+  .tier[data-tier="4"] .tier-head{background:var(--t4-bg); color:var(--t4-fg);}
+  .tier[data-tier="3"] .tier-head{background:var(--t3-bg); color:var(--t3-fg);}
+  .tier[data-tier="2"] .tier-head{background:var(--t2-bg); color:var(--t2-fg);}
+  .tier[data-tier="1"] .tier-head{background:var(--t1-bg); color:var(--t1-fg);}
+
+  .card{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:6px 18px;
+    padding:18px 20px;
+    border-bottom:1px solid var(--paper-line);
+    transition:background .15s ease;
+  }
+  .card:hover{background:#E5DECC;}
+  .card .name{
+    font-size:18px;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .card .name .tr{
+    display:block;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    font-weight:400;
+    margin-top:2px;
+  }
+  .card .meta{
+    grid-column:1 / -1;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:13px;
+    color:var(--ink-soft);
+    display:flex;
+    flex-wrap:wrap;
+    gap:4px 18px;
+    margin-top:2px;
+  }
+  .card .meta b{color:var(--ink); font-weight:600;}
+  .card .why{
+    grid-column:1 / -1;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:13.5px;
+    color:var(--ink);
+    margin-top:8px;
+    padding-left:14px;
+    border-left:2px solid var(--brick);
+  }
+  .card .date{
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:13px;
+    text-align:right;
+    color:var(--ink-soft);
+    white-space:nowrap;
+    align-self:start;
+  }
+  .card a.site{
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:12px;
+    color:var(--brick);
+    text-decoration:none;
+    border-bottom:1px solid transparent;
+  }
+  .card a.site:hover{border-bottom-color:var(--brick);}
+
+  .hidden{display:none !important;}
+
+  .empty-msg{
+    font-family:"Noto Sans TC",sans-serif;
+    color:var(--ink-soft);
+    text-align:center;
+    padding:60px 20px;
+    display:none;
+  }
+
+  footer{
+    max-width:920px;
+    margin:0 auto;
+    padding:0 24px 60px;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+
+  @media(max-width:600px){
+    .hero{padding:52px 18px 40px;}
+    .card{grid-template-columns:1fr;}
+    .card .date{text-align:left;}
+    .tier-head{flex-wrap:wrap; gap:6px 14px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <p class="kicker sans">伊斯坦堡台灣貿易中心　業務評估　2027 展會年曆</p>
+  <h1>與台土進出口貿易<br><em>關聯性分級</em></h1>
+  <p class="lede">依台灣對土耳其出口結構（機械、塑膠橡膠、汽配、五金自動化為主力），將 2027 年伊斯坦堡及周邊城市展覽逐一評分。點擊星級可篩選對應分級。</p>
+  <div class="scale sans" id="scaleFilter">
+    <div class="s5" data-filter="5"><span class="n">★★★★★</span>最高相關</div>
+    <div class="s4" data-filter="4"><span class="n">★★★★</span>高度相關</div>
+    <div class="s3" data-filter="3"><span class="n">★★★</span>中度相關</div>
+  </div>
+</div>
+
+<div class="controls">
+  <input type="text" id="search" placeholder="搜尋展覽名稱、城市、產業關鍵字…" />
+  <div class="sort-toggle sans" id="sortToggle">
+    <button data-sort="date" class="active">依日期</button>
+    <button data-sort="tier">依分級</button>
+  </div>
+  <button class="reset" id="resetBtn">清除篩選</button>
+  <span class="count sans" id="countLabel"></span>
+</div>
+
+<div class="tiers" id="tiers"></div>
+<p class="empty-msg sans" id="emptyMsg">沒有符合條件的展覽。</p>
+
+<footer>資料來源：Tüyap、Hannover Messe Turkey、Reed Tüyap 等主辦方公告展期（如有異動請以官網為準）。分級依台灣對土耳其實際出口品項相關度評估，僅供業務規劃參考。</footer>
+
+<script>
+const DATA = [
+  // ---- 5 stars ----
+  {tier:5, name:"Plast Eurasia İstanbul", tr:"Plast Eurasia İstanbul Uluslararası Plastik Endüstrisi Fuarı", date:"2027/12/01–12/04", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"台灣塑膠機械、押出／射出成型設備為傳統出口強項，土耳其為區域塑膠加工重鎮。"},
+  {tier:5, name:"Automechanika Istanbul", tr:"Automechanıka Istanbul", date:"2027/03/24–03/27", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Messe Frankfurt & Hannover Fairs", url:"https://www.automechanika.com.tr", why:"台灣汽機車零配件對土耳其出口量大，此為區域最大型國際汽配展。"},
+  {tier:5, name:"WIN EURASIA", tr:"WIN EURASIA 2027", date:"2027/06/02–06/05", city:"İSTANBUL · İstanbul Fuar Merkezi", org:"Hannover Fairs Turkey", url:"http://www.win-eurasia.com", why:"台灣工具機、自動化設備、感測器等強項可直接對接歐亞市場買主。"},
+  {tier:5, name:"Tube Eurasia – Wire Eurasia", tr:"Tube Eurasıa - Wıre Eurasıa Fuarı", date:"2027/04/07–04/10", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"台灣金屬加工與線材機械設備出口相關度高。"},
+  {tier:5, name:"Aluexpo", tr:"Aluexpo 2027 - Uluslararası Alüminyum Teknolojileri Fuarı", date:"2027/09/23–09/25", city:"İSTANBUL · İstanbul Fuar Merkezi", org:"Hannover Messe Ankiros", url:"http://www.aluexpo.com", why:"台灣鋁合金加工與模具技術具國際競爭力。"},
+
+  // ---- 4 stars ----
+  {tier:4, name:"Konya Maktek", tr:"Konya Maktek Takım Tezgahları Fuarı", date:"2027/10/20–10/23", city:"KONYA · Tüyap Konya Uluslararası Fuar Merkezi", org:"Tüyap Konya Fuarcılık", url:"http://www.tuyap.com.tr", why:"工具機為台灣重要出口品項，但屬區域型展會，規模較小。"},
+  {tier:4, name:"Smtech Eurasia", tr:"Smtech Eurasia - Sac Ve Metal İşleme Teknolojileri Fuarı", date:"2027/11/09–11/12", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"鈑金與金屬加工機械，與台灣機械業直接對接。"},
+  {tier:4, name:"Replast Eurasia", tr:"Replast Eurasia - Plastik Ve Elyaf Geri Dönüşüm Fuarı", date:"2027/04/28–04/30", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"塑膠與纖維回收機械，台灣環保設備逐漸具備出口競爭力。"},
+  {tier:4, name:"HOW – Hub of Warehouse", tr:"How - Hub Of Warehouse", date:"2027/09/23–09/25", city:"İSTANBUL · İstanbul Fuar Merkezi", org:"Hannover Fairs Turkey", url:"http://www.hmist.com.tr", why:"智慧倉儲與物流自動化，為新興出口機會領域。"},
+  {tier:4, name:"Smart Factory Show", tr:"Smart Factory Show", date:"2027/11/09–11/11", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Tüyap & ST Alternatif", url:"http://www.tuyap.com.tr", why:"智慧製造、工業 4.0 解決方案，台灣資通訊結合硬體優勢明顯。"},
+  {tier:4, name:"Avrasya Ambalaj", tr:"Avrasya Ambalaj - Uluslararası Ambalaj Endüstrisi Fuarı", date:"2027/10/20–10/23", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Reed Tüyap Fuarcılık", url:"http://www.tuyap.com.tr", why:"包裝機械與材料，台灣廠商在此領域已有一定出口實績。"},
+  {tier:4, name:"Garment Tech İstanbul", tr:"Garment Tech - Konfeksiyon Ve Baskı Makineleri Fuarı", date:"2027/05/26–05/29", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Tüyap & Teknik Fuarcılık", url:"http://www.tuyap.com.tr", why:"成衣／針織機械為台灣具外銷實力的品項。"},
+
+  // ---- 3 stars ----
+  {tier:3, name:"Expomed Eurasia", tr:"Ekspomed Eurasıa Uluslararası Tıbbi Teşhis Ve Cihaz Fuarı", date:"2027/04/15–04/18", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Reed Tüyap Fuarcılık", url:"http://www.tuyap.com.tr", why:"台灣醫材出口近年成長，但非傳統強項產業。"},
+  {tier:3, name:"伊斯坦堡國際紗線展", tr:"Uluslararası İstanbul İplik Fuarı", date:"2027/03/17–03/19", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"紡織原料類，與台灣紡織機械出口間接相關。"},
+  {tier:3, name:"ISK-SODEX", tr:"Isk-Sodex Uluslararası Isıtma, Soğutma, Klima Fuarı", date:"2027/10/19–10/22", city:"İSTANBUL · İstanbul Fuar Merkezi", org:"Hannover Messe Sodeks", url:"http://www.sodex.com.tr", why:"空調零組件、風扇馬達等台灣廠商有出口機會。"},
+  {tier:3, name:"Woodtech & Intermob", tr:"Woodtech - Intermob Ağaç İşleme Makineleri Fuarı", date:"2027/10/09–10/13", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Reed Tüyap Fuarcılık", url:"http://www.tuyap.com.tr", why:"木工機械台灣具一定出口實力，屬中度相關產業。"},
+  {tier:3, name:"World of Mobility", tr:"World Of Mobility Mobilite Teknolojileri Fuarı", date:"2027/04/15–04/17", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"Enerji Fuarcılık", url:"http://www.efo.com.tr", why:"電動車與移動科技為新興領域，尚待觀察成熟度。"},
+  {tier:3, name:"Comvex", tr:"Comvex Ticari Araçlar Ve Mobilite Fuarı", date:"2027/09/09–09/11", city:"İSTANBUL · İstanbul Fuar Merkezi", org:"Tüyap Tüm Fuarcılık", url:"http://www.tuyap.com.tr", why:"商用車零配件展，與台灣汽配業有部分重疊。"},
+  {tier:3, name:"Roadxpo", tr:"Roadxpo Araç Üstü Ekipmanları Fuarı", date:"2027/09/22–09/25", city:"KONYA · Tüyap Konya Uluslararası Fuar Merkezi", org:"Tüyap Konya Fuarcılık", url:"http://www.tuyap.com.tr", why:"車載特種設備，屬較利基型市場。"},
+  {tier:3, name:"Zuchex", tr:"Zuchex Uluslararası Ev Ve Mutfak Eşyaları Fuarı", date:"2027/09/15–09/18", city:"İSTANBUL · Tüyap Fuar Ve Kongre Merkezi", org:"", url:"", why:"家用品／餐廚具，台灣中小型出口商有涉入。"},
+];
+
+const TIER_META = {
+  5:{label:"最高相關", desc:"台灣強項產業，建議重點布局"},
+  4:{label:"高度相關", desc:"具實質出口對接機會"},
+  3:{label:"中度相關", desc:"部分產業重疊，可視資源評估"},
+};
+
+const tiersEl = document.getElementById('tiers');
+const emptyMsg = document.getElementById('emptyMsg');
+const countLabel = document.getElementById('countLabel');
+const searchInput = document.getElementById('search');
+const scaleFilter = document.getElementById('scaleFilter');
+const resetBtn = document.getElementById('resetBtn');
+
+let activeTier = null;
+
+function stars(n){ return "★".repeat(n) + "☆".repeat(5-n); }
+
+function startDate(d){
+  // date like "2027/03/24–03/27" or "2027/09/25–10/03"
+  const first = d.date.split('–')[0].trim();
+  return new Date(first.replace(/\//g, '-'));
+}
+
+function render(){
+  tiersEl.innerHTML = "";
+  const q = searchInput.value.trim().toLowerCase();
+  let shown = 0;
+
+  for(let t = 5; t >= 3; t--){
+    if(activeTier && activeTier !== t) continue;
+    const items = DATA.filter(d => d.tier === t && (
+      !q || (d.name + d.tr + d.city + d.why + d.org).toLowerCase().includes(q)
+    )).sort((a, b) => startDate(a) - startDate(b));
+    if(items.length === 0) continue;
+
+    const meta = TIER_META[t];
+    const section = document.createElement('div');
+    section.className = 'tier';
+    section.dataset.tier = t;
+
+    const head = document.createElement('div');
+    head.className = 'tier-head';
+    head.innerHTML = `<span class="stars">${stars(t)}</span><span class="label">${meta.label}</span><span class="desc">· ${meta.desc}（${items.length} 檔）</span>`;
+    section.appendChild(head);
+
+    items.forEach(d => {
+      shown++;
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="name">${d.name}<span class="tr">${d.tr}</span></div>
+        <div class="date">${d.date}</div>
+        <div class="meta">
+          <span><b>地點</b> ${d.city}</span>
+          ${d.org ? `<span><b>主辦</b> ${d.org}</span>` : ""}
+          ${d.url ? `<a class="site" href="${d.url}" target="_blank" rel="noopener">${d.url.replace(/^https?:\/\//,'')}</a>` : ""}
+        </div>
+        <div class="why">${d.why}</div>
+      `;
+      section.appendChild(card);
+    });
+
+    tiersEl.appendChild(section);
+  }
+
+  emptyMsg.style.display = shown === 0 ? 'block' : 'none';
+  countLabel.textContent = `共 ${shown} / ${DATA.length} 檔展覽`;
+}
+
+scaleFilter.addEventListener('click', e => {
+  const target = e.target.closest('[data-filter]');
+  if(!target) return;
+  const val = Number(target.dataset.filter);
+  activeTier = activeTier === val ? null : val;
+  [...scaleFilter.children].forEach(c => c.classList.toggle('active', Number(c.dataset.filter) === activeTier));
+  render();
+});
+
+searchInput.addEventListener('input', render);
+resetBtn.addEventListener('click', () => {
+  activeTier = null;
+  searchInput.value = "";
+  [...scaleFilter.children].forEach(c => c.classList.remove('active'));
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
