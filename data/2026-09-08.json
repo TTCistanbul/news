@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-08T22:52:23.825870+03:00",
-  "generated_at_label": "2026-09-08 22:52 TRT",
+  "generated_at": "2026-09-08T23:30:58.429383+03:00",
+  "generated_at_label": "2026-09-08 23:30 TRT",
   "fx": {
     "date": "2026-09-08",
     "date_raw": "08.09.2026",
@@ -365,33 +365,52 @@
   },
   "news": [
     {
-      "source": "Dünya",
-      "title": "İran'da peş peşe patlama sesleri",
-      "url": "https://www.dunya.com/dunya/iranda-pes-pese-patlama-sesleri-haberi-839263",
-      "published": "2026-09-08T19:48:00+00:00",
+      "source": "Ekonomim",
+      "title": "ABD'de tüketici kredilerinde beklentileri aşan artış",
+      "url": "https://www.ekonomim.com/ekonomi/abdde-tuketici-kredilerinde-beklentileri-asan-artis-haberi-917053",
+      "published": "2026-09-08T20:19:00+00:00",
       "no_date": false,
       "late": false,
-      "summary": "İran&amp;#039;ın Basra Körfezi&amp;#039;nin kuzeyinde yer alan petrol ihraç terminalinin bulunduğu Hark Adası ile Hürmüzgan Eyaleti’ne bağlı Cask kenti yakınlarında patlama seslerinin duyulduğu bildirildi.",
+      "summary": "ABD&amp;#039;de tüketici kredileri temmuz ayında 18,1 milyar dolar artarak 5,19 trilyon dolara ulaştı ve 11,9 milyar dolarlık piyasa beklentisinin üzerine çıktı.",
       "scope": "global",
       "tr_markers": [],
-      "primary_topic": "industry",
+      "primary_topic": "macro",
       "topics": [
-        "industry"
+        "macro"
       ],
       "matched": [
-        "petrol*"
+        "kredi*",
+        "piyasa*"
+      ]
+    },
+    {
+      "source": "Anadolu Ajansı (EN)",
+      "title": "US consumer borrowing rises more than expected in July",
+      "url": "https://www.aa.com.tr/en/economy/us-consumer-borrowing-rises-more-than-expected-in-july/4051447",
+      "published": "2026-09-08T20:06:21+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Consumer credit increases by $18.1B, driven by largest rise in non-revolving credit in 3 years",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "credit"
       ]
     }
   ],
   "news_diagnostics": {
     "Anadolu Ajansı (EN)": {
       "total": 30,
-      "recent": 17,
-      "kept": 0,
+      "recent": 18,
+      "kept": 1,
       "domestic": 0,
       "window_hours": 24,
-      "newest": "2026-09-08T17:39:14+00:00",
-      "oldest": "2026-09-05T23:13:25+00:00",
+      "newest": "2026-09-08T20:06:21+00:00",
+      "oldest": "2026-09-07T07:27:08+00:00",
       "no_date": 0,
       "dedup_skipped": 14,
       "no_topic_samples": [
@@ -439,30 +458,30 @@
     "Dünya": {
       "total": 25,
       "recent": 25,
-      "kept": 1,
+      "kept": 0,
       "domestic": 0,
       "window_hours": 24,
-      "newest": "2026-09-08T19:48:00+00:00",
-      "oldest": "2026-09-08T14:28:00+00:00",
+      "newest": "2026-09-08T20:21:00+00:00",
+      "oldest": "2026-09-08T14:47:00+00:00",
       "no_date": 0,
       "dedup_skipped": 8,
       "no_topic_samples": [
+        "Ersoy'dan Antalya'daki yangınlara ilişkin mesaj: Tüm imkanlar seferber edildi",
+        "Türkiye'den Husilerin Suudi Arabistan saldırılarına kınama",
         "Arakçi'den ABD'ye yaptırım tepkisi: Yeni çözüm daha fazla yaptırım",
         "Beşiktaş'tan TFF'ye tepki",
-        "Javier Bardem'den Adidas'a sert tepki: Boykot çağrısı yaptı",
-        "Eski Fenerbahçeli basketbolcu Ferhan Baras, hayatını kaybetti",
-        "Trump'tan İran mesajı: Gerçekten sert bir ders verdik"
+        "Javier Bardem'den Adidas'a sert tepki: Boykot çağrısı yaptı"
       ],
       "error": null
     },
     "Ekonomim": {
       "total": 25,
       "recent": 25,
-      "kept": 0,
+      "kept": 1,
       "domestic": 0,
       "window_hours": 24,
-      "newest": "2026-09-08T19:49:00+00:00",
-      "oldest": "2026-09-08T14:42:00+00:00",
+      "newest": "2026-09-08T20:19:00+00:00",
+      "oldest": "2026-09-08T14:49:00+00:00",
       "no_date": 0,
       "dedup_skipped": 12,
       "no_topic_samples": [
