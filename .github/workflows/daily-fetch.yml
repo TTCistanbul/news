@@ -20,8 +20,11 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install Chinese fonts (for the annual trade chart)
+        run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk
+
       - name: Install dependencies
-        run: pip install requests feedparser borsapy
+        run: pip install requests feedparser borsapy matplotlib
 
       - name: Run fetch_daily.py
         env:
@@ -39,7 +42,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/ docs/index.html docs/archive/ templates/
+          git add data/ docs/index.html docs/archive/ docs/images/ templates/
           git commit -m "Daily data fetch $(date +%F)" || echo "no changes"
           git pull --rebase --autostash
           git push
