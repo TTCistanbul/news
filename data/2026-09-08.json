@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-08T23:30:58.429383+03:00",
-  "generated_at_label": "2026-09-08 23:30 TRT",
+  "generated_at": "2026-09-08T23:49:08.366977+03:00",
+  "generated_at_label": "2026-09-08 23:49 TRT",
   "fx": {
     "date": "2026-09-08",
     "date_raw": "08.09.2026",
@@ -365,54 +365,56 @@
   },
   "news": [
     {
-      "source": "Ekonomim",
-      "title": "ABD'de tüketici kredilerinde beklentileri aşan artış",
-      "url": "https://www.ekonomim.com/ekonomi/abdde-tuketici-kredilerinde-beklentileri-asan-artis-haberi-917053",
-      "published": "2026-09-08T20:19:00+00:00",
+      "source": "Anadolu Ajansı (EN)",
+      "title": "Oil prices rise over 2% as Brent nears $100 amid escalating US-Iran tensions",
+      "url": "https://www.aa.com.tr/en/economy/oil-prices-rise-over-2-as-brent-nears-100-amid-escalating-us-iran-tensions/4051481",
+      "published": "2026-09-08T20:37:17+00:00",
       "no_date": false,
       "late": false,
-      "summary": "ABD&amp;#039;de tüketici kredileri temmuz ayında 18,1 milyar dolar artarak 5,19 trilyon dolara ulaştı ve 11,9 milyar dolarlık piyasa beklentisinin üzerine çıktı.",
+      "summary": "Concerns over supply disruptions intensify after attacks on Saudi energy facilities and oil tankers",
       "scope": "global",
       "tr_markers": [],
-      "primary_topic": "macro",
+      "primary_topic": "industry",
       "topics": [
-        "macro"
+        "industry"
       ],
       "matched": [
-        "kredi*",
-        "piyasa*"
+        "energy",
+        "oil"
       ]
     },
     {
       "source": "Anadolu Ajansı (EN)",
-      "title": "US consumer borrowing rises more than expected in July",
-      "url": "https://www.aa.com.tr/en/economy/us-consumer-borrowing-rises-more-than-expected-in-july/4051447",
-      "published": "2026-09-08T20:06:21+00:00",
+      "title": "US stocks close lower as rising oil prices fuel inflation concerns",
+      "url": "https://www.aa.com.tr/en/economy/us-stocks-close-lower-as-rising-oil-prices-fuel-inflation-concerns/4051479",
+      "published": "2026-09-08T20:36:34+00:00",
       "no_date": false,
       "late": false,
-      "summary": "Consumer credit increases by $18.1B, driven by largest rise in non-revolving credit in 3 years",
+      "summary": "Dow Jones falls more than 600 points as investors await key US inflation data",
       "scope": "global",
       "tr_markers": [],
       "primary_topic": "macro",
       "topics": [
-        "macro"
+        "macro",
+        "industry"
       ],
       "matched": [
-        "credit"
+        "inflation",
+        "oil"
       ]
     }
   ],
   "news_diagnostics": {
     "Anadolu Ajansı (EN)": {
       "total": 30,
-      "recent": 18,
-      "kept": 1,
+      "recent": 20,
+      "kept": 2,
       "domestic": 0,
       "window_hours": 24,
-      "newest": "2026-09-08T20:06:21+00:00",
-      "oldest": "2026-09-07T07:27:08+00:00",
+      "newest": "2026-09-08T20:37:17+00:00",
+      "oldest": "2026-09-07T08:48:06+00:00",
       "no_date": 0,
-      "dedup_skipped": 14,
+      "dedup_skipped": 15,
       "no_topic_samples": [
         "Türkiye, Russia sign memorandum to secure mineral fertilizer supplies",
         "Japan’s foreign reserves fall $79.6B after record yen intervention",
@@ -461,29 +463,29 @@
       "kept": 0,
       "domestic": 0,
       "window_hours": 24,
-      "newest": "2026-09-08T20:21:00+00:00",
-      "oldest": "2026-09-08T14:47:00+00:00",
+      "newest": "2026-09-08T20:44:00+00:00",
+      "oldest": "2026-09-08T15:02:00+00:00",
       "no_date": 0,
       "dedup_skipped": 8,
       "no_topic_samples": [
+        "Yunanistan, İtalya'dan fırkateyn alımı için anlaşma imzaladı",
         "Ersoy'dan Antalya'daki yangınlara ilişkin mesaj: Tüm imkanlar seferber edildi",
         "Türkiye'den Husilerin Suudi Arabistan saldırılarına kınama",
         "Arakçi'den ABD'ye yaptırım tepkisi: Yeni çözüm daha fazla yaptırım",
-        "Beşiktaş'tan TFF'ye tepki",
-        "Javier Bardem'den Adidas'a sert tepki: Boykot çağrısı yaptı"
+        "Beşiktaş'tan TFF'ye tepki"
       ],
       "error": null
     },
     "Ekonomim": {
       "total": 25,
       "recent": 25,
-      "kept": 1,
+      "kept": 0,
       "domestic": 0,
       "window_hours": 24,
       "newest": "2026-09-08T20:19:00+00:00",
       "oldest": "2026-09-08T14:49:00+00:00",
       "no_date": 0,
-      "dedup_skipped": 12,
+      "dedup_skipped": 13,
       "no_topic_samples": [
         "Bakan Fidan, Suriyeli mevkidaşı Şeybani ile görüştü",
         "Kılıçdaroğlu'ndan CHP’nin kuruluş yıl dönümü paylaşımı: Bir isme yer vermedi",

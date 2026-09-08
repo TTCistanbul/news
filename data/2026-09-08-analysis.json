@@ -1,36 +1,55 @@
 {
-  "today_take": "今日土耳其經濟焦點主要關注國際總經情勢，特別是美國消費信貸數據高於預期。<strong>台商在評估外銷與市場需求時</strong>，宜持續追蹤主要貿易夥伴的消費動能變化。",
-  "summary": "根據最新數據顯示，美國<span class=\"data\">7</span>月消費者信貸增加<span class=\"data\">181</span>億美元，總額達到<span class=\"data\">5.19</span>兆美元，高於市場預期的<span class=\"data\">119</span>億美元，主要受到非循環信用貸款創下<span class=\"data\">3</span>年來最大增幅所驅動。",
+  "today_take": "今日市場受地緣政治與國際油價攀升影響，能源供應隱憂引發通膨預期升溫。對土耳其與區域貿易而言，原物料成本變動可能連帶牽動國內物價走勢，台商宜密切關注國際能源價格對整體製造與運輸成本的後續衝擊。",
+  "summary": "近期國際油價受到美國與伊朗緊張局勢升級影響而上揚，其中布蘭特原油逼近 <span class=\"data\">100</span> 美元，主因沙烏地阿拉伯能源設施與油輪遭遇攻擊加劇了市場對供應中斷的擔憂。同時，受油價上漲推動通膨疑慮影響，美國股市收低，道瓊工業指數下跌超過 <span class=\"data\">600</span> 點。",
   "key_events": [
     {
-      "direction": "neutral",
+      "direction": "red",
+      "importance": "重大",
+      "source_name": "Anadolu Ajansı (EN)",
+      "source_url": "https://www.aa.com.tr/en/economy/oil-prices-rise-over-2-as-brent-nears-100-amid-escalating-us-iran-tensions/4051481",
+      "headline": "美伊緊張局勢升級推升油價漲逾 2%，布蘭特原油逼近 100 美元",
+      "summary": "沙烏地阿拉伯能源設施與油輪遭遇攻擊，加劇市場對供應中斷的擔憂，推動油價顯著走高。",
+      "business_impact": "國際油價攀升可能透過能源與運輸成本轉嫁，對台商在當地的營運成本與物價結構帶來潛在壓力。"
+    },
+    {
+      "direction": "red",
       "importance": "中等",
-      "source_name": "Ekonomim",
-      "source_url": "https://www.ekonomim.com/ekonomi/abdde-tuketici-kredilerinde-beklentileri-asan-artis-haberi-917053",
-      "headline": "美國7月消費者信貸增幅超過預期",
-      "summary": "美國7月消費者信貸增加181億美元，總額達到5.19兆美元，超越市場預期的119億美元。",
-      "business_impact": "這可能反映美國終端消費需求仍具韌性，對以外銷美國為主的外貿企業而言，後續需求值得持續觀察。"
+      "source_name": "Anadolu Ajansı (EN)",
+      "source_url": "https://www.aa.com.tr/en/economy/us-stocks-close-lower-as-rising-oil-prices-fuel-inflation-concerns/4051479",
+      "headline": "油價上漲加劇通膨疑慮，美國股市收低",
+      "summary": "受油價攀升影響，投資人擔憂通膨復熾，道瓊指數下跌超過 600 點，市場正等待關鍵美國通膨數據。",
+      "business_impact": "全球金融市場波動可能影響外部需求與資金流向，台商宜審慎評估總體經濟變數對終端消費市場的可能影響。"
     }
   ],
   "industry_items": [
     {
-      "sector": "總體經濟",
-      "sentiment": "neu",
-      "headline": "US consumer borrowing rises more than expected in July",
+      "sector": "能源與原物料",
+      "sentiment": "neg",
+      "headline": "Oil prices rise over 2% as Brent nears $100 amid escalating US-Iran tensions",
       "source": "Anadolu Ajansı (EN)",
-      "source_url": "https://www.aa.com.tr/en/economy/us-consumer-borrowing-rises-more-than-expected-in-july/4051447",
+      "source_url": "https://www.aa.com.tr/en/economy/oil-prices-rise-over-2-as-brent-nears-100-amid-escalating-us-iran-tensions/4051481",
       "date": "2026-09-08",
-      "body": "Consumer credit increases by $18.1B, driven by largest rise in non-revolving credit in 3 years.",
-      "business_interpretation": "美國信貸數據上升可能支撐短期消費動能，台商可將此數據納入整體市場需求評估的參考依據。"
+      "body": "受到美國與伊朗緊張局勢升級以及沙烏地阿拉伯能源設施遭攻擊影響，市場對供應中斷的擔憂加劇，推升油價漲幅超過 2%，布蘭特原油逼近 100 美元。",
+      "business_interpretation": "能源價格走高可能間接推升相關石化原物料與運輸成本，建議台商密切追蹤供應鏈成本波動並靈活調整採購策略。"
+    },
+    {
+      "sector": "金融與總體經濟",
+      "sentiment": "neg",
+      "headline": "US stocks close lower as rising oil prices fuel inflation concerns",
+      "source": "Anadolu Ajansı (EN)",
+      "source_url": "https://www.aa.com.tr/en/economy/us-stocks-close-lower-as-rising-oil-prices-fuel-inflation-concerns/4051479",
+      "date": "2026-09-08",
+      "body": "由於油價上漲燃起通膨疑慮，道瓊指數下跌超過 600 點，投資人正等待關鍵的美國通膨數據出爐。",
+      "business_interpretation": "外部通膨壓力與國際金融市場回檔，可能連帶影響新興市場的資金與匯率波動，台商在財務規劃上宜保持保守穩健。"
     }
   ],
   "trade_implications": [
     {
-      "title": "美國消費信貸表現高於預期，終端需求變動仍待追蹤",
-      "body": "美國7月消費者信貸數據超出市場預期，顯示民間消費動能可能延續。對外銷導向的台灣廠商而言，此趨勢有助於維持訂單能見度，但後續對於整體出口供應鏈的實際帶動效果仍有待進一步觀察。"
+      "title": "國際能源價格上揚對成本與通膨的潛在傳導",
+      "body": "由於布蘭特原油逼近 100 美元且美國市場因通膨疑慮走跌，全球能源與物價走勢充滿變數。這可能透過輸入性通膨與運輸成本增加，對土耳其當地的生產及出口成本帶來間接影響，台商在報價與成本控管上可能需要保持彈性。"
     }
   ],
-  "_generated_at": "2026-09-08T20:33:06.689773+00:00",
+  "_generated_at": "2026-09-08T20:52:03.089395+00:00",
   "_model": "gemini-3.5-flash-lite",
   "_source_date": "2026-09-08"
 }
