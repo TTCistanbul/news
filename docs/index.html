@@ -788,8 +788,41 @@ a:focus-visible { outline: 2px solid var(--accent-blue-deep); outline-offset: 2p
 }
 .note-item .note-body {
   font-size: 0.88rem; color: var(--text-primary);
-  line-height: 1.8; margin: 0; white-space: pre-wrap;
+  line-height: 1.8;
 }
+.note-item .note-body > *:first-child { margin-top: 0; }
+.note-item .note-body > *:last-child { margin-bottom: 0; }
+.note-item .note-body p { margin: 0.6em 0; }
+.note-item .note-body strong { color: var(--text-heading); font-weight: 700; }
+.note-item .note-body ul, .note-item .note-body ol {
+  margin: 0.6em 0; padding-left: 1.4em;
+}
+.note-item .note-body li { margin: 0.2em 0; }
+.note-item .note-body h1, .note-item .note-body h2, .note-item .note-body h3 {
+  font-family: 'Archivo', sans-serif; font-weight: 700; color: var(--text-heading);
+  margin: 0.8em 0 0.4em; line-height: 1.4;
+}
+.note-item .note-body h1 { font-size: 1.1rem; }
+.note-item .note-body h2 { font-size: 1.02rem; }
+.note-item .note-body h3 { font-size: 0.94rem; }
+.note-item .note-body table {
+  width: 100%; border-collapse: collapse; margin: 0.7em 0;
+  font-size: 0.85rem;
+}
+.note-item .note-body th, .note-item .note-body td {
+  border: 1px solid var(--border); padding: 0.45rem 0.6rem;
+  text-align: left; vertical-align: top;
+}
+.note-item .note-body th {
+  background: var(--bg-table-header); font-weight: 600;
+  color: var(--text-secondary); font-size: 0.78rem;
+}
+.note-item .note-body tr:nth-child(even) td { background: var(--bg-table-even); }
+.note-item .note-body code {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+  background: var(--bg-subtle); padding: 0.1em 0.35em; border-radius: 4px;
+}
+.note-item .note-body a { color: var(--accent-blue-deep); }
 .note-empty { font-size: 0.82rem; color: var(--text-tertiary); margin: 0; }
 
 /* 編輯視窗 */
@@ -1136,8 +1169,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="delta">前值 31.75%</div>
     </div>
     <div class="indicator-cell">
-      <div class="val amber">37.0% / 37.0%</div>
-      <div class="lbl">政策利率 / 加權平均融資成本（TCMB）</div>
+      <div class="val amber">37% / 37.0%</div>
+      <div class="lbl">政策利率 / 隔夜拆借（TCMB）</div>
       <div class="delta">一週附賣回已於 8/23 恢復，隔夜利率回落至政策利率附近</div>
     </div>
     <div class="indicator-cell">
@@ -1292,7 +1325,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </tr>
           <tr>
             <td>2</td>
-            <td>核心通膨（B 指標，8月）</td>
+            <td>核心通膨（B 指標）</td>
             <td><span class="data">30.68%</span></td>
             <td><span class="down">−0.29pp</span></td>
             <td>30.68%</td>
@@ -1312,13 +1345,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </tr>
           <tr>
             <td>4</td>
-            <td>加權平均融資成本（TCMB）</td>
+            <td>隔夜拆借利率（實際融資成本）</td>
             <td><span class="data">37.0%</span></td>
             <td><span class="flat">持平</span></td>
             <td>—</td>
-            <td>—</td>
+            <td>維持不變</td>
             <td>TCMB</td>
-            <td>每營業日</td>
+            <td>每 6–8 週 MPC</td>
           </tr>
           <tr>
             <td>5</td>
@@ -1333,7 +1366,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <tr>
             <td>6</td>
             <td>月出口</td>
-            <td><span class="data">234.7 億美元</span></td>
+            <td><span class="data">234.7 億美元</span><br>
+                <span class="flat" style="font-size:0.8em;">累計 {{YTD_PERIOD_LABEL}}：{{EXPORT_YTD_VALUE}}</span></td>
             <td><span class="flat">—</span></td>
             <td><span class="up">+8.1%</span></td>
             <td>—</td>
@@ -1343,7 +1377,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <tr>
             <td>7</td>
             <td>月進口</td>
-            <td><span class="data">287.1 億美元</span></td>
+            <td><span class="data">287.1 億美元</span><br>
+                <span class="flat" style="font-size:0.8em;">累計 {{YTD_PERIOD_LABEL}}：{{IMPORT_YTD_VALUE}}</span></td>
             <td><span class="flat">—</span></td>
             <td><span class="up">+10.5%</span></td>
             <td>—</td>
@@ -1392,7 +1427,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <td><span class="up">+0.4%</span></td>
             <td><span class="flat">—</span></td>
             <td><span class="flat">—</span></td>
-            <td>TCMB 官方賣出價 · 資料日 2026-09-08｜TRY 匯率變化需與 CPI、利率、外匯流動性及央行市場操作一併觀察</td>
+            <td>TRY 匯率變化需與 CPI、利率、外匯流動性及央行市場操作一併觀察</td>
           </tr>
           <tr>
             <td>2</td>
@@ -1401,7 +1436,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <td><span class="up">+0.5%</span></td>
             <td><span class="flat">—</span></td>
             <td><span class="flat">—</span></td>
-            <td>TCMB 官方賣出價 · 資料日 2026-09-08｜歐系競爭對手報價的相對變化</td>
+            <td>歐系競爭對手報價的相對變化</td>
           </tr>
           <tr>
             <td>3</td>
@@ -1410,7 +1445,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <td><span class="up">+1.1%</span></td>
             <td><span class="flat">—</span></td>
             <td><span class="flat">—</span></td>
-            <td>交叉匯率（TCMB USD/TRY 資料日 2026-09-08 ÷ 第三方 USD/TWD 資料日 2026-09-09），非官方直接報價，僅供台幣計價合約換算參考</td>
+            <td>交叉匯率（TCMB USD/TRY ÷ 第三方 USD/TWD），非官方直接報價，僅供台幣計價合約換算參考</td>
           </tr>
           <tr>
             <td>4</td>
@@ -1530,10 +1565,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="delta">正值＝台灣出超</div>
       </div>
     </div>
-        <div style="margin-top: 1.25rem; margin-bottom: 0.5rem;">
-      <img src="/news/images/tw-tr-annual-chart.png" alt="111年（全年）—114年（全年） 台灣對 Türkiye 貿易走勢圖"
-           style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
-    </div>
+    
         <p class="grp-note" style="margin-top:1.1rem; margin-bottom:0.4rem; font-weight:600;">
       台灣出口 Türkiye 前五大產業（115年1-7月（初步值））</p>
     <div class="table-wrapper">
@@ -1589,10 +1621,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </table>
     </div>
     
-        <div style="margin-top: 1rem; margin-bottom: 0.5rem;">
-      <img src="/news/images/tw-tr-monthly-top5-chart.png" alt="台灣出口 Türkiye 前五大產業逐月變化"
-           style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
-    </div>
+    
     <p class="grp-note">資料來源：財政部關務署 統計資料庫查詢系統（人工每月查詢輸入，非自動抓取）　·　
       <a href="https://portal.sw.nat.gov.tw/APGA/GA30" target="_blank" rel="noopener noreferrer">
       查看財政部關務署官方查詢系統（可自行查核或查詢更細分類）</a><br>延伸閱讀：<a href="https://www.eximclub.com.tw/innerContent.aspx?Type=Publish&ID=6632&Continen=3&Country=%E5%9C%9F%E8%80%B3%E5%85%B6" target="_blank" rel="noopener noreferrer">《貿易俱樂部》（2026/08/14，中國輸出入銀行貿易俱樂部）</a></p>
@@ -2086,6 +2115,14 @@ import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+// 經濟組資訊的內容是用 Markdown 打的（**粗體**、表格等），先前顯示邏輯
+// 是當純文字逐字跳脫顯示，Markdown 語法原封不動被印出來，不會變成真正
+// 的粗體/表格。這裡加 marked 把 Markdown 轉成 HTML，再用 DOMPurify
+// 過濾——這段內容是站內編輯者手動輸入、存進 Firestore 後任何訪客都看
+// 得到，過濾是為了避免有心人士在內容裡塞惡意 script/HTML 影響到其他
+// 訪客，不是不信任你自己輸入的內容。
+import { marked } from "https://cdn.jsdelivr.net/npm/marked@12/+esm";
+import DOMPurify from "https://cdn.jsdelivr.net/npm/dompurify@3/+esm";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBQY5JLUViXiVl4O5YWKcjAlqLU94xH9Mk",
@@ -2121,13 +2158,17 @@ function paint() {
     listEl.innerHTML = '<li><p class="note-empty">目前沒有新的資訊。</p></li>';
     return;
   }
-  listEl.innerHTML = items.map(it => `
+  // 由新到舊排序（date 是 <input type="date"> 存的 YYYY-MM-DD，字串排序
+  // 結果跟日期排序一致）。用複製過的陣列排序，不要動到原本的 items
+  // 順序，避免影響到編輯視窗裡「新增一則」等其他邏輯。
+  const sorted = [...items].sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+  listEl.innerHTML = sorted.map(it => `
     <li class="note-item${it.important ? " warn" : ""}">
       <div class="row-top">
         ${it.label ? `<span class="sector-chip">${esc(it.label)}</span>` : ""}
         <span class="note-date">${esc(it.date || "")}</span>
       </div>
-      <p class="note-body">${esc(it.body || "")}</p>
+      <div class="note-body">${DOMPurify.sanitize(marked.parse(it.body || ""))}</div>
     </li>`).join("");
 }
 
@@ -2231,7 +2272,7 @@ function rowEl(it, i) {
       </label>
     </div>
     <label for="econBody${i}">內容</label>
-    <textarea id="econBody${i}" class="js-body" placeholder="經濟組要公布的訊息">${esc(it.body || "")}</textarea>
+    <textarea id="econBody${i}" class="js-body" placeholder="經濟組要公布的訊息（支援 Markdown：**粗體**、| 表格 |、- 清單）">${esc(it.body || "")}</textarea>
     <div style="margin-top:0.6rem">
       <button type="button" class="econ-btn danger js-del">刪除這則</button>
     </div>`;
