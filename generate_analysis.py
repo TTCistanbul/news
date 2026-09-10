@@ -46,7 +46,11 @@ CANDIDATE_MODELS = [
     "gemini-3.5-flash-lite",
     "gemini-3.5-flash",
 ]
-TIMEOUT = 60
+# 2026-09-06 從 60 秒拉長到 120 秒：Gemini 偶爾會在 60 秒內還沒回完，
+# 拉長逾時本身只是降低誤判機率，真正解決「逾時整支程式崩潰」的是下面
+# call_gemini() 現在會把逾時也當成暫時性錯誤來重試/換模型，而不是讓例外
+# 直接往外拋。
+TIMEOUT = 120
 
 
 def _gemini_url(model: str) -> str:
@@ -70,7 +74,9 @@ SYSTEM_PROMPT = """\
    （例如：進口結構變化不能直接斷言為「企業正在補庫存」）。
 4. 如果同一主題的新聞語氣互相衝突，或某個政策/數字的時效性不確定，寧可
    保守、明確寫出不確定性，也不要選一個聽起來比較篤定的說法。
-5. 全部輸出繁體中文（地名、機構名可保留原文，如 TCMB、TÜİK）。
+5. 全部輸出繁體中文（地名、機構名可保留原文，如 TCMB、TÜİK）。İstanbul／
+   Istanbul 固定翻成「伊斯坦堡」，不要寫成「伊斯坦布爾」或其他譯法——
+   這是台灣普遍使用的譯名，也是本辦事處所在城市，用詞要一致。
 6. 只處理輸入新聞裡有的內容，新聞不夠寫滿的欄位就回傳較短的陣列，不要
    為了湊數量而編造。
 7. 金額單位換算務必正確，這是最常出錯的地方：
@@ -262,6 +268,12 @@ def call_gemini(prompt: str, api_key: str) -> tuple[dict, str]:
       整支程式直接掛掉，沒有繼續試第三個候選模型。5xx 通常是暫時性的，
       這裡先原地重試一次（等 3 秒），還是失敗就換下一個候選模型，
       不要讓一次暫時性過載就搞掛整個每日流程。
+    - 連線逾時（requests.exceptions.Timeout，例如 2026-09-06 實測踩到的
+      ReadTimeout）：這是完全不同的例外類別，不是 HTTPError 的子類別，
+      不會被 raise_for_status() 觸發，原本完全沒被下面的容錯邏輯接住，
+      直接讓整支程式崩潰、後面的模型連試都沒試。現在跟 5xx 用同一套
+      「原地重試一次、再換模型」規則處理，status 記為 None 代表「沒有
+      HTTP 狀態碼可看，但同樣是暫時性、值得重試的狀況」。
     - 其他錯誤（金鑰無效、額度用完、請求格式錯誤、JSON 格式錯誤等）：
       這些換模型或重試都沒用，直接往上拋出，不要吞掉真正的問題。
     """
@@ -274,6 +286,18 @@ def call_gemini(prompt: str, api_key: str) -> tuple[dict, str]:
                 if i > 0 or attempt > 0:
                     print(f"   注意：改用/重試模型 {model} 成功產生內容")
                 return result, model
+            except requests.exceptions.Timeout as e:
+                # ReadTimeout／ConnectTimeout：沒有 HTTP 狀態碼，當成
+                # status=None，跟下面 5xx 分支共用同一套重試/換模型邏輯。
+                last_error = e
+                status = None
+                if attempt == 0:
+                    print(f"   模型 {model} 呼叫逾時（{TIMEOUT} 秒內未回應），"
+                          f"3 秒後重試同一個模型...")
+                    time.sleep(3)
+                    continue
+                print(f"   模型 {model} 重試後仍然逾時，改試下一個候選模型...")
+                break
             except requests.exceptions.HTTPError as e:
                 status = e.response.status_code if e.response is not None else None
                 last_error = e
