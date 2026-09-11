@@ -1,0 +1,37 @@
+name: Fix Archive Terminology (one-off)
+
+# 只能手動觸發，不排程——這是一次性的批次修正工具，不是每天要跑的東西。
+# 之後如果又有新的用詞要統一修正，直接改 fix_terminology.py 裡的
+# REPLACEMENTS 清單，回到 Actions 頁面重新手動觸發一次就好。
+on:
+  workflow_dispatch: {}
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Preview changes (dry run)
+        run: python fix_terminology.py --dry-run
+
+      - name: Apply terminology fix
+        run: python fix_terminology.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/archive/
+          git commit -m "Fix terminology in archived reports" || echo "no changes"
+          git pull --rebase --autostash
+          git push
