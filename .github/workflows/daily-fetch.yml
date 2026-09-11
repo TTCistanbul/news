@@ -25,32 +25,11 @@ jobs:
 
       - name: Install dependencies
         run: pip install requests feedparser borsapy matplotlib
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
 
-      - name: Install Chinese fonts (for the annual trade chart)
-        run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk
-
-      - name: Install dependencies
-        run: pip install matplotlib
-
-      - name: Run render_report.py
-        run: python3 render_report.py
-
-      - name: Commit and push
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/index.html docs/images/
-          git commit -m "Refresh site from template" || echo "no changes"
-          git push
-          
       - name: Run fetch_daily.py
         env:
-          EVDS_API_KEY: ${{i4f4lz8N2RJrZeEGb2RTmP2GfWhzyuohbqcmH1zn }}
-          EIA_API_KEY: ${{i4f4lz8N2RJrZeEGb2RTmP2GfWhzyuohbqcmH1zn }}
+          EVDS_API_KEY: ${{ secrets.EVDS_API_KEY }}
+          EIA_API_KEY: ${{ secrets.EIA_API_KEY }}
         run: python fetch_daily.py
 
       - name: Generate AI analysis (Gemini, fully automatic, no review step)
@@ -60,6 +39,7 @@ jobs:
 
       - name: Fill in template (rates, funding cost, AI blocks)
         run: python render_report.py
+
       - name: Commit and push data and report
         run: |
           git config user.name "github-actions[bot]"
