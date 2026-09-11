@@ -401,6 +401,7 @@ def render_tw_tr_trade(data: dict | None, sectors_data: dict | None = None,
         <div class="delta">正值＝台灣出超</div>
       </div>
     </div>
+    {render_tw_tr_monthly_trend_chart(data)}
     {render_tw_tr_annual_chart(sectors_data)}
     {render_tw_tr_sector_table(sectors_data)}
     {render_tw_tr_monthly_sector_chart(monthly_data, (sectors_data or {}).get("sections") or {})}
@@ -586,6 +587,99 @@ def render_tw_tr_annual_chart(sectors_data: dict | None) -> str:
     img_src = f"{SITE_BASE_PATH}/images/{TW_TR_CHART_FILENAME}"
     return f'''    <div style="margin-top: 1.25rem; margin-bottom: 0.5rem;">
       <img src="{img_src}" alt="{html.escape(year_range)} 台灣對 Türkiye 貿易走勢圖"
+           style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
+    </div>'''
+
+
+TW_TR_MONTHLY_TREND_CHART_FILENAME = "tw-tr-monthly-trend-chart.png"
+
+
+def render_tw_tr_monthly_trend_chart(data: dict | None) -> str:
+    """出口／進口／貿易餘額逐月走勢圖。資料來源是 data/tw-tr-trade.json
+    （逐月一筆、原始美元金額），跟 render_tw_tr_annual_chart() 用的
+    tw-tr-trade-sectors.json（逐年一筆、千美元、依 HS 21 類拆分）是不同
+    檔案、不同單位——這裡讀到的每月數字本身就是「當月」總額，不用像
+    annual chart 那樣再加總 21 類分類。
+
+    只畫最新一筆月份所屬的西元年已經有的月份，避免跨年份把去年12月跟
+    今年1月接在同一條線上造成誤解；之後想看多年趨勢，另外開一張圖，
+    不要混進這張。
+    """
+    months = (data or {}).get("months") or []
+    if not months:
+        return ""
+
+    latest_year = months[-1]["month"].split("-")[0]
+    year_months = [m for m in months if m.get("month", "").startswith(f"{latest_year}-")]
+    if not year_months:
+        return ""
+
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+        import matplotlib.font_manager as fm
+
+        if Path(_CJK_FONT_PATH).exists():
+            fm.fontManager.addfont(_CJK_FONT_PATH)
+            plt.rcParams["font.sans-serif"] = [_CJK_FONT_FAMILY]
+        plt.rcParams["axes.unicode_minus"] = False
+
+        labels = [f"{int(m['month'].split('-')[1])}月" for m in year_months]
+        exp_vals = [round((m.get("exports_to_turkey") or 0) / 1e6, 1) for m in year_months]
+        imp_vals = [round((m.get("imports_from_turkey") or 0) / 1e6, 1) for m in year_months]
+        bal_vals = [round(e - i, 1) for e, i in zip(exp_vals, imp_vals)]
+
+        fig, ax1 = plt.subplots(figsize=(10, 5.8), dpi=150)
+        x = range(len(labels))
+        width = 0.35
+
+        bars1 = ax1.bar([i - width / 2 for i in x], exp_vals, width,
+                         label="出口金額（百萬美元）", color="#3b82f6")
+        bars2 = ax1.bar([i + width / 2 for i in x], imp_vals, width,
+                         label="進口金額（百萬美元）", color="#f59e0b")
+        ax1.set_ylabel("進出口金額（百萬美元）", fontsize=11, fontweight="bold")
+        ax1.set_xticks(list(x))
+        ax1.set_xticklabels(labels, fontsize=10)
+        ax1.set_ylim(0, max(exp_vals) * 1.3 if exp_vals else 1)
+
+        for b in list(bars1) + list(bars2):
+            ax1.annotate(f"${b.get_height():.1f}M", (b.get_x() + b.get_width() / 2, b.get_height()),
+                         textcoords="offset points", xytext=(0, 4), ha="center", fontsize=8.5)
+
+        ax2 = ax1.twinx()
+        ax2.plot(list(x), bal_vals, color="#16a34a", marker="o", linewidth=2.5,
+                 markersize=7, label="貿易餘額／出超（百萬美元）")
+        ax2.set_ylabel("貿易餘額 出超（百萬美元）", fontsize=11, fontweight="bold", color="#16a34a")
+        ax2.tick_params(axis="y", labelcolor="#16a34a")
+        ax2.set_ylim(0, max(bal_vals) * 1.5 if bal_vals else 1)
+        for xi, v in zip(x, bal_vals):
+            ax2.annotate(f"${v:.1f}M", (xi, v), textcoords="offset points", xytext=(0, 8),
+                         ha="center", fontsize=9, color="#16a34a", fontweight="bold")
+
+        lines1, lbls1 = ax1.get_legend_handles_labels()
+        lines2, lbls2 = ax2.get_legend_handles_labels()
+        ax1.legend(lines1 + lines2, lbls1 + lbls2, loc="upper left", fontsize=9, framealpha=0.9)
+
+        ax1.grid(axis="y", linestyle="--", alpha=0.3)
+        ax1.set_axisbelow(True)
+
+        month_range = f"{labels[0]}—{labels[-1]}" if len(labels) > 1 else labels[0]
+        plt.title(f"{latest_year}年{month_range} 台灣對 Türkiye 貿易走勢與貿易餘額變化圖",
+                  fontsize=13, fontweight="bold", pad=12)
+        plt.tight_layout()
+
+        TW_TR_CHART_DIR.mkdir(parents=True, exist_ok=True)
+        out_path = TW_TR_CHART_DIR / TW_TR_MONTHLY_TREND_CHART_FILENAME
+        plt.savefig(out_path, dpi=150, bbox_inches="tight")
+        plt.close(fig)
+    except Exception as e:
+        print(f"! 逐月貿易走勢圖產生失敗，略過此圖表：{e}")
+        return ""
+
+    img_src = f"{SITE_BASE_PATH}/images/{TW_TR_MONTHLY_TREND_CHART_FILENAME}"
+    return f'''    <div style="margin-top: 1rem; margin-bottom: 0.5rem;">
+      <img src="{img_src}" alt="{html.escape(latest_year)}年台灣對 Türkiye 逐月貿易走勢圖"
            style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
     </div>'''
 
