@@ -1,0 +1,1336 @@
+{
+  "generated_at": "2026-09-13T10:42:54.365857+03:00",
+  "generated_at_label": "2026-09-13 10:42 TRT",
+  "fx": {
+    "date": "2026-09-11",
+    "date_raw": "11.09.2026",
+    "bulletin": "2026/171",
+    "rates": {
+      "USD": {
+        "unit": 1.0,
+        "forex_buying": 48.4305,
+        "forex_selling": 48.5178,
+        "banknote_selling": 48.5906,
+        "per_unit_buying": 48.4305,
+        "per_unit_selling": 48.5178
+      },
+      "EUR": {
+        "unit": 1.0,
+        "forex_buying": 56.1754,
+        "forex_selling": 56.2766,
+        "banknote_selling": 56.361,
+        "per_unit_buying": 56.1754,
+        "per_unit_selling": 56.2766
+      },
+      "GBP": {
+        "unit": 1.0,
+        "forex_buying": 65.3215,
+        "forex_selling": 65.6621,
+        "banknote_selling": 65.7606,
+        "per_unit_buying": 65.3215,
+        "per_unit_selling": 65.6621
+      },
+      "JPY": {
+        "unit": 100.0,
+        "forex_buying": 31.3521,
+        "forex_selling": 31.5598,
+        "banknote_selling": 31.6797,
+        "per_unit_buying": 0.313521,
+        "per_unit_selling": 0.315598
+      },
+      "CNY": {
+        "unit": 1.0,
+        "forex_buying": 7.1785,
+        "forex_selling": 7.2724,
+        "banknote_selling": null,
+        "per_unit_buying": 7.1785,
+        "per_unit_selling": 7.2724
+      }
+    },
+    "age_days": 2,
+    "stale": false,
+    "twd_try_cross": {
+      "try_per_twd": 1.5370907274725765,
+      "usd_twd": 31.564695,
+      "usd_try_selling_used": 48.5178,
+      "source": "open.er-api.com（交叉匯率，非央行官方報價）",
+      "fetched_at_source": "Sun, 13 Sep 2026 00:02:31 +0000"
+    }
+  },
+  "macro": {
+    "funding_cost": [
+      {
+        "date": "2026-08-25 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-08-26 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-08-27 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-08-28 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-08-31 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-09-01 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-09-02 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-09-03 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-09-04 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-09-07 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-09-08 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-09-09 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-09-10 00:00:00",
+        "value": 37.09
+      },
+      {
+        "date": "2026-09-11 00:00:00",
+        "value": 37.0
+      }
+    ],
+    "cpi": [
+      {
+        "date": "2025-07-01 00:00:00",
+        "value": 100.42
+      },
+      {
+        "date": "2025-08-01 00:00:00",
+        "value": 102.47
+      },
+      {
+        "date": "2025-09-01 00:00:00",
+        "value": 105.78
+      },
+      {
+        "date": "2025-10-01 00:00:00",
+        "value": 108.48
+      },
+      {
+        "date": "2025-11-01 00:00:00",
+        "value": 109.42
+      },
+      {
+        "date": "2025-12-01 00:00:00",
+        "value": 110.39
+      },
+      {
+        "date": "2026-01-01 00:00:00",
+        "value": 115.73
+      },
+      {
+        "date": "2026-02-01 00:00:00",
+        "value": 119.16
+      },
+      {
+        "date": "2026-03-01 00:00:00",
+        "value": 121.47
+      },
+      {
+        "date": "2026-04-01 00:00:00",
+        "value": 126.55
+      },
+      {
+        "date": "2026-05-01 00:00:00",
+        "value": 128.72
+      },
+      {
+        "date": "2026-06-01 00:00:00",
+        "value": 129.99
+      },
+      {
+        "date": "2026-07-01 00:00:00",
+        "value": 132.31
+      },
+      {
+        "date": "2026-08-01 00:00:00",
+        "value": 134.75
+      }
+    ],
+    "trade_exports": [
+      {
+        "date": "2025-06-01 00:00:00",
+        "value": 20331.0
+      },
+      {
+        "date": "2025-07-01 00:00:00",
+        "value": 24620.0
+      },
+      {
+        "date": "2025-08-01 00:00:00",
+        "value": 21409.0
+      },
+      {
+        "date": "2025-09-01 00:00:00",
+        "value": 22126.0
+      },
+      {
+        "date": "2025-10-01 00:00:00",
+        "value": 23490.0
+      },
+      {
+        "date": "2025-11-01 00:00:00",
+        "value": 22146.0
+      },
+      {
+        "date": "2025-12-01 00:00:00",
+        "value": 25850.0
+      },
+      {
+        "date": "2026-01-01 00:00:00",
+        "value": 19767.0
+      },
+      {
+        "date": "2026-02-01 00:00:00",
+        "value": 20636.0
+      },
+      {
+        "date": "2026-03-01 00:00:00",
+        "value": 21704.0
+      },
+      {
+        "date": "2026-04-01 00:00:00",
+        "value": 24738.0
+      },
+      {
+        "date": "2026-05-01 00:00:00",
+        "value": 21819.0
+      },
+      {
+        "date": "2026-06-01 00:00:00",
+        "value": 24396.0
+      },
+      {
+        "date": "2026-07-01 00:00:00",
+        "value": 25185.0
+      }
+    ],
+    "trade_imports": [
+      {
+        "date": "2025-06-01 00:00:00",
+        "value": 26802.0
+      },
+      {
+        "date": "2025-07-01 00:00:00",
+        "value": 29181.0
+      },
+      {
+        "date": "2025-08-01 00:00:00",
+        "value": 24182.0
+      },
+      {
+        "date": "2025-09-01 00:00:00",
+        "value": 27459.0
+      },
+      {
+        "date": "2025-10-01 00:00:00",
+        "value": 29374.0
+      },
+      {
+        "date": "2025-11-01 00:00:00",
+        "value": 28497.0
+      },
+      {
+        "date": "2025-12-01 00:00:00",
+        "value": 33310.0
+      },
+      {
+        "date": "2026-01-01 00:00:00",
+        "value": 26652.0
+      },
+      {
+        "date": "2026-02-01 00:00:00",
+        "value": 28147.0
+      },
+      {
+        "date": "2026-03-01 00:00:00",
+        "value": 31176.0
+      },
+      {
+        "date": "2026-04-01 00:00:00",
+        "value": 31638.0
+      },
+      {
+        "date": "2026-05-01 00:00:00",
+        "value": 26271.0
+      },
+      {
+        "date": "2026-06-01 00:00:00",
+        "value": 32962.0
+      },
+      {
+        "date": "2026-07-01 00:00:00",
+        "value": 30764.0
+      }
+    ],
+    "gdp_growth": [
+      {
+        "date": "2023-07-01 00:00:00",
+        "value": 606746039.04
+      },
+      {
+        "date": "2023-10-01 00:00:00",
+        "value": 617274297.88
+      },
+      {
+        "date": "2024-01-01 00:00:00",
+        "value": 525475817.31
+      },
+      {
+        "date": "2024-04-01 00:00:00",
+        "value": 552501309.35
+      },
+      {
+        "date": "2024-07-01 00:00:00",
+        "value": 624730298.07
+      },
+      {
+        "date": "2024-10-01 00:00:00",
+        "value": 637781908.62
+      },
+      {
+        "date": "2025-01-01 00:00:00",
+        "value": 539021478.12
+      },
+      {
+        "date": "2025-04-01 00:00:00",
+        "value": 579269266.57
+      },
+      {
+        "date": "2025-07-01 00:00:00",
+        "value": 649308679.54
+      },
+      {
+        "date": "2025-10-01 00:00:00",
+        "value": 660365686.68
+      },
+      {
+        "date": "2026-01-01 00:00:00",
+        "value": 553048511.13
+      },
+      {
+        "date": "2026-04-01 00:00:00",
+        "value": 592720249.7
+      }
+    ],
+    "gdp_growth_sa": [
+      {
+        "date": "2023-07-01 00:00:00",
+        "value": 225.84
+      },
+      {
+        "date": "2023-10-01 00:00:00",
+        "value": 227.36
+      },
+      {
+        "date": "2024-01-01 00:00:00",
+        "value": 229.68
+      },
+      {
+        "date": "2024-04-01 00:00:00",
+        "value": 229.21
+      },
+      {
+        "date": "2024-07-01 00:00:00",
+        "value": 230.5
+      },
+      {
+        "date": "2024-10-01 00:00:00",
+        "value": 234.18
+      },
+      {
+        "date": "2025-01-01 00:00:00",
+        "value": 236.35
+      },
+      {
+        "date": "2025-04-01 00:00:00",
+        "value": 239.07
+      },
+      {
+        "date": "2025-07-01 00:00:00",
+        "value": 241.08
+      },
+      {
+        "date": "2025-10-01 00:00:00",
+        "value": 241.72
+      },
+      {
+        "date": "2026-01-01 00:00:00",
+        "value": 242.47
+      },
+      {
+        "date": "2026-04-01 00:00:00",
+        "value": 245.18
+      }
+    ],
+    "core_cpi_b": [
+      {
+        "date": "2025-07-01 00:00:00",
+        "value": 100.45
+      },
+      {
+        "date": "2025-08-01 00:00:00",
+        "value": 102.53
+      },
+      {
+        "date": "2025-09-01 00:00:00",
+        "value": 105.95
+      },
+      {
+        "date": "2025-10-01 00:00:00",
+        "value": 108.53
+      },
+      {
+        "date": "2025-11-01 00:00:00",
+        "value": 109.9
+      },
+      {
+        "date": "2025-12-01 00:00:00",
+        "value": 110.76
+      },
+      {
+        "date": "2026-01-01 00:00:00",
+        "value": 115.44
+      },
+      {
+        "date": "2026-02-01 00:00:00",
+        "value": 117.93
+      },
+      {
+        "date": "2026-03-01 00:00:00",
+        "value": 119.65
+      },
+      {
+        "date": "2026-04-01 00:00:00",
+        "value": 123.74
+      },
+      {
+        "date": "2026-05-01 00:00:00",
+        "value": 127.29
+      },
+      {
+        "date": "2026-06-01 00:00:00",
+        "value": 129.41
+      },
+      {
+        "date": "2026-07-01 00:00:00",
+        "value": 131.56
+      },
+      {
+        "date": "2026-08-01 00:00:00",
+        "value": 133.99
+      }
+    ]
+  },
+  "news": [
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "iPhone'da kiralama tuzağı: Satın almaktan pahalıya geliyor",
+      "url": "https://www.sozcu.com.tr/iphone-da-kiralama-tuzagi-satin-almaktan-pahaliya-geliyor-p357744",
+      "published": "2026-09-13T07:21:57+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Türkiye'de 255 bin liraya kadar ulaşan iPhone fiyatları, tüketicinin alım gücünü zorlarken bankaları yeni bir kiralama m...",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "banka*"
+      ]
+    },
+    {
+      "source": "Dünya",
+      "title": "iPhone'da kiralama dönemi: Aylık 7 bin liraya telefon, 24 ay sonra iade",
+      "url": "https://www.dunya.com/foto-galeri/teknoloji/iphoneda-kiralama-donemi-aylik-7-bin-liraya-telefon-24-ay-sonra-iade-galeri-839832",
+      "published": "2026-09-13T07:21:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Türkiye&amp;#039;de yeni iPhone modellerinin fiyatının 255 bin lirayı aşmasıyla bazı bankalar 12 ve 24 aylık kiralama paketleri sunmaya başladı. 149 bin 999 liralık iPhone 18 Pro Max, 24 ay boyunca aylık 7 bin 150 liraya kiralanabilirken, toplam ödeme 171 bin 600 lirayı buluyor. Süre sonunda ise cihaz müşteride kalmayarak bankaya iade ediliyor.",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "banka*"
+      ]
+    },
+    {
+      "source": "Ekonomim",
+      "title": "Bakan Kacır açıkladı: Tekstilde 1,2 milyon istihdam korundu",
+      "url": "https://www.ekonomim.com/ekonomi/bakan-kacir-acikladi-tekstilde-12-milyon-istihdam-korundu-haberi-917855",
+      "published": "2026-09-13T06:32:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Sanayi ve Teknoloji Bakanı Mehmet Fatih Kacır, 2026 başından bu yana tekstil, hazır giyim, deri ve mobilya sektörlerinde yaklaşık 1,2 milyon istihdamın korunduğunu bildirdi. Kacır, tekstilin yeşil ve dijital dönüşümünü hızlandıracak adımlar atacaklarını söyledi.",
+      "scope": "domestic",
+      "tr_markers": [
+        "kacir"
+      ],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "sanayi*",
+        "teknoloji*",
+        "tekstil*"
+      ]
+    },
+    {
+      "source": "Dünya",
+      "title": "Kacır'dan destek mesajı: Tekstilde dönüşüm hızlanacak",
+      "url": "https://www.dunya.com/gundem/kacirdan-destek-mesaji-tekstilde-donusum-hizlanacak-haberi-839824",
+      "published": "2026-09-13T06:31:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Sanayi ve Teknoloji Bakanı Mehmet Fatih Kacır, tekstil sektörünün yeşil ve dijital dönüşümünü hızlandıracak, verimliliğini ve teknolojik yetkinliğini artıracak, daha yüksek katma değerli üretim ve ihracat kapasitesini güçlendirecek adımları kararlılıkla hayata geçireceklerini bildirdi.",
+      "scope": "domestic",
+      "tr_markers": [
+        "kacir"
+      ],
+      "primary_topic": "trade",
+      "topics": [
+        "trade",
+        "industry"
+      ],
+      "matched": [
+        "ihracat*",
+        "kapasite*",
+        "sanayi*",
+        "teknoloji*",
+        "tekstil*",
+        "uretim*"
+      ]
+    },
+    {
+      "source": "Ekonomim",
+      "title": "Türkiye'nin 73 yıllık dev tekstil fabrikası üretimi durdurdu!",
+      "url": "https://www.ekonomim.com/sirketler/turkiyenin-73-yillik-dev-tekstil-fabrikasi-uretimi-durdurdu-haberi-917856",
+      "published": "2026-09-13T06:27:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Kayseri’nin köklü tekstil tesislerinden Orta Anadolu Mensucat Fabrikası, 1953’ten bu yana sürdürdüğü üretim faaliyetlerini durdurdu. Şirket yönetimi konuya ilişkin bilgilendirme yaptı.",
+      "scope": "domestic",
+      "tr_markers": [
+        "anadolu",
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "fabrika*",
+        "tekstil*",
+        "uretim*"
+      ]
+    },
+    {
+      "source": "Ekonomim",
+      "title": "AK Parti Sözcüsü Ömer Çelik'ten Özgür Özel'e sert tepki",
+      "url": "https://www.ekonomim.com/gundem/ak-parti-sozcusu-omer-celikten-ozgur-ozele-sert-tepki-haberi-917851",
+      "published": "2026-09-13T06:19:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "AK Parti Sözcüsü Ömer Çelik, Özgür Özel’in İstanbul’daki konuşmasına tepki göstererek Özel’i devlet makamlarını hedef almak ve mülki idare amirlerini tehdit etmekle suçladı. Çelik, Özel’i siyaset adabına davet etti.",
+      "scope": "domestic",
+      "tr_markers": [
+        "istanbul"
+      ],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "celik*"
+      ]
+    },
+    {
+      "source": "Ekonomim",
+      "title": "Burger, döner, sucuk, pastırma: Et ürünlerinde yeni yasaklar geliyor",
+      "url": "https://www.ekonomim.com/ekonomi/burger-doner-sucuk-pastirma-et-urunlerinde-yeni-yasaklar-geliyor-haberi-917848",
+      "published": "2026-09-13T06:07:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Tarım ve Orman Bakanlığı, Türk Gıda Kodeksi kapsamında et ve et ürünlerine yönelik düzenlemeleri güncellemeye hazırlanıyor. Taslak tebliğle burger ürünlerine ilk kez tanım ve üretim standardı getirilmesi planlanlanıyor.",
+      "scope": "domestic",
+      "tr_markers": [
+        "bakanligi",
+        "turk*"
+      ],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "uretim*"
+      ]
+    },
+    {
+      "source": "Dünya",
+      "title": "Et ürünlerinde yeni dönem: Burgerden dönere standartlar değişiyor",
+      "url": "https://www.dunya.com/foto-galeri/gundem/et-urunlerinde-yeni-donem-burgerden-donere-standartlar-degisiyor-galeri-839821",
+      "published": "2026-09-13T05:47:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Tarım ve Orman Bakanlığı, et ürünlerinde içerik, üretim ve etiketleme kurallarını değiştirmeye hazırlanıyor. Taslak düzenlemeyle burger ilk kez ayrı kriterlere bağlanacak, dönerin yaprak mı kıyma mı olduğu etikette belirtilecek. Sucuk, pastırma ve kavurmada fıstık ve peynir gibi çeşni maddelerinin kullanımına izin verilmeyecek.",
+      "scope": "domestic",
+      "tr_markers": [
+        "bakanligi"
+      ],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "uretim*"
+      ]
+    },
+    {
+      "source": "Dünya",
+      "title": "Pezeşkiyan’dan ABD’ye sert mesaj: İran teslim olmayacak",
+      "url": "https://www.dunya.com/dunya/pezeskiyandan-abdye-sert-mesaj-iran-teslim-olmayacak-haberi-839817",
+      "published": "2026-09-13T05:01:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "İran Cumhurbaşkanı Mesud Pezeşkiyan, ABD’nin ülkesine yönelik askeri politikalarını eleştirerek, İran halkına zorbalıkla boyun eğdirilemeyeceğini söyledi. Pezeşkiyan, “İran teslim olmayacak” mesajını verdi.",
+      "scope": "domestic",
+      "tr_markers": [
+        "cumhurbaskan*"
+      ],
+      "primary_topic": "defense",
+      "topics": [
+        "defense"
+      ],
+      "matched": [
+        "askeri"
+      ]
+    },
+    {
+      "source": "Ekonomim",
+      "title": "Akaryakıt fiyatlarında son durum: İşte 13 Eylül 2026 güncel benzin, motorin ve LPG fiyatları",
+      "url": "https://www.ekonomim.com/sektorler/enerji/akaryakit-fiyatlarinda-son-durum-iste-13-eylul-2026-guncel-benzin-motorin-ve-lpg-fiyatlari-haberi-917840",
+      "published": "2026-09-13T04:30:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Brent petrol fiyatlarındaki hareketlilik, döviz kurundaki dalgalanmalar ve vergi artışları, akaryakıt fiyatları üzerinde doğrudan etkili oluyor. Bu gelişmeler, vatandaşların “Benzin ne kadar oldu?”, “Motorin litre fiyatı kaç TL?”, “LPG fiyatları güncel ne kadar?” gibi sorulara yanıt aramasına neden oluyor. İşte 13 Eylül Pazar günü itibarıyla güncel benzin, motorin ve LPG fiyatları…",
+      "scope": "domestic",
+      "tr_markers": [
+        "tl"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "doviz",
+        "doviz kur*",
+        "petrol*"
+      ]
+    },
+    {
+      "source": "Dünya",
+      "title": "Akaryakıt fiyatlarında son durum! Benzin, motorin ve LPG'ye zam, indirim var mı? (13 Eylül 2026)",
+      "url": "https://www.dunya.com/enerji/akaryakit-fiyatlarinda-son-durum-benzin-motorin-ve-lpgye-zam-indirim-var-mi-13-eylul-2026-haberi-839813",
+      "published": "2026-09-13T04:24:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Döviz kuru ve petrol fiyatlarındaki hareketlilik ile vergilere yapılan zamlar akaryakıt fiyatlarını da etkilemeye devam ediyor. 13 Eylül 2026 benzin, motorin (mazot) fiyatları ne kadar, güncel akaryakıt fiyatları kaç TL? Benzin litre fiyatı ve motorin litre fiyatı kaç para?",
+      "scope": "domestic",
+      "tr_markers": [
+        "tl"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "doviz",
+        "doviz kur*",
+        "petrol*"
+      ]
+    },
+    {
+      "source": "Dünya",
+      "title": "Dolar kaç TL oldu, Euro ne kadar? (13 Eylül Pazar Döviz Kurları)",
+      "url": "https://www.dunya.com/finans/dolar/dolar-kac-tl-oldu-euro-ne-kadar-13-eylul-pazar-doviz-kurlari-haberi-839812",
+      "published": "2026-09-13T04:16:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "13 EYLÜL DÖVİZ KURU: Döviz kurlarında hareketlilik devam ediyor. Yeni günde Dolar 48,47 liradan, euro 56.10 TL seviyelerinden işlem görüyor. İşte güncel döviz kurları ve piyasalardaki son durum…",
+      "scope": "domestic",
+      "tr_markers": [
+        "tl"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "doviz",
+        "doviz kur*",
+        "piyasa*"
+      ]
+    },
+    {
+      "source": "Dünya",
+      "title": "ALTINDA SON DURUM: Gram ve çeyrek altın kaç TL oldu? Altın fiyatları ne kadar? (13 Eylül 2026)",
+      "url": "https://www.dunya.com/finans/altin/altinda-son-durum-gram-ve-ceyrek-altin-kac-tl-oldu-altin-fiyatlari-ne-kadar-13-eylul-2026-haberi-839811",
+      "published": "2026-09-13T04:13:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Altın ve döviz kurlarında iç ve dış piyasalarda yaşanan hareketlilik yakından izlenirken, vatandaşlar günün ilk saatlerinden itibaren “Gram altın, çeyrek altın ve ons altın bugün kaç lira?” sorularına yanıt arıyor. İşte 13 Eylül 2026 çeyrek, ons, gram ve yarım altın satış fiyatları...",
+      "scope": "domestic",
+      "tr_markers": [
+        "lira",
+        "tl"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "doviz",
+        "doviz kur*",
+        "piyasa*"
+      ]
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Gurbetçiler kara listeye girdi",
+      "url": "https://www.sozcu.com.tr/gurbetciler-kara-listeye-girdi-p357663",
+      "published": "2026-09-13T02:30:23+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Türkiye’nin yurt dışındaki Türk vatandaşlarına ait banka hesap bilgilerini yabancı ülke maliyelerine bildirmesi hız kaza...",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "banka*"
+      ]
+    },
+    {
+      "source": "Hürriyet Daily News",
+      "title": "Bayraktar outlines three power projects with Azerbaijan",
+      "url": "https://www.hurriyetdailynews.com/bayraktar-outlines-three-power-projects-with-azerbaijan-226793",
+      "published": "2026-09-12T10:34:10+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Türkiye and Azerbaijan are discussing three electricity transmission projects while seeking to make greater use of existing oil and gas pipelines, Energy and Natural Resources Minister Alparslan Bayraktar said.",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "energy",
+        "gas",
+        "oil"
+      ]
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Türk inşaat şirketi iflas etti: Alacaklılar için karar verildi",
+      "url": "https://www.sozcu.com.tr/turk-insaat-sirketi-iflas-etti-alacaklilar-icin-karar-verildi-p357524",
+      "published": "2026-09-12T08:02:36+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "İzmir 3. Asliye Ticaret Mahkemesi tarafından iflasına karar verilen 35 yıllık İzmer İnşaat Sanayi Ticaret ve Turizm A.Ş....",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*"
+      ],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "sanayi*"
+      ]
+    },
+    {
+      "source": "Dünya",
+      "title": "Kırsal kalkınmaya 12,5 milyar liralık hibe: En büyük pay aile işletmelerinin",
+      "url": "https://www.dunya.com/ekonomi/kirsal-kalkinmaya-125-milyar-liralik-hibe-en-buyuk-pay-aile-isletmelerinin-haberi-839831",
+      "published": "2026-09-13T07:21:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Tarım ve Orman Bakanı İbrahim Yumaklı, kırsal kalkınma yatırımlarına toplam 12,5 milyar liralık hibe desteği sağlanacağını açıkladı. Desteklerle kırsalda 19,5 milyar liralık yatırımın hayata geçirilmesi hedeflenirken, bütçeden en büyük pay aile işletmelerine ayrıldı.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "butce*",
+        "yatirim*"
+      ]
+    },
+    {
+      "source": "Ekonomim",
+      "title": "Anthropic'ten istifa eden çalışandan uyarı: İlerlemesini yavaşlatmazsak yakın gelecekte hepimiz ölebiliriz",
+      "url": "https://www.ekonomim.com/dunya/anthropicten-istifa-eden-calisandan-uyari-ilerlemesini-yavaslatmazsak-yakin-gelecekte-hepimiz-olebiliriz-haberi-917861",
+      "published": "2026-09-13T07:13:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Anthropic şirketinden istifa eden Jacob Coxon, yapay zeka şirketlerindeki çalışanların teknolojideki hızlı ilerlemenin sonuçlarından korktuklarını belirtti.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "teknoloji*",
+        "yapay zeka"
+      ]
+    },
+    {
+      "source": "Ekonomim",
+      "title": "Merkez Bankası’ndan faiz indirimi beklentisi güçlendi! İşte ekonomistlerin tahminleri",
+      "url": "https://www.ekonomim.com/ekonomi/merkez-bankasindan-faiz-indirimi-beklentisi-guclendi-iste-ekonomistlerin-tahminleri-haberi-917860",
+      "published": "2026-09-13T07:08:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Merkez Bankası’nın eylül ayı PPK toplantısında politika faizini beklentilere paralel olarak yüzde 37,00 seviyesinde sabit bırakmasının ardından yayımlanan kurum raporları, faiz indirimlerinin yılın son çeyreğinde yeniden başlayabileceğine işaret etti.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "banka*",
+        "ekonomi*",
+        "faiz*",
+        "merkez bankasi*"
+      ]
+    },
+    {
+      "source": "Dünya",
+      "title": "Petrolde yeni yükseliş kapıda mı? Gözler Çin'e çevrildi",
+      "url": "https://www.dunya.com/ekonomi/petrolde-yeni-yukselis-kapida-mi-gozler-cine-cevrildi-haberi-839830",
+      "published": "2026-09-13T06:59:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Ortadoğu&amp;#039;da savaşın yeniden tırmanmasıyla ABD ham petrolü 102 doları aşarken piyasada gözler dünyanın en büyük petrol ithalatçısı Çin&amp;#039;e çevrildi. Savaş boyunca ithalatı sert biçimde azaltarak fiyatların daha fazla yükselmesini engelleyen Pekin&amp;#039;in yeniden alımlara yönelmesi petrolü yeni bir zirveye taşıyabilir.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "trade",
+      "topics": [
+        "trade",
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "ithalat*",
+        "petrol*",
+        "piyasa*"
+      ]
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Ev almak isteyenler dikkat: Bugün almayan yarın pişman olur!",
+      "url": "https://www.sozcu.com.tr/ev-almak-isteyenler-dikkat-bugun-almayan-yarin-pisman-olur-p357731",
+      "published": "2026-09-13T06:48:34+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Ev almayı erteleyen yarın pişman olacak! İnşaat maliyetleri ve işçilik giderlerindeki patlama konut üretimini durma nokt...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "uretim*"
+      ]
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Volkswagen için Bugatti efsanesi sona erdi!",
+      "url": "https://www.sozcu.com.tr/volkswagen-icin-bugatti-efsanesi-sona-erdi-p357726",
+      "published": "2026-09-13T06:40:07+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Alman otomotiv devi Volkswagen, 1 milyar euroluk dev hisse satışı sonrası 28 yıllık tarihi Bugatti dönemine resmî olarak...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "otomotiv*"
+      ]
+    },
+    {
+      "source": "Dünya",
+      "title": "Dolarda kritik hafta: Citi'den Fed sonrası dikkat çeken tahmin",
+      "url": "https://www.dunya.com/ekonomi/dolarda-kritik-hafta-citiden-fed-sonrasi-dikkat-ceken-tahmin-haberi-839826",
+      "published": "2026-09-13T06:18:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Dolar son dönemde güç kazanırken Citi&amp;#039;den gelecek haftaki Fed kararı öncesi dikkat çeken bir tahmin geldi. Bankanın stratejistlerine göre Fed&amp;#039;den beklenen faiz artışı dolar için yeni bir yükseliş getirmek yerine kâr satışlarını tetikleyebilir.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "banka*",
+        "faiz*"
+      ]
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Altında 16 Eylül alarmı! Büyük hareket kapıda",
+      "url": "https://www.sozcu.com.tr/altinda-16-eylul-alarmi-buyuk-hareket-kapida-p357711",
+      "published": "2026-09-13T06:13:03+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Fed'in açıklayacağı faiz kararı öncesi küresel bankacılık devinden ezber bozan bir altın analizi geldi. Olası anlık geri...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "banka*",
+        "faiz*"
+      ]
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Dünyayı bekleyen kış tehlikesi: Petrol ve gaz fiyatları merkez bankalarını alarma geçirdi",
+      "url": "https://www.sozcu.com.tr/dunyayi-bekleyen-kis-tehlikesi-petrol-ve-gaz-fiyatlari-merkez-bankalarini-alarma-gecirdi-p357708",
+      "published": "2026-09-13T06:08:41+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Brent petrolün 100 doları aşması ve yakıt fiyatlarındaki rekor tırmanış, kış mevsimi öncesinde küresel enflasyon ve faiz...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "banka*",
+        "enflasyon*",
+        "faiz*",
+        "petrol*"
+      ]
+    },
+    {
+      "source": "Dünya",
+      "title": "Warren Buffett bile aldığına pişman olmuştu: 10 yıl sonra servete dönüştü",
+      "url": "https://www.dunya.com/ekonomi/warren-buffett-bile-aldigina-pisman-olmustu-10-yil-sonra-servete-donustu-haberi-839822",
+      "published": "2026-09-13T05:44:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Efsanevi yatırımcı Warren Buffett&amp;#039;ın yıllar önce çok fazla para ödediği için pişman olduğu dev satın alma, Berkshire Hathaway&amp;#039;in en değerli yatırımlarından birine dönüştü. 2016&amp;#039;da 37,2 milyar dolara alınan ve daha sonra Berkshire&amp;#039;a 11 milyar dolarlık zarar yazdıran Precision Castparts&amp;#039;ın, havacılık ve yapay zeka veri merkezlerinden gelen güçlü talep say",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "yapay zeka",
+        "yatirim*",
+        "yatirimci*"
+      ]
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Motorine dev zam geliyor!",
+      "url": "https://www.sozcu.com.tr/motorine-dev-zam-geliyor-p357681",
+      "published": "2026-09-13T05:25:11+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Petrol fiyatlarındaki yükseliş döviz kurlarındaki hareketlilik akaryakıt fiyatlarını doğrudan etkiliyor. Sektör kaynakla...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "doviz",
+        "doviz kur*",
+        "petrol*"
+      ]
+    },
+    {
+      "source": "Dünya",
+      "title": "ECB Başkanı Lagarde'dan enflasyon uyarısı: Bu şok daha uzun sürüyor",
+      "url": "https://www.dunya.com/ekonomi/ecb-baskani-lagardedan-enflasyon-uyarisi-bu-sok-daha-uzun-suruyor-haberi-839820",
+      "published": "2026-09-13T05:11:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "İran savaşının enerji piyasalarında yarattığı şok Avrupa&amp;#039;da enflasyonla mücadeleyi zorlaştırıyor. ECB Başkanı Christine Lagarde, mevcut şokun beklenenden uzun sürdüğünü belirterek euro bölgesinde enflasyonun daha uzun süre yüksek kalabileceği uyarısında bulundu. ECB&amp;#039;nin savaşın başlamasından bu yana ikinci kez faiz artırmasının ardından gelen açıklama, yeni faiz artışlarının da g",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "enerji*",
+        "enflasyon*",
+        "faiz*",
+        "piyasa*"
+      ]
+    },
+    {
+      "source": "Ekonomim",
+      "title": "UKMTO: Hürmüz Boğazı'nda bir gemi türü belirsiz mühimmatla vuruldu",
+      "url": "https://www.ekonomim.com/dunya/ukmto-hurmuz-bogazinda-bir-gemi-turu-belirsiz-muhimmatla-vuruldu-haberi-917845",
+      "published": "2026-09-13T05:08:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "İngiltere Deniz Ticaret Operasyonları (UKMTO), Hürmüz Boğazı&amp;#039;ndan geçen bir geminin türü belirsiz bir mühimmatla vurulduğunu açıkladı.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "defense",
+      "topics": [
+        "defense"
+      ],
+      "matched": [
+        "muhimmat*"
+      ]
+    },
+    {
+      "source": "Dünya",
+      "title": "OpenAI’dan halka arz kararı: CEO güvenlik risklerine işaret etti",
+      "url": "https://www.dunya.com/dunya/openaidan-halka-arz-karari-ceo-guvenlik-risklerine-isaret-etti-haberi-839816",
+      "published": "2026-09-13T04:40:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "OpenAI CEO’su Sam Altman, yapay zeka güvenliğine ilişkin endişeler nedeniyle şirketin 2026’da halka açılmayacağını açıkladı. Altman, mevcut koşulların halka arz için uygun olmadığını ve şirket üzerinde bu yönde bir baskı bulunmadığını söyledi.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "yapay zeka"
+      ]
+    },
+    {
+      "source": "Dünya",
+      "title": "Tera Yatırım'dan Pusula Finans Holding açıklaması",
+      "url": "https://www.dunya.com/sirketler/tera-yatirimdan-pusula-finans-holding-aciklamasi-haberi-839808",
+      "published": "2026-09-12T20:44:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Tera Yatırım Menkul Değerler AŞ, Pusula Finans Holding AŞ ve bağlı şirketlerinin paylarının devralınmasına ilişkin sürecin devam ettiğini belirterek, son dönemde kamuoyuna yansıyan gelişmelerin Tera Grubu’nun stratejik ve finansal değerlendirmesinde herhangi bir değişikliğe yol açmadığını açıkladı.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "finans*",
+        "yatirim*"
+      ]
+    },
+    {
+      "source": "Anadolu Ajansı (EN)",
+      "title": "South Africa's president calls for new era in economic ties with India",
+      "url": "https://www.aa.com.tr/en/world/south-africas-president-calls-for-new-era-in-economic-ties-with-india/4055253",
+      "published": "2026-09-12T13:31:40+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "On sidelines of BRICS Summit, Cyril Ramaphosa urges stronger investment and trade partnerships with India, highlighting opportunities in infrastructure, critical minerals, energy, digital innovation",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "trade",
+      "topics": [
+        "trade",
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "economic",
+        "energy",
+        "investment*",
+        "trade"
+      ]
+    }
+  ],
+  "news_diagnostics": {
+    "Anadolu Ajansı (EN)": {
+      "total": 30,
+      "recent": 1,
+      "kept": 1,
+      "domestic": 0,
+      "window_hours": 24,
+      "newest": "2026-09-12T13:31:40+00:00",
+      "oldest": "2026-09-09T09:35:30+00:00",
+      "no_date": 0,
+      "dedup_skipped": 0,
+      "no_topic_samples": [],
+      "error": null
+    },
+    "Daily Sabah": {
+      "total": 45,
+      "recent": 0,
+      "kept": 0,
+      "domestic": 0,
+      "window_hours": 24,
+      "newest": "2026-09-11T21:25:00+00:00",
+      "oldest": "2026-09-11T07:52:00+00:00",
+      "no_date": 0,
+      "dedup_skipped": 0,
+      "no_topic_samples": [],
+      "error": null
+    },
+    "Hürriyet Daily News": {
+      "total": 100,
+      "recent": 1,
+      "kept": 1,
+      "domestic": 1,
+      "window_hours": 24,
+      "newest": "2026-09-12T10:34:10+00:00",
+      "oldest": "2026-04-17T06:28:20+00:00",
+      "no_date": 0,
+      "dedup_skipped": 0,
+      "no_topic_samples": [],
+      "error": null
+    },
+    "Dünya": {
+      "total": 25,
+      "recent": 25,
+      "kept": 14,
+      "domestic": 7,
+      "window_hours": 24,
+      "newest": "2026-09-13T07:21:00+00:00",
+      "oldest": "2026-09-12T20:44:00+00:00",
+      "no_date": 0,
+      "dedup_skipped": 0,
+      "no_topic_samples": [
+        "17 milyon öğrenci için ilk zil yarın çalacak: Okullarda yeni dönem başlıyor",
+        "15 ilde “Ailem Güvende” operasyonu: 162 şüpheliye adli işlem",
+        "Endonezya'da 243 kişiyi taşıyan gemi kayboldu",
+        "Cumhurbaşkanı Erdoğan: Milletimizin haklarına sahip çıkacağız",
+        "Karayolları İstanbul'da üç taşınmaz satacak: İhale 30 Eylül'de"
+      ],
+      "error": null
+    },
+    "Ekonomim": {
+      "total": 25,
+      "recent": 25,
+      "kept": 8,
+      "domestic": 5,
+      "window_hours": 24,
+      "newest": "2026-09-13T07:32:00+00:00",
+      "oldest": "2026-09-13T04:24:00+00:00",
+      "no_date": 0,
+      "dedup_skipped": 0,
+      "no_topic_samples": [
+        "Tutuklu bulunan Oğuzhan Uğur hakkında yeni karar",
+        "AKOM’dan İstanbul için yağış uyarısı: Sıcaklıklar 4-8 derece düşecek",
+        "Ticaret Bakanlığı yeni eğitim öğretim döneminde kırtasiye denetimlerini yoğunlaştırdı",
+        "Yeni eğitim öğretim yılının ilk ders zili yarın çalacak",
+        "Sigara satışından tüketime kadar yeni kısıtlamalar geliyor: Tam yasak için tarih belli oldu"
+      ],
+      "error": null
+    },
+    "Bloomberg HT": {
+      "total": 20,
+      "recent": 0,
+      "kept": 0,
+      "domestic": 0,
+      "window_hours": 120,
+      "newest": "2026-08-25T20:04:47+00:00",
+      "oldest": "2026-08-25T11:35:44+00:00",
+      "no_date": 0,
+      "dedup_skipped": 0,
+      "no_topic_samples": [],
+      "error": null
+    },
+    "Hürriyet Ekonomi": {
+      "total": 100,
+      "recent": 3,
+      "kept": 0,
+      "domestic": 0,
+      "window_hours": 120,
+      "newest": "2026-09-13T02:27:00+00:00",
+      "oldest": "2024-10-03T10:06:00+00:00",
+      "no_date": 0,
+      "dedup_skipped": 1,
+      "no_topic_samples": [
+        "İzmir'de Dominik Cumhuriyeti'nin Fahri Konsolosluğu açıldı",
+        "Sezonun ilk pamuğuna 100 lira"
+      ],
+      "error": null
+    },
+    "Sözcü Ekonomi": {
+      "total": 50,
+      "recent": 13,
+      "kept": 8,
+      "domestic": 3,
+      "window_hours": 24,
+      "newest": "2026-09-13T07:21:57+00:00",
+      "oldest": "2026-09-10T13:22:10+00:00",
+      "no_date": 0,
+      "dedup_skipped": 0,
+      "no_topic_samples": [
+        "Otomatik vitesli araçlarda 'O/D' düğmesi meğer bu yüzden varmış",
+        "Tasarruf sözde kalıyor, genelgeler bitmiyor",
+        "Kayyum emeklileri kovdu",
+        "Motorine salı günü tarihi zam geliyor",
+        "5 haftalık şirket 50 milyar dolara koşuyor"
+      ],
+      "error": null
+    },
+    "Webrazzi": {
+      "total": 20,
+      "recent": 0,
+      "kept": 0,
+      "domestic": 0,
+      "window_hours": 24,
+      "newest": "2026-09-11T14:30:00+00:00",
+      "oldest": "2026-09-09T18:46:23+00:00",
+      "no_date": 0,
+      "dedup_skipped": 0,
+      "no_topic_samples": [],
+      "error": null
+    },
+    "CNN Business": {
+      "total": 0,
+      "recent": 0,
+      "kept": 0,
+      "domestic": 0,
+      "window_hours": 24,
+      "newest": null,
+      "oldest": null,
+      "no_date": 0,
+      "dedup_skipped": 0,
+      "no_topic_samples": [],
+      "error": "402 Client Error: Payment Required for url: https://rss.app/feeds/wke4uYhkyqednFgF.xml"
+    },
+    "OSD（汽車製造商協會）": {
+      "total": 0,
+      "recent": 0,
+      "kept": 0,
+      "domestic": 0,
+      "window_hours": 24,
+      "newest": null,
+      "oldest": null,
+      "no_date": 0,
+      "dedup_skipped": 0,
+      "no_topic_samples": [],
+      "error": "402 Client Error: Payment Required for url: https://rss.app/feeds/LLwADw0l2yOISF9h.xml"
+    },
+    "TAYSAD（汽車零組件供應商協會）": {
+      "total": 0,
+      "recent": 0,
+      "kept": 0,
+      "domestic": 0,
+      "window_hours": 24,
+      "newest": null,
+      "oldest": null,
+      "no_date": 0,
+      "dedup_skipped": 0,
+      "no_topic_samples": [],
+      "error": "402 Client Error: Payment Required for url: https://rss.app/feeds/XpvzQGRjx9yJNdPh.xml"
+    }
+  },
+  "errors": [],
+  "brent_oil": {
+    "date": "2026-09-09",
+    "usd_per_barrel": 109.51,
+    "previous_date": "2026-09-08",
+    "previous_usd_per_barrel": 106.12,
+    "change_pct": 3.19,
+    "changes": {
+      "week": {
+        "pct": 12.21,
+        "base_date": "2026-09-02",
+        "base_price": 97.59
+      },
+      "month": {
+        "pct": 18.08,
+        "base_date": "2026-08-10",
+        "base_price": 92.74
+      },
+      "ytd": {
+        "pct": 78.5,
+        "base_date": "2025-12-31",
+        "base_price": 61.35
+      }
+    },
+    "changes_anchor_date": "2026-09-09",
+    "age_days": 4,
+    "stale": true,
+    "source": "EIA (via datahub.io, public domain)",
+    "source_kind": "datahub_csv",
+    "observations_used": 9973
+  },
+  "eximclub_turkey_report": null
+}
