@@ -1381,7 +1381,11 @@ def main():
     brent = payload.get("brent_oil")
     if brent and brent.get("usd_per_barrel") is not None:
         brent_value = f"${brent['usd_per_barrel']:.2f}"
-        brent_note = f"每桶美元，資料日期 {brent.get('date','')}"
+        # basis 是 2026-09-15 才加的欄位，舊的 data/*.json 沒有，
+        # 取不到就不寫口徑，不要硬猜成現貨或期貨。
+        _basis = {"futures": "期貨收盤", "spot": "現貨"}.get(brent.get("basis"), "")
+        _basis_label = f"{_basis}，" if _basis else ""
+        brent_note = f"{_basis_label}每桶美元，資料日期 {brent.get('date','')}"
         if brent.get("stale"):
             brent_note += "（超過 3 天沒更新，留意可能過期）"
     else:
