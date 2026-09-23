@@ -5,7 +5,7 @@
 
     python brent_probe.py
 
-會分別打 stooq 期貨、EIA 現貨、datahub 現貨鏡像，印出每一條「抓不抓得到」
+會分別打 Yahoo 期貨、EIA 現貨、datahub 現貨鏡像，印出每一條「抓不抓得到」
 以及「最新一筆是哪一天、多少錢」。不寫檔、不改 data/，純粹看網路通不通。
 
 要順便驗 EIA 那條，先設環境變數：
@@ -44,9 +44,9 @@ def report(label: str, fn):
 
 
 print(f"今天：{today}")
-report("stooq 期貨 cb.f（第一順位）", fd._fetch_brent_stooq)
+report("Yahoo 期貨 BZ=F（第一順位）", fd._fetch_brent_yahoo)
 
-key = os.environ.get("EIA_API_KEY")
+key = (os.environ.get("EIA_API_KEY") or "").strip()
 if key:
     report("EIA 現貨 RBRTE（第二順位）", lambda: fd._fetch_brent_eia(key))
 else:
