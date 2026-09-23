@@ -773,6 +773,10 @@ FEED_MAX_HOURS = {
     # 窗口很容易漏。放寬到 14 天，重複收錄交給 SEEN 去重擋。
     "OSD（汽車製造商協會）": 24 * 14,
     "TAYSAD（汽車零組件供應商協會）": 24 * 14,
+    # 2026-09-23 實測：兩家 feed 都正常，但一週才發幾篇（最新一筆分別是
+    # 09-15、09-20），24 小時窗口永遠是 0。重複收錄交給 SEEN 去重擋。
+    "MİB（機械製造商協會）": 24 * 14,
+    "plastonline": 24 * 7,
 }
 
 
@@ -838,6 +842,10 @@ def _parse_listing(page: str, href_re: str, base: str,
     for m in anchor_re.finditer(page):
         href = html_lib.unescape(m.group("href"))
         text = _strip_tags(m.group("inner"))
+        # OSD 的連結內文有時是「標題 標題」（標題加上重複的副標），收成一份
+        half = len(text) // 2
+        if len(text) % 2 == 1 and text[:half] == text[half + 1:]:
+            text = text[:half]
         if text.lower() in _READ_MORE or len(text) < 8:
             continue
         link = href if href.startswith("http") else base + href
@@ -1110,6 +1118,25 @@ TW_SECTOR_PATTERNS = {k: [(w, _compile(tr_norm(w))) for w in v]
                       for k, v in TW_SECTORS.items()}
 
 
+# 來源本身就代表某個重點產業：標題常常只寫「Ağustos 2026 Sonuçları
+# Açıklandı!」這種完全沒有關鍵字的句子（2026-09-23 實測 OSD 的 8 月產銷
+# 數據就因此被當成「沒命中任何主題」丟掉），所以直接依來源補上產業。
+SOURCE_SECTORS = {
+    "OSD（汽車製造商協會）": ["汽車零組件與EV供應鏈"],
+    "TAYSAD（汽車零組件供應商協會）": ["汽車零組件與EV供應鏈"],
+    "MİB（機械製造商協會）": ["工具機與金屬加工"],
+    "plastonline": ["塑膠與包裝機械"],
+}
+
+
+def detect_tw_sectors(blob: str, source: str = "") -> list:
+    """blob 要先經過 tr_norm()。回傳命中的重點產業名稱（依 TW_SECTORS 順序）。"""
+    hit = set(SOURCE_SECTORS.get(source, []))
+    hit |= {name for name, pats in TW_SECTOR_PATTERNS.items()
+            if any(pat.search(blob) for _, pat in pats)}
+    return [name for name in TW_SECTORS if name in hit]
+
+
 def _news_sort_key(x: dict):
     """土耳其相關 → 重點產業 → 當日（非 late）→ 新的在前。"""
     return (x["scope"] != "domestic", not x.get("tw_sectors"), x["late"],
@@ -1232,8 +1259,7 @@ def fetch_news(since_hours: int = 24, feeds: dict | None = None) -> tuple[list, 
                 if hit:
                     topics.append(topic)
                     matched += hit
-            sectors = [name for name, pats in TW_SECTOR_PATTERNS.items()
-                       if any(pat.search(blob) for _, pat in pats)]
+            sectors = detect_tw_sectors(blob, source)
             if sectors and not topics:
                 # 只命中重點產業（例如專業媒體的設備新品）也收，歸在 industry
                 topics.append("industry")
@@ -1451,6 +1477,11 @@ def main():
                     for n in payload["news"]}
             carried = [n for n in prev_news
                        if (n.get("source"), n.get("url") or n.get("title")) not in have]
+            for n in carried:
+                if "tw_sectors" not in n:   # 舊版程式抓的，補上重點產業標記
+                    n["tw_sectors"] = detect_tw_sectors(
+                        tr_norm(f"{n.get('title', '')} {n.get('summary', '')}"),
+                        n.get("source", ""))
             if carried:
                 payload["news"] = carried + payload["news"]
                 payload["news"].sort(key=_news_sort_key)
