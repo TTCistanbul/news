@@ -41,8 +41,9 @@ DATA_DIR = ROOT / "data"
 # down the way gemini-2.5-flash's early retirement did on 2026-08-30.
 # Update this list occasionally (see https://ai.google.dev/gemini-api/docs/models)
 # -- it's a safety net, not a substitute for keeping the primary current.
+# 2026-09-23 gemini-2.5-flash-lite 開始回 404（已下架），從清單移除，
+# 省得每天先白打一次。
 CANDIDATE_MODELS = [
-    "gemini-2.5-flash-lite",
     "gemini-3.5-flash-lite",
     "gemini-3.5-flash",
 ]
@@ -51,6 +52,7 @@ CANDIDATE_MODELS = [
 # call_gemini() 現在會把逾時也當成暫時性錯誤來重試/換模型，而不是讓例外
 # 直接往外拋。
 TIMEOUT = 120
+MAX_NEWS_FOR_AI = 80
 
 
 def _gemini_url(model: str) -> str:
@@ -212,6 +214,9 @@ def build_user_content(payload: dict) -> str:
     if domestic:
         items = items + [n for n in news
                          if n.get("scope") != "domestic" and n.get("tw_sectors")][:10]
+    # 2026-09-23：一天超過一百則時輸入太長，輸出也容易壞。新聞已經依
+    # 「土耳其相關 → 重點產業 → 新的在前」排好，只取前 MAX_NEWS_FOR_AI 則。
+    items = items[:MAX_NEWS_FOR_AI]
 
     fx = payload.get("fx", {})
     macro = payload.get("macro", {})
@@ -244,6 +249,27 @@ def build_user_content(payload: dict) -> str:
     return "\n".join(lines)
 
 
+class GeminiBadOutput(RuntimeError):
+    """Gemini 有回應，但內容不是可用的 JSON（被截斷、多了逗號等）。
+    這種情況重試或換模型通常就會好，跟金鑰錯誤那類「重試也沒用」的
+    錯誤分開處理。"""
+
+
+def _parse_json_lenient(text: str) -> dict:
+    """2026-09-23 實測：新聞增加到一百多則後，Gemini 輸出第一次出現
+    不合法 JSON（第 108 行附近），即使有 responseMimeType=application/json。
+    先試標準解析，失敗就修掉最常見的兩種小毛病再試一次：
+    ```json 圍欄、陣列/物件結尾多一個逗號。"""
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
+    fixed = text.strip()
+    fixed = re.sub(r"^```(?:json)?\s*|\s*```$", "", fixed)
+    fixed = re.sub(r",\s*([\]}])", r"\1", fixed)
+    return json.loads(fixed)
+
+
 def _call_gemini_once(model: str, prompt: str, api_key: str) -> dict:
     body = {
         "system_instruction": {"parts": [{"text": SYSTEM_PROMPT}]},
@@ -251,6 +277,8 @@ def _call_gemini_once(model: str, prompt: str, api_key: str) -> dict:
         "generationConfig": {
             "responseMimeType": "application/json",
             "temperature": 0.2,
+            # 明確給足輸出長度，避免長 JSON 在中途被截斷
+            "maxOutputTokens": 8192,
         },
     }
     r = requests.post(
@@ -267,12 +295,13 @@ def _call_gemini_once(model: str, prompt: str, api_key: str) -> dict:
             f"Gemini 回應格式跟預期不同，看不到 candidates[0].content.parts[0].text：\n"
             f"{json.dumps(data, ensure_ascii=False)[:1000]}"
         ) from e
+    finish = data["candidates"][0].get("finishReason")
     try:
-        return json.loads(text)
+        return _parse_json_lenient(text)
     except json.JSONDecodeError as e:
-        raise RuntimeError(
-            f"Gemini 回傳的內容不是合法 JSON，即使已經要求 responseMimeType="
-            f"application/json：\n{text[:1000]}"
+        raise GeminiBadOutput(
+            f"Gemini 回傳的內容不是合法 JSON（finishReason={finish}，"
+            f"{e.msg}，第 {e.lineno} 行）。輸出結尾：\n…{text[-600:]}"
         ) from e
 
 
@@ -330,6 +359,15 @@ def call_gemini(prompt: str, api_key: str) -> tuple[dict, str]:
                     print(f"   模型 {model} 重試後仍是 {status}，改試下一個候選模型...")
                     break
                 raise  # 其他狀態碼（401/403/429 等）不是換模型能解決的，直接拋出
+            except GeminiBadOutput as e:
+                # 2026-09-23 新增：輸出壞掉（截斷、格式錯）通常重生一次就好，
+                # 同一個模型再試一次，還是壞的就換下一個模型。
+                last_error = e
+                if attempt == 0:
+                    print(f"   模型 {model} 輸出不是合法 JSON，重新產生一次...\n   {e}")
+                    continue
+                print(f"   模型 {model} 重試後輸出仍不合法，改試下一個候選模型...")
+                break
         if is_last_candidate:
             raise last_error
     raise last_error  # pragma: no cover -- unreachable unless list is empty
