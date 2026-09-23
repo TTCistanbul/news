@@ -135,6 +135,9 @@ SYSTEM_PROMPT = """\
   ]
 }
 
+只有 today_take 和 summary 兩個欄位可以用 HTML 標籤；key_events、
+industry_items、trade_implications 裡的所有欄位一律是純文字，不要出現
+<span>、<strong> 或任何 HTML 標籤，數字直接寫。
 key_events 最多 5 則，依重要性排序。industry_items 最多 5 則。
 trade_implications 最多 3 則，只從 key_events／industry_items 已經寫過的
 內容做整合式結論，不要引入新事實。
@@ -186,6 +189,28 @@ def check_unit_conversion(source_text: str, analysis: dict) -> list[str]:
                 f"原文有「{n} {src_regex.split('|')[0]}」，輸出也寫成「{n} {zh_unit}」——{hint}"
             )
     return problems
+
+
+HTML_ALLOWED_FIELDS = {"today_take", "summary"}
+
+
+def strip_html_from_plain_fields(analysis: dict) -> int:
+    """2026-09-23 實測：模型把 today_take／summary 才能用的
+    <span class="data">…</span> 也寫進 key_events 的摘要裡。render_report.py
+    對這些欄位做 html.escape()，結果標籤原封不動顯示在網頁上。
+    這裡把陣列欄位裡的所有 HTML 標籤拿掉、只留文字。回傳清掉的欄位數。"""
+    cleaned = 0
+    for key, value in analysis.items():
+        if key in HTML_ALLOWED_FIELDS or not isinstance(value, list):
+            continue
+        for item in value:
+            if not isinstance(item, dict):
+                continue
+            for f, v in item.items():
+                if isinstance(v, str) and re.search(r"<[^>]+>", v):
+                    item[f] = re.sub(r"\s{2,}", " ", re.sub(r"<[^>]+>", "", v)).strip()
+                    cleaned += 1
+    return cleaned
 
 
 def load_payload(date_str: str | None) -> tuple[dict, str]:
@@ -420,6 +445,10 @@ def main():
             print("   重寫後已無單位問題" if not unit_problems else "   重寫後仍有單位問題，保留內容但記錄警告")
         except Exception as e:
             print(f"!  重寫失敗，沿用原本內容：{e}")
+
+    n_clean = strip_html_from_plain_fields(analysis)
+    if n_clean:
+        print(f"   已移除 {n_clean} 個純文字欄位裡的 HTML 標籤")
 
     out_path = DATA_DIR / f"{resolved_date}-analysis.json"
     analysis["_generated_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
