@@ -160,21 +160,22 @@ BRENT_EIA_URL = "https://api.eia.gov/v2/petroleum/pri/spt/data/"
 BRENT_EIA_SERIES = "RBRTE"
 BRENT_CSV_URL = "https://datahub.io/core/oil-prices/_r/-/data/brent-daily.csv"
 
-# 2026-09-15 補上第一順位：stooq 的 Brent 期貨連續合約（cb.f）。
-#     上面那段註解裡自己也寫了「EIA 是現貨、天生落後，跟新聞上的期貨行情
-#     對不起來」——09-09 之後實際跑出來就是這個結果：報價一路停在 09-09。
-#     這條走 ICE Brent 前月期貨的每日收盤，免金鑰、當天收盤後就有，
-#     口徑也剛好是新聞在講的那一個。
+# 2026-09-23 第一順位從 stooq 換成 Yahoo Finance 的 BZ=F（ICE Brent 前月期貨
+#     連續合約）。stooq 從 09-15 接上後在 GitHub Actions 上一次都沒成功過：
+#     它對機房 IP 回的是「需要 JavaScript 驗證瀏覽器」的反機器人頁面，
+#     requests 過不了，換 User-Agent 也沒用。
 #
-#     順序：stooq 期貨 → EIA 現貨 → datahub 現貨鏡像。後兩條原樣保留當備援，
-#     只是 basis 欄位會標成 spot，頁面備註會寫清楚當天用的是哪一種口徑，
-#     不會讓現貨數字冒充期貨。
+#     Yahoo 這條免金鑰、口徑同樣是期貨收盤。它也可能擋機房 IP，所以失敗時
+#     照樣往下退：Yahoo 期貨 → EIA 現貨 → datahub 現貨鏡像。
+#     每一條失敗的原因都會寫進 brent_oil.fallback_reasons，不用翻 Actions log。
 #
-#     d1/d2 只抓最近約三年，跟 EIA 那條的 800 筆用意一樣：夠算年初至今，
-#     不用把 1988 年至今整份拉下來。
-BRENT_STOOQ_URL = "https://stooq.com/q/d/l/"
-BRENT_STOOQ_SYMBOL = "cb.f"
-BRENT_STOOQ_LOOKBACK_DAYS = 1100
+#     range=5y 夠算年初至今，資料量也很小（一年約 250 筆）。
+BRENT_YAHOO_URL = "https://query1.finance.yahoo.com/v8/finance/chart/BZ=F"
+BRENT_YAHOO_RANGE = "5y"
+# Yahoo 對預設的 python-requests UA 常直接回 429，這裡用一般瀏覽器 UA。
+BRENT_YAHOO_HEADERS = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) "
+                       "AppleWebKit/537.36 (KHTML, like Gecko) "
+                       "Chrome/124.0 Safari/537.36"}
 
 
 # ─────────────────────────────────────────────
@@ -292,46 +293,49 @@ def _brent_change(observations, latest_date: dt.date, latest_price: float,
     }
 
 
-def _fetch_brent_stooq() -> list[tuple[dt.date, float]]:
-    """stooq 的 Brent 期貨連續合約日線 CSV，回傳 [(日期, 每桶美元), ...]。
-    欄位是 Date,Open,High,Low,Close,Volume，取 Close。抓不到就丟例外讓
-    呼叫端往下退到 EIA。
+def _fetch_brent_yahoo() -> list[tuple[dt.date, float]]:
+    """Yahoo Finance chart API 的 BZ=F 日線，回傳 [(日期, 每桶美元), ...]。
+    抓不到就丟例外讓呼叫端往下退到 EIA。
 
-    stooq 偶爾會對沒帶 User-Agent 的請求回一頁 HTML 擋人（不是 4xx），
-    所以這裡除了檢查 CSV 標頭，也要擋掉「回了東西但根本不是 CSV」的情況。"""
-    today = dt.date.today()
-    params = {
-        "s": BRENT_STOOQ_SYMBOL,
-        "d1": (today - dt.timedelta(days=BRENT_STOOQ_LOOKBACK_DAYS)).strftime("%Y%m%d"),
-        "d2": today.strftime("%Y%m%d"),
-        "i": "d",
-    }
-    r = requests.get(BRENT_STOOQ_URL, params=params, headers=UA, timeout=TIMEOUT)
+    時間戳是 UTC 秒數；Brent 在倫敦收盤，換成 UTC 日期就是交易日，不會跨日。
+    close 裡偶爾會有 None（停牌或當天還沒收盤），直接略過。"""
+    params = {"range": BRENT_YAHOO_RANGE, "interval": "1d"}
+    r = requests.get(BRENT_YAHOO_URL, params=params,
+                     headers=BRENT_YAHOO_HEADERS, timeout=TIMEOUT)
     r.raise_for_status()
-    text = r.text.strip()
-    lines = text.splitlines()
-    if len(lines) < 2:
-        raise RuntimeError(f"stooq 回應過短（{len(lines)} 行）：{text[:200]}")
-    header = [h.strip().lower() for h in lines[0].split(",")]
-    if "date" not in header or "close" not in header:
-        raise RuntimeError(f"stooq 回的不是預期的 CSV，標頭：{lines[0][:200]}")
-    di, ci = header.index("date"), header.index("close")
+    try:
+        body = r.json()
+    except ValueError:
+        raise RuntimeError(f"Yahoo 回的不是 JSON：{r.text[:200]}")
+    chart = body.get("chart") or {}
+    if chart.get("error"):
+        raise RuntimeError(f"Yahoo 回報錯誤：{str(chart['error'])[:200]}")
+    results = chart.get("result") or []
+    if not results:
+        raise RuntimeError(f"Yahoo 回應沒有 result：{str(body)[:200]}")
+    res = results[0]
+    stamps = res.get("timestamp") or []
+    quotes = ((res.get("indicators") or {}).get("quote") or [{}])[0]
+    closes = quotes.get("close") or []
 
     out = []
-    for line in lines[1:]:
-        parts = line.split(",")
-        if len(parts) <= max(di, ci):
+    for ts, close in zip(stamps, closes):
+        if ts is None or close is None:
             continue
-        date_str, close_str = parts[di].strip(), parts[ci].strip()
-        if not date_str or not close_str or close_str.upper() in ("N/A", "-"):
-            continue
-        try:
-            out.append((dt.date.fromisoformat(date_str), float(close_str)))
-        except ValueError:
-            continue
+        d = dt.datetime.fromtimestamp(ts, tz=dt.timezone.utc).date()
+        out.append((d, round(float(close), 2)))
     if not out:
-        raise RuntimeError(f"stooq CSV 解析不出任何一筆（前兩行：{lines[:2]}）")
-    return out
+        raise RuntimeError("Yahoo 回應解析不出任何一筆收盤價")
+    # 同一天偶爾會有兩筆（當天盤中＋前一筆），同日期只留最後一筆。
+    dedup = {}
+    for d, p in out:
+        dedup[d] = p
+    return sorted(dedup.items())
+
+
+def _redact(msg: str) -> str:
+    """錯誤訊息裡的 URL 會帶 api_key，寫進公開 repo 的 JSON 前先遮掉。"""
+    return re.sub(r"(api_key=)[^&\s]*", r"\1***", str(msg))[:300]
 
 
 def _fetch_brent_eia(api_key: str) -> list[tuple[dt.date, float]]:
@@ -430,7 +434,7 @@ def _brent_change(observations, latest_date: dt.date, latest_price: float,
 
 def _build_brent_payload(observations, source: str, source_kind: str,
                           basis: str = "spot") -> dict:
-    """三條取得路徑（stooq 期貨／EIA API／datahub CSV）共用的計算，產出的欄位
+    """三條取得路徑（Yahoo 期貨／EIA API／datahub CSV）共用的計算，產出的欄位
     一模一樣，render_report 不需要知道資料是從哪條路來的。basis 是唯一
     需要往下傳的差別：futures = 期貨收盤，spot = 現貨，頁面備註會照著寫。"""
     observations = sorted(observations, key=lambda x: x[0])
@@ -492,41 +496,52 @@ def _build_brent_payload(observations, source: str, source_kind: str,
 
 
 def fetch_brent_oil() -> dict | None:
-    """依序試 stooq 期貨 → EIA 現貨 → datahub 現貨鏡像，先成功的就用。
-    三條路徑的輸出格式相同，差別只在 source_kind 與 basis。"""
-    # 1. stooq：ICE Brent 前月期貨連續合約，免金鑰，當天收盤後就有。
+    """依序試 Yahoo 期貨 → EIA 現貨 → datahub 現貨鏡像，先成功的就用。
+    三條路徑的輸出格式相同，差別只在 source_kind 與 basis。
+    前面失敗的原因記在 fallback_reasons，直接看 data/*.json 就知道為什麼退。"""
+    reasons: list[str] = []
+
+    def _done(payload: dict) -> dict:
+        payload["fallback_reasons"] = reasons
+        return payload
+
+    # 1. Yahoo：ICE Brent 前月期貨連續合約，免金鑰，當天收盤後就有。
     try:
-        obs = _fetch_brent_stooq()
-        return _build_brent_payload(
-            obs, "stooq — ICE Brent front-month futures (cb.f)",
-            "stooq_futures", basis="futures")
+        obs = _fetch_brent_yahoo()
+        return _done(_build_brent_payload(
+            obs, "Yahoo Finance — ICE Brent front-month futures (BZ=F)",
+            "yahoo_futures", basis="futures"))
     except Exception as e:
-        print(f"! 布蘭特原油: stooq 期貨抓取失敗，往下退到 EIA 現貨：{e}",
+        reasons.append(f"yahoo: {_redact(e)}")
+        print(f"! 布蘭特原油: Yahoo 期貨抓取失敗，往下退到 EIA 現貨：{_redact(e)}",
               file=sys.stderr)
 
     # 2. EIA 官方現貨（RBRTE）。口徑是現貨，本來就會落後幾天。
-    api_key = os.environ.get("EIA_API_KEY")
+    #    strip()：2026-09-23 實際踩到 secret 尾巴多兩個換行，EIA 回 403。
+    api_key = (os.environ.get("EIA_API_KEY") or "").strip()
     if api_key:
         try:
             obs = _fetch_brent_eia(api_key)
-            return _build_brent_payload(
+            return _done(_build_brent_payload(
                 obs, "EIA Open Data API v2 (series RBRTE)", "eia_api",
-                basis="spot")
+                basis="spot"))
         except Exception as e:
-            print(f"! 布蘭特原油: EIA API 失敗，改用 datahub CSV 備援：{e}",
+            reasons.append(f"eia: {_redact(e)}")
+            print(f"! 布蘭特原油: EIA API 失敗，改用 datahub CSV 備援：{_redact(e)}",
                   file=sys.stderr)
     else:
+        reasons.append("eia: 未設定 EIA_API_KEY")
         print("! 未設定 EIA_API_KEY，布蘭特原油改用 datahub CSV 備援"
               "（那份鏡像通常比 EIA 官方慢幾天）", file=sys.stderr)
 
     # 3. datahub 鏡像，最後一道。實測會比 EIA 再慢好幾天，只是不讓欄位開天窗。
     try:
         obs = _fetch_brent_datahub()
-        return _build_brent_payload(
+        return _done(_build_brent_payload(
             obs, "EIA (via datahub.io, public domain)", "datahub_csv",
-            basis="spot")
+            basis="spot"))
     except Exception as e:
-        print(f"✗ 布蘭特原油: {e}", file=sys.stderr)
+        print(f"✗ 布蘭特原油: {_redact(e)}", file=sys.stderr)
         return None
 
 
@@ -1078,6 +1093,7 @@ def main():
     payload["brent_oil"] = brent
     if brent:
         _src = {
+            "yahoo_futures": "Yahoo 期貨",
             "stooq_futures": "stooq 期貨",
             "eia_api": "EIA API 現貨",
             "datahub_csv": "datahub CSV 現貨備援",
@@ -1091,6 +1107,12 @@ def main():
             parts.append(f"{label} {c['pct']:+.1f}%（基準 {c['base_date']} ${c['base_price']:.2f}）"
                           if c else f"{label} —")
         print("   ↳ " + "  ".join(parts), file=sys.stderr)
+        if brent.get("fallback_reasons"):
+            # 有拿到數字但不是第一順位，也記進 errors，免得像 09-09～09-23
+            # 那樣退到備援兩週都沒人發現。
+            payload["errors"].append(
+                "brent_oil: 退到備援 " + brent["source_kind"] + "（"
+                + "；".join(brent["fallback_reasons"]) + "）")
     else:
         payload["errors"].append("brent_oil: 抓取失敗")
 
@@ -1101,7 +1123,7 @@ def main():
         print(f"✓ 貿易俱樂部新報告：{eximclub['date']} {eximclub['title']}", file=sys.stderr)
 
     # EVDS
-    key = os.environ.get("EVDS_API_KEY")
+    key = (os.environ.get("EVDS_API_KEY") or "").strip()
     if not args.no_evds and key:
         end = dt.date.today()
         # 2026-09-09 從 400 天放寬到 500 天。月頻序列要 13 筆才算得出最新
