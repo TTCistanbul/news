@@ -25,12 +25,14 @@ borsapy 這個持續在維護、已經處理好這些細節的套件，見 fetch
 
 import argparse
 import datetime as dt
+import html as html_lib
 import json
 import os
 import re
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from types import SimpleNamespace
 
 import requests
 
@@ -722,43 +724,198 @@ FEED_CANDIDATES = {
     "Dünya":                ["https://www.dunya.com/rss"],                              # 25
     #                        https://www.dunya.com/rss/ekonomi → 404
     "Ekonomim":             ["https://www.ekonomim.com/rss"],                           # 25
-    "Bloomberg HT":         ["https://www.bloomberght.com/rss"],                        # 20
+    # 2026-09-23 Bloomberg HT 官方 RSS（/rss）的 lastBuildDate 停在 09-14，
+    #   之後完全沒更新，但網站本身照常出稿。改抓「Tüm Ekonomi Haberleri」
+    #   列表頁（HTML，約 45 則），解析方式見 _parse_bloomberght()。
+    "Bloomberg HT":         ["https://www.bloomberght.com/tum-ekonomi-haberleri"],      # ~45，HTML
     "Hürriyet Ekonomi":     ["https://www.hurriyet.com.tr/rss/ekonomi"],                # 100
     "Sözcü Ekonomi":        ["https://www.sozcu.com.tr/feeds-rss-category-ekonomi"],    # 50
     "Webrazzi":             ["https://webrazzi.com/feed/"],                             # 20，科技/新創/ICT
-    # 2026-08-31 新增：CNN Business 專版（不是 CNN 首頁綜合新聞，那個已經
-    # 測過內容完全跟財經無關）。內容是國際財經新聞（Fed、關稅、企業財報
-    # 等），幾乎不會直接提到土耳其，預期大部分會被 scope=global 濾掉，
-    # 只有間接寫到土耳其的稿子才會真的進簡報，屬於「偶爾撿到」的來源。
-    "CNN Business":         ["https://rss.app/feeds/wke4uYhkyqednFgF.xml"],              # 30，國際財經
-    # rss.app 自訂 feed，discover 抓內容後確認實際來源如下：
-    # LLwADw0l2yOISF9h.xml → OSD 官網 + Instagram 混合（真正的新聞條目很少，
-    #   多數是社群賀節／獲獎貼文，訊噪比不高，但仍是汽車產業一手來源）
-    "OSD（汽車製造商協會）":  ["https://rss.app/feeds/LLwADw0l2yOISF9h.xml"],             # 6
-    # XpvzQGRjx9yJNdPh.xml → TAYSAD，內容幾乎全是內部教育訓練活動列表，
-    #   不是新聞快訊。多數項目本來就不含 TOPICS 關鍵字（如「團隊管理」
-    #   「現金流管理」等課程名稱），會被主題分類自然濾掉，留下來的通常
-    #   才是真正跟產業/汽車相關的活動或公告。
-    "TAYSAD（汽車零組件供應商協會）": ["https://rss.app/feeds/XpvzQGRjx9yJNdPh.xml"],    # 25
+    # 2026-09-23 新增：台土五大重點產業的專業來源。一般財經媒體幾乎不報
+    #   工具機、自動化、塑膠機械，09-10～09-23 實測 354 則土耳其相關新聞裡
+    #   只有十幾則碰到這五個產業，所以直接補產業媒體與公會。
+    #   ✓ = 2026-09-23 實際讀過 feed、確認有當天內容；? = 依網站架構推定的
+    #   RSS 位址（WordPress 標準 /feed/），第一次跑請看 news_diagnostics。
+    "ST Endüstri":          ["https://www.stendustri.com.tr/rss"],                      # ✓ 自動化/工業4.0/工具機/包裝機械
+    "MİB（機械製造商協會）":  ["https://mib.org.tr/feed/"],                                # ? 工具機/金屬加工
+    "plastonline":          ["https://plastonline.com/feed/"],                          # ? 塑膠/包裝/塑膠機械
+    "Yeşil Haber":          ["https://yesilhaber.net/feed/"],                           # ? 再生能源/儲能/EV/回收
+    "Sözcü Otomotiv":       ["https://www.sozcu.com.tr/feeds-rss-category-otomotiv"],   # ? 汽車/EV（與 Sözcü Ekonomi 同一套 RSS）
+    # 2026-09-23 rss.app 免費方案到期（09-07 起 402 Payment Required），
+    #   CNN Business／OSD／TAYSAD 三條同時失效。CNN Business 幾乎都被
+    #   scope=global 濾掉，直接移除；兩個公會改抓官網新聞頁（HTML），
+    #   解析方式見 _parse_osd()／_parse_taysad()。
+    "OSD（汽車製造商協會）":  ["https://www.osd.org.tr/haberler"],                        # HTML，有日期
+    "TAYSAD（汽車零組件供應商協會）": ["https://taysad.org.tr/tr/haberler"],              # HTML，有日期
 }
 
-# 這兩個公會 feed（OSD、TAYSAD）完全沒有 pubDate/updated 欄位，見下方
-# fetch_news() 內的 SEEN 去重快取——沒有這層，這兩個來源的項目會被
-# 「沒日期＝不會過期」的判斷邏輯每天重複收錄，永遠不會消失。
-NO_DATE_SOURCES = {"OSD（汽車製造商協會）", "TAYSAD（汽車零組件供應商協會）"}
+# 沒有日期欄位的來源：靠 fetch_news() 內的 SEEN 跨天去重擋掉重複。
+# 2026-09-23 起 OSD／TAYSAD 改抓官網、有日期了；換成 Bloomberg HT 列表頁沒日期。
+NO_DATE_SOURCES = {"Bloomberg HT"}
 
 # 這兩家是純土耳其產業公會，逐則內文本身常常不會提到「Türkiye／土耳其」
 # 這類 TR_MARKERS 關鍵字（例如 TAYSAD 的課程名稱），會被 scope 判斷誤判成
 # global。這兩家的存在本身就代表土耳其相關，不透過 TR_MARKERS 判斷，
 # 直接強制視為 domestic。
-ALWAYS_DOMESTIC_SOURCES = {"OSD（汽車製造商協會）", "TAYSAD（汽車零組件供應商協會）"}
+ALWAYS_DOMESTIC_SOURCES = {"OSD（汽車製造商協會）", "TAYSAD（汽車零組件供應商協會）",
+                           # 2026-09-23 新增的土耳其產業媒體／公會：內文常常只寫
+                           # 產品或技術，不會提到 Türkiye，但本身就是土耳其市場的
+                           # 產業新聞（外商在土耳其推新設備對台商也是競爭情報）。
+                           "ST Endüstri", "MİB（機械製造商協會）", "plastonline",
+                           "Yeşil Haber"}
 
 # 這兩家的 feed 停在數天前（2026-08-29 實測：最新一筆各為 08-25、08-26），
 # 推測是快取的靜態檔而非即時產生。用 24 小時窗口它們永遠是 0，
 # 所以個別放寬，抓到的項目會標 late=true，不冒充當日新聞。
 FEED_MAX_HOURS = {
-    "Bloomberg HT": 120,
     "Hürriyet Ekonomi": 120,
+    # 公會一個月才發幾則，頁面日期只到「日」（當成 00:00 UTC），用 24 小時
+    # 窗口很容易漏。放寬到 14 天，重複收錄交給 SEEN 去重擋。
+    "OSD（汽車製造商協會）": 24 * 14,
+    "TAYSAD（汽車零組件供應商協會）": 24 * 14,
+}
+
+
+# ─────────────────────────────────────────────
+# 3b. 沒有可用 RSS 的來源：直接解析官網列表頁
+#     每個 parser 吃整頁 HTML、回傳跟 feedparser entry 長得一樣的物件
+#     （title／summary／link／id／published_parsed），fetch_news() 後面的
+#     主題分類、去重、scope 判斷完全共用，不用另外維護一套。
+#
+#     ⚠ 2026-09-23 撰寫時只看得到這些頁面轉成文字後的樣子，看不到原始
+#     HTML，所以 regex 刻意寫得寬鬆（只依賴網址樣式與日期文字，不依賴
+#     class 名稱）。如果哪天 diag 顯示某來源 total=0 但沒有 error，就是
+#     網站改版了，把該頁原始 HTML 存下來對照調整即可。
+# ─────────────────────────────────────────────
+_TR_MONTHS = {
+    "ocak": 1, "subat": 2, "mart": 3, "nisan": 4, "mayis": 5, "haziran": 6,
+    "temmuz": 7, "agustos": 8, "eylul": 9, "ekim": 10, "kasim": 11, "aralik": 12,
+}
+_TR_FOLD = str.maketrans("şŞğĞüÜıİöÖçÇ", "ssgguuiioocc")
+_DATE_RE = re.compile(
+    r"\b(\d{1,2})\s+(Ocak|Şubat|Subat|Mart|Nisan|Mayıs|Mayis|Haziran|Temmuz|"
+    r"Ağustos|Agustos|Eylül|Eylul|Ekim|Kasım|Kasim|Aralık|Aralik)\s+(\d{4})\b",
+    re.IGNORECASE)
+_READ_MORE = {"daha fazla oku", "devamını oku", "devamini oku", "detay", ""}
+
+
+def _strip_tags(fragment: str) -> str:
+    text = re.sub(r"<script.*?</script>|<style.*?</style>", " ", fragment,
+                  flags=re.S | re.I)
+    text = re.sub(r"<[^>]+>", " ", text)
+    return re.sub(r"\s+", " ", html_lib.unescape(text)).strip()
+
+
+def _find_tr_date(text: str, last: bool = False):
+    """在一段文字裡找「14 Eylül 2026」這種日期，回傳 (y, m, d, 0, 0, 0)。"""
+    hits = list(_DATE_RE.finditer(text))
+    if not hits:
+        return None
+    m = hits[-1] if last else hits[0]
+    month = _TR_MONTHS.get(m.group(2).lower().translate(_TR_FOLD))
+    if not month:
+        return None
+    try:
+        d = dt.date(int(m.group(3)), month, int(m.group(1)))
+    except ValueError:
+        return None
+    return (d.year, d.month, d.day, 0, 0, 0)
+
+
+def _parse_listing(page: str, href_re: str, base: str,
+                   date_position: str | None) -> list:
+    """共用骨架：找出所有「有文字的」文章連結當標題（同一網址只取第一個
+    有文字的，圖片連結與「Daha Fazla Oku」這種按鈕略過），再用前後兩個
+    標題之間的區段找日期與摘要。
+
+    date_position："before" = 日期寫在標題前面（OSD），
+                   "after"  = 日期寫在標題後面（TAYSAD），None = 頁面沒日期。
+    """
+    anchor_re = re.compile(
+        r"<a\b[^>]*href=[\"'](?P<href>" + href_re + r")[\"'][^>]*>(?P<inner>.*?)</a>",
+        re.S | re.I)
+    items, seen = [], set()
+    for m in anchor_re.finditer(page):
+        href = html_lib.unescape(m.group("href"))
+        text = _strip_tags(m.group("inner"))
+        if text.lower() in _READ_MORE or len(text) < 8:
+            continue
+        link = href if href.startswith("http") else base + href
+        if link in seen:
+            continue
+        seen.add(link)
+        items.append({"link": link, "title": text,
+                      "start": m.start(), "end": m.end()})
+
+    entries = []
+    for i, it in enumerate(items):
+        prev_end = items[i - 1]["end"] if i > 0 else 0
+        next_start = items[i + 1]["start"] if i + 1 < len(items) else len(page)
+        before = _strip_tags(page[prev_end:it["start"]])
+        after = _strip_tags(page[it["end"]:next_start])
+        pub = None
+        if date_position == "before":
+            pub = _find_tr_date(before, last=True)
+        elif date_position == "after":
+            pub = _find_tr_date(after)
+        summary = _DATE_RE.sub(" ", after)
+        summary = re.sub(r"(Pazartesi|Salı|Çarşamba|Perşembe|Cuma|Cumartesi|Pazar)\b",
+                         " ", summary)
+        summary = re.sub(r"Daha Fazla Oku|Devamını Oku", " ", summary, flags=re.I)
+        summary = re.sub(r"[\s,·]+", " ", summary).strip()[:400]
+        if summary == it["title"]:
+            summary = ""
+        entries.append(SimpleNamespace(
+            title=it["title"], summary=summary, link=it["link"], id=it["link"],
+            published_parsed=pub, updated_parsed=None))
+    return entries
+
+
+def _parse_osd(page: str) -> list:
+    # 卡片順序：圖片連結 → 日期 → <h2> 標題連結（/haberler/252）→ 摘要
+    return _parse_listing(page, r"(?:https?://(?:www\.)?osd\.org\.tr)?/haberler/\d+",
+                          "https://www.osd.org.tr", "before")
+
+
+def _parse_taysad(page: str) -> list:
+    # 卡片順序：圖片連結 → <h4> 標題連結（/tr/haber/slug）→ 日期「01 Temmuz 2026, Çarşamba」→ 摘要
+    return _parse_listing(page, r"(?:https?://(?:www\.)?taysad\.org\.tr)?/tr/haber/[a-z0-9-]+",
+                          "https://taysad.org.tr", "after")
+
+
+def _parse_bloomberght(page: str) -> list:
+    """列表頁每則是一個 <a href=".../slug-3789232" title="標題">，連結內文是
+    「標題＋摘要」。網址尾巴一定是 6～8 位數的文章編號，靠這個跟選單、
+    行情頁連結區分。頁面上沒有日期，交給 SEEN 跨天去重。"""
+    anchor_re = re.compile(
+        r"<a\b[^>]*href=[\"'](?P<href>(?:https?://www\.bloomberght\.com)?/[a-z0-9-]+-\d{6,8})[\"'][^>]*>(?P<inner>.*?)</a>",
+        re.S | re.I)
+    # 屬性值可能用雙引號包、裡面夾單引號（THY'den），兩種引號分開比對
+    title_re = re.compile(r"""\btitle=(?:"(?P<a>[^"]*)"|'(?P<b>[^']*)')""", re.I)
+    entries, seen = [], set()
+    for m in anchor_re.finditer(page):
+        href = m.group("href")
+        link = href if href.startswith("http") else "https://www.bloomberght.com" + href
+        if link in seen:
+            continue
+        inner = _strip_tags(m.group("inner"))
+        tm = title_re.search(m.group(0))
+        title = (html_lib.unescape(tm.group("a") or tm.group("b") or "").strip()
+                 if tm else "") or inner
+        if len(title) < 8:
+            continue
+        seen.add(link)
+        summary = inner[len(title):].strip() if inner.startswith(title) else inner
+        entries.append(SimpleNamespace(
+            title=title, summary=summary[:400], link=link, id=link,
+            published_parsed=None, updated_parsed=None))
+    return entries
+
+
+HTML_PARSERS = {
+    "Bloomberg HT": _parse_bloomberght,
+    "OSD（汽車製造商協會）": _parse_osd,
+    "TAYSAD（汽車零組件供應商協會）": _parse_taysad,
 }
 
 def tr_norm(text: str) -> str:
@@ -888,6 +1045,78 @@ TR_PATTERNS = [(w, _compile(tr_norm(w))) for w in TR_MARKERS]
 TOPIC_PRIORITY = ["trade", "defense", "macro", "industry"]
 
 
+# ─────────────────────────────────────────────
+# 台土五大重點產業（2026-09-23 新增）
+#   跟上面的 TOPICS 是兩個不同維度：TOPICS 決定「要不要收」，這裡決定
+#   「是不是辦事處最關注的產業」。命中的新聞會帶 tw_sectors 欄位，排序時
+#   排在同類新聞最前面，generate_analysis.py 也會要 Gemini 優先寫這些。
+#   只命中這裡、沒命中 TOPICS 的新聞（例如「servo 減速機新品」）也會收，
+#   主題記為 industry。
+#
+#   2026-09-23 用 09-10～09-23 的實際資料試跑過，下面這些字會誤判，刻意不用：
+#     pres*（→ president）、car*（→ card／care／carbon）、ev（土文「家」）、
+#     dokum*（→ dokuma 紡織）、amb（→ AMB 歐洲
+#     央行的土文縮寫）、res（太短）、green／yesil*（太泛，綠色什麼都有）、
+#     yapay zeka（多半是 OpenAI 等消費科技新聞，跟工廠端無關）。
+# ─────────────────────────────────────────────
+TW_SECTORS = {
+    "工具機與金屬加工": [
+        "takim tezgah*", "tezgah*", "cnc", "talasli imalat*", "talasli isleme*",
+        "metal isleme*", "sac isleme*", "sac metal", "lazer kesim*", "abkant*",
+        "pres makine*", "kaynak makine*", "isleme merkez*", "reduktor*",
+        "makine imalat*", "makina imalat*", "makine sanayi*", "makina sanayi*",
+        "makine ihracat*", "makina ihracat*", "makine sektor*", "makina sektor*",
+        "makinecil*", "mib", "makfed", "maktek", "fanuc",
+        "machine tool*", "machining", "metalworking", "sheet metal",
+    ],
+    "智慧製造與工業4.0": [
+        "endustri 4.0", "sanayi 4.0", "industry 4.0",
+        "akilli fabrika*", "akilli uretim*", "smart factory", "smart manufacturing",
+        "otomasyon*", "automation", "robot*", "cobot*", "dijital ikiz*",
+        "digital twin", "iiot", "endustriyel iot", "nesnelerin interneti",
+        "plc", "scada", "servo*", "sensor*", "kestirimci bakim*",
+        "predictive maintenance", "agv", "amr", "endustriyel yapay zeka",
+        "industrial ai",
+    ],
+    "汽車零組件與EV供應鏈": [
+        "otomotiv*", "automotive", "automaker*", "carmaker*", "auto output",
+        "yan sanayi*", "tedarik sanayi*", "yedek parca*", "oto parca*",
+        "auto part*", "spare part*", "elektrikli arac*", "electric vehicle*",
+        "electric car*", "sarj istasyon*", "sarj agi", "sarj islem*",
+        "charging station*", "batarya*", "battery", "batteries", "togg",
+        "tofas", "ford otosan", "oyak renault", "hyundai assan", "byd",
+        "osd", "taysad", "oib", "otomobil uretim*", "otomobil ihracat*",
+        "arac uretim*", "hibrit arac*",
+    ],
+    "塑膠與包裝機械": [
+        "plastik*", "plastic*", "ambalaj*", "packaging", "kaucuk*", "rubber",
+        "polimer*", "polymer*", "enjeksiyon makine*", "injection molding",
+        "ekstruder*", "ekstruzyon*", "extrusion", "petkim", "pagev", "pagder",
+        "paketleme makine*", "paletleme*", "kalip sanayi*", "kompaund*",
+    ],
+    "綠能、儲能與回收": [
+        "yenilenebilir*", "renewable*", "gunes enerji*", "gunes panel*",
+        "gunes santral*", "ges", "solar", "ruzgar enerji*", "ruzgar santral*",
+        "ruzgar turbin*", "wind power", "wind energy", "wind turbine*",
+        "wind farm*", "wind supply chain*", "offshore wind", "onshore wind",
+        "enerji depolama*", "energy storage", "depolamali", "geri donusum*",
+        "recycl*", "sifir atik*", "zero waste", "dongusel ekonomi*",
+        "circular economy", "hidrojen*", "hydrogen", "skdm", "cbam",
+        "karbon ayak iz*", "emisyon ticaret*", "jeotermal*", "geothermal",
+        "biyokutle*",
+    ],
+}
+TW_SECTOR_PATTERNS = {k: [(w, _compile(tr_norm(w))) for w in v]
+                      for k, v in TW_SECTORS.items()}
+
+
+def _news_sort_key(x: dict):
+    """土耳其相關 → 重點產業 → 當日（非 late）→ 新的在前。"""
+    return (x["scope"] != "domestic", not x.get("tw_sectors"), x["late"],
+            "" if x["published"] is None else
+            "".join(chr(255 - ord(c)) for c in x["published"]))
+
+
 def discover_feeds() -> dict:
     """逐一測試候選 RSS 位址，回報哪個能用。第一次部署務必跑一次。"""
     results = {}
@@ -959,18 +1188,23 @@ def fetch_news(since_hours: int = 24, feeds: dict | None = None) -> tuple[list, 
         st = {"total": 0, "recent": 0, "kept": 0, "domestic": 0,
               "window_hours": hours,
               "newest": None, "oldest": None, "no_date": 0,
-              "dedup_skipped": 0, "no_topic_samples": [], "error": None}
+              "dedup_skipped": 0, "tw_sector": 0, "no_topic_samples": [],
+              "error": None}
         try:
-            r = requests.get(url, headers=headers, timeout=TIMEOUT)
+            parser = HTML_PARSERS.get(source)
+            r = requests.get(url, headers=UA if parser else headers, timeout=TIMEOUT)
             r.raise_for_status()
-            d = feedparser.parse(r.content)
+            if parser:
+                entries = parser(r.content.decode("utf-8", errors="replace"))
+            else:
+                entries = feedparser.parse(r.content).entries
         except Exception as e:
             st["error"] = str(e)[:150]
             diag[source] = st
             continue
 
-        st["total"] = len(d.entries)
-        for e in d.entries:
+        st["total"] = len(entries)
+        for e in entries:
             pub = None
             if getattr(e, "published_parsed", None):
                 pub = dt.datetime(*e.published_parsed[:6], tzinfo=dt.timezone.utc)
@@ -998,6 +1232,13 @@ def fetch_news(since_hours: int = 24, feeds: dict | None = None) -> tuple[list, 
                 if hit:
                     topics.append(topic)
                     matched += hit
+            sectors = [name for name, pats in TW_SECTOR_PATTERNS.items()
+                       if any(pat.search(blob) for _, pat in pats)]
+            if sectors and not topics:
+                # 只命中重點產業（例如專業媒體的設備新品）也收，歸在 industry
+                topics.append("industry")
+                matched += [w for name in sectors
+                            for w, pat in TW_SECTOR_PATTERNS[name] if pat.search(blob)]
             if not topics:
                 # 除錯用：每個來源最多留 5 則沒命中任何主題的標題樣本，
                 # 才知道 TOPICS 關鍵字清單漏掉了什麼，不用猜的加關鍵字。
@@ -1020,6 +1261,8 @@ def fetch_news(since_hours: int = 24, feeds: dict | None = None) -> tuple[list, 
             st["kept"] += 1
             if scope == "domestic":
                 st["domestic"] += 1
+            if sectors:
+                st["tw_sector"] += 1
             items.append({
                 "source": source,
                 "title": title,
@@ -1033,6 +1276,7 @@ def fetch_news(since_hours: int = 24, feeds: dict | None = None) -> tuple[list, 
                 "primary_topic": primary,
                 "topics": topics,
                 "matched": sorted(set(matched))[:6],
+                "tw_sectors": sectors,
             })
         diag[source] = st
 
@@ -1041,9 +1285,7 @@ def fetch_news(since_hours: int = 24, feeds: dict | None = None) -> tuple[list, 
     seen = {k: v for k, v in seen.items() if v >= cutoff_date}
     _save_seen(seen)
 
-    items.sort(key=lambda x: (x["scope"] != "domestic", x["late"],
-                              "" if x["published"] is None else
-                              "".join(chr(255 - ord(c)) for c in x["published"])))
+    items.sort(key=_news_sort_key)
     return items, diag
 
 
@@ -1173,7 +1415,8 @@ def main():
                 flag = f"  ← 全部超過時間範圍，最新一筆 {(st['newest'] or '無日期')[:16]}"
             print(f"    {src}: 共{st['total']} / 近期{st['recent']} / "
                   f"採用{st['kept']} / 其中土耳其相關{st['domestic']} / "
-                  f"去重擋掉{st.get('dedup_skipped', 0)}{flag}",
+                  f"去重擋掉{st.get('dedup_skipped', 0)} / "
+                  f"重點產業{st.get('tw_sector', 0)}{flag}",
                   file=sys.stderr)
             if st["kept"] == 0 and st.get("no_topic_samples"):
                 print(f"        ↳ 沒命中任何主題的標題樣本："
@@ -1184,12 +1427,38 @@ def main():
     if c:
         print(f"    土耳其相關 {len(dom)} 則，主題分布: "
               + "  ".join(f"{k}={v}" for k, v in c.most_common()), file=sys.stderr)
+    sc = Counter(s_ for n in dom for s_ in (n.get("tw_sectors") or []))
+    print(f"    台土重點產業（土耳其相關）: "
+          + ("  ".join(f"{k}={v}" for k, v in sc.most_common()) if sc else "0 則"),
+          file=sys.stderr)
     g = len(payload["news"]) - len(dom)
     if g:
         print(f"    國際新聞 {g} 則（已標 scope=global，預設不進簡報）", file=sys.stderr)
 
     OUT_DIR.mkdir(exist_ok=True)
     out = OUT_DIR / f"{now_trt:%Y-%m-%d}.json"
+
+    # 2026-09-23 同一天重跑會把新聞洗成 0 則：早上那次已經把當天新聞記進
+    # _seen_ids.json，晚上手動再跑一次時，同樣的新聞全被跨天去重擋掉，
+    # 接著覆蓋掉早上的檔案，首頁跟 AI 分析就變成「今天沒有新聞」。
+    # 所以當天檔案已經存在時，把舊檔的新聞併進來（同來源＋同網址只留一則），
+    # 匯率、油價等數字仍然用這次抓到的最新值。
+    if out.exists():
+        try:
+            prev = json.loads(out.read_text(encoding="utf-8"))
+            prev_news = prev.get("news") or []
+            have = {(n.get("source"), n.get("url") or n.get("title"))
+                    for n in payload["news"]}
+            carried = [n for n in prev_news
+                       if (n.get("source"), n.get("url") or n.get("title")) not in have]
+            if carried:
+                payload["news"] = carried + payload["news"]
+                payload["news"].sort(key=_news_sort_key)
+                print(f"↺ 今天已跑過一次，沿用先前抓到的 {len(carried)} 則新聞"
+                      f"（合計 {len(payload['news'])} 則）", file=sys.stderr)
+        except Exception as e:
+            print(f"! 合併當天既有新聞失敗，改為覆蓋：{e}", file=sys.stderr)
+
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"→ {out}", file=sys.stderr)
 
