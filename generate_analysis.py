@@ -89,6 +89,13 @@ SYSTEM_PROMPT = """\
    換算前先把原文數字唸出來確認量級：一個國家的單月出口通常是幾百億美元，
    央行外匯儲備通常是一兩千億美元。算出來的數字如果比常識小十倍或大十倍，
    就是換算錯了，重算一次再寫。
+8. 本辦事處最關注的是以下五個台土重點產業（台灣對土耳其最有機會的領域）：
+   工具機與金屬加工、智慧製造與工業4.0（軟硬整合）、汽車零組件與EV供應鏈
+   （含汽配維修設備）、塑膠與包裝機械（含關鍵零組件）、綠能／儲能與回收技術。
+   輸入新聞中標有「重點產業：…」的，請優先放進 key_events 與 industry_items，
+   industry_items 的 sector 欄位也優先使用這五個名稱。但規則 1、2、6 仍然適用：
+   當天沒有相關新聞就寫其他產業，不要把不相干的新聞硬歸到這五類，也不要
+   為了湊數編造。
 
 只輸出符合以下 JSON schema 的內容，不要有任何其他文字：
 
@@ -200,6 +207,11 @@ def build_user_content(payload: dict) -> str:
     # 沒有 domestic 新聞時退而求其次用全部新聞，讓當天至少有東西可寫，
     # 而不是整段 AI 區塊開天窗。
     items = domestic or news
+    # 2026-09-23：沒提到土耳其、但屬於台土重點產業的國際新聞（例如歐洲
+    # 電動車市場、全球工具機展）也給 Gemini 參考，最多 10 則，標明是國際新聞。
+    if domestic:
+        items = items + [n for n in news
+                         if n.get("scope") != "domestic" and n.get("tw_sectors")][:10]
 
     fx = payload.get("fx", {})
     macro = payload.get("macro", {})
@@ -215,8 +227,13 @@ def build_user_content(payload: dict) -> str:
     lines.append("")
     lines.append(f"今日篩選出的新聞（共 {len(items)} 則，scope={'domestic' if domestic else 'all'}）：")
     for i, n in enumerate(items, 1):
+        tags = [n.get("primary_topic", "")]
+        if n.get("tw_sectors"):
+            tags.append("重點產業：" + "、".join(n["tw_sectors"]))
+        if domestic and n.get("scope") != "domestic":
+            tags.append("國際新聞")
         lines.append(
-            f"{i}. [{n.get('primary_topic', '')}] {n.get('source', '')} "
+            f"{i}. [{'｜'.join(t for t in tags if t)}] {n.get('source', '')} "
             f"({n.get('published') or '無日期'})"
         )
         lines.append(f"   標題：{n.get('title', '')}")
