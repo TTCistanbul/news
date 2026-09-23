@@ -323,7 +323,7 @@ def main():
     ap.add_argument("--date", help="YYYY-MM-DD，預設用 data/ 裡最新的檔案")
     args = ap.parse_args()
 
-    api_key = os.environ.get("GEMINI_API_KEY")
+    api_key = (os.environ.get("GEMINI_API_KEY") or "").strip()
     if not api_key:
         raise SystemExit("環境變數 GEMINI_API_KEY 沒有設定")
 
