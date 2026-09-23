@@ -129,6 +129,16 @@ def replace_block(html_text: str, marker: str, new_inner: str) -> str:
     return pattern.sub(lambda m: m.group(1) + "\n" + new_inner + "\n" + m.group(3), html_text)
 
 
+def _plain(value) -> str:
+    """純文字欄位：先拿掉 AI 誤寫進來的 HTML 標籤，再 escape。
+    2026-09-23 發現 Gemini 會把 <span class="data">14</span> 寫進 key_events／
+    industry_items 的摘要，原本直接 html.escape() 的結果是標籤原封不動顯示
+    在網頁上（從 09-17 起就有）。在套版這一層處理，舊的 analysis.json 也會
+    一起變乾淨，不用等 generate_analysis.py 重跑。"""
+    text = re.sub(r"<[^>]+>", "", str(value or ""))
+    return html.escape(re.sub(r"\s{2,}", " ", text).strip())
+
+
 def render_key_events(events: list[dict]) -> str:
     rows = []
     for i, e in enumerate(events[:5], 1):
@@ -137,11 +147,11 @@ def render_key_events(events: list[dict]) -> str:
         cls = DIRECTION_CLASS.get(direction, "dir-neutral")
         importance = html.escape(e.get("importance", "中等"))
         badge_cls = "badge-major" if importance == "重大" else "badge-medium"
-        source_name = html.escape(e.get("source_name", ""))
+        source_name = _plain(e.get("source_name", ""))
         source_url = html.escape(e.get("source_url", "") or "#", quote=True)
-        headline = html.escape(e.get("headline", ""))
-        summary = html.escape(e.get("summary", ""))
-        impact = html.escape(e.get("business_impact", ""))
+        headline = _plain(e.get("headline", ""))
+        summary = _plain(e.get("summary", ""))
+        impact = _plain(e.get("business_impact", ""))
         rows.append(f'''          <tr>
             <td>{i}</td>
             <td class="{cls}">{icon}</td>
@@ -177,9 +187,9 @@ def render_industry_items(items: list[dict], as_of: dt.date, window_days: int = 
     lis = []
     for it in sorted_items[:5]:
         sentiment = SENTIMENT_CLASS.get(it.get("sentiment", "neu"), "neu")
-        sector = html.escape(it.get("sector", ""))
-        headline = html.escape(it.get("headline", ""))
-        source = html.escape(it.get("source", ""))
+        sector = _plain(it.get("sector", ""))
+        headline = _plain(it.get("headline", ""))
+        source = _plain(it.get("source", ""))
         source_url = (it.get("source_url") or "").strip()
         if source_url:
             src_html = (
@@ -189,8 +199,8 @@ def render_industry_items(items: list[dict], as_of: dt.date, window_days: int = 
         else:
             src_html = source
         date = html.escape(it.get("date", ""))
-        body = html.escape(it.get("body", ""))
-        interp = html.escape(it.get("business_interpretation", ""))
+        body = _plain(it.get("body", ""))
+        interp = _plain(it.get("business_interpretation", ""))
         lis.append(f'''      <li class="sector-item {sentiment}">
         <div class="row-top">
           <span class="sector-chip">{sector}</span>
@@ -207,8 +217,8 @@ def render_industry_items(items: list[dict], as_of: dt.date, window_days: int = 
 def render_trade_implications(items: list[dict]) -> str:
     lis = []
     for it in items[:3]:
-        title = html.escape(it.get("title", ""))
-        body = html.escape(it.get("body", ""))
+        title = _plain(it.get("title", ""))
+        body = _plain(it.get("body", ""))
         lis.append(f"      <li><strong>{title}</strong>{body}</li>")
     return "\n".join(lis) if lis else "      <li>今日無資料</li>"
 
