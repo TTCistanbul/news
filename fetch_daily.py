@@ -295,6 +295,34 @@ def _brent_change(observations, latest_date: dt.date, latest_price: float,
     }
 
 
+def _fetch_brent_borsapy() -> list[tuple[dt.date, float]]:
+    """2026-09-28 新增、放在第一順位：borsapy 的 FX("BRENT")，日線資料來自
+    土耳其的 canlidoviz.com（每桶美元，市場報價，每天更新）。
+
+    為什麼需要：Yahoo 從 09-23 起每天對 GitHub 機房 IP 回 429，一路退到
+    EIA；EIA 現貨一週只發布一次（通常週三，資料到前一兩天），所以網頁上
+    的布蘭特會連續好幾天停在同一個日期。borsapy 本來就裝在 workflow 裡
+    （抓 EVDS 用），不用加新套件，也不需要金鑰。
+
+    取前一年 12 月起的資料，確保「年初至今」算得出來。"""
+    if bp is None:
+        raise RuntimeError("未安裝 borsapy")
+    today = dt.date.today()
+    start = dt.date(today.year - 1, 12, 1).isoformat()
+    df = bp.FX("BRENT").history(start=start, interval="1d")
+    if df is None or len(df) == 0 or "Close" not in df.columns:
+        raise RuntimeError("borsapy 回傳空的布蘭特資料")
+    out = {}
+    for idx, close in df["Close"].items():
+        if close is None or close != close:   # None 或 NaN
+            continue
+        d = idx.date() if hasattr(idx, "date") else dt.date.fromisoformat(str(idx)[:10])
+        out[d] = round(float(close), 2)
+    if not out:
+        raise RuntimeError("borsapy 布蘭特資料解析不出任何收盤價")
+    return sorted(out.items())
+
+
 def _fetch_brent_yahoo() -> list[tuple[dt.date, float]]:
     """Yahoo Finance chart API 的 BZ=F 日線，回傳 [(日期, 每桶美元), ...]。
     抓不到就丟例外讓呼叫端往下退到 EIA。
@@ -498,7 +526,7 @@ def _build_brent_payload(observations, source: str, source_kind: str,
 
 
 def fetch_brent_oil() -> dict | None:
-    """依序試 Yahoo 期貨 → EIA 現貨 → datahub 現貨鏡像，先成功的就用。
+    """依序試 borsapy（canlidoviz）→ Yahoo 期貨 → EIA 現貨 → datahub 現貨鏡像，先成功的就用。
     三條路徑的輸出格式相同，差別只在 source_kind 與 basis。
     前面失敗的原因記在 fallback_reasons，直接看 data/*.json 就知道為什麼退。"""
     reasons: list[str] = []
@@ -506,6 +534,17 @@ def fetch_brent_oil() -> dict | None:
     def _done(payload: dict) -> dict:
         payload["fallback_reasons"] = reasons
         return payload
+
+    # 0. borsapy（canlidoviz）：每日市場報價，GitHub Actions 上最穩的一條。
+    try:
+        obs = _fetch_brent_borsapy()
+        return _done(_build_brent_payload(
+            obs, "canlidoviz.com（經 borsapy FX('BRENT')）",
+            "borsapy_canlidoviz", basis="market"))
+    except Exception as e:
+        reasons.append(f"borsapy: {_redact(e)}")
+        print(f"! 布蘭特原油: borsapy 抓取失敗，往下退到 Yahoo 期貨：{_redact(e)}",
+              file=sys.stderr)
 
     # 1. Yahoo：ICE Brent 前月期貨連續合約，免金鑰，當天收盤後就有。
     try:
@@ -1361,6 +1400,7 @@ def main():
     payload["brent_oil"] = brent
     if brent:
         _src = {
+            "borsapy_canlidoviz": "canlidoviz 市場報價",
             "yahoo_futures": "Yahoo 期貨",
             "stooq_futures": "stooq 期貨",
             "eia_api": "EIA API 現貨",
