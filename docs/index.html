@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Türkiye 經濟情報簡報</title>
 <!-- TODO: 換成自己的 favicon 路徑 -->
-<link rel="icon" type="image/png" href="/news/taitra-logo.png">
+<link rel="icon" type="image/png" href="/taitra-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@200;300;400;500;700&family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
@@ -729,169 +729,11 @@ a:focus-visible { outline: 2px solid var(--accent-blue-deep); outline-offset: 2p
   font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
   color: var(--text-tertiary); letter-spacing: 0.04em;
 }
-.sector-item .src a {
-  color: inherit;
-  border-bottom: 1px dotted var(--text-tertiary);
-  transition: color 0.15s, border-color 0.15s;
-}
-.sector-item .src a:hover {
-  color: var(--accent-blue-deep);
-  border-bottom-color: var(--accent-blue-deep);
-}
 .sector-item .date::before {
   content: "・";
   margin-right: 0.4rem;
   color: var(--border);
 }
-
-/* ===== 經濟組資訊 ===== */
-.econ-notes {
-  margin-top: 1.5rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--border-soft);
-}
-.econ-notes-head {
-  display: flex; flex-wrap: wrap; align-items: baseline;
-  gap: 0.6rem; margin-bottom: 0.9rem;
-}
-.econ-notes-head .t {
-  font-size: 0.95rem; font-weight: 700; color: var(--text-heading);
-}
-.econ-notes-head .s {
-  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
-  letter-spacing: 0.08em; color: var(--text-tertiary);
-}
-.econ-edit-btn {
-  margin-left: auto; font-size: 0.72rem; font-family: inherit;
-  padding: 0.2rem 0.7rem; border-radius: 5px; cursor: pointer;
-  background: #fff; border: 1px solid var(--border); color: var(--text-secondary);
-  transition: border-color 0.15s, color 0.15s;
-}
-.econ-edit-btn:hover { border-color: var(--accent-blue); color: var(--accent-blue-deep); }
-.econ-edit-btn:focus-visible { outline: 2px solid var(--accent-blue-deep); outline-offset: 2px; }
-
-.note-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.6rem; }
-.note-item {
-  padding: 0.95rem 1.2rem;
-  background: var(--bg-subtle);
-  border-radius: var(--radius-md);
-  border-left: 3px solid var(--accent-blue);
-}
-.note-item.warn { border-left-color: var(--accent-amber); }
-.note-item .row-top {
-  display: flex; flex-wrap: wrap; align-items: center;
-  gap: 0.5rem; margin-bottom: 0.35rem;
-}
-.note-item .note-date {
-  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
-  color: var(--text-tertiary); letter-spacing: 0.04em;
-}
-.note-item .note-body {
-  font-size: 0.88rem; color: var(--text-primary);
-  line-height: 1.8;
-}
-.note-item .note-body > *:first-child { margin-top: 0; }
-.note-item .note-body > *:last-child { margin-bottom: 0; }
-.note-item .note-body p { margin: 0.6em 0; }
-.note-item .note-body strong { color: var(--text-heading); font-weight: 700; }
-.note-item .note-body ul, .note-item .note-body ol {
-  margin: 0.6em 0; padding-left: 1.4em;
-}
-.note-item .note-body li { margin: 0.2em 0; }
-.note-item .note-body h1, .note-item .note-body h2, .note-item .note-body h3 {
-  font-family: 'Archivo', sans-serif; font-weight: 700; color: var(--text-heading);
-  margin: 0.8em 0 0.4em; line-height: 1.4;
-}
-.note-item .note-body h1 { font-size: 1.1rem; }
-.note-item .note-body h2 { font-size: 1.02rem; }
-.note-item .note-body h3 { font-size: 0.94rem; }
-.note-item .note-body table {
-  width: 100%; border-collapse: collapse; margin: 0.7em 0;
-  font-size: 0.85rem;
-}
-.note-item .note-body th, .note-item .note-body td {
-  border: 1px solid var(--border); padding: 0.45rem 0.6rem;
-  text-align: left; vertical-align: top;
-}
-.note-item .note-body th {
-  background: var(--bg-table-header); font-weight: 600;
-  color: var(--text-secondary); font-size: 0.78rem;
-}
-.note-item .note-body tr:nth-child(even) td { background: var(--bg-table-even); }
-.note-item .note-body code {
-  font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
-  background: var(--bg-subtle); padding: 0.1em 0.35em; border-radius: 4px;
-}
-.note-item .note-body a { color: var(--accent-blue-deep); }
-.note-empty { font-size: 0.82rem; color: var(--text-tertiary); margin: 0; }
-
-/* 編輯視窗 */
-.econ-modal[hidden] { display: none; }
-.econ-modal {
-  position: fixed; inset: 0; z-index: 200;
-  background: rgba(16, 24, 40, 0.45);
-  display: flex; align-items: center; justify-content: center;
-  padding: 1rem;
-}
-.econ-dialog {
-  background: var(--bg-card); border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-frost);
-  width: min(680px, 100%); max-height: 88vh; overflow-y: auto;
-  padding: 1.75rem;
-}
-.econ-dialog h3 {
-  margin: 0 0 1rem; font-size: 1.05rem; color: var(--text-heading);
-}
-.econ-dialog label {
-  display: block; font-size: 0.72rem; color: var(--text-tertiary);
-  margin-bottom: 0.25rem; letter-spacing: 0.04em;
-}
-.econ-dialog input[type="text"],
-.econ-dialog input[type="password"],
-.econ-dialog input[type="date"],
-.econ-dialog textarea {
-  width: 100%; box-sizing: border-box;
-  padding: 0.5rem 0.7rem; font: inherit; font-size: 0.85rem;
-  color: var(--text-primary); background: var(--bg-subtle);
-  border: 1px solid var(--border); border-radius: var(--radius-sm);
-}
-.econ-dialog textarea { min-height: 5rem; resize: vertical; line-height: 1.7; }
-.econ-dialog input:focus, .econ-dialog textarea:focus {
-  outline: none; border-color: var(--accent-blue); background: #fff;
-}
-.econ-row {
-  border: 1px solid var(--border-soft); border-radius: var(--radius-md);
-  padding: 1rem; margin-bottom: 0.75rem; background: var(--bg-table-even);
-}
-.econ-row-grid {
-  display: grid; grid-template-columns: 1fr 1fr auto;
-  gap: 0.75rem; align-items: end; margin-bottom: 0.6rem;
-}
-@media (max-width: 560px) {
-  .econ-row-grid { grid-template-columns: 1fr; align-items: stretch; }
-}
-.econ-check {
-  display: flex; align-items: center; gap: 0.4rem;
-  font-size: 0.78rem; color: var(--text-secondary); white-space: nowrap;
-}
-.econ-actions {
-  display: flex; flex-wrap: wrap; gap: 0.6rem;
-  margin-top: 1.25rem; padding-top: 1rem;
-  border-top: 1px solid var(--border-soft);
-}
-.econ-btn {
-  font: inherit; font-size: 0.82rem; padding: 0.45rem 1.1rem;
-  border-radius: var(--radius-sm); cursor: pointer;
-  border: 1px solid var(--border); background: #fff; color: var(--text-secondary);
-}
-.econ-btn.primary {
-  background: var(--accent-blue-deep); border-color: var(--accent-blue-deep); color: #fff;
-}
-.econ-btn.danger { color: var(--accent-red); border-color: #f3c4c6; }
-.econ-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.econ-msg { font-size: 0.78rem; margin: 0.75rem 0 0; min-height: 1.2em; }
-.econ-msg.err { color: var(--accent-red); }
-.econ-msg.ok { color: var(--accent-green); }
 
 /* ===== Implications ===== */
 .implications-list {
@@ -1112,12 +954,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="topbar">
     <div class="brand">
       <!-- TODO: 換成自己的 logo -->
-      <img src="/news/taitra-logo.png" alt="TAITRA 中華民國對外貿易發展協會">
+      <img src="/taitra-logo.png" alt="TAITRA 中華民國對外貿易發展協會">
       <span class="divider"></span>
       <span class="status"><span class="dot"></span>DAILY&nbsp;ECON</span>
     </div>
     <div class="right">
-      <div class="meta">2026-10-04 16:24 TRT</div>
+      <div class="meta">{{GENERATED_AT_LABEL}}</div>
       <button class="menu-btn" id="menuBtn" aria-label="歷史簡報" aria-expanded="false">
         <span class="bars"><span></span><span></span><span></span></span>
       </button>
@@ -1153,7 +995,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="lede">每日 Türkiye 時間上午 8:30 更新。彙整過去 24 小時 Türkiye 總體經濟數據、貨幣與財政政策動向、里拉匯率與市場價格變化，以及對台土雙邊貿易的實質影響。</p>
 
     <div class="hero-meta">
-      <span class="meta-chip"><span class="lbl">DATE</span>2026年10月4日</span>
+      <span class="meta-chip"><span class="lbl">DATE</span>2026年8月29日</span>
       <span class="meta-chip"><span class="lbl">UPDATED</span>08:30 TRT</span>
       <span class="meta-chip"><span class="lbl">SUBJECT</span>Türkiye 總體經濟</span>
       <!-- 匯率／指數等即時報價尚未接資料源，接上後請刪掉這顆 chip -->
@@ -1164,44 +1006,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- 核心指標 -->
   <div class="indicator-strip">
     <div class="indicator-cell">
-      <div class="val green">31.51%</div>
-      <div class="lbl">年通膨率（TÜİK CPI，8月）</div>
-      <div class="delta">前值 31.75%</div>
+      <div class="val green">31.75%</div>
+      <div class="lbl">年通膨率（TÜİK CPI，7月）</div>
+      <div class="delta">前值 32.11%　核心 29.91%</div>
     </div>
     <div class="indicator-cell">
-      <div class="val amber">37% / 37.0%</div>
+      <div class="val amber">37% / {{FUNDING_COST}}%</div>
       <div class="lbl">政策利率 / 隔夜拆借（TCMB）</div>
       <div class="delta">一週附賣回已於 8/23 恢復，隔夜利率回落至政策利率附近</div>
     </div>
     <div class="indicator-cell">
-      <div class="val green">+2.3% / +1.1%</div>
-      <div class="lbl">Türkiye 季度 GDP 年增率 / 季增率（2026 Q2）</div>
-      <div class="delta">年增／季增（季增已經季節調整）</div>
+      <div class="val red">73.4 億</div>
+      <div class="lbl">7月貿易逆差（美元）</div>
+      <div class="delta">年增 13.6%　1–7月累計 605 億</div>
     </div>
   </div>
 
-  <!-- 展覽關聯性分級外連橫幅：故意用跟其他卡片不同的高對比配色，
-       讓它在頁面上一眼就能被注意到，跟其他資訊卡片區隔開 -->
-  <a href="/news/2027-exhibitions.html" target="_blank" rel="noopener noreferrer"
-     style="display:flex; align-items:center; justify-content:space-between; gap:1rem;
-            margin: 1.25rem 0; padding: 1.1rem 1.5rem; border-radius: 14px;
-            background: linear-gradient(135deg, var(--accent-blue-deep), var(--accent-blue));
-            color: #fff; text-decoration: none; box-shadow: 0 4px 16px rgba(29,138,230,0.35);">
-    <span>
-      <span style="display:block; font-size:0.72rem; letter-spacing:0.08em; opacity:0.85; font-family:'JetBrains Mono',monospace;">
-        EXHIBITIONS 2027 · 台土展覽關聯性分級</span>
-      <span style="display:block; font-size:1.05rem; font-weight:700; margin-top:0.2rem;">
-        2027 年伊斯坦堡展覽關聯性分級表 →</span>
-    </span>
-    <span style="flex-shrink:0; font-size:0.82rem; padding:0.4rem 0.9rem; border-radius:999px;
-                 background:rgba(255,255,255,0.2); white-space:nowrap;">開啟頁面</span>
-  </a>
-
   <!-- AI:TODAY_TAKE:START 每天由 generate_analysis.py 整段覆寫，不要手動編輯這段文字本身 -->
   <p class="assessment-text">
-    今日土耳其經濟焦點集中於9月出口創下歷史同期新高及能源領域的強勁融資表現。<strong>汽車與綠能產業</strong>持續展現出口與投資動能，惟資本市場監管動向與通膨數據仍牽動市場神經。
+    <strong>今日判讀：</strong>7 月 CPI 年增 31.75%，為 3 月以來最低，通膨方向轉好。央行一週附賣回操作已於 8 月 23 日恢復（此前自 3 月起暫停），隔夜拆借利率已從接近 40% 回落到政策利率 37% 附近，融資環境較上月已有改善，不宜再以「暫停、企業全面承擔 40% 融資成本」描述現況。7 月出口衝上 256 億美元的單月次高，逆差卻仍年增 13.6% 至 73.4 億美元，主因是中間財進口年增 11.8%，而資本財進口反而減少 11.5%。<strong>這組數字對台商的意義是：</strong>進口結構呈現生產投入與設備需求不同步，是否代表企業普遍補庫存或延後設備投資仍需後續數據確認，短期可優先關注零組件與中間財需求，大型資本設備案件則建議觀察後續投資指標。
   </p>
-<!-- AI:TODAY_TAKE:END -->
+  <!-- AI:TODAY_TAKE:END -->
 
   <!-- 顏色語意說明：避免「數字漲跌」與「對台商好壞」混淆 -->
   <p class="legend">
@@ -1223,9 +1048,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <!-- AI:SUMMARY:START -->
     <p class="summary-text">
- 根據土耳其官方與產業最新數據，9月份汽車產業出口額逼近 <span class="data">40 億</span>美元，推動整體外銷表現亮眼；總統埃爾多安指出9月出口額達 <span class="data">260 億</span>美元，創下共和國歷史同期最高紀錄，今年前9個月總出口額更達到 <span class="data">2110 億</span>美元。在金融與能源方面，銀行業對能源產業的融資已突破 <span class="data">1 萬億</span>里拉，其中專案融資有 <span class="data">53</span>% 投入再生能源，顯示綠色轉型資金動能充沛，但市場同時高度關注即將公布的通膨數據與資本市場監管調查的後續發展。
+ Türkiye 統計局（TÜİK）公布 7 月消費者物價指數年增 <span class="data">31.75%</span>，低於 6 月的 32.11%，略優於市場預期的 31.8%（市場調查，非 TÜİK 官方數字），為 3 月以來最低；核心通膨（TÜİK 特殊範圍 C 指標，排除能源、食品、飲料、菸品與黃金）同步降至 <span class="data">29.91%</span>，另一個常見追蹤指標 B 指標（排除未加工食品、能源、酒精飲料、菸品與黃金）則為 30.98%。住房與水電（40.32%）、運輸（30.83%）等大項降溫是主因，但食品與非酒精飲料反向加速至 37.53%。央行（TCMB）維持一週附賣回政策利率於 <span class="data">37%</span>，隔夜拆借與隔夜借入分別維持 40% 與 35.5%；一週附賣回操作自 3 月起暫停期間，金融機構須以較貴的隔夜拆借利率取得資金，但該操作已於 8 月 23 日恢復，8 月 24 日起以 37% 重新開標，隔夜利率隨後回落至 37% 附近。央行已在 8 月 13 日發布的 2026 年第三期通膨報告中將 2026 年底通膨預測由 26% 上修至 <span class="data">28%</span>，並預估 2027 年底降至 15%、2028 年底降至 9%，中期目標維持 5%；預測上修反映燃油、天然氣、非能源商品與食品價格走勢，不宜解讀為央行不再公布具體數字。貿易面，7 月出口達 <span class="data">256.2 億美元</span>（年增 2.9%，單月歷史次高），進口 <span class="data">330 億美元</span>（年增 5.1%），逆差擴大至 <span class="data">73.4 億美元</span>，年增 13.6%；1–7 月累計逆差 605 億美元，出口對進口涵蓋率由 79.4% 降至 77.7%。進口結構值得注意：中間財年增 11.8%，資本財卻減少 11.5%，消費財減少 1.3%，但單月數字尚不足以確認是否為企業普遍補庫存或延後投資的訊號。
     </p>
-<!-- AI:SUMMARY:END -->
+    <!-- AI:SUMMARY:END -->
   </div>
 
   <!-- 表一：關鍵事件 -->
@@ -1249,52 +1074,65 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </thead>
         <tbody>
           <!-- AI:KEY_EVENTS:START 每天由 generate_analysis.py 整段覆寫 tbody 內容 -->
+          <!-- 每列格式：
+          <tr>
+            <td>1</td>
+            <td class="dir-red">🔴</td>
+            <td><span class="badge badge-major">重大</span></td>
+            <td><a href="URL" target="_blank" rel="noopener noreferrer">來源</a></td>
+            <td>事件標題</td>
+            <td>重點摘要（1-2 句）</td>
+            <td>對台商影響</td>
+          </tr>
+          方向 class：dir-red（不利）／dir-green（有利）／dir-neutral（中性）
+          重要性 class：badge-major（重大）／badge-medium（中等）
+          -->
           <tr>
             <td>1</td>
             <td class="dir-green">🟢</td>
             <td><span class="badge badge-major">重大</span></td>
-            <td><a href="https://www.dailysabah.com/business/economy/turkish-auto-exports-near-4b-in-september-as-sales-abroad-hit-26b" target="_blank" rel="noopener noreferrer">Daily Sabah</a></td>
-            <td>土耳其9月汽車出口逼近40億美元，單月整體出口達260億美元</td>
-            <td>土耳其9月份汽車產業出口額接近40億美元，總統埃爾多安並宣布9月整體出口額達到260億美元，創下歷史同期最高紀錄。</td>
-            <td>這可能帶動當地汽車零組件與EV供應鏈的採購需求，建議台商持續關注相關零組件合作機會。</td>
+            <td><a href="https://data.tuik.gov.tr/" target="_blank" rel="noopener noreferrer">TÜİK</a></td>
+            <td>7 月 CPI 年增 31.75%，為 3 月以來最低</td>
+            <td>低於 6 月的 32.11%，也略低於市場預期的 31.8%。住房水電由 45.14% 降至 40.32%、運輸由 31.15% 降至 30.83%；核心通膨 29.91%。</td>
+            <td>通膨方向轉好有助內需回溫，但食品類反向加速至 37.53%，民生成本壓力未解，消費性產品的需求回升仍需觀察。</td>
           </tr>
           <tr>
             <td>2</td>
             <td class="dir-green">🟢</td>
             <td><span class="badge badge-major">重大</span></td>
-            <td><a href="https://www.ekonomim.com/ekonomi/tbb-baskani-cakar-bankacilik-sektoru-enerjiye-1-trilyon-tlyi-asan-finansman-sagladi-haberi-922494" target="_blank" rel="noopener noreferrer">Ekonomim</a></td>
-            <td>土耳其銀行業對能源產業融資超過1萬億里拉</td>
-            <td>TBB主席阿爾帕斯蘭·恰卡爾表示，銀行業對能源產業的貸款已超越1萬億里拉，其中再生能源在專案融資的占比達到53%。</td>
-            <td>綠能與儲能領域的資金支持增加，可能有利於相關設備與技術的本地投資及台商綠能零組件輸土布局。</td>
+            <td><a href="https://www.tcmb.gov.tr/" target="_blank" rel="noopener noreferrer">TCMB</a></td>
+            <td>政策利率維持 37%，一週附賣回操作已於 8/23 恢復</td>
+            <td>貨幣政策委員會維持一週附賣回 37%、隔夜拆借 40%、隔夜借入 35.5%。一週附賣回操作（自 3 月起暫停）已於 8 月 23 日宣布恢復，8/24 起以 37% 重新開標，隔夜利率隨後從近 40% 回落至 37% 附近。</td>
+            <td>Türkiye 進口商的實際資金成本已隨隔夜利率回落到接近政策利率 37%，較上月的緊繃狀況有所緩解，備料意願可能回升，但整體利率水準仍偏高，議價時仍應留意對方現金流狀況。</td>
           </tr>
           <tr>
             <td>3</td>
-            <td class="dir-green">🟢</td>
-            <td><span class="badge badge-medium">中等</span></td>
-            <td><a href="https://www.hurriyetdailynews.com/turkiyes-exports-hit-record-211-billion-in-january-september-227677" target="_blank" rel="noopener noreferrer">Hürriyet Daily News</a></td>
-            <td>今年前9個月土耳其出口創下2110億美元紀錄</td>
-            <td>貿易部長奧梅爾·博拉特宣布，今年1至9月期間，土耳其出口額較去年同期成長5.2%，達到創紀錄的2110億美元。</td>
-            <td>整體出口成長反映貿易規模擴大，可能間接提升當地製造業對各類機械與原物料的需求。</td>
+            <td class="dir-red">🔴</td>
+            <td><span class="badge badge-major">重大</span></td>
+            <td><a href="https://www.dailysabah.com/business/economy/turkiyes-trade-deficit-up-136-despite-best-july-exports-ever" target="_blank" rel="noopener noreferrer">Daily Sabah</a></td>
+            <td>7 月資本財進口年減 11.5%，中間財年增 11.8%</td>
+            <td>逆差擴大至 73.4 億美元（年增 13.6%），但結構分歧明顯：中間財進口大增、資本財與消費財雙雙下滑。進口來源以中國 15.3%、俄羅斯 9.8%、德國 7.6% 為前三。</td>
+            <td><strong>這是本日對台商最關鍵的一條，但解讀要謹慎。</strong>單月進口結構分化不足以確認企業普遍補庫存或延後設備投資，短期可優先關注零組件、中間財需求，大型資本設備案件建議觀察後續投資指標再判斷。</td>
           </tr>
           <tr>
             <td>4</td>
             <td class="dir-neutral">⚪</td>
             <td><span class="badge badge-medium">中等</span></td>
-            <td><a href="https://yesilhaber.net/epdk-agustos-2026-sarj-verileri/" target="_blank" rel="noopener noreferrer">Yeşil Haber</a></td>
-            <td>土耳其截至8月商用充電樁增至47,908個，電動車數量達476,934輛</td>
-            <td>根據EPDK發布的8月報告，土耳其商用充電服務插座數量達到47,908個，全國電動車總數為476,934輛。</td>
-            <td>電動車基礎設施的持續擴建，可能為車用充電設備及相關零組件供應商帶來商機。</td>
+            <td><a href="https://www.tcmb.gov.tr/" target="_blank" rel="noopener noreferrer">TCMB 通膨報告 2026-III</a></td>
+            <td>央行將 2026 年底通膨預測由 26% 上修至 28%</td>
+            <td>8 月 13 日發布的第三期通膨報告將 2026 年底點預測上修 2 個百分點至 28%，並估 2027 年底 15%、2028 年底 9%，中期目標維持 5%；上修反映燃油、天然氣、非能源商品與食品價格走勢。</td>
+            <td>年底通膨預測上修，代表通膨路徑比先前預期更黏、下降速度可能放緩。長天期合約可考慮加入匯率調整條款作為避險。</td>
           </tr>
           <tr>
             <td>5</td>
-            <td class="dir-neutral">⚪</td>
+            <td class="dir-green">🟢</td>
             <td><span class="badge badge-medium">中等</span></td>
-            <td><a href="https://yesilhaber.net/alfa-solardan-372-milyon-dolarlik-panel-satis-anlasmasi/" target="_blank" rel="noopener noreferrer">Yeşil Haber</a></td>
-            <td>Alfa Solar簽署總值3720萬美元的太陽能板銷售合約</td>
-            <td>Alfa Solar Enerji宣布與國內三家客戶簽署總額約3720萬美元的太陽能板銷售合約，相當於約18億2300萬里拉。</td>
-            <td>太陽能案場建設需求延續，值得綠能與儲能技術相關台商觀察當地的採購動向。</td>
+            <td><a href="https://www.aa.com.tr/en/economy" target="_blank" rel="noopener noreferrer">Anadolu Ajansı</a></td>
+            <td>1–7 月電機設備出口增 13 億美元至 112 億美元</td>
+            <td>貿易部長 Bolat 表示電機與設備類為今年出口成長主力，船舶出口亦增近 10 億美元至 25 億美元。製造業佔總出口 94.4%，高科技產品佔製造業出口 4.4%。</td>
+            <td>Türkiye 電機產業擴張中，對上游零組件、檢測設備的採購需求同步上升，是台灣供應鏈可切入的方向。</td>
           </tr>
-<!-- AI:KEY_EVENTS:END -->
+          <!-- AI:KEY_EVENTS:END -->
         </tbody>
       </table>
     </div>
@@ -1324,27 +1162,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <!-- 漲跌用 .up（紅／上升）／.down（綠／下降）／.flat（持平）-->
           <tr>
             <td>1</td>
-            <td>消費者物價指數（CPI，8月）</td>
+            <td>消費者物價指數（CPI，8 月）</td>
             <td><span class="data">31.51%</span></td>
             <td><span class="down">−0.24pp</span></td>
-            <td>—</td>
+            <td>31.51%</td>
             <td>—</td>
             <td>TÜİK</td>
-            <td>每月首週</td>
+            <td>10/5（9 月 CPI；AA 調查預期年增約 30.2%）</td>
           </tr>
           <tr>
             <td>2</td>
-            <td>核心通膨（B 指標）</td>
-            <td><span class="data">30.68%</span></td>
-            <td><span class="down">−0.29pp</span></td>
-            <td>30.68%</td>
+            <td>核心通膨（C 指標／çekirdek，8 月）</td>
+            <td><span class="data">30.07%</span></td>
+            <td><span class="up">+0.16pp</span></td>
+            <td>30.07%</td>
             <td>—</td>
             <td>TÜİK</td>
-            <td>每月首週</td>
+            <td>10/5（隨 9 月 CPI）</td>
           </tr>
           <tr>
             <td>3</td>
-            <td>政策利率（一週附賣回）</td>
+            <td>政策利率（一週附賣回，9/10 維持）</td>
             <td><span class="data">37.0%</span></td>
             <td><span class="flat">持平</span></td>
             <td>—</td>
@@ -1355,54 +1193,42 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <tr>
             <td>4</td>
             <td>隔夜拆借利率（實際融資成本）</td>
-            <td><span class="data">37.0%</span></td>
-            <td><span class="flat">持平</span></td>
+            <td><span class="data">{{FUNDING_COST}}%</span></td>
+            <td><span class="down">下降（8/24 起）</span></td>
             <td>—</td>
-            <td>維持不變</td>
+            <td>—</td>
             <td>TCMB</td>
             <td>每 6–8 週 MPC</td>
           </tr>
           <tr>
             <td>5</td>
-            <td>月貿易逆差</td>
+            <td>月貿易逆差（8 月）</td>
             <td><span class="data">52.4 億美元</span></td>
-            <td><span class="flat">—</span></td>
+            <td><span class="down">−21.0 億</span></td>
             <td><span class="up">+22.3%</span></td>
             <td>—</td>
             <td>TÜİK／貿易部</td>
-            <td>每月下旬</td>
+            <td>初步：次月 2–4 日（貿易部）<br>正式：次月下旬（TÜİK）</td>
           </tr>
           <tr>
             <td>6</td>
-            <td>月出口</td>
-            <td><span class="data">234.7 億美元</span><br>
-                <span class="flat" style="font-size:0.8em;"></span></td>
-            <td><span class="flat">—</span></td>
+            <td>月出口（8 月）</td>
+            <td><span class="data">234.7 億美元</span></td>
+            <td><span class="down">下降</span></td>
             <td><span class="up">+8.1%</span></td>
             <td>—</td>
             <td>TÜİK／貿易部</td>
-            <td>每月下旬</td>
+            <td>9 月初步已於 10/3 公布（出口 260 億美元，+15.4%）；正式約 10 月下旬</td>
           </tr>
           <tr>
             <td>7</td>
-            <td>月進口</td>
-            <td><span class="data">287.1 億美元</span><br>
-                <span class="flat" style="font-size:0.8em;"></span></td>
-            <td><span class="flat">—</span></td>
-            <td><span class="up">+10.5%</span></td>
-            <td>—</td>
-            <td>TÜİK／貿易部</td>
-            <td>每月下旬</td>
-          </tr>
-          <tr>
-            <td>8</td>
-            <td>出口對進口涵蓋率</td>
-            <td><span class="data">81.8%</span></td>
-            <td><span class="flat">—</span></td>
-            <td><span class="flat">—</span></td>
+            <td>出口對進口涵蓋率（8 月）</td>
+            <td><span class="data">81.7%</span></td>
+            <td><span class="up">+4.0pp</span></td>
+            <td><span class="down">−1.8pp</span></td>
             <td>—</td>
             <td>TÜİK</td>
-            <td>每月下旬</td>
+            <td>9 月初步 83.2%（10/3）；正式約 10 月下旬</td>
           </tr>
         </tbody>
       </table>
@@ -1432,38 +1258,56 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <tr>
             <td>1</td>
             <td>USD/TRY</td>
-            <td><span class="data">49.0582</span></td>
-            <td><span class="up">+0.4%</span></td>
-            <td><span class="up">+1.5%</span></td>
-            <td><span class="flat">—</span></td>
-            <td>TRY 匯率變化需與 CPI、利率、外匯流動性及央行市場操作一併觀察，資料日期 2026-10-02</td>
+            <td>{{USD_TRY}}</td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td><span class="up">約 −7%（里拉，至6月）</span></td>
+            <td>TRY 匯率變化需與 CPI、利率、外匯流動性及央行市場操作一併觀察</td>
           </tr>
           <tr>
             <td>2</td>
             <td>EUR/TRY</td>
-            <td><span class="data">55.1819</span></td>
-            <td><span class="down">−0.9%</span></td>
-            <td><span class="down">−1.6%</span></td>
-            <td><span class="flat">—</span></td>
-            <td>歐系競爭對手報價的相對變化，資料日期 2026-10-02</td>
+            <td>{{EUR_TRY}}</td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td>歐系競爭對手報價的相對變化</td>
           </tr>
           <tr>
             <td>3</td>
             <td>TWD/TRY（參考）</td>
-            <td><span class="data">1.5401</span></td>
-            <td><span class="up">+0.1%</span></td>
-            <td><span class="up">+1.0%</span></td>
-            <td><span class="flat">—</span></td>
-            <td>交叉匯率（TCMB USD/TRY ÷ 第三方 USD/TWD），非官方直接報價，僅供台幣計價合約換算參考，資料日期 2026-10-02／2026-10-04</td>
+            <td class="pending">待接即時報價</td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td>台幣計價合約換算用</td>
           </tr>
           <tr>
             <td>4</td>
+            <td>BIST 100 指數</td>
+            <td class="pending">待接即時報價</td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td>內需景氣的先行參考</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>5 年期主權 CDS</td>
+            <td class="pending">待接即時報價</td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td>影響信用狀開立條件</td>
+          </tr>
+          <tr>
+            <td>6</td>
             <td>布蘭特原油</td>
-            <td><span class="data">$102.74</span></td>
-            <td><span class="down">−1.7%</span></td>
-            <td><span class="up">+8.9%</span></td>
-            <td><span class="up">+68.6%</span></td>
-            <td>市場報價，每桶美元，資料日期 2026-10-02</td>
+            <td class="pending">待接即時報價</td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td class="pending">—</td>
+            <td>能源進口是 Türkiye 逆差主因</td>
           </tr>
         </tbody>
       </table>
@@ -1478,57 +1322,72 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <ul class="sector-list">
       <!-- AI:INDUSTRY:START 每天由 generate_analysis.py 整段覆寫 ul 內容（<li> 清單） -->
-      <li class="sector-item pos">
+      <!-- 每則格式：
+      <li class="sector-item pos|neg|neu">
         <div class="row-top">
-          <span class="sector-chip">汽車零組件與EV供應鏈</span>
-          <span class="headline">土耳其9月汽車出口近40億美元</span>
-          <span class="src"><a href="https://www.dailysabah.com/business/economy/turkish-auto-exports-near-4b-in-september-as-sales-abroad-hit-26b" target="_blank" rel="noopener noreferrer">Daily Sabah</a></span>
-          <span class="date">2026-10-04</span>
+          <span class="sector-chip">產業別</span>
+          <span class="headline">標題</span>
+          <span class="src">來源</span>
+          <span class="date">YYYY-MM-DD</span>
         </div>
-        <div class="body">土耳其汽車產業在9月份維持強勁表現，出口額接近40億美元，穩居該國各產業出口貢獻首位。</div>
-        <div class="impact"><b>台商解讀：</b>這可能意味著當地整車廠對零組件的需求保持穩定，台商可評估切入供應鏈的潛在機會。</div>
+        <div class="body">內容 1-2 句</div>
+        <div class="impact"><b>台商解讀：</b>…</div>
       </li>
-      <li class="sector-item pos">
+      左側色條：pos 綠（機會）／neg 紅（風險）／neu 琥珀（觀察）
+      date 一律填「來源報導/發布日期」，不是新聞事件裡提到的生效日或事件日——
+      這兩者常常不同（例如關稅生效日 vs. 報導刊出日），別填錯。
+      -->
+      <li class="sector-item neg">
         <div class="row-top">
-          <span class="sector-chip">綠能、儲能與回收</span>
-          <span class="headline">銀行業提供能源產業逾1萬億里拉融資</span>
-          <span class="src"><a href="https://www.ekonomim.com/ekonomi/tbb-baskani-cakar-bankacilik-sektoru-enerjiye-1-trilyon-tlyi-asan-finansman-sagladi-haberi-922494" target="_blank" rel="noopener noreferrer">Ekonomim</a></span>
-          <span class="date">2026-10-04</span>
+          <span class="sector-chip">紡織成衣</span>
+          <span class="headline">美國對 Türkiye 加徵 12.5% 額外關稅，高於孟加拉、柬埔寨的 10%</span>
+          <span class="src">ISO / 業界報導</span>
+          <span class="date">2026-07-30</span>
         </div>
-        <div class="body">TBB表示銀行業對能源產業融資超越1萬億里拉，再生能源占專案融資比例達53%。</div>
-        <div class="impact"><b>台商解讀：</b>綠能融資規模擴大可能支撐當地的綠能投資，台商在綠能與回收技術方面可能享有更多合作空間。</div>
+        <div class="body">美方以「未有效禁止強迫勞動產品進口」為由課徵，配額制預計最快 <span class="data">9月1日</span> 生效、初期三年。İstanbul Sanayi Odası（ISO）理事長 Erdal Bahçıvan 表示問題不在關稅本身，而在 Türkiye 產業被系統性置於競爭劣勢。今年 1–4 月美國已是 Türkiye 技術性紡織品第一大出口市場，上半年對美紡織品出口年增 14% 至 <span class="data">4.09 億美元</span>。</div>
+          <div class="impact"><b>台商解讀：</b>Türkiye 紡織廠的美國訂單成本結構將重整，可能轉向歐盟與中東市場，或壓縮上游採購價格。供應機能性布料、紡織機械與染整設備的台商，短期詢價可能轉趨保守。</div>
       </li>
-      <li class="sector-item pos">
+      <li class="sector-item neg">
         <div class="row-top">
-          <span class="sector-chip">汽車零組件與EV供應鏈</span>
-          <span class="headline">土耳其電動車充電樁增至47,908個</span>
-          <span class="src"><a href="https://yesilhaber.net/epdk-agustos-2026-sarj-verileri/" target="_blank" rel="noopener noreferrer">Yeşil Haber</a></span>
-          <span class="date">2026-10-04</span>
+          <span class="sector-chip">汽車</span>
+          <span class="headline">上半年產量年減 6%，乘用車減 16%、商用車逆勢增 10%</span>
+          <span class="src">OSD / Hürriyet Daily News</span>
+          <span class="date">2026-08-17</span>
         </div>
-        <div class="body">EPDK 8月數據顯示商用充電樁達47,908個，全國電動車登記數達476,934輛。</div>
-        <div class="impact"><b>台商解讀：</b>基礎設施的成長顯示電動車市場具備潛力，相關充電設備零組件供應商可持續關注市場進展。</div>
+        <div class="body">1–6 月總產量 <span class="data">663,397 輛</span>，產能利用率僅 62%。出口輛數年減 12% 至 462,552 輛，但出口值反而年增 4% 至 <span class="data">208 億美元</span>——單價提升抵銷了量的下滑。汽車仍是第一大出口產業，佔上半年產業出口 17.5%，OİB 全年目標 430 億美元。</div>
+        <div class="impact"><b>台商解讀：</b>乘用車與商用車走勢分歧是關鍵。做商用車、重車零組件的有機會；乘用車鏈條偏弱。產能利用率 62% 可能降低部分新增產能投資的急迫性，但是否會形成設備投資下滑，仍需搭配固定資本形成、企業投資調查及資本財進口等指標確認。</div>
       </li>
       <li class="sector-item neu">
         <div class="row-top">
-          <span class="sector-chip">智慧製造與工業4.0</span>
-          <span class="headline">土耳其去年全球機器人市場排名第17位</span>
-          <span class="src"><a href="https://www.hurriyetdailynews.com/turkiye-ranks-17th-in-global-robot-market-227675" target="_blank" rel="noopener noreferrer">Hürriyet Daily News</a></span>
-          <span class="date">2026-10-04</span>
+          <span class="sector-chip">紡織・法規</span>
+          <span class="headline">紡織廠環保申報系統 IRIS 於 8 月 6 日上路</span>
+          <span class="src">環境暨都市化與氣候變遷部</span>
+          <span class="date">2026-08-14</span>
         </div>
-        <div class="body">根據國際機器人聯合會報告，土耳其去年機器人安裝量下降9%至3,194台，全球排名第17位。</div>
-        <div class="impact"><b>台商解讀：</b>自動化設備安裝量雖較前年紀錄下滑，但整體工業自動化基礎仍在，智慧製造設備商可觀察後續需求回溫情形。</div>
+        <div class="body">《紡織設施實施通函》生效，導入由 HAVELSAN 開發的 IRIS（創新申報與稽核系統）試辦，作為數位平台監測空氣排放、用水量與廢棄物管理流程。</div>
+        <div class="impact"><b>台商解讀：</b>合規成本上升，但同時創造需求——廢水處理、廢氣監測、節水製程設備的採購案可能增加。有相關產品線的廠商可主動接觸紡織聚落。</div>
       </li>
       <li class="sector-item pos">
         <div class="row-top">
-          <span class="sector-chip">綠能、儲能與回收</span>
-          <span class="headline">Alfa Solar簽署3720萬美元太陽能板合約</span>
-          <span class="src"><a href="https://yesilhaber.net/alfa-solardan-372-milyon-dolarlik-panel-satis-anlasmasi/" target="_blank" rel="noopener noreferrer">Yeşil Haber</a></span>
-          <span class="date">2026-10-03</span>
+          <span class="sector-chip">機械</span>
+          <span class="headline">機械出口單價創高，出口／進口比由 30% 升至 65%</span>
+          <span class="src">Invest in Türkiye</span>
+          <span class="date">2026-08-21</span>
         </div>
-        <div class="body">Alfa Solar Enerji與國內三家客戶簽署總值約3720萬美元的太陽能板銷售協議。</div>
-        <div class="impact"><b>台商解讀：</b>太陽能面板內需動能持續，相關原物料與零組件供應商可留意當地的採購需求。</div>
+        <div class="body">2025 年機械出口達 <span class="data">287 億美元</span>，每公斤出口單價創 <span class="data">8.1 美元</span> 新高。產業營收 578 億美元、從業人員逾 50 萬。Türkiye 每年培養逾 39,000 名機械領域工程師。</div>
+        <div class="impact"><b>台商解讀：</b>本地機械業正在往高值化走，代表對精密零組件、控制器、檢測設備的需求上升，但同時也意味著中低階整機的競爭變激烈。定位應往關鍵零組件而非整機。</div>
       </li>
-<!-- AI:INDUSTRY:END -->
+      <li class="sector-item neu">
+        <div class="row-top">
+          <span class="sector-chip">總體・財政</span>
+          <span class="headline">OECD：燃油消費稅減免已抵銷 3 月以來 75% 的油價漲幅</span>
+          <span class="src">OECD Economic Outlook 2026-I</span>
+          <span class="date">2026-06-03</span>
+        </div>
+        <div class="body">中東衝突下的財政支持措施使赤字由 2025 年的 2.9% 升至 2027 年預估 3.4%，公債佔 GDP 24%。OECD 預估 2026 年成長 <span class="data">3.1%</span>，內需在上半年疲弱後回升。</div>
+        <div class="impact"><b>台商解讀：</b>燃油消費稅減免目前部分抵銷了油價上漲，屬於財政可持續性的變數，不宜視為長期成本結構。若補貼退場，Türkiye 廠商的生產成本可能上升，值得列入長期採購與付款條件評估的觀察項目。</div>
+      </li>
+      <!-- AI:INDUSTRY:END -->
     </ul>
     <p class="grp-note" style="margin-top:1.25rem;">
       產業條目的來源與總經數據不同源，建議另外納入產業公會的一手發布：OSD（汽車製造商協會）、OİB（烏魯達汽車出口商協會）、İTHİB／İTKİB（紡織與成衣出口商協會）、MAİB（機械出口商協會）。這些單位的月報比媒體轉述更早也更細。
@@ -1543,105 +1402,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <ul class="implications-list">
       <!-- AI:TRADE_IMPLICATIONS:START 每天由 generate_analysis.py 整段覆寫 ul 內容 -->
-      <li><strong>出口與製造業動能延續，帶動相關零組件商機</strong>隨著9月汽車出口逼近40億美元且前9個月總出口創下2110億美元紀錄，土耳其製造與外銷動能維持穩定。這可能增加當地車用及工業生產供應鏈對外部零組件與設備的潛在需求，建議台商密切追蹤相關產業的採購趨勢。</li>
-      <li><strong>綠能融資與基礎設施擴張提供合作契機</strong>銀行業對能源產業提供超過1萬億里拉的融資支持，且再生能源專案占比過半，搭配電動車充電樁持續增加，顯示綠能與電動車基礎建設為當前資金投入重點。台商在綠能、儲能及充電設備零組件領域，可能存在切入當地市場的商機。</li>
-<!-- AI:TRADE_IMPLICATIONS:END -->
+      <!-- 每項格式：<li><strong>標題：</strong>分析內容。</li> -->
+      <li><strong>資本財進口年減 11.5%，設備類出口的窗口可能收緊，但仍需觀察。</strong>7 月中間財進口年增 <span class="data">11.8%</span>、資本財卻減少 11.5%，訊號值得留意，但單月進口結構尚不足以確認企業普遍補庫存或推遲設備汰換。機械與資本設備類的推案短期建議謹慎評估，優先把資源放在零組件與中間財，設備類則持續觀察後續數據再決定投入力道。</li>
+      <li><strong>融資環境已隨一週附賣回恢復而改善，但整體利率仍偏緊。</strong>一週附賣回操作已於 8 月 23 日恢復、8/24 起以 37% 重新開標，隔夜利率隨後從近 <span class="data">40%</span> 回落到政策利率附近，Türkiye 進口商的資金成本較上月已有緩解。但 37% 本身仍是限制性水準，對預付款、開狀費用的敏感度仍值得留意。</li>
+      <li><strong>央行上修年底通膨預測，非放棄指引，長約仍宜保留匯率彈性。</strong>2026 年第三期通膨報告將 2026 年底通膨預測由 26% 上修至 <span class="data">28%</span>，2027 年底目標 15%、2028 年底 9%，中期目標維持 5%——上修代表通膨路徑比先前預期更黏，市場對利率路徑的估值不確定性可能上升，但央行仍持續公布具體數字，不宜解讀為放棄政策指引。三個月以上的合約仍建議明確約定匯率調整機制與觸發門檻，作為風險管理。</li>
+      <!-- AI:TRADE_IMPLICATIONS:END -->
     </ul>
-  </div>
-
-  <!-- 台灣—Türkiye 雙邊貿易：人工每月維護的資料，跟上面 AI 生成的區塊不同來源 -->
-  <div class="card">
-    <div class="card-head">
-      <h2><span class="num">06</span>台灣—Türkiye 雙邊貿易</h2>
-      <span class="card-sub">Taiwan–Türkiye Bilateral Trade</span>
-    </div>
-    <!-- TW_TR_TRADE:START 由 render_report.py 讀取 data/tw-tr-trade.json 產生，
-         人工每月維護，不是每日自動抓取，也不是 AI 生成 -->
-    <div class="indicator-strip" style="margin-bottom: 0.75rem;">
-      <div class="indicator-cell">
-        <div class="val">USD 788,580,000</div>
-        <div class="lbl">台灣出口至 Türkiye（2026年1-8月累計）</div>
-        <div class="delta"> <span class="up">(+15.3% 較去年同期)</span></div>
-      </div>
-      <div class="indicator-cell">
-        <div class="val">USD 326,722,000</div>
-        <div class="lbl">台灣自 Türkiye 進口（2026年1-8月累計）</div>
-        <div class="delta"> <span class="up">(+49.2% 較去年同期)</span></div>
-      </div>
-      <div class="indicator-cell">
-        <div class="val green">USD 461,858,000</div>
-        <div class="lbl">台灣對 Türkiye 貿易餘額（2026年1-8月累計）</div>
-        <div class="delta">正值＝台灣出超</div>
-      </div>
-    </div>
-    
-    
-        <p class="grp-note" style="margin-top:1.1rem; margin-bottom:0.4rem; font-weight:600;">
-      台灣出口 Türkiye 前五大產業（115年1-8月（初步值））</p>
-    <div class="table-wrapper">
-      <table class="tbl-narrow">
-        <thead>
-          <tr>
-            <th>排名</th><th>貨品號列</th><th>產業別</th>
-            <th>累計出口金額</th><th>出口占比</th><th>年增率</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>第16類</td>
-            <td>機器及機械用具；電機設備；及其零件；錄音機及聲音重放機，電視影像、聲音記錄機及重放機，上述各物之零件及附件</td>
-            <td>453,269 千美元</td>
-            <td>57.48%</td>
-            <td><span class="up">+16.8%</span></td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>第15類</td>
-            <td>卑金屬及卑金屬製品</td>
-            <td>94,357 千美元</td>
-            <td>11.97%</td>
-            <td><span class="up">+47.4%</span></td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>第07類</td>
-            <td>塑膠及其製品；橡膠及其製品</td>
-            <td>87,014 千美元</td>
-            <td>11.03%</td>
-            <td><span class="down">-12.8%</span></td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>第06類</td>
-            <td>化學或有關工業產品</td>
-            <td>81,062 千美元</td>
-            <td>10.28%</td>
-            <td><span class="up">+30.4%</span></td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td>第17類</td>
-            <td>車輛、航空器、船舶及有關運輸設備</td>
-            <td>27,719 千美元</td>
-            <td>3.52%</td>
-            <td><span class="down">-2.0%</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    
-    
-    <p class="grp-note">資料來源：財政部關務署 統計資料庫查詢系統（人工每月查詢輸入，非自動抓取）　·　
-      <a href="https://portal.sw.nat.gov.tw/APGA/GA30" target="_blank" rel="noopener noreferrer">
-      查看財政部關務署官方查詢系統（可自行查核或查詢更細分類）</a><br>延伸閱讀：<a href="https://www.eximclub.com.tw/innerContent.aspx?Type=Publish&ID=6632&Continen=3&Country=%E5%9C%9F%E8%80%B3%E5%85%B6" target="_blank" rel="noopener noreferrer">《貿易俱樂部》（2026/08/14，中國輸出入銀行貿易俱樂部）</a></p>
-<!-- TW_TR_TRADE:END -->
   </div>
 
   <!-- 資料來源 -->
   <div class="card">
     <div class="card-head">
-      <h2><span class="num">07</span>資料來源</h2>
+      <h2><span class="num">06</span>資料來源</h2>
       <span class="card-sub">Sources</span>
     </div>
     <div class="src-group">
@@ -1692,86 +1464,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </p>
   </div>
 
-  <!-- 期間報告列表：由 render_report.py 讀取 docs/reports/_index.json 產生，
-       generate_period_report.py 每次產生新報告時會維護這份索引 -->
-  <div class="card">
-    <div class="card-head">
-      <h2><span class="num">08</span>期間報告</h2>
-      <span class="card-sub">Period Reports</span>
-    </div>
-    <ul class="sector-list">
-      <!-- REPORTS_LIST:START 由 render_report.py 產生，不是 AI 生成 -->
-      <li class="sector-item neu">
-        <div class="row-top">
-          <span class="sector-chip">週報</span>
-          <span class="headline"><a href="/news/reports/week-2026-10-04.html" target="_blank" rel="noopener noreferrer">2026-09-28 ～ 2026-10-04</a></span>
-        </div>
-      </li>
-      <li class="sector-item neu">
-        <div class="row-top">
-          <span class="sector-chip">週報</span>
-          <span class="headline"><a href="/news/reports/week-2026-09-28.html" target="_blank" rel="noopener noreferrer">2026-09-22 ～ 2026-09-28</a></span>
-        </div>
-      </li>
-      <li class="sector-item neu">
-        <div class="row-top">
-          <span class="sector-chip">週報</span>
-          <span class="headline"><a href="/news/reports/week-2026-09-20.html" target="_blank" rel="noopener noreferrer">2026-09-14 ～ 2026-09-20</a></span>
-        </div>
-      </li>
-      <li class="sector-item neu">
-        <div class="row-top">
-          <span class="sector-chip">週報</span>
-          <span class="headline"><a href="/news/reports/week-2026-09-12.html" target="_blank" rel="noopener noreferrer">2026-09-06 ～ 2026-09-12</a></span>
-        </div>
-      </li>
-      <li class="sector-item neu">
-        <div class="row-top">
-          <span class="sector-chip">週報</span>
-          <span class="headline"><a href="/news/reports/week-2026-09-04.html" target="_blank" rel="noopener noreferrer">2026-08-29 ～ 2026-09-04</a></span>
-        </div>
-      </li>
-      <li class="sector-item neu">
-        <div class="row-top">
-          <span class="sector-chip">週報</span>
-          <span class="headline"><a href="/news/reports/week-2026-09-01.html" target="_blank" rel="noopener noreferrer">2026-08-26 ～ 2026-09-01</a></span>
-        </div>
-      </li>
-      <li class="sector-item neu">
-        <div class="row-top">
-          <span class="sector-chip">週報</span>
-          <span class="headline"><a href="/news/reports/week-2026-08-31.html" target="_blank" rel="noopener noreferrer">2026-08-25 ～ 2026-08-31</a></span>
-        </div>
-      </li>
-<!-- REPORTS_LIST:END -->
-    </ul>
-
-    <!-- ============================================================
-         ECON_NOTES:START — 經濟組資訊
-         這一段沒有內容，只有骨架。實際文字存在 Firestore，由頁面載入時
-         抓取。所以：不用改這個檔案、不用跑 render_report.py，在首頁按
-         「編輯」輸入密碼即可更新，存檔後立即生效。
-         Firebase 設定寫在頁面最下方那段 module 腳本的開頭。
-         ============================================================ -->
-    <div class="econ-notes">
-      <div class="econ-notes-head">
-        <span class="t">經濟組資訊</span>
-        <span class="s">ECON DESK · 人工撰寫，非 AI 生成</span>
-        <button type="button" class="econ-edit-btn" id="econEditBtn">編輯</button>
-      </div>
-      <ul class="note-list" id="econNoteList">
-        <li><p class="note-empty">載入中…</p></li>
-      </ul>
-    </div>
-    <!-- ECON_NOTES:END -->
-  </div>
-
   <div class="footer">
     <div class="divider"></div>
-    <div class="footer-brand"><img src="/news/taitra-logo.png" alt="TAITRA"></div>
-    <div style="margin-top:0.3rem;">Taiwan Trade Center, Istanbul</div>
-    <div style="margin-top:0.2rem;">E-mail : <a href="mailto:istanbul@taitra.org.tw" style="color:inherit;">istanbul@taitra.org.tw</a></div>
-    <div style="margin-top:0.8rem;">Türkiye 經濟情報簡報 · 2026-10-04 16:24 TRT</div>
+    <div class="footer-brand"><img src="/taitra-logo.png" alt="TAITRA"></div>
+    <div>Türkiye 經濟情報簡報 · 2026-08-29 08:30 TRT</div>
     <div style="margin-top:0.4rem; opacity:0.7;">本報告僅供參考，不構成任何投資或商業決策建議</div>
   </div>
 
@@ -1783,219 +1479,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   // 每筆：{ date, day, title, ind?, label?, href, current? }
   // ind 僅接受 'red' | 'amber' | 'green'（見下方 INDICATOR_CLASSES 白名單）
   // label 語彙已改為 惡化／持平／改善
-  //
-  // 這裡原本被塞了 4 筆寫死的假資料（連結指向根本不存在的
-  // /archive/turkey-econ-2026xxxx.html），已清空。這份清單現在由
-  // render_report.py 在每次產生報告時自動注入，內容對應
-  // docs/archive/_index.json。在真正開始累積歷史簡報之前，面板會
-  // 顯示「尚無過往簡報」。
-  <!-- ARCHIVE_ITEMS:START -->
-const ARCHIVE_ITEMS = [
-  {
-    "date": "2026-10-04",
-    "day": "週日",
-    "title": "土耳其9月汽車出口逼近40億美元，單月整體出口達260億美元",
-    "href": "/news/archive/2026-10-04.html",
-    "current": true
-  },
-  {
-    "date": "2026-10-03",
-    "day": "週六",
-    "title": "土耳其9月出口額創歷史新高，提前達成年度出口目標",
-    "href": "/news/archive/2026-10-03.html",
-    "current": false
-  },
-  {
-    "date": "2026-10-02",
-    "day": "週五",
-    "title": "土耳其9月汽车市场萎缩24%至83469辆",
-    "href": "/news/archive/2026-10-02.html",
-    "current": false
-  },
-  {
-    "date": "2026-10-01",
-    "day": "週四",
-    "title": "土耳其軍用車輛製造商Otokar簽署14.7億美元裝甲車出口合約",
-    "href": "/news/archive/2026-10-01.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-30",
-    "day": "週三",
-    "title": "土耳其8月外貿赤字年增22.3%達52.39億美元",
-    "href": "/news/archive/2026-09-30.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-29",
-    "day": "週二",
-    "title": "美元兌土耳其里拉匯率正式突破 49 里拉",
-    "href": "/news/archive/2026-09-29.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-28",
-    "day": "週一",
-    "title": "土耳其總統埃爾多安針對基金調查發布關鍵訊息，強調資本市場基礎穩健",
-    "href": "/news/archive/2026-09-28.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-27",
-    "day": "週日",
-    "title": "土耳其副總統 Cevdet Yılmaz 稱市場動盪為暫時性且非結構性",
-    "href": "/news/archive/2026-09-27.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-26",
-    "day": "週六",
-    "title": "Nordex Türkiye'den alımı 1 milyar Euroya çıkardı: 70 milyon Euro daha yatırdı",
-    "href": "/news/archive/2026-09-26.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-25",
-    "day": "週五",
-    "title": "世界銀行批准 7.5 億美元融資支援土耳其農業食品部門",
-    "href": "/news/archive/2026-09-25.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-24",
-    "day": "週四",
-    "title": "Türkiye's 1st offshore wind project could create $3B in investment",
-    "href": "/news/archive/2026-09-24.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-23",
-    "day": "週三",
-    "title": "土耳其資本市場基金清算案波及近 46 萬名投資人，官方強調結構無虞",
-    "href": "/news/archive/2026-09-23.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-22",
-    "day": "週二",
-    "title": "土耳其9月消費者信心指數上升1.3%至91.9",
-    "href": "/news/archive/2026-09-22.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-21",
-    "day": "週一",
-    "title": "TCMB 儲備持續下滑，數周內累計降幅顯著",
-    "href": "/news/archive/2026-09-21.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-20",
-    "day": "週日",
-    "title": "美國躍升為土耳其前八個月第二大出口市場",
-    "href": "/news/archive/2026-09-20.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-19",
-    "day": "週六",
-    "title": "土耳其銀行監管局撤銷伊朗 Bank Mellat 伊斯坦堡分行營業執照",
-    "href": "/news/archive/2026-09-19.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-18",
-    "day": "週五",
-    "title": "土耳其強制清算 183 億美元投資基金，政府強調無系統性風險",
-    "href": "/news/archive/2026-09-18.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-17",
-    "day": "週四",
-    "title": "資本市場基金流動性問題引發股市賣壓，金融穩定委員會緊急開會",
-    "href": "/news/archive/2026-09-17.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-16",
-    "day": "週三",
-    "title": "美元兌土耳其里拉匯率創下新高水準",
-    "href": "/news/archive/2026-09-16.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-15",
-    "day": "週二",
-    "title": "歐洲金融科技巨頭 Revolut 爆發資料外洩，27 名富裕土耳其人受波及",
-    "href": "/news/archive/2026-09-15.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-14",
-    "day": "週一",
-    "title": "美元兌里拉匯率創下歷史新高",
-    "href": "/news/archive/2026-09-14.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-13",
-    "day": "週日",
-    "title": "土耳其 73 年歷史的紡織大廠 Orta Anadolu Mensucat 停止生產",
-    "href": "/news/archive/2026-09-13.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-12",
-    "day": "週六",
-    "title": "土耳其 7 月份錄得 3,600 萬美元經常帳順差，為九個月來首見",
-    "href": "/news/archive/2026-09-12.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-11",
-    "day": "週五",
-    "title": "中東局勢緊張致國際油價突破每桶100美元，冬季能源帳單恐加重",
-    "href": "/news/archive/2026-09-11.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-10",
-    "day": "週四",
-    "title": "土耳其 7 月工業生產指數連續第三個月下滑",
-    "href": "/news/archive/2026-09-10.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-09",
-    "day": "週三",
-    "title": "里拉持續走弱，美元與歐元匯率再創紀錄",
-    "href": "/news/archive/2026-09-09.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-08",
-    "day": "週二",
-    "title": "美伊緊張局勢升級推升油價漲逾 2%，布蘭特原油逼近 100 美元",
-    "href": "/news/archive/2026-09-08.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-07",
-    "day": "週一",
-    "title": "土耳其公布 2027-2029 年中期計畫，去通膨仍為首要任務",
-    "href": "/news/archive/2026-09-07.html",
-    "current": false
-  },
-  {
-    "date": "2026-09-05",
-    "day": "週六",
-    "title": "美國宣佈對土耳其實施伊朗相關制裁：一家銀行與兩家企業遭列入名單",
-    "href": "/news/archive/2026-09-05.html",
-    "current": false
-  }
-];
-<!-- ARCHIVE_ITEMS:END -->
+  const ARCHIVE_ITEMS = [
+    {"date":"2026-08-28","day":"08:30","title":"7月貿易逆差 73.4 億美元年增 13.6%，出口對進口涵蓋率降至 77.7%","href":"/archive/turkey-econ-20260828.html","ind":"red","label":"惡化"},
+    {"date":"2026-08-27","day":"08:30","title":"市場觀望 Jackson Hole 談話，新興市場貨幣普遍走弱","href":"/archive/turkey-econ-20260827.html","ind":"amber","label":"持平"},
+    {"date":"2026-08-14","day":"08:30","title":"央行第三期通膨報告將2026年底通膨預測由26%上修至28%","href":"/archive/turkey-econ-20260814.html","ind":"amber","label":"持平"},
+    {"date":"2026-08-05","day":"08:30","title":"7月 CPI 年增 31.75% 為3月以來最低，核心通膨降至 29.91%","href":"/archive/turkey-econ-20260805.html","ind":"green","label":"改善"}
+  ];
 
 
   const panel = document.getElementById('archivePanel');
@@ -2088,11 +1577,6 @@ const ARCHIVE_ITEMS = [
     btn.setAttribute('aria-expanded', shouldOpen);
     panel.setAttribute('aria-hidden', !shouldOpen);
     document.body.style.overflow = shouldOpen ? 'hidden' : '';
-    // 手機窄螢幕上，變成「×」的漢堡鈕跟面板右上角的「N 篇」計數字卡
-    // 位置會疊在一起（兩者都貼齊螢幕右側）。開啟時把按鈕壓到面板
-    // （z-index:1000）跟遮罩（999）下面，面板不透明的背景會直接把它
-    // 蓋住，同一個位置的點擊會落到遮罩上，一樣能關閉面板，不影響操作。
-    btn.style.zIndex = shouldOpen ? '998' : '';
   }
 
   btn.addEventListener('click', () => toggle());
@@ -2282,255 +1766,6 @@ const ARCHIVE_ITEMS = [
 })();
 </script>
 <!-- /feedback-widget:v1 -->
-
-
-<!-- 編輯視窗：經濟組資訊 -->
-<div class="econ-modal" id="econModal" hidden>
-  <div class="econ-dialog" role="dialog" aria-modal="true" aria-labelledby="econDialogTitle">
-
-    <div id="econLoginView">
-      <h3 id="econDialogTitle">經濟組資訊 · 登入</h3>
-      <label for="econPw">密碼</label>
-      <input type="password" id="econPw" autocomplete="current-password">
-      <p class="econ-msg" id="econLoginMsg"></p>
-      <div class="econ-actions">
-        <button type="button" class="econ-btn primary" id="econLoginBtn">登入</button>
-        <button type="button" class="econ-btn" data-econ-close>取消</button>
-      </div>
-    </div>
-
-    <div id="econEditView" hidden>
-      <h3>編輯經濟組資訊</h3>
-      <div id="econRows"></div>
-      <button type="button" class="econ-btn" id="econAddBtn">＋ 新增一則</button>
-      <p class="econ-msg" id="econEditMsg"></p>
-      <div class="econ-actions">
-        <button type="button" class="econ-btn primary" id="econSaveBtn">儲存並發布</button>
-        <button type="button" class="econ-btn" data-econ-close>關閉</button>
-        <button type="button" class="econ-btn" id="econLogoutBtn" style="margin-left:auto">登出</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<script type="module">
-// ============================================================
-// 經濟組資訊 — Firestore 讀寫
-//
-// 讀取是公開的（訪客都看得到），寫入需要登入。權限是 Firestore
-// 安全規則在伺服器端擋的，不是靠前端藏東西，所以看原始碼也繞不過去。
-//
-// 設定步驟見 firebase-setup.md。下面這段 firebaseConfig 換成你自己
-// 專案的（Firebase 主控台 → 專案設定 → 你的應用程式）。
-// ============================================================
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
-  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc }
-  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-// 經濟組資訊的內容是用 Markdown 打的（**粗體**、表格等），先前顯示邏輯
-// 是當純文字逐字跳脫顯示，Markdown 語法原封不動被印出來，不會變成真正
-// 的粗體/表格。這裡加 marked 把 Markdown 轉成 HTML，再用 DOMPurify
-// 過濾——這段內容是站內編輯者手動輸入、存進 Firestore 後任何訪客都看
-// 得到，過濾是為了避免有心人士在內容裡塞惡意 script/HTML 影響到其他
-// 訪客，不是不信任你自己輸入的內容。
-import { marked } from "https://cdn.jsdelivr.net/npm/marked@12/+esm";
-import DOMPurify from "https://cdn.jsdelivr.net/npm/dompurify@3/+esm";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBQY5JLUViXiVl4O5YWKcjAlqLU94xH9Mk",
-  authDomain: "news-48469.firebaseapp.com",
-  projectId: "news-48469",
-  storageBucket: "news-48469.firebasestorage.app",
-  messagingSenderId: "103652472378",
-  appId: "1:103652472378:web:0d735b4f21c3d2e369e703"
-};
-
-// 編輯者的帳號。密碼不寫在這裡，是使用者每次輸入的。
-const EDITOR_EMAIL = "evatzeng@taitra.org.tw";
-
-const DOC_PATH = ["site", "econ-notes"];
-
-const app  = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db   = getFirestore(app);
-const ref  = doc(db, ...DOC_PATH);
-
-const $ = (id) => document.getElementById(id);
-const listEl = $("econNoteList");
-let items = [];
-
-// ── 顯示 ──
-function esc(s) {
-  return String(s == null ? "" : s).replace(/[&<>"']/g,
-    c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
-}
-
-function paint() {
-  if (!items.length) {
-    listEl.innerHTML = '<li><p class="note-empty">目前沒有新的資訊。</p></li>';
-    return;
-  }
-  // 由新到舊排序（date 是 <input type="date"> 存的 YYYY-MM-DD，字串排序
-  // 結果跟日期排序一致）。用複製過的陣列排序，不要動到原本的 items
-  // 順序，避免影響到編輯視窗裡「新增一則」等其他邏輯。
-  const sorted = [...items].sort((a, b) => (b.date || "").localeCompare(a.date || ""));
-  listEl.innerHTML = sorted.map(it => `
-    <li class="note-item${it.important ? " warn" : ""}">
-      <div class="row-top">
-        ${it.label ? `<span class="sector-chip">${esc(it.label)}</span>` : ""}
-        <span class="note-date">${esc(it.date || "")}</span>
-      </div>
-      <div class="note-body">${DOMPurify.sanitize(marked.parse(it.body || ""))}</div>
-    </li>`).join("");
-}
-
-async function load() {
-  try {
-    const snap = await getDoc(ref);
-    items = (snap.exists() && Array.isArray(snap.data().items)) ? snap.data().items : [];
-  } catch (e) {
-    console.error("經濟組資訊讀取失敗", e);
-    listEl.innerHTML = '<li><p class="note-empty">資訊載入失敗，請稍後重新整理。</p></li>';
-    return;
-  }
-  paint();
-}
-load();
-
-// ── 編輯視窗 ──
-const modal = $("econModal");
-const loginView = $("econLoginView");
-const editView  = $("econEditView");
-
-function openModal() {
-  modal.hidden = false;
-  const signedIn = !!auth.currentUser;
-  loginView.hidden = signedIn;
-  editView.hidden  = !signedIn;
-  if (signedIn) renderRows(); else $("econPw").focus();
-}
-function closeModal() {
-  modal.hidden = true;
-  $("econPw").value = "";
-  msg($("econLoginMsg"), "");
-  msg($("econEditMsg"), "");
-}
-function msg(el, text, kind) {
-  el.textContent = text;
-  el.className = "econ-msg" + (kind ? " " + kind : "");
-}
-
-$("econEditBtn").addEventListener("click", openModal);
-modal.addEventListener("click", (e) => {
-  if (e.target === modal || e.target.hasAttribute("data-econ-close")) closeModal();
-});
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && !modal.hidden) closeModal();
-});
-
-// ── 登入 ──
-async function doLogin() {
-  const pw = $("econPw").value;
-  if (!pw) { msg($("econLoginMsg"), "請輸入密碼", "err"); return; }
-  $("econLoginBtn").disabled = true;
-  msg($("econLoginMsg"), "登入中…");
-  try {
-    await signInWithEmailAndPassword(auth, EDITOR_EMAIL, pw);
-    loginView.hidden = true;
-    editView.hidden = false;
-    renderRows();
-  } catch (e) {
-    msg($("econLoginMsg"), "密碼錯誤或登入失敗", "err");
-  } finally {
-    $("econLoginBtn").disabled = false;
-  }
-}
-$("econLoginBtn").addEventListener("click", doLogin);
-$("econPw").addEventListener("keydown", (e) => { if (e.key === "Enter") doLogin(); });
-$("econLogoutBtn").addEventListener("click", async () => { await signOut(auth); closeModal(); });
-
-onAuthStateChanged(auth, (user) => {
-  $("econEditBtn").textContent = user ? "編輯（已登入）" : "編輯";
-});
-
-// ── 編輯列 ──
-function todayISO() {
-  const d = new Date();
-  return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
-}
-
-function renderRows() {
-  const box = $("econRows");
-  box.innerHTML = "";
-  const data = items.length ? items : [{ date: todayISO(), label: "公告", body: "", important: false }];
-  data.forEach((it, i) => box.appendChild(rowEl(it, i)));
-}
-
-function rowEl(it, i) {
-  const wrap = document.createElement("div");
-  wrap.className = "econ-row";
-  wrap.innerHTML = `
-    <div class="econ-row-grid">
-      <div>
-        <label for="econDate${i}">日期</label>
-        <input type="date" id="econDate${i}" class="js-date" value="${esc(it.date || todayISO())}">
-      </div>
-      <div>
-        <label for="econLabel${i}">標籤</label>
-        <input type="text" id="econLabel${i}" class="js-label" value="${esc(it.label || "")}" placeholder="公告／提醒／更正">
-      </div>
-      <label class="econ-check">
-        <input type="checkbox" class="js-imp"${it.important ? " checked" : ""}> 標為重點
-      </label>
-    </div>
-    <label for="econBody${i}">內容</label>
-    <textarea id="econBody${i}" class="js-body" placeholder="經濟組要公布的訊息（支援 Markdown：**粗體**、| 表格 |、- 清單）">${esc(it.body || "")}</textarea>
-    <div style="margin-top:0.6rem">
-      <button type="button" class="econ-btn danger js-del">刪除這則</button>
-    </div>`;
-  wrap.querySelector(".js-del").addEventListener("click", () => {
-    wrap.remove();
-    if (!$("econRows").children.length) addRow();
-  });
-  return wrap;
-}
-
-function addRow() {
-  $("econRows").appendChild(
-    rowEl({ date: todayISO(), label: "公告", body: "", important: false },
-          $("econRows").children.length)
-  );
-}
-$("econAddBtn").addEventListener("click", addRow);
-
-// ── 儲存 ──
-$("econSaveBtn").addEventListener("click", async () => {
-  const rows = [...$("econRows").children].map(r => ({
-    date:      r.querySelector(".js-date").value.trim(),
-    label:     r.querySelector(".js-label").value.trim(),
-    body:      r.querySelector(".js-body").value.trim(),
-    important: r.querySelector(".js-imp").checked
-  })).filter(r => r.body);
-
-  $("econSaveBtn").disabled = true;
-  msg($("econEditMsg"), "儲存中…");
-  try {
-    await setDoc(ref, { items: rows, updatedAt: new Date().toISOString() });
-    items = rows;
-    paint();
-    msg($("econEditMsg"), "已發布，首頁立即生效。", "ok");
-    setTimeout(closeModal, 900);
-  } catch (e) {
-    console.error(e);
-    msg($("econEditMsg"), "儲存失敗，請確認網路或重新登入。", "err");
-  } finally {
-    $("econSaveBtn").disabled = false;
-  }
-});
-</script>
 
 </body>
 </html>
