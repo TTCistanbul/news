@@ -33,11 +33,19 @@ import requests
 ROOT = Path(__file__).parent
 DATA_DIR = ROOT / "data"
 
-GEMINI_MODEL = "gemini-2.5-flash"
-GEMINI_URL = (
-    f"https://generativelanguage.googleapis.com/v1beta/models/"
-    f"{GEMINI_MODEL}:generateContent"
-)
+# 2026-10-04 實測：gemini-2.5-flash 對新金鑰回 404（Google 已把它列為
+# deprecated，僅限舊專案使用）。官方建議替代為 gemini-3.5-flash。
+# Google 換模型很快，所以這裡放候選清單，前一個 404/429 就自動換下一個；
+# 也可以用環境變數 GEMINI_MODEL 指定第一優先的模型。
+GEMINI_MODELS = [
+    m for m in [
+        os.environ.get("GEMINI_MODEL"),
+        "gemini-3.5-flash",
+        "gemini-3.1-flash-lite",
+        "gemini-2.5-flash-lite",
+    ] if m
+]
+GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta/models"
 TIMEOUT = 60
 
 SYSTEM_PROMPT = """\
@@ -171,7 +179,7 @@ def to_traditional(obj):
     return walk(obj)
 
 
-def call_gemini(prompt: str, api_key: str) -> dict:
+def call_gemini(prompt: str, api_key: str) -> tuple[dict, str]:
     body = {
         "system_instruction": {"parts": [{"text": SYSTEM_PROMPT}]},
         "contents": [{"parts": [{"text": prompt}]}],
@@ -180,27 +188,35 @@ def call_gemini(prompt: str, api_key: str) -> dict:
             "temperature": 0.2,
         },
     }
-    r = requests.post(
-        f"{GEMINI_URL}?key={api_key}",
-        json=body,
-        timeout=TIMEOUT,
-    )
-    r.raise_for_status()
-    data = r.json()
-    try:
-        text = data["candidates"][0]["content"]["parts"][0]["text"]
-    except (KeyError, IndexError) as e:
-        raise RuntimeError(
-            f"Gemini 回應格式跟預期不同，看不到 candidates[0].content.parts[0].text：\n"
-            f"{json.dumps(data, ensure_ascii=False)[:1000]}"
-        ) from e
-    try:
-        return json.loads(text)
-    except json.JSONDecodeError as e:
-        raise RuntimeError(
-            f"Gemini 回傳的內容不是合法 JSON，即使已經要求 responseMimeType="
-            f"application/json：\n{text[:1000]}"
-        ) from e
+    last_err = None
+    for model in GEMINI_MODELS:
+        r = requests.post(
+            f"{GEMINI_BASE}/{model}:generateContent",
+            params={"key": api_key},
+            json=body,
+            timeout=TIMEOUT,
+        )
+        if r.status_code in (404, 429):
+            # 404 = 模型不存在/已下架，429 = 該模型免費額度用完，換下一個
+            last_err = f"{model}: HTTP {r.status_code} {r.text[:200]}"
+            print(f"   {last_err}，改試下一個模型", file=sys.stderr)
+            continue
+        r.raise_for_status()
+        data = r.json()
+        try:
+            text = data["candidates"][0]["content"]["parts"][0]["text"]
+        except (KeyError, IndexError) as e:
+            raise RuntimeError(
+                f"Gemini 回應格式跟預期不同（model={model}）：\n"
+                f"{json.dumps(data, ensure_ascii=False)[:1000]}"
+            ) from e
+        try:
+            return json.loads(text), model
+        except json.JSONDecodeError as e:
+            raise RuntimeError(
+                f"Gemini 回傳的內容不是合法 JSON（model={model}）：\n{text[:1000]}"
+            ) from e
+    raise SystemExit(f"所有候選模型都不可用，最後一個錯誤：{last_err}")
 
 
 def main():
@@ -215,8 +231,9 @@ def main():
     payload, resolved_date = load_payload(args.date)
     user_content = build_user_content(payload)
 
-    print(f"-> 呼叫 Gemini（{GEMINI_MODEL}），輸入新聞則數見上方 build_user_content 輸出")
-    analysis = call_gemini(user_content, api_key)
+    print(f"-> 呼叫 Gemini，候選模型：{GEMINI_MODELS}")
+    analysis, used_model = call_gemini(user_content, api_key)
+    print(f"   實際使用模型：{used_model}")
 
     # 基本結構檢查，缺欄位就直接報錯，不要讓 render_report.py 拿到殘缺資料
     # 才在套版時炸掉，錯誤要在這一步就浮現。
@@ -229,7 +246,7 @@ def main():
 
     out_path = DATA_DIR / f"{resolved_date}-analysis.json"
     analysis["_generated_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
-    analysis["_model"] = GEMINI_MODEL
+    analysis["_model"] = used_model
     analysis["_source_date"] = resolved_date
     out_path.write_text(json.dumps(analysis, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"-> 已寫入 {out_path}")
