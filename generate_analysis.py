@@ -65,14 +65,16 @@ SYSTEM_PROMPT = """\
 5. 全部輸出「台灣用語的繁體中文」，絕對不可以出現任何簡體字或中國大陸用語
    （例如寫「軟體」不寫「软件」、「資料」不寫「数据」、「品質」不寫「质量」）。
    地名、機構名可保留原文，如 TCMB、TÜİK。
-6. 只處理輸入新聞裡有的內容，新聞不夠寫滿的欄位就回傳較短的陣列，不要
+6. 輸出必須是合法 JSON：字串值裡不可以出現未跳脫的雙引號。HTML 標籤的屬性一律
+   用單引號（例如 <span class='data'>），中文引述請用「」，不要用半形雙引號。
+7. 只處理輸入新聞裡有的內容，新聞不夠寫滿的欄位就回傳較短的陣列，不要
    為了湊數量而編造。
 
 只輸出符合以下 JSON schema 的內容，不要有任何其他文字：
 
 {
   "today_take": "今日判讀 HTML 片段（純文字＋<strong>標籤，2-4 句話）",
-  "summary": "摘要 HTML 片段（純文字＋<span class=\\"data\\">數字</span>標記重要數字，一段完整段落）",
+  "summary": "摘要 HTML 片段（純文字＋<span class='data'>數字</span>標記重要數字，一段完整段落）",
   "key_events": [
     {
       "direction": "red|green|neutral",
@@ -179,6 +181,21 @@ def to_traditional(obj):
     return walk(obj)
 
 
+def parse_model_json(text: str) -> dict:
+    """解析 Gemini 回傳的 JSON。失敗時先嘗試修復常見問題再解析：
+    模型會把 <span class="data"> 這種帶雙引號的 HTML 原封不動寫進 JSON 字串，
+    雙引號沒跳脫就整份壞掉（2026-10-04 實際發生）。這裡把「HTML 標籤內部」的
+    雙引號改成單引號——JSON 結構本身的引號不在標籤裡，不會被動到。"""
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
+    fixed = re.sub(r"<[^<>]*>", lambda m: m.group(0).replace('"', "'"), text)
+    # 有時模型會包一層 ```json 圍欄
+    fixed = re.sub(r"^```(?:json)?\s*|\s*```$", "", fixed.strip())
+    return json.loads(fixed)
+
+
 def call_gemini(prompt: str, api_key: str) -> tuple[dict, str]:
     body = {
         "system_instruction": {"parts": [{"text": SYSTEM_PROMPT}]},
@@ -190,33 +207,34 @@ def call_gemini(prompt: str, api_key: str) -> tuple[dict, str]:
     }
     last_err = None
     for model in GEMINI_MODELS:
-        r = requests.post(
-            f"{GEMINI_BASE}/{model}:generateContent",
-            params={"key": api_key},
-            json=body,
-            timeout=TIMEOUT,
-        )
-        if r.status_code in (404, 429):
-            # 404 = 模型不存在/已下架，429 = 該模型免費額度用完，換下一個
-            last_err = f"{model}: HTTP {r.status_code} {r.text[:200]}"
-            print(f"   {last_err}，改試下一個模型", file=sys.stderr)
-            continue
-        r.raise_for_status()
-        data = r.json()
-        try:
-            text = data["candidates"][0]["content"]["parts"][0]["text"]
-        except (KeyError, IndexError) as e:
-            raise RuntimeError(
-                f"Gemini 回應格式跟預期不同（model={model}）：\n"
-                f"{json.dumps(data, ensure_ascii=False)[:1000]}"
-            ) from e
-        try:
-            return json.loads(text), model
-        except json.JSONDecodeError as e:
-            raise RuntimeError(
-                f"Gemini 回傳的內容不是合法 JSON（model={model}）：\n{text[:1000]}"
-            ) from e
-    raise SystemExit(f"所有候選模型都不可用，最後一個錯誤：{last_err}")
+        for attempt in range(1, 4):  # JSON 壞掉時同一模型最多重問 3 次
+            r = requests.post(
+                f"{GEMINI_BASE}/{model}:generateContent",
+                params={"key": api_key},
+                json=body,
+                timeout=TIMEOUT,
+            )
+            if r.status_code in (404, 429):
+                # 404 = 模型不存在/已下架，429 = 該模型免費額度用完，換下一個模型
+                last_err = f"{model}: HTTP {r.status_code} {r.text[:200]}"
+                print(f"   {last_err}，改試下一個模型", file=sys.stderr)
+                break
+            r.raise_for_status()
+            data = r.json()
+            try:
+                text = data["candidates"][0]["content"]["parts"][0]["text"]
+            except (KeyError, IndexError):
+                last_err = (f"{model}: 回應格式跟預期不同："
+                            f"{json.dumps(data, ensure_ascii=False)[:500]}")
+                print(f"   {last_err}（第 {attempt} 次）", file=sys.stderr)
+                continue
+            try:
+                return parse_model_json(text), model
+            except json.JSONDecodeError as e:
+                last_err = f"{model}: JSON 無法解析（{e}）；開頭：{text[:200]!r}"
+                print(f"   {last_err}（第 {attempt} 次），重新請求", file=sys.stderr)
+                continue
+    raise SystemExit(f"所有候選模型都失敗，最後一個錯誤：{last_err}")
 
 
 def main():
