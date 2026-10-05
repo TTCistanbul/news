@@ -1,6 +1,10 @@
 name: Daily Turkiye Econ Data Fetch
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - generate_analysis.py
   schedule:
     - cron: '30 7 * * *'
   workflow_dispatch: {}

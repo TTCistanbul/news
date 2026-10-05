@@ -26,6 +26,7 @@ import json
 import os
 import re
 import sys
+import time
 from pathlib import Path
 
 import requests
@@ -46,7 +47,7 @@ GEMINI_MODELS = [
     ] if m
 ]
 GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta/models"
-TIMEOUT = 60
+TIMEOUT = (10, 120)  # 連線 10 秒，生成分析最多等待 120 秒
 
 SYSTEM_PROMPT = """\
 你是台灣外貿協會（TAITRA）駐伊斯坦堡辦事處的產業分析師，負責把當天篩選出的
@@ -207,18 +208,32 @@ def call_gemini(prompt: str, api_key: str) -> tuple[dict, str]:
     }
     last_err = None
     for model in GEMINI_MODELS:
-        for attempt in range(1, 4):  # JSON 壞掉時同一模型最多重問 3 次
-            r = requests.post(
-                f"{GEMINI_BASE}/{model}:generateContent",
-                params={"key": api_key},
-                json=body,
-                timeout=TIMEOUT,
-            )
+        for attempt in range(1, 4):  # 暫時性連線錯誤或 JSON 壞掉時最多重問 3 次
+            try:
+                r = requests.post(
+                    f"{GEMINI_BASE}/{model}:generateContent",
+                    params={"key": api_key},
+                    json=body,
+                    timeout=TIMEOUT,
+                )
+            except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
+                # 不印出例外原文，避免帶有 API key 的請求網址進入紀錄。
+                last_err = f"{model}: {type(e).__name__}"
+                print(f"   {last_err}（第 {attempt} 次）", file=sys.stderr)
+                if attempt < 3:
+                    time.sleep(2 ** attempt)
+                continue
             if r.status_code in (404, 429):
                 # 404 = 模型不存在/已下架，429 = 該模型免費額度用完，換下一個模型
                 last_err = f"{model}: HTTP {r.status_code} {r.text[:200]}"
                 print(f"   {last_err}，改試下一個模型", file=sys.stderr)
                 break
+            if r.status_code in (408, 500, 502, 503, 504):
+                last_err = f"{model}: HTTP {r.status_code}"
+                print(f"   {last_err}（第 {attempt} 次）", file=sys.stderr)
+                if attempt < 3:
+                    time.sleep(2 ** attempt)
+                continue
             r.raise_for_status()
             data = r.json()
             try:
