@@ -1168,8 +1168,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div class="indicator-cell">
       <div class="val amber">37% / {{FUNDING_COST}}%</div>
-      <div class="lbl">政策利率 / 隔夜拆借（TCMB）</div>
-      <div class="delta">一週附賣回已於 8/23 恢復，隔夜利率回落至政策利率附近</div>
+      <div class="lbl">政策利率 / 加權平均融資成本（TCMB）</div>
+      <div class="delta">{{POLICY_RATE_NOTE}}</div>
     </div>
     <div class="indicator-cell">
       <div class="val {{GDP_COLOR}}">{{GDP_VALUE}}% / {{GDP_QOQ_VALUE}}%</div>
@@ -1301,10 +1301,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </tr>
           <tr>
             <td>2</td>
-            <td>核心通膨（B 指標）</td>
+            <td>核心通膨（B 指標，{{CORE_CPI_MONTH}}）</td>
             <td><span class="data">{{CORE_CPI_VALUE}}</span></td>
             <td><span class="{{CORE_CPI_DELTA_CLS}}">{{CORE_CPI_DELTA}}</span></td>
-            <td>{{CORE_CPI_YOY}}</td>
+            <td>—</td>
             <td>—</td>
             <td>TÜİK</td>
             <td>每月首週</td>
@@ -1317,17 +1317,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <td>—</td>
             <td>{{POLICY_RATE_EXPECT}}</td>
             <td>TCMB</td>
-            <td>每 6–8 週 MPC</td>
+            <td>{{POLICY_NEXT}}</td>
           </tr>
           <tr>
             <td>4</td>
-            <td>隔夜拆借利率（實際融資成本）</td>
+            <td>加權平均融資成本（TCMB AOFM，每日）</td>
             <td><span class="data">{{FUNDING_COST}}%</span></td>
-            <td><span class="flat">持平</span></td>
+            <td><span class="{{FUNDING_COST_DELTA_CLS}}">{{FUNDING_COST_DELTA}}</span></td>
             <td>—</td>
-            <td>維持不變</td>
+            <td>—</td>
             <td>TCMB</td>
-            <td>每 6–8 週 MPC</td>
+            <td>每個營業日</td>
           </tr>
           <tr>
             <td>5</td>
@@ -1341,7 +1341,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </tr>
           <tr>
             <td>6</td>
-            <td>月出口</td>
+            <td>月出口{{TRADE_MONTH_SFX}}</td>
             <td><span class="data">{{EXPORT_ROW_VALUE}}</span><br>
                 <span class="flat" style="font-size:0.8em;">{{EXPORT_YTD_LINE}}</span></td>
             <td><span class="{{EXPORT_ROW_DELTA_CLS}}">{{EXPORT_ROW_DELTA}}</span></td>
@@ -1352,7 +1352,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </tr>
           <tr>
             <td>7</td>
-            <td>月進口</td>
+            <td>月進口{{TRADE_MONTH_SFX}}</td>
             <td><span class="data">{{IMPORT_ROW_VALUE}}</span><br>
                 <span class="flat" style="font-size:0.8em;">{{IMPORT_YTD_LINE}}</span></td>
             <td><span class="{{IMPORT_ROW_DELTA_CLS}}">{{IMPORT_ROW_DELTA}}</span></td>
@@ -1363,7 +1363,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </tr>
           <tr>
             <td>8</td>
-            <td>出口對進口涵蓋率</td>
+            <td>出口對進口涵蓋率{{TRADE_MONTH_SFX}}</td>
             <td><span class="data">{{COVERAGE_VALUE}}</span></td>
             <td><span class="{{COVERAGE_DELTA_CLS}}">{{COVERAGE_DELTA}}</span></td>
             <td><span class="{{COVERAGE_YOY_CLS}}">{{COVERAGE_YOY}}</span></td>

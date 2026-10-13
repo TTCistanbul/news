@@ -1301,7 +1301,9 @@ def main():
         return ('<br><span class="flat" style="font-size:0.8em;">'
                 f'{label}：{value}</span>')
 
-    if len(ytd_tt_months) >= 2:
+    # 2026-10：只填了 8、9 月時會印出「2026年8-9月累計」，標籤雖然誠實，
+    # 但放在「年初至今」的位置還是容易被當成全年累計。改成從 1 月補齊才印。
+    if len(ytd_tt_months) >= 2 and ytd_tt_months[0].get("month", "").endswith("-01"):
         export_ytd_line = _ytd_line(ytd_period_label, export_ytd_value)
         import_ytd_line = _ytd_line(ytd_period_label, import_ytd_value)
     else:
@@ -1499,14 +1501,24 @@ def main():
             core_cpi_delta, core_cpi_delta_cls = _pp(_cd), _delta_cls(_cd)
         else:
             core_cpi_delta, core_cpi_delta_cls = "—", "flat"
-        # 跟手填值對照（有填同一個月的話），差太多就在 log 提醒
+        # 跟手填值對照（有填同一個月的話），差太多就在 log 提醒。
+        # 2026-10 起：手填的是 TÜİK 官方公布值，跟 headline_cpi 一樣，同月份
+        # 有填就以官方數字為準（EVDS 指數只到小數兩位，自算會差在尾數，
+        # 例如 9 月官方 29.00%、自算 28.99%）。前值也一併用官方序列。
         _cm_match = re.match(r"^(\d{4}-\d{2})", str(_core_series[-1].get("date", "")))
         if _cm_match:
-            for _mm, _vv in _core_months:
-                if _mm == _cm_match.group(1) and abs(_vv - _core_now) > 0.1:
+            _keys = [m for m, _ in _core_months]
+            if _cm_match.group(1) in _keys:
+                _ci = _keys.index(_cm_match.group(1))
+                _vv = _core_months[_ci][1]
+                if abs(_vv - _core_now) > 0.1:
                     print(f"! 核心通膨對照不符：indicators-manual.json 手填 "
                           f"{_vv:.2f}%，EVDS 序列自算 {_core_now:.2f}%"
-                          f"（{_mm}）", file=sys.stderr)
+                          f"（{_core_months[_ci][0]}）", file=sys.stderr)
+                core_cpi_value = core_cpi_yoy = f"{_vv:.2f}%"
+                if _ci >= 1:
+                    _cd = _vv - _core_months[_ci - 1][1]
+                    core_cpi_delta, core_cpi_delta_cls = _pp(_cd), _delta_cls(_cd)
     elif _core_months:
         _cm, _cv = _core_months[-1]
         core_cpi_value = f"{_cv:.2f}%"
@@ -1525,6 +1537,9 @@ def main():
         core_cpi_yoy = _manual("core_cpi", "yoy", "—")
         core_cpi_month = _manual("core_cpi", "as_of", "—")
     policy_rate_value = _manual("policy_rate", "value")
+    _next_mpc = _manual("policy_rate", "next_mpc", "")
+    _nm = re.match(r"^\d{4}-(\d{2})-(\d{2})$", str(_next_mpc))
+    policy_next = (f"{int(_nm.group(1))}/{int(_nm.group(2))} MPC" if _nm else "每 6–8 週 MPC")
     policy_rate_delta = _manual("policy_rate", "delta", "—")
     policy_rate_delta_cls = _manual("policy_rate", "delta_class", "flat")
     policy_rate_expect = _manual("policy_rate", "expectation", "—")
@@ -1547,10 +1562,17 @@ def main():
         cur_imp = tt_latest.get("imports")
         cur_cov = tt_latest.get("coverage_pct")
         prev_month = tt_months[-2] if len(tt_months) >= 2 else None
+        # 列名標上資料月份；貿易部的初步數字（status: preliminary）另外註明，
+        # 月底 TÜİK 正式數字出來後把 status 改成 final 並更新數字即可。
+        _tt_m = tt_latest.get("month", "")
+        _tt_tag = (f"{int(_tt_m.split('-')[1])}月" if re.match(r"^\d{4}-\d{2}$", _tt_m) else "")
+        if tt_latest.get("status") == "preliminary":
+            _tt_tag = (_tt_tag + "，初步") if _tt_tag else "初步"
+        _tt_sfx = f"（{_tt_tag}）" if _tt_tag else ""
 
         if cur_exp is not None and cur_imp is not None:
             cur_bal = cur_exp - cur_imp
-            tb_row_name = "月貿易順差" if cur_bal >= 0 else "月貿易逆差"
+            tb_row_name = ("月貿易順差" if cur_bal >= 0 else "月貿易逆差") + _tt_sfx
             tb_row_value = f"{abs(cur_bal) / 100:.1f} 億美元"
             if prev_month is not None:
                 p_exp, p_imp = prev_month.get("exports"), prev_month.get("imports")
@@ -1672,6 +1694,8 @@ def main():
         "{{POLICY_RATE_EXPECT}}": policy_rate_expect,
         "{{POLICY_RATE_NOTE}}": policy_rate_note,
         "{{FUNDING_COST_DELTA}}": funding_delta,
+        "{{POLICY_NEXT}}": policy_next,
+        "{{TRADE_MONTH_SFX}}": (_tt_sfx if tt_months else ""),
         "{{FUNDING_COST_DELTA_CLS}}": funding_delta_cls,
         "{{FX_DATE}}": fx_date,
         "{{TWD_SRC_DATE}}": twd_src_date,
