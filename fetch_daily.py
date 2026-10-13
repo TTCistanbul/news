@@ -640,7 +640,15 @@ EVDS_SERIES = {
     # 「CONSUMER PRICE INDEX (TURKSTAT) → Indicators For The CPIs Having
     # Specified Coverage (2025=100)」查到新代碼，換成這支。CPI 本身就是
     # 月頻資料，frequency=5 沒問題，跟 funding_cost 不同，不要對調。
-    "cpi": ("TP.FE25.OKTG01", 5),
+    #
+    # 2026-10-13：TP.FE25.OKTG01 從 10/2 起回 HTTP 400——TCMB 重整了 CPI 分類，
+    # 「Indicators For The CPIs Having Specified Coverage」那一組從清單上消失。
+    # 改用 ALL SERIES → CONSUMER PRICE INDEX (TURKSTAT) → Consumer Price
+    # Index (2025=100) → 總指數（欄位標題 TP_TUKFIY2025_GENEL）。驗證：
+    # 2026-09 指數 137.23，對 2025-09 的 105.78 算出年增 29.73%、對 2026-08
+    # 的 134.75 算出月增 1.84%，都跟 TÜİK 官方公布一致；舊代碼的歷史值也
+    # 與這條相同，確認是同一個總指數換了代碼。
+    "cpi": ("TP.TUKFIY2025.GENEL", 5),
     # 商品貿易差額（淨額，International BPM6 統計口徑）——2026-08-31 從 EVDS
     # 網頁 All Series → BALANCE OF PAYMENTS STATISTICS (CBRT) → Balance of
     # Payments Developments-Detailed Presentation → 1.1.Goods 底下查到這支，
