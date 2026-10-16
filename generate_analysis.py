@@ -26,7 +26,6 @@ import json
 import os
 import re
 import sys
-import time
 from pathlib import Path
 
 import requests
@@ -42,12 +41,13 @@ GEMINI_MODELS = [
     m for m in [
         os.environ.get("GEMINI_MODEL"),
         "gemini-3.5-flash",
+        "gemini-3.5-flash-lite",
         "gemini-3.1-flash-lite",
-        "gemini-2.5-flash-lite",
+        "gemini-flash-latest",
     ] if m
 ]
 GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta/models"
-TIMEOUT = (10, 120)  # 連線 10 秒，生成分析最多等待 120 秒
+TIMEOUT = 60
 
 SYSTEM_PROMPT = """\
 你是台灣外貿協會（TAITRA）駐伊斯坦堡辦事處的產業分析師，負責把當天篩選出的
@@ -197,7 +197,12 @@ def parse_model_json(text: str) -> dict:
     return json.loads(fixed)
 
 
+RETRY_STATUS = (500, 502, 503, 504)
+BACKOFF = [5, 15, 30, 60]  # 503（伺服器忙碌）時的等待秒數，每個模型最多試 5 次
+
+
 def call_gemini(prompt: str, api_key: str) -> tuple[dict, str]:
+    import time
     body = {
         "system_instruction": {"parts": [{"text": SYSTEM_PROMPT}]},
         "contents": [{"parts": [{"text": prompt}]}],
@@ -208,7 +213,7 @@ def call_gemini(prompt: str, api_key: str) -> tuple[dict, str]:
     }
     last_err = None
     for model in GEMINI_MODELS:
-        for attempt in range(1, 4):  # 暫時性連線錯誤或 JSON 壞掉時最多重問 3 次
+        for attempt in range(1, len(BACKOFF) + 2):
             try:
                 r = requests.post(
                     f"{GEMINI_BASE}/{model}:generateContent",
@@ -216,39 +221,36 @@ def call_gemini(prompt: str, api_key: str) -> tuple[dict, str]:
                     json=body,
                     timeout=TIMEOUT,
                 )
-            except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
-                # 不印出例外原文，避免帶有 API key 的請求網址進入紀錄。
-                last_err = f"{model}: {type(e).__name__}"
-                print(f"   {last_err}（第 {attempt} 次）", file=sys.stderr)
-                if attempt < 3:
-                    time.sleep(2 ** attempt)
-                continue
-            if r.status_code in (404, 429):
-                # 404 = 模型不存在/已下架，429 = 該模型免費額度用完，換下一個模型
-                last_err = f"{model}: HTTP {r.status_code} {r.text[:200]}"
-                print(f"   {last_err}，改試下一個模型", file=sys.stderr)
-                break
-            if r.status_code in (408, 500, 502, 503, 504):
-                last_err = f"{model}: HTTP {r.status_code}"
-                print(f"   {last_err}（第 {attempt} 次）", file=sys.stderr)
-                if attempt < 3:
-                    time.sleep(2 ** attempt)
-                continue
-            r.raise_for_status()
-            data = r.json()
-            try:
-                text = data["candidates"][0]["content"]["parts"][0]["text"]
-            except (KeyError, IndexError):
-                last_err = (f"{model}: 回應格式跟預期不同："
-                            f"{json.dumps(data, ensure_ascii=False)[:500]}")
-                print(f"   {last_err}（第 {attempt} 次）", file=sys.stderr)
-                continue
-            try:
-                return parse_model_json(text), model
-            except json.JSONDecodeError as e:
-                last_err = f"{model}: JSON 無法解析（{e}）；開頭：{text[:200]!r}"
-                print(f"   {last_err}（第 {attempt} 次），重新請求", file=sys.stderr)
-                continue
+            except requests.RequestException as e:
+                last_err = f"{model}: 連線錯誤 {e}"
+                r = None
+            if r is not None:
+                if r.status_code in (404, 429):
+                    # 404 = 模型下架/無權限，429 = 額度用完，直接換下一個模型
+                    last_err = f"{model}: HTTP {r.status_code} {r.text[:200]}"
+                    print(f"   {last_err}，改試下一個模型", file=sys.stderr)
+                    break
+                if r.status_code in RETRY_STATUS:
+                    last_err = f"{model}: HTTP {r.status_code}（伺服器忙碌）"
+                elif r.status_code != 200:
+                    last_err = f"{model}: HTTP {r.status_code} {r.text[:200]}"
+                    print(f"   {last_err}，改試下一個模型", file=sys.stderr)
+                    break
+                else:
+                    data = r.json()
+                    try:
+                        text = data["candidates"][0]["content"]["parts"][0]["text"]
+                        return parse_model_json(text), model
+                    except (KeyError, IndexError):
+                        last_err = f"{model}: 回應格式跟預期不同：{json.dumps(data, ensure_ascii=False)[:300]}"
+                    except json.JSONDecodeError as e:
+                        last_err = f"{model}: JSON 無法解析（{e}）"
+            if attempt <= len(BACKOFF):
+                wait = BACKOFF[attempt - 1]
+                print(f"   {last_err}（第 {attempt} 次），{wait} 秒後重試", file=sys.stderr)
+                time.sleep(wait)
+            else:
+                print(f"   {last_err}，這個模型放棄，換下一個", file=sys.stderr)
     raise SystemExit(f"所有候選模型都失敗，最後一個錯誤：{last_err}")
 
 
