@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Türkiye 經濟情報週報</title>
+<link rel="icon" type="image/png" href="../taitra-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@200;300;400;500;700&family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-page: #eef0f2;
+  --bg-page-top: #f6f7f8;
+  --bg-page-bot: #e4e6e9;
+  --bg-card: #ffffff;
+  --bg-frost: rgba(255, 255, 255, 0.55);
+  --bg-frost-strong: rgba(255, 255, 255, 0.78);
+  --bg-subtle: #f3f4f6;
+  --bg-table-header: #fafbfc;
+  --bg-table-odd: #ffffff;
+  --bg-table-even: #fafbfc;
+  --bg-table-hover: #f1f5f9;
+
+  --border: #e4e7ec;
+  --border-soft: #eef0f3;
+
+  --text-primary: #111418;
+  --text-heading: #000000;
+  --text-secondary: #5a6370;
+  --text-tertiary: #8a94a3;
+
+  --accent-blue: #4FB3FF;
+  --accent-blue-deep: #1d8ae6;
+  --accent-red: #e5484d;
+  --accent-green: #30a46c;
+  --accent-amber: #f0a326;
+  --accent-ink: #0a0c10;
+
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow-md: 0 1px 3px rgba(16, 24, 40, 0.06), 0 8px 24px -12px rgba(16, 24, 40, 0.08);
+  --shadow-frost: 0 1px 0 rgba(255,255,255,0.9) inset, 0 1px 2px rgba(16, 24, 40, 0.04), 0 24px 48px -24px rgba(16, 24, 40, 0.12);
+
+  --radius-lg: 28px;
+  --radius-md: 18px;
+  --radius-sm: 10px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body { background: var(--bg-page); }
+
+body {
+  font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  color: var(--text-primary);
+  line-height: 1.75;
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(79, 179, 255, 0.10), transparent 60%),
+    radial-gradient(900px 500px at -10% 20%, rgba(255, 255, 255, 0.8), transparent 60%),
+    linear-gradient(180deg, var(--bg-page-top) 0%, var(--bg-page) 40%, var(--bg-page-bot) 100%);
+  background-attachment: fixed;
+  padding: 2.5rem 1.25rem 4rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+/* ===== Top nav strip ===== */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.25rem 0.5rem 2.5rem;
+  gap: 1rem;
+  font-family: 'Archivo', sans-serif;
+}
+.topbar .brand {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+.topbar .brand img {
+  height: 44px;
+  width: auto;
+  display: block;
+}
+.topbar .brand .brand-text {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  color: var(--text-heading);
+  line-height: 1;
+}
+.footer-brand {
+  opacity: 0.75;
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+.footer-brand img {
+  height: 36px;
+  width: auto;
+  display: inline-block;
+}
+.topbar .brand .divider {
+  width: 1px;
+  height: 26px;
+  background: var(--border);
+}
+.topbar .status {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+.topbar .status .dot {
+  display: inline-block;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent-blue-deep);
+  margin-right: 0.55rem;
+  box-shadow: 0 0 0 3px rgba(29, 138, 230, 0.15);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(29, 138, 230, 0.15); }
+  50% { box-shadow: 0 0 0 7px rgba(29, 138, 230, 0.05); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .topbar .status .dot { animation: none; }
+  * { transition-duration: 0.01ms !important; }
+}
+.topbar .meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+}
+
+.topbar .right {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+/* ===== Hamburger button ===== */
+.menu-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--bg-frost-strong);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.8);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  z-index: 1001;
+}
+.menu-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -4px rgba(16,24,40,0.12);
+}
+.menu-btn:focus-visible { outline: 2px solid var(--accent-blue-deep); outline-offset: 2px; }
+.menu-btn .bars {
+  position: relative;
+  width: 18px;
+  height: 12px;
+}
+.menu-btn .bars span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1.8px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.2s ease, top 0.3s ease;
+}
+.menu-btn .bars span:nth-child(1) { top: 0; }
+.menu-btn .bars span:nth-child(2) { top: 5px; width: 70%; }
+.menu-btn .bars span:nth-child(3) { top: 10px; }
+
+.menu-btn.open .bars span:nth-child(1) { top: 5px; transform: rotate(45deg); }
+.menu-btn.open .bars span:nth-child(2) { opacity: 0; }
+.menu-btn.open .bars span:nth-child(3) { top: 5px; transform: rotate(-45deg); }
+
+/* ===== Archive panel ===== */
+.archive-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 24, 40, 0.25);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 999;
+}
+.archive-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.archive-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: min(440px, 90vw);
+  background: #ffffff;
+  box-shadow: -24px 0 48px -12px rgba(16,24,40,0.15);
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0.24, 1);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.archive-panel.open { transform: translateX(0); }
+
+.archive-head {
+  padding: 1.75rem 1.75rem 1.25rem;
+  border-bottom: 1px solid var(--border-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+}
+.archive-head h3 {
+  font-family: 'Archivo', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text-heading);
+  line-height: 1.1;
+}
+.archive-head .sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 0.35rem;
+}
+.archive-head .count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  padding: 0.3rem 0.6rem;
+  background: var(--bg-subtle);
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.archive-search {
+  padding: 1rem 1.75rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+.archive-search input {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--bg-subtle);
+  padding: 0.7rem 0.9rem;
+  border-radius: 10px;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+.archive-search input:focus {
+  border-color: var(--accent-blue);
+  background: #fff;
+}
+.archive-search input::placeholder { color: var(--text-tertiary); }
+
+.archive-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem 0;
+}
+
+.archive-item {
+  display: block;
+  padding: 1rem 1.75rem;
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--text-primary);
+  border-bottom-color: var(--border-soft) !important;
+  text-decoration: none;
+  transition: background 0.12s;
+  cursor: pointer;
+}
+.archive-item:last-child { border-bottom: none; }
+.archive-item:hover { background: var(--bg-subtle); }
+.archive-item:focus-visible { outline: 2px solid var(--accent-blue-deep); outline-offset: -2px; }
+
+.archive-item .row1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+.archive-item .date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.06em;
+}
+.archive-item .day-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--accent-blue-deep);
+  background: rgba(79, 179, 255, 0.1);
+  padding: 0.15rem 0.45rem;
+  border-radius: 5px;
+  letter-spacing: 0.05em;
+}
+.archive-item .title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-heading);
+  line-height: 1.5;
+  margin-bottom: 0.3rem;
+}
+.archive-item .meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+.archive-item .dot-ind {
+  display: inline-block;
+  width: 7px; height: 7px; border-radius: 50%;
+}
+.dot-ind.red { background: var(--accent-red); }
+.dot-ind.amber { background: var(--accent-amber); }
+.dot-ind.green { background: var(--accent-green); }
+.archive-item .is-current {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--accent-green);
+  margin-left: auto;
+  letter-spacing: 0.08em;
+}
+
+.archive-foot {
+  padding: 1rem 1.75rem;
+  border-top: 1px solid var(--border-soft);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+/* ===== Hero ===== */
+.hero {
+  position: relative;
+  padding: 1rem 0 3.5rem;
+  margin-bottom: 2rem;
+}
+
+.hero .eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.hero .eyebrow::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
+}
+
+.hero h1 {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 900;
+  font-size: clamp(2.8rem, 7.5vw, 5.75rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--text-heading);
+  margin-bottom: 0.1em;
+}
+
+.hero h1 .accent {
+  color: var(--accent-blue);
+  font-style: normal;
+}
+
+.hero .zh-title {
+  font-size: clamp(1.15rem, 1.9vw, 1.45rem);
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: 0.04em;
+  margin-top: 1.2rem;
+}
+
+.hero .lede {
+  max-width: 640px;
+  font-size: 0.98rem;
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  margin-top: 1rem;
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  align-items: center;
+}
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 1rem;
+  background: var(--bg-frost-strong);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.8);
+  border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text-primary);
+  letter-spacing: 0.04em;
+  box-shadow: var(--shadow-sm);
+}
+.meta-chip .lbl {
+  color: var(--text-tertiary);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+.meta-chip.sample {
+  background: rgba(240, 163, 38, 0.12);
+  border-color: rgba(240, 163, 38, 0.3);
+  color: #b57514;
+}
+
+/* ===== Indicator strip ===== */
+.indicator-strip {
+  background: var(--bg-frost);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.75);
+  border-radius: 999px;
+  padding: 1.5rem 2rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  box-shadow: var(--shadow-frost);
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.indicator-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 1rem;
+  border-right: 1px solid rgba(16, 24, 40, 0.06);
+}
+.indicator-cell:last-child { border-right: none; }
+
+.indicator-cell .val {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-size: 1.8rem;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  color: var(--text-heading);
+}
+.indicator-cell .val.red { color: var(--accent-red); }
+.indicator-cell .val.amber { color: var(--accent-amber); }
+.indicator-cell .val.green { color: var(--accent-green); }
+
+.indicator-cell .lbl {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-top: 0.3rem;
+  letter-spacing: 0.02em;
+}
+.indicator-cell .delta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  margin-top: 0.2rem;
+}
+
+/* Assessment rationale */
+.assessment-text {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.9;
+  max-width: 820px;
+  margin: 0.5rem auto 1.25rem;
+  padding: 0 1rem;
+}
+.assessment-text strong { color: var(--text-primary); font-weight: 600; }
+
+/* Colour-key legend */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.25rem;
+  margin: 0 auto 2.5rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+.legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+
+.ai-disclaimer {
+  max-width: 720px;
+  margin: 0 auto 2.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--amber, #b8860020);
+  border-radius: 8px;
+  background: rgba(184, 134, 0, 0.08);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* ===== Cards ===== */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem 2.25rem 2rem;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow-md);
+}
+
+.card > .card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.6rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.card h2 {
+  font-family: 'Archivo', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text-heading);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.card h2 .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--accent-blue);
+  background: rgba(79, 179, 255, 0.1);
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  letter-spacing: 0.08em;
+}
+
+.card-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.summary-text {
+  font-size: 1rem;
+  line-height: 2;
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+/* ===== Tables ===== */
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -0.5rem;
+  padding: 0 0.5rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  min-width: 820px;
+}
+/* 欄位較多的表格單獨放寬，避免擠壓 */
+table.tbl-wide { min-width: 960px; }
+/* 欄位較少的表格收窄，手機端少一點橫向捲動 */
+table.tbl-narrow { min-width: 700px; }
+
+thead th {
+  background: transparent;
+  color: var(--text-tertiary);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+tbody tr { transition: background 0.15s; }
+tbody tr:nth-child(odd) { background: var(--bg-table-odd); }
+tbody tr:nth-child(even) { background: var(--bg-table-even); }
+tbody tr:hover { background: var(--bg-table-hover); }
+
+tbody td {
+  padding: 1rem 1rem;
+  border-bottom: 1px solid var(--border-soft);
+  vertical-align: top;
+  line-height: 1.75;
+  color: var(--text-primary);
+  font-size: 0.88rem;
+}
+
+tbody tr:last-child td { border-bottom: none; }
+
+tbody td:first-child {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  text-align: center;
+  width: 2.5rem;
+  font-size: 0.8rem;
+}
+
+/* 影響方向指示 */
+.dir-red, .dir-green, .dir-neutral {
+  font-size: 1.1rem;
+  width: 3rem;
+  text-align: center;
+}
+
+/* 尚未接上資料源的欄位 */
+.pending {
+  color: var(--text-tertiary);
+  font-style: italic;
+  font-size: 0.82rem;
+}
+
+/* 數值漲跌（僅用於數字欄，與影響方向分開） */
+.up { color: var(--accent-red); font-family: 'JetBrains Mono', monospace; }
+.down { color: var(--accent-green); font-family: 'JetBrains Mono', monospace; }
+.flat { color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; }
+
+a {
+  color: var(--accent-blue-deep);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(29, 138, 230, 0.25);
+  transition: border-color 0.2s, color 0.2s;
+}
+a:hover {
+  border-bottom-color: var(--accent-blue-deep);
+  color: var(--accent-ink);
+}
+a:focus-visible { outline: 2px solid var(--accent-blue-deep); outline-offset: 2px; }
+
+/* ===== 產業動態 ===== */
+.sector-list { list-style: none; padding: 0; display: grid; gap: 0.6rem; }
+.sector-item {
+  padding: 1.25rem 1.4rem;
+  background: var(--bg-subtle);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--border);
+}
+.sector-item.pos { border-left-color: var(--accent-green); }
+.sector-item.neg { border-left-color: var(--accent-red); }
+.sector-item.neu { border-left-color: var(--accent-amber); }
+.sector-item .row-top {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: 0.6rem; margin-bottom: 0.4rem;
+}
+.sector-chip {
+  font-size: 0.72rem; font-weight: 600;
+  padding: 0.15rem 0.55rem; border-radius: 5px;
+  background: #fff; border: 1px solid var(--border);
+  color: var(--text-secondary); white-space: nowrap;
+}
+.sector-item .headline {
+  font-size: 0.98rem; font-weight: 600; color: var(--text-heading);
+  line-height: 1.6; flex: 1 1 auto; min-width: 12rem;
+}
+.sector-item .body { font-size: 0.88rem; color: var(--text-primary); line-height: 1.8; }
+.sector-item .impact {
+  font-size: 0.85rem; color: var(--text-secondary); line-height: 1.75;
+  margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed var(--border);
+}
+.sector-item .impact b { color: var(--text-primary); font-weight: 600; }
+.sector-item .src,
+.sector-item .date {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+  color: var(--text-tertiary); letter-spacing: 0.04em;
+}
+.sector-item .src a {
+  color: inherit;
+  border-bottom: 1px dotted var(--text-tertiary);
+  transition: color 0.15s, border-color 0.15s;
+}
+.sector-item .src a:hover {
+  color: var(--accent-blue-deep);
+  border-bottom-color: var(--accent-blue-deep);
+}
+.sector-item .date::before {
+  content: "・";
+  margin-right: 0.4rem;
+  color: var(--border);
+}
+
+/* ===== Implications ===== */
+.implications-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+  counter-reset: imp;
+}
+
+.implications-list li {
+  padding: 1.4rem 1.6rem;
+  background: var(--bg-subtle);
+  border-radius: var(--radius-md);
+  line-height: 1.9;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  position: relative;
+  counter-increment: imp;
+}
+
+.implications-list li::before {
+  content: counter(imp, decimal-leading-zero);
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--accent-blue-deep);
+  background: rgba(79, 179, 255, 0.12);
+  padding: 0.15rem 0.5rem;
+  border-radius: 5px;
+  margin-right: 0.7rem;
+  letter-spacing: 0.06em;
+  vertical-align: 0.15em;
+}
+
+.implications-list li strong {
+  color: var(--text-heading);
+  font-weight: 700;
+}
+
+/* ===== Sources ===== */
+.src-group {
+  margin-bottom: 1.75rem;
+}
+.src-group:last-child { margin-bottom: 0; }
+.src-group h3 {
+  font-family: 'Archivo', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin-bottom: 0.15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.src-group .grp-note {
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+  margin-bottom: 0.9rem;
+  line-height: 1.6;
+}
+.src-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  padding: 0.15rem 0.45rem;
+  border-radius: 5px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.tag-primary { background: rgba(48,164,108,0.12); color: #1f7a4f; border: 1px solid rgba(48,164,108,0.25); }
+.tag-media   { background: rgba(79,179,255,0.12); color: var(--accent-blue-deep); border: 1px solid rgba(79,179,255,0.28); }
+.tag-official{ background: rgba(240,163,38,0.12); color: #b57514; border: 1px solid rgba(240,163,38,0.28); }
+.sources-list li .desc {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--text-tertiary);
+  line-height: 1.55;
+  margin-top: 0.1rem;
+}
+
+.sources-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.5rem 1.5rem;
+}
+
+.sources-list li {
+  padding: 0.5rem 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  border-bottom: 1px dashed var(--border-soft);
+}
+
+.sources-list li a {
+  border-bottom: none;
+  color: var(--text-primary);
+}
+.sources-list li a:hover { color: var(--accent-blue-deep); }
+
+.sources-list li::before {
+  content: '↗';
+  margin-right: 0.5rem;
+  color: var(--accent-blue);
+  font-weight: 500;
+}
+
+/* ===== Footer ===== */
+.footer {
+  text-align: center;
+  padding: 3rem 1rem 1rem;
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+  margin-top: 2rem;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.08em;
+}
+.footer .divider {
+  width: 40px; height: 1px;
+  background: var(--border);
+  margin: 0 auto 1.5rem;
+}
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.badge-major {
+  background: rgba(229, 72, 77, 0.1);
+  color: var(--accent-red);
+  border: 1px solid rgba(229, 72, 77, 0.2);
+}
+.badge-medium {
+  background: rgba(240, 163, 38, 0.12);
+  color: #b57514;
+  border: 1px solid rgba(240, 163, 38, 0.25);
+}
+
+.data {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  color: var(--accent-ink);
+  background: rgba(79, 179, 255, 0.08);
+  padding: 0.05em 0.35em;
+  border-radius: 4px;
+  font-size: 0.92em;
+}
+
+@media print {
+  body {
+    background: #fff !important;
+    color: #111 !important;
+    padding: 1rem;
+  }
+  .topbar, .hero-meta { display: none; }
+  .indicator-strip {
+    background: #fff !important;
+    border: 1px solid #ccc !important;
+    border-radius: 12px !important;
+    box-shadow: none !important;
+  }
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .hero h1 .accent { color: #1d8ae6 !important; }
+  tbody tr:hover { background: transparent !important; }
+  a { color: #1d8ae6 !important; border-bottom: none !important; }
+  .badge-major { background: #fdecee !important; color: #c0392b !important; }
+  .badge-medium { background: #fdf3e2 !important; color: #b57514 !important; }
+}
+
+@media (max-width: 768px) {
+  body { padding: 1.5rem 0.75rem 2rem; }
+  .topbar { padding-bottom: 1.5rem; }
+  .hero { padding: 0.5rem 0 2rem; }
+  .hero h1 { font-size: 2.6rem; }
+  .card { padding: 1.5rem 1.25rem; border-radius: 20px; }
+  .indicator-strip {
+    border-radius: 24px;
+    padding: 1.25rem 0.75rem;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .indicator-cell { border-right: none; border-bottom: 1px solid rgba(16,24,40,0.06); padding-bottom: 1.25rem; }
+  .indicator-cell:last-child { border-bottom: none; padding-bottom: 0; }
+  .sources-list { grid-template-columns: 1fr; }
+  .card h2 { font-size: 1.15rem; }
+  .legend { gap: 0.75rem; font-size: 0.75rem; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="topbar">
+    <div class="brand">
+      <img src="../taitra-logo.png" alt="TAITRA 中華民國對外貿易發展協會">
+      <span class="divider"></span>
+      <span class="status"><span class="dot"></span>PERIOD&nbsp;REPORT</span>
+    </div>
+    <div class="right">
+      <div class="meta">2026-10-20 21:58 TRT 產出</div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="eyebrow">Period economic brief · 期間經濟報告</div>
+    <h1>
+      TÜRKİYE<br>
+      ECONOMY<br>
+      <span class="accent">週報</span>
+    </h1>
+    <div class="zh-title">Türkiye 經濟情報週報</div>
+    <p class="lede">彙整 2026年10月14日 至 2026年10月20日（共 7 天有資料）的 Türkiye 總體經濟數據、貨幣政策動向、里拉匯率變化，以及對台土雙邊貿易的期間趨勢判讀。內容由每日累積的簡報資料彙整、經 AI 濃縮生成，非逐日流水帳。</p>
+
+    <div class="hero-meta">
+      <span class="meta-chip"><span class="lbl">PERIOD</span>2026年10月14日 – 2026年10月20日</span>
+      <span class="meta-chip"><span class="lbl">COVERAGE</span>7 天</span>
+    </div>
+  </header>
+
+  <div class="indicator-strip" style="grid-template-columns: repeat(2, 1fr);">
+    <div class="indicator-cell">
+      <div class="lbl" style="margin-bottom:0.4rem;">USD/TRY 期間走勢</div>
+      <div class="val" style="font-size:1.2rem;">49.3929 ↑ 49.5780（+0.37%，區間 49.3929–49.5780）</div>
+    </div>
+    <div class="indicator-cell">
+      <div class="lbl" style="margin-bottom:0.4rem;">EUR/TRY 期間走勢</div>
+      <div class="val" style="font-size:1.2rem;">55.3027 ↑ 55.6191（+0.57%，區間 55.3027–55.6191）</div>
+    </div>
+  </div>
+
+  <!-- AI:PERIOD_TAKE:START 每次產生時由 generate_period_report.py 整段覆寫 -->
+  <p class="assessment-text">
+    本週土耳其總體經濟與資本市場面臨流動性與基金贖回壓力，央行總儲備降至 <span class="data">1,691</span> 億美元，且 USD/TRY 匯率微幅貶值至 <span class="data">49.5780</span>。儘管金融市場波動加劇，政府仍積極推進 2027 年總預算案與基礎建設投資，並持續爭取將在地汽車與產業納入歐盟新規範。台商應密切留意當地資金周轉與匯率波動風險。
+  </p>
+<!-- AI:PERIOD_TAKE:END -->
+
+  <p class="ai-disclaimer">
+    ⚠️ 本頁內容由 AI（Gemini）彙整期間內每日資料自動生成，未經人工審核，數據時效性與推論邏輯請自行覆核後再引用於商業決策。匯率／總經數字為程式直接計算的期間統計值，其餘敘述段落由 AI 綜合撰寫。
+  </p>
+
+  <div class="card">
+    <div class="card-head">
+      <h2><span class="num">00</span>本期摘要</h2>
+      <span class="card-sub">Period Summary</span>
+    </div>
+    <!-- AI:PERIOD_SUMMARY:START -->
+    <p class="summary-text">
+ 在本週報告期間（2026-10-14 至 2026-10-20），土耳其外匯與總經指標呈現溫和變動。匯率方面，USD/TRY 從期初的 <span class="data">49.3929</span> 微升至期末的 <span class="data">49.5780</span>，期間最高與最低點皆落在期末與期初，變動幅度為 <span class="data">+0.37%</span>；EUR/TRY 則由 <span class="data">55.3027</span> 變動至 <span class="data">55.6191</span>，增幅 <span class="data">+0.57%</span>。隔夜融資成本維持在 <span class="data">37.0%</span> 的水準，而最新通膨指標 CPI 序列顯示物價壓力持續，9 月份數值達 <span class="data">137.23</span>。
+
+在財政與央行儲備方面，土耳其 9 月份中央政府預算赤字達 <span class="data">5,320</span> 億里拉，短期外債截至 8 月底達 <span class="data">1,766</span> 億美元。央行總儲備在經歷前期的回升後，於 10 月 16 日當週減少約 <span class="data">25</span> 億美元，降至 <span class="data">1,691</span> 億美元。同時，投資基金贖回潮蔓延至公司債市場，引發國會研議補償機制，資本市場委員會（SPK）主席亦在此際請辭，顯示金融體系流動性與監管備受考驗。
+
+在貿易與產業政策方面，2027 年中央政府預算案已提交國會審議，設定 GDP 成長率為 <span class="data">4.2%</span>、通膨率降至 <span class="data">21%</span>，並規劃交通運輸投資突破 <span class="data">1</span> 兆里拉。然而，歐盟推動的「歐洲製造」（Made in EU）補貼方案將土耳其排除在外，引發當地汽車與製造業高度關注，官方正積極交涉以爭取納入合作夥伴。
+    </p>
+<!-- AI:PERIOD_SUMMARY:END -->
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <h2><span class="num">01</span>本期重大發展</h2>
+      <span class="card-sub">Key Developments</span>
+    </div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>影響方向</th>
+            <th>重要性</th>
+            <th>發展</th>
+            <th>說明</th>
+            <th>對台商與貿易影響</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- AI:KEY_DEVELOPMENTS:START 每次產生時整段覆寫 -->
+          <tr>
+            <td>1</td>
+            <td class="dir-red">🔴</td>
+            <td><span class="badge badge-major">重大</span></td>
+            <td>投資基金贖回潮蔓延至公司債市場，資本市場高層人事異動</td>
+            <td>土耳其投資基金近期爆發大量贖回，導致資產規模縮減約 1.5 兆里拉並威脅公司債市場，國會正研議最高 100 萬里拉之預付補償機制。同時，資本市場委員會（SPK）主席 Mahmut Sütcü 辭職，財政高層亦有調動。</td>
+            <td>可能導致當地企業資金周轉緊縮，建議台商密切評估當地客戶的信用狀況與應收帳款風險。</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td class="dir-red">🔴</td>
+            <td><span class="badge badge-major">重大</span></td>
+            <td>土耳其被排除於歐盟「歐洲製造」汽車新規範之外引發憂慮</td>
+            <td>法德就歐盟「歐洲製造」（Made in EU）補貼方案達成協議並給予英國有條件准入，但土耳其未被納入其中。產業界與貿易部警告此舉將增加成本並衝擊出口，正積極爭取將國內汽車與產業納入適用範圍。</td>
+            <td>若未能納入新規，對歐盟出口導向的汽車及相關零組件台商供應鏈可能面臨競爭劣勢。</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td class="dir-neutral">⚪</td>
+            <td><span class="badge badge-major">重大</span></td>
+            <td>2027 年中央政府預算案提交國會，設定經濟成長率 4.2%</td>
+            <td>土耳其 2027 年預算案正式提交國會審議，預估支出 27 兆 276 億里拉、收入 23 兆 408 億里拉，預期 GDP 成長率為 4.2%，通膨率降至 21%，並規劃交通運輸投資突破 1 兆里拉。</td>
+            <td>政府公共支出計畫可能釋出基礎建設與採購商機，值得有意參與當地投標的台商持續追蹤。</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td class="dir-neutral">⚪</td>
+            <td><span class="badge badge-medium">中等</span></td>
+            <td>TCMB 總儲備回落至 169.1 億美元，短期外債保持高位</td>
+            <td>截至 10 月 16 日當週，TCMB 總儲備減少約 25 億美元至 169.1 億美元；同時，截至 8 月底土耳其短期外債總額達 1,766 億美元，顯示外部融資壓力仍在。</td>
+            <td>外匯存底波動與高額短期外債可能加大匯市不確定性，建議台商做好匯率避險。</td>
+          </tr>
+<!-- AI:KEY_DEVELOPMENTS:END -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <h2><span class="num">02</span>產業動態趨勢</h2>
+      <span class="card-sub">Sector Trends</span>
+    </div>
+    <ul class="sector-list">
+      <!-- AI:INDUSTRY_TRENDS:START 每次產生時整段覆寫 -->
+      <li class="sector-item neg">
+        <div class="row-top">
+          <span class="sector-chip">汽車產業</span>
+          <span class="headline">電動車保有量快速成長，但面臨歐盟新規與資料安全限制雙重挑戰</span>
+        </div>
+        <div class="body">截至 2026 年 9 月底土耳其註冊電動車達 486,359 輛。然而，產業同時面臨遭歐盟「歐洲製造」計畫排除的貿易風險，以及針對車載感測器資料收集安全採取的新限制措施。</div>
+        <div class="impact"><b>台商解讀：</b>車用電子與零組件台商宜關注法規變動對終端市場需求的潛在影響。</div>
+      </li>
+      <li class="sector-item pos">
+        <div class="row-top">
+          <span class="sector-chip">能源與基礎建設</span>
+          <span class="headline">黑海天然氣產量推進與 2040 再生能源目標帶動大型投資</span>
+        </div>
+        <div class="body">土耳其首座浮式生產平臺 Osman Gazi 已啟航前往黑海 Sakarya 氣田，官方並宣佈至 2040 年再生能源佔比將達 70%，規劃至 2035 年投入約 800 億美元於電網與輸配電建設。</div>
+        <div class="impact"><b>台商解讀：</b>綠能轉型與電網升級政策可能為能源設備及重電相關台商帶來合作契機。</div>
+      </li>
+      <li class="sector-item neu">
+        <div class="row-top">
+          <span class="sector-chip">機械製造</span>
+          <span class="headline">積極因應歐盟 2027 年新規，發布合規與軟體追蹤指南</span>
+        </div>
+        <div class="body">機械製造商協會（MİB）針對 2027 年 1 月生效的歐盟機械法規提供實務指導，規範對關鍵軟體修改與 CE 認證的追蹤要求。</div>
+        <div class="impact"><b>台商解讀：</b>外銷歐洲的機械設備台商需加強軟體合規與技術檔案數位化準備。</div>
+      </li>
+      <li class="sector-item pos">
+        <div class="row-top">
+          <span class="sector-chip">紡織成衣</span>
+          <span class="headline">政府挹注百億里拉扶持資金，維持在地就業與產業穩定</span>
+        </div>
+        <div class="body">工業暨科技部長宣布向 11,530 家紡織與成衣企業提供 108 億里拉補貼，成功維持 54 萬個就業機會並新增職缺。</div>
+        <div class="impact"><b>台商解讀：</b>當地紡織供應鏈獲得政策資金支撐，短期內營運穩定度可能有所提升。</div>
+      </li>
+<!-- AI:INDUSTRY_TRENDS:END -->
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <h2><span class="num">03</span>貿易意涵</h2>
+      <span class="card-sub">Trade Implications</span>
+    </div>
+    <ul class="implications-list">
+      <!-- AI:TRADE_IMPLICATIONS:START 每次產生時整段覆寫 -->
+      <li><strong>金融流動性與匯率波動風險升溫，宜加強應收帳款管理</strong>本週土耳其資本市場出現基金贖回潮與信用債市場壓力，且 USD/TRY 緩步走升至 49.5780，央行儲備亦出現回落。台商在當地進行報價與收付款時，可能需要更謹慎評估客戶的資金流動性，並考慮採用適當的匯率避險與信用保險工具。</li>
+      <li><strong>密切追蹤歐盟法規對土耳其轉口與製造供應鏈的連鎖效應</strong>由於土耳其積極爭取納入歐盟「歐洲製造」補貼計畫與產業加速法案，若未來協商結果不如預期，以土耳其作為基地再外銷至歐盟的台商供應鏈可能面臨成本與關稅劣勢。建議持續關注政策動向，並評估在地化生產與零組件替代方案。</li>
+<!-- AI:TRADE_IMPLICATIONS:END -->
+    </ul>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <div class="footer-brand"><img src="../taitra-logo.png" alt="TAITRA"></div>
+    <div>Türkiye 經濟情報週報 · 2026年10月14日 – 2026年10月20日</div>
+    <div style="margin-top:0.4rem; opacity:0.7;">本報告僅供參考，不構成任何投資或商業決策建議 · 由每日簡報資料彙整產生</div>
+  </div>
+
+</div>
+</body>
+</html>
