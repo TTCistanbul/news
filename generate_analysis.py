@@ -112,6 +112,53 @@ trade_implications 最多 3 則，只從 key_events／industry_items 已經寫�
 """
 
 
+# ── 金額單位換算的自動檢查 ──
+# 2026-09-05 發現的實際錯誤：土耳其媒體寫「23,47 milyar dolar」（＝234.7
+# 億美元），模型輸出「23.47 億美元」，少了一個數量級。同一份輸出裡另一則
+# 「63 億美元」卻換算正確，所以不是每次都錯，人工校對很難穩定抓到。
+#
+# 檢查方式：如果輸出裡某個「N 億」的 N，恰好等於原文裡某個「N milyar／
+# N billion」的 N，那幾乎可以確定是照抄沒換算（正確結果應該是 N×10 億）。
+# milyon／million 對「萬」也是同樣道理（正確結果是 N×100 萬）。
+UNIT_PATTERNS = [
+    # (原文單位, 中文單位, 正確倍數說明)
+    (r"milyar|billion", "億", "milyar/billion 要乘以 10 才是「億」"),
+    (r"milyon|million", "萬", "milyon/million 要乘以 100 才是「萬」"),
+]
+
+
+def _numbers_before_unit(text: str, unit_regex: str) -> set[float]:
+    """抓出「數字 + 單位」裡的數字，土耳其式逗號小數點一併正規化。"""
+    out = set()
+    for m in re.finditer(rf"([\d][\d.,]*)\s*(?:{unit_regex})", text, re.IGNORECASE):
+        raw = m.group(1).rstrip(".,")
+        # 土耳其寫法：逗號＝小數點、點＝千分位
+        if "," in raw:
+            norm = raw.replace(".", "").replace(",", ".")
+        else:
+            # 只有點時無法百分之百分辨，1.850 視為千分位、23.47 視為小數
+            norm = raw.replace(".", "") if re.fullmatch(r"\d{1,3}(\.\d{3})+", raw) else raw
+        try:
+            out.add(round(float(norm), 4))
+        except ValueError:
+            continue
+    return out
+
+
+def check_unit_conversion(source_text: str, analysis: dict) -> list[str]:
+    """回傳可疑的單位換算清單，沒問題就回空 list。"""
+    blob = json.dumps(analysis, ensure_ascii=False)
+    problems = []
+    for src_regex, zh_unit, hint in UNIT_PATTERNS:
+        src_nums = _numbers_before_unit(source_text, src_regex)
+        out_nums = _numbers_before_unit(blob, zh_unit)
+        for n in sorted(src_nums & out_nums):
+            problems.append(
+                f"原文有「{n} {src_regex.split('|')[0]}」，輸出也寫成「{n} {zh_unit}」——{hint}"
+            )
+    return problems
+
+
 def load_payload(date_str: str | None) -> tuple[dict, str]:
     if date_str:
         path = DATA_DIR / f"{date_str}.json"
@@ -277,12 +324,39 @@ def main():
     if missing:
         raise SystemExit(f"Gemini 回傳的 JSON 缺少欄位：{missing}\n完整內容：{analysis}")
 
+    # 金額單位換算檢查。發現疑似照抄沒換算時，帶著具體錯誤請模型重寫一次。
+    # 重寫後仍有問題就照樣寫檔（總比整天開天窗好），但把警告記在 JSON 裡。
+    unit_problems = check_unit_conversion(user_content, analysis)
+    if unit_problems:
+        print("!  偵測到疑似金額單位換算錯誤：")
+        for p in unit_problems:
+            print(f"   - {p}")
+        print("   請模型重寫一次...")
+        fix_prompt = (
+            user_content
+            + "\n\n以上是原始資料。你剛才產生的內容有金額單位換算錯誤：\n"
+            + "\n".join(f"- {p}" for p in unit_problems)
+            + "\n\n請重新產生完整 JSON，其他內容維持一樣的判斷，只把金額換算改正確。"
+        )
+        try:
+            fixed, fixed_model = call_gemini(fix_prompt, api_key)
+            missing = [k for k in required if k not in fixed]
+            if missing:
+                raise RuntimeError(f"重寫後的 JSON 缺少欄位：{missing}")
+            analysis, used_model = fixed, fixed_model
+            unit_problems = check_unit_conversion(user_content, analysis)
+            print("   重寫後已無單位問題" if not unit_problems else "   重寫後仍有單位問題，保留內容但記錄警告")
+        except Exception as e:
+            print(f"!  重寫失敗，沿用原本內容：{e}")
+
     analysis = to_traditional(analysis)
 
     out_path = DATA_DIR / f"{resolved_date}-analysis.json"
     analysis["_generated_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
     analysis["_model"] = used_model
     analysis["_source_date"] = resolved_date
+    if unit_problems:
+        analysis["_unit_warnings"] = unit_problems
     out_path.write_text(json.dumps(analysis, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"-> 已寫入 {out_path}")
     print(f"   key_events={len(analysis.get('key_events', []))}  "
