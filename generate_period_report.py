@@ -32,6 +32,7 @@ import html
 import json
 import re
 import sys
+import time
 from pathlib import Path
 
 import requests
@@ -46,11 +47,15 @@ TRT = dt.timezone(dt.timedelta(hours=3))
 PERIOD_DAYS = {"week": 7, "month": 30, "quarter": 91, "year": 365}
 PERIOD_LABEL_ZH = {"week": "週報", "month": "月報", "quarter": "季報", "year": "年報"}
 
+# 跟 generate_analysis.py 用同一份候選清單；gemini-2.5-flash-lite 已對新金鑰回 404
 CANDIDATE_MODELS = [
-    "gemini-2.5-flash-lite",
     "gemini-3.5-flash-lite",
     "gemini-3.5-flash",
+    "gemini-3.1-flash-lite",
+    "gemini-flash-latest",
 ]
+RETRY_STATUS = (500, 502, 503, 504)
+BACKOFF = [5, 15, 30, 60]  # 503（伺服器忙碌）時的等待秒數，每個模型最多試 5 次
 TIMEOUT = 60
 
 
@@ -284,21 +289,36 @@ def _call_gemini_once(model: str, prompt: str, api_key: str) -> dict:
 
 
 def call_gemini(prompt: str, api_key: str) -> tuple[dict, str]:
-    last_error = None
+    """依序試候選模型。
+    404（下架）/ 429（額度用完）→ 直接換下一個模型；
+    5xx（伺服器忙碌）→ 同一個模型等一下再試，試完還是忙就換下一個。"""
+    errors = []
     for i, model in enumerate(CANDIDATE_MODELS):
-        try:
-            result = _call_gemini_once(model, prompt, api_key)
-            if i > 0:
-                print(f"   注意：改用備援模型 {model} 成功", file=sys.stderr)
-            return result, model
-        except requests.exceptions.HTTPError as e:
-            status = e.response.status_code if e.response is not None else None
-            if status == 404 and i < len(CANDIDATE_MODELS) - 1:
-                print(f"   模型 {model} 404，改試下一個候選模型...", file=sys.stderr)
-                last_error = e
-                continue
-            raise
-    raise last_error
+        for attempt in range(len(BACKOFF) + 1):
+            try:
+                result = _call_gemini_once(model, prompt, api_key)
+                if i > 0:
+                    print(f"   注意：改用備援模型 {model} 成功", file=sys.stderr)
+                return result, model
+            except requests.exceptions.HTTPError as e:
+                status = e.response.status_code if e.response is not None else None
+                if status in RETRY_STATUS and attempt < len(BACKOFF):
+                    wait = BACKOFF[attempt]
+                    print(f"   模型 {model} 回 {status}（伺服器忙碌），{wait} 秒後重試...", file=sys.stderr)
+                    time.sleep(wait)
+                    continue
+                errors.append(f"{model}: HTTP {status}")
+                print(f"   模型 {model} 失敗（HTTP {status}），改試下一個候選模型...", file=sys.stderr)
+                break
+            except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
+                if attempt < len(BACKOFF):
+                    wait = BACKOFF[attempt]
+                    print(f"   模型 {model} 連線逾時/中斷，{wait} 秒後重試...", file=sys.stderr)
+                    time.sleep(wait)
+                    continue
+                errors.append(f"{model}: {type(e).__name__}")
+                break
+    raise RuntimeError("所有 Gemini 候選模型都失敗：" + "；".join(errors))
 
 
 def render_key_developments(items: list[dict]) -> str:
