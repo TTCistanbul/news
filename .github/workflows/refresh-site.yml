@@ -23,6 +23,12 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install Chinese fonts (for the trade charts)
+        run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk
+
+      - name: Install dependencies
+        run: pip install matplotlib
+
       - name: Run render_report.py
         run: python3 render_report.py
 
@@ -30,6 +36,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/index.html
+          git add docs/index.html docs/images/
           git commit -m "Refresh site from template" || echo "no changes"
           git push
