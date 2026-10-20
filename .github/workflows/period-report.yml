@@ -65,7 +65,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/reports/ docs/index.html
+          # render_report.py 也會順手重寫 docs/archive/，一起提交，
+          # 否則 pull --rebase 會因為「有未提交的變更」失敗
+          git add docs/reports/ docs/index.html docs/archive/
           git commit -m "Generate $PERIOD report" || echo "no changes"
-          git pull --rebase origin main
+          git pull --rebase --autostash origin main
           git push
