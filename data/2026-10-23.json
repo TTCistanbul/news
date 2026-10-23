@@ -1,0 +1,3725 @@
+{
+  "generated_at": "2026-10-23T16:00:09.655848+03:00",
+  "generated_at_label": "2026-10-23 16:00 TRT",
+  "fx": {
+    "date": "2026-10-23",
+    "date_raw": "23.10.2026",
+    "bulletin": "2026/201",
+    "rates": {
+      "USD": {
+        "unit": 1.0,
+        "forex_buying": 49.5647,
+        "forex_selling": 49.654,
+        "banknote_selling": 49.7285,
+        "per_unit_buying": 49.5647,
+        "per_unit_selling": 49.654
+      },
+      "EUR": {
+        "unit": 1.0,
+        "forex_buying": 55.4997,
+        "forex_selling": 55.5997,
+        "banknote_selling": 55.6831,
+        "per_unit_buying": 55.4997,
+        "per_unit_selling": 55.5997
+      },
+      "GBP": {
+        "unit": 1.0,
+        "forex_buying": 66.1874,
+        "forex_selling": 66.5325,
+        "banknote_selling": 66.6323,
+        "per_unit_buying": 66.1874,
+        "per_unit_selling": 66.5325
+      },
+      "JPY": {
+        "unit": 100.0,
+        "forex_buying": 31.5228,
+        "forex_selling": 31.7316,
+        "banknote_selling": 31.8521,
+        "per_unit_buying": 0.315228,
+        "per_unit_selling": 0.317316
+      },
+      "CNY": {
+        "unit": 1.0,
+        "forex_buying": 7.3884,
+        "forex_selling": 7.4851,
+        "banknote_selling": null,
+        "per_unit_buying": 7.3884,
+        "per_unit_selling": 7.4851
+      }
+    },
+    "age_days": 0,
+    "stale": false,
+    "twd_try_cross": {
+      "try_per_twd": 1.5235109271576823,
+      "usd_twd": 32.591824,
+      "usd_try_selling_used": 49.654,
+      "source": "open.er-api.com（交叉匯率，非央行官方報價）",
+      "fetched_at_source": "Fri, 23 Oct 2026 00:02:31 +0000"
+    }
+  },
+  "macro": {
+    "funding_cost": [
+      {
+        "date": "2026-10-05 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-10-06 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-10-07 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-10-08 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-10-09 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-10-12 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-10-13 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-10-14 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-10-15 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-10-16 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-10-19 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-10-20 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-10-21 00:00:00",
+        "value": 37.0
+      },
+      {
+        "date": "2026-10-22 00:00:00",
+        "value": 37.0
+      }
+    ],
+    "cpi": [
+      {
+        "date": "2025-08-01 00:00:00",
+        "value": 102.47
+      },
+      {
+        "date": "2025-09-01 00:00:00",
+        "value": 105.78
+      },
+      {
+        "date": "2025-10-01 00:00:00",
+        "value": 108.48
+      },
+      {
+        "date": "2025-11-01 00:00:00",
+        "value": 109.42
+      },
+      {
+        "date": "2025-12-01 00:00:00",
+        "value": 110.39
+      },
+      {
+        "date": "2026-01-01 00:00:00",
+        "value": 115.73
+      },
+      {
+        "date": "2026-02-01 00:00:00",
+        "value": 119.16
+      },
+      {
+        "date": "2026-03-01 00:00:00",
+        "value": 121.47
+      },
+      {
+        "date": "2026-04-01 00:00:00",
+        "value": 126.55
+      },
+      {
+        "date": "2026-05-01 00:00:00",
+        "value": 128.72
+      },
+      {
+        "date": "2026-06-01 00:00:00",
+        "value": 129.99
+      },
+      {
+        "date": "2026-07-01 00:00:00",
+        "value": 132.31
+      },
+      {
+        "date": "2026-08-01 00:00:00",
+        "value": 134.75
+      },
+      {
+        "date": "2026-09-01 00:00:00",
+        "value": 137.23
+      }
+    ],
+    "trade_exports": [
+      {
+        "date": "2025-07-01 00:00:00",
+        "value": 24620.0
+      },
+      {
+        "date": "2025-08-01 00:00:00",
+        "value": 21409.0
+      },
+      {
+        "date": "2025-09-01 00:00:00",
+        "value": 22126.0
+      },
+      {
+        "date": "2025-10-01 00:00:00",
+        "value": 23490.0
+      },
+      {
+        "date": "2025-11-01 00:00:00",
+        "value": 22146.0
+      },
+      {
+        "date": "2025-12-01 00:00:00",
+        "value": 25850.0
+      },
+      {
+        "date": "2026-01-01 00:00:00",
+        "value": 19767.0
+      },
+      {
+        "date": "2026-02-01 00:00:00",
+        "value": 20636.0
+      },
+      {
+        "date": "2026-03-01 00:00:00",
+        "value": 21704.0
+      },
+      {
+        "date": "2026-04-01 00:00:00",
+        "value": 24737.0
+      },
+      {
+        "date": "2026-05-01 00:00:00",
+        "value": 21813.0
+      },
+      {
+        "date": "2026-06-01 00:00:00",
+        "value": 24397.0
+      },
+      {
+        "date": "2026-07-01 00:00:00",
+        "value": 25182.0
+      },
+      {
+        "date": "2026-08-01 00:00:00",
+        "value": 23327.0
+      }
+    ],
+    "trade_imports": [
+      {
+        "date": "2025-07-01 00:00:00",
+        "value": 29206.0
+      },
+      {
+        "date": "2025-08-01 00:00:00",
+        "value": 24209.0
+      },
+      {
+        "date": "2025-09-01 00:00:00",
+        "value": 27480.0
+      },
+      {
+        "date": "2025-10-01 00:00:00",
+        "value": 29401.0
+      },
+      {
+        "date": "2025-11-01 00:00:00",
+        "value": 28509.0
+      },
+      {
+        "date": "2025-12-01 00:00:00",
+        "value": 33332.0
+      },
+      {
+        "date": "2026-01-01 00:00:00",
+        "value": 26661.0
+      },
+      {
+        "date": "2026-02-01 00:00:00",
+        "value": 28148.0
+      },
+      {
+        "date": "2026-03-01 00:00:00",
+        "value": 31190.0
+      },
+      {
+        "date": "2026-04-01 00:00:00",
+        "value": 31692.0
+      },
+      {
+        "date": "2026-05-01 00:00:00",
+        "value": 26309.0
+      },
+      {
+        "date": "2026-06-01 00:00:00",
+        "value": 33003.0
+      },
+      {
+        "date": "2026-07-01 00:00:00",
+        "value": 30825.0
+      },
+      {
+        "date": "2026-08-01 00:00:00",
+        "value": 27073.0
+      }
+    ],
+    "gdp_growth": [
+      {
+        "date": "2023-10-01 00:00:00",
+        "value": 617274297.88
+      },
+      {
+        "date": "2024-01-01 00:00:00",
+        "value": 525475817.31
+      },
+      {
+        "date": "2024-04-01 00:00:00",
+        "value": 552501309.35
+      },
+      {
+        "date": "2024-07-01 00:00:00",
+        "value": 624730298.07
+      },
+      {
+        "date": "2024-10-01 00:00:00",
+        "value": 637781908.62
+      },
+      {
+        "date": "2025-01-01 00:00:00",
+        "value": 539021478.12
+      },
+      {
+        "date": "2025-04-01 00:00:00",
+        "value": 579269266.57
+      },
+      {
+        "date": "2025-07-01 00:00:00",
+        "value": 649308679.54
+      },
+      {
+        "date": "2025-10-01 00:00:00",
+        "value": 660365686.68
+      },
+      {
+        "date": "2026-01-01 00:00:00",
+        "value": 553048511.13
+      },
+      {
+        "date": "2026-04-01 00:00:00",
+        "value": 592720249.7
+      }
+    ],
+    "gdp_growth_sa": [
+      {
+        "date": "2023-10-01 00:00:00",
+        "value": 227.36
+      },
+      {
+        "date": "2024-01-01 00:00:00",
+        "value": 229.68
+      },
+      {
+        "date": "2024-04-01 00:00:00",
+        "value": 229.21
+      },
+      {
+        "date": "2024-07-01 00:00:00",
+        "value": 230.5
+      },
+      {
+        "date": "2024-10-01 00:00:00",
+        "value": 234.18
+      },
+      {
+        "date": "2025-01-01 00:00:00",
+        "value": 236.35
+      },
+      {
+        "date": "2025-04-01 00:00:00",
+        "value": 239.07
+      },
+      {
+        "date": "2025-07-01 00:00:00",
+        "value": 241.08
+      },
+      {
+        "date": "2025-10-01 00:00:00",
+        "value": 241.72
+      },
+      {
+        "date": "2026-01-01 00:00:00",
+        "value": 242.47
+      },
+      {
+        "date": "2026-04-01 00:00:00",
+        "value": 245.18
+      }
+    ],
+    "core_cpi_b": [
+      {
+        "date": "2025-08-01 00:00:00",
+        "value": 102.53
+      },
+      {
+        "date": "2025-09-01 00:00:00",
+        "value": 105.95
+      },
+      {
+        "date": "2025-10-01 00:00:00",
+        "value": 108.53
+      },
+      {
+        "date": "2025-11-01 00:00:00",
+        "value": 109.9
+      },
+      {
+        "date": "2025-12-01 00:00:00",
+        "value": 110.76
+      },
+      {
+        "date": "2026-01-01 00:00:00",
+        "value": 115.44
+      },
+      {
+        "date": "2026-02-01 00:00:00",
+        "value": 117.93
+      },
+      {
+        "date": "2026-03-01 00:00:00",
+        "value": 119.65
+      },
+      {
+        "date": "2026-04-01 00:00:00",
+        "value": 123.74
+      },
+      {
+        "date": "2026-05-01 00:00:00",
+        "value": 127.29
+      },
+      {
+        "date": "2026-06-01 00:00:00",
+        "value": 129.41
+      },
+      {
+        "date": "2026-07-01 00:00:00",
+        "value": 131.56
+      },
+      {
+        "date": "2026-08-01 00:00:00",
+        "value": 133.99
+      },
+      {
+        "date": "2026-09-01 00:00:00",
+        "value": 136.67
+      }
+    ]
+  },
+  "news": [
+    {
+      "source": "Ekonomim",
+      "title": "Türkiye'nin 9 aylık makine ihracatı 21,3 milyar dolar oldu",
+      "url": "https://www.ekonomim.com/ekonomi/turkiyenin-9-aylik-makine-ihracati-213-milyar-dolar-oldu-haberi-926664",
+      "published": "2026-10-23T12:40:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Makine İhracatçıları Birliği (MAİB) Ocak-Eylül 2026 döneminde Türkiyen’nin makine ihracatının bir önceki yıl aynı döneme göre yüzde 1,5 oranında artarak 21,3 milyar dolara ulaştığını açıkladı. MAİB’in tüm makine gruplarını derleyerek yaptığı hesaplamada, tutar olarak artış sağlandığını, miktar (ağırlık) bakımından ise yüzde 6 düşüş olduğunu belirterek, böylece kg başına ortalama ihracat birim fiya",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "trade",
+      "topics": [
+        "trade",
+        "industry"
+      ],
+      "matched": [
+        "ihracat*",
+        "ithalat*",
+        "makine*"
+      ],
+      "tw_sectors": [
+        "工具機與金屬加工"
+      ]
+    },
+    {
+      "source": "Ekonomim",
+      "title": "İşte güncel liste; Elektrikli araç sahiplerinin en çok kullandığı şarj şirketlerinin fiyat listesi",
+      "url": "https://www.ekonomim.com/foto-galeri/aktuel/iste-guncel-liste-elektrikli-arac-sahiplerinin-en-cok-kullandigi-sarj-sirketlerinin-fiyat-listesi-galeri-926661",
+      "published": "2026-10-23T12:24:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Türkiye’de elektrikli otomobil maliklerinin en çok kullandığı 20 şarj şirketinin güncel AC ve DC şarj tarifeleri açıklandı. 22 Ekim 2026 itibarıyla şirketlerin resmî internet sitelerinden derlenen kampanyasız fiyatlar, şarj maliyetlerini karşılaştırmak isteyen sürücüler için güncel tabloyu ortaya koydu.",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "trade",
+      "topics": [
+        "trade"
+      ],
+      "matched": [
+        "tarife*"
+      ],
+      "tw_sectors": [
+        "汽車零組件與EV供應鏈"
+      ]
+    },
+    {
+      "source": "Yeşil Haber",
+      "title": "Erzurum’da Binpınar depolamalı GES’in imar planları askıya çıktı",
+      "url": "https://yesilhaber.net/binpinar-depolamali-ges-imar-askisi/",
+      "published": "2026-10-23T11:38:02+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Hınıs’taki Binpınar Depolamalı GES’in iki ölçekteki imar planı, 23 Ekim’den itibaren 15 gün süreyle incelemeye açıldı.",
+      "scope": "domestic",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "depolamali",
+        "ges"
+      ],
+      "tw_sectors": [
+        "綠能、儲能與回收"
+      ]
+    },
+    {
+      "source": "Yeşil Haber",
+      "title": "Biyometan nedir? Biyogazdan 625 metreküp gaz hesaplama örneği",
+      "url": "https://yesilhaber.net/biyometan-nedir/",
+      "published": "2026-10-23T07:17:27+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Biyometan, biyolojik kaynaklardan elde edilen, metan oranı yükseltilmiş ve kullanım amacına uygun biçimde arıtılmış gazdır. İngilizcede biomethane, bazı kaynaklarda renewable natural gas olarak adlandırılır. Fosil doğal gazın yerine kullanılabilir; ancak her ham biyogaz doğrudan gaz şebekesine verilemez. Biyogazdan biyometan nasıl elde edilir? Organik atıkların oksijensiz ortamda mikroorganizmalar",
+      "scope": "domestic",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "gas",
+        "natural gas"
+      ],
+      "tw_sectors": [
+        "綠能、儲能與回收"
+      ]
+    },
+    {
+      "source": "Yeşil Haber",
+      "title": "AEMO: Avustralya’da bataryalar akşam zirvesinde yüzde 8 payla gazı ilk kez geçti",
+      "url": "https://yesilhaber.net/avustralya-batarya-gaz-aksam-zirvesi-aemo/",
+      "published": "2026-10-23T06:35:54+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Avustralya ana şebekesinde gazlı üretim üçüncü çeyrekte 881 MW ile 2000 yılından beri en düşük seviyeye indi. Bataryalar akşam zirvesinde gazı ilk kez geçti.",
+      "scope": "domestic",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "uretim*"
+      ],
+      "tw_sectors": [
+        "汽車零組件與EV供應鏈"
+      ]
+    },
+    {
+      "source": "Yeşil Haber",
+      "title": "Şişecam, SolarMax güneş paneli camını RE+ 2026’da sergileyecek",
+      "url": "https://yesilhaber.net/sisecam-solarmax-gunes-paneli-cami-re-plus-2026/",
+      "published": "2026-10-23T01:07:04+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Şişecam, 16–19 Kasım’da Las Vegas’taki RE+ 2026’ya SolarMax ile katılacak. Katalogdaki yaklaşık yüzde 2 artış camın ışık geçirgenliğini ifade ediyor.",
+      "scope": "domestic",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "gunes panel*"
+      ],
+      "tw_sectors": [
+        "綠能、儲能與回收"
+      ]
+    },
+    {
+      "source": "OSD（汽車製造商協會）",
+      "title": "OSD, OICA Genel Kurulu’nda Türkiye Otomotiv Sanayisinin Avrupa Rekabetçiliğindeki Stratejik Rolünü Vurguladı",
+      "url": "https://www.osd.org.tr/haberler/255",
+      "published": "2026-10-23T00:00:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "",
+      "scope": "domestic",
+      "tr_markers": [
+        "osd",
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "otomotiv*",
+        "sanayi*"
+      ],
+      "tw_sectors": [
+        "汽車零組件與EV供應鏈"
+      ]
+    },
+    {
+      "source": "Yeşil Haber",
+      "title": "Türkiye–Kanada ortak bildirisi: CANDU değerlendirmesi, LNG ve madencilikte iş birliği çerçevesi",
+      "url": "https://yesilhaber.net/turkiye-kanada-ortak-bildiri-candu-lng/",
+      "published": "2026-10-22T21:38:07+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Türkiye Kanada nükleer iş birliği ortak bildiriyle genişledi. CANDU değerlendirmesinin yanında LNG, yenilenebilir enerji ve madencilik de kapsamda.",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "enerji*"
+      ],
+      "tw_sectors": [
+        "綠能、儲能與回收"
+      ]
+    },
+    {
+      "source": "Yeşil Haber",
+      "title": "AB, biyobazlı plastik ambalaj için görüş topluyor",
+      "url": "https://yesilhaber.net/ab-biyobazli-plastik-ambalaj-danismasi/",
+      "published": "2026-10-22T17:58:29+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Avrupa Komisyonu, biyobazlı plastik ambalaj için 13 Ocak 2027’ye kadar görüş alıyor. Süreç henüz yeni bir kota veya zorunluluk getirmiyor.",
+      "scope": "domestic",
+      "tr_markers": [],
+      "primary_topic": "trade",
+      "topics": [
+        "trade"
+      ],
+      "matched": [
+        "kota"
+      ],
+      "tw_sectors": [
+        "塑膠與包裝機械"
+      ]
+    },
+    {
+      "source": "Yeşil Haber",
+      "title": "Kiralamadan dönen 7.300 elektrikli araçta batarya sağlığı yüzde 95,5",
+      "url": "https://yesilhaber.net/ikinci-el-elektrikli-arac-batarya-sagligi-ayvens/",
+      "published": "2026-10-22T16:47:08+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Ayvens’in kendi kiralama filosundan dönen yaklaşık 7.300 elektrikli araçta ortalama 55.000 kilometrede yüzde 95,5 batarya sağlığı ölçüldü. Şirket verileri bütün ikinci el araçlara genellenemiyor.",
+      "scope": "domestic",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "batarya*",
+        "elektrikli arac*"
+      ],
+      "tw_sectors": [
+        "汽車零組件與EV供應鏈"
+      ]
+    },
+    {
+      "source": "OSD（汽車製造商協會）",
+      "title": "Türk Otomotiv Sanayiinin AB Yeşil Mutabakatına Uyum Yol Haritası İlk Çalıştayda Değerlendirildi",
+      "url": "https://www.osd.org.tr/haberler/256",
+      "published": "2026-10-19T00:00:00+00:00",
+      "no_date": false,
+      "late": true,
+      "summary": "",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*"
+      ],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "otomotiv*",
+        "sanayi*"
+      ],
+      "tw_sectors": [
+        "汽車零組件與EV供應鏈"
+      ]
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Konutta reel düşüş derinleşti, İzmir öne çıktı",
+      "url": "https://www.bloomberght.com/konutta-reel-dusus-derinlesti-izmir-one-cikti-3792401",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Bahçeşehir Üniversitesi Ekonomik ve Toplumsal Araştırmalar Merkezi'nin (BETAM) Ekim 2026 konut piyasası raporlarına göre, reel satılık konut fiyatları bir önceki yılın aynı ayına kıyasla Türkiye genelinde yüzde 7,8, İstanbul'da yüzde 4, Ankara'da yüzde 2,5 ve İzmir'de yüzde 9,3 azaldı.",
+      "scope": "domestic",
+      "tr_markers": [
+        "ankara",
+        "istanbul",
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "ekonomi*",
+        "piyasa*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Türk Eximbank ile EDC arasında mutabakat zaptı",
+      "url": "https://www.bloomberght.com/turk-eximbank-ile-edc-arasinda-mutabakat-zapti-3792399",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Ticaret Bakanı Ömer Bolat, Türkiye ile Kanada arasında ihracat kredileri alanındaki işbirliğini güçlendirmek amacıyla Türk Eximbank ile bu ülkenin ihracat destek kuruluşu EDC'nin mutabakat zaptı imzaladığını bildirdi.",
+      "scope": "domestic",
+      "tr_markers": [
+        "bolat",
+        "ticaret bakan*",
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "trade",
+      "topics": [
+        "trade",
+        "macro"
+      ],
+      "matched": [
+        "ihracat*",
+        "kredi*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "S&P Global Ratings'e göre Türk bankacılık sektöründe riskler yönetilebilir düzeyde",
+      "url": "https://www.bloomberght.com/s-p-global-ratings-e-gore-turk-bankacilik-sektorunde-riskler-yonetilebilir-duzeyde-3792398",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "S&P Global Ratings Finansal Kuruluşlar Direktörü Regina Argenio, Türk bankacılık sisteminin bir dizi küresel ekonomik ve bölgesel şokla karşı karşıya kaldığını belirterek, \"Karşılaştığı risklerin önemli olduğunu düşünüyoruz ancak enflasyonun düşürülmesinde gördüğümüz ilerleme ve Orta Doğu'daki savaşın başlangıcında tahmin ettiğimizden daha iyi bir ekonomik görünüm olması nedeniyle durumun yönetile",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "banka*",
+        "ekonomi*",
+        "enflasyon*",
+        "finans*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Türkiye ile Rusya arasında dizel mutabakatı",
+      "url": "https://www.bloomberght.com/turkiye-ile-rusya-arasinda-dizel-mutabakati-3792397",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Enerji ve Tabii Kaynaklar Bakanı Alparslan Bayraktar, Rusya'dan Türkiye'ye dizel yakıt tedariki konusunda genel bir mutabakatın olduğunu söyledi.",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "enerji*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Reel sektör ve hanehalkının enflasyon beklentisi geriledi",
+      "url": "https://www.bloomberght.com/reel-sektor-ve-hanehalkinin-enflasyon-beklentisi-geriledi-3792366",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "TCMB'nin anketine göre, Ekim'de 12 ay sonrası yıllık enflasyon beklentileri reel sektör için 0,70 puan azalarak yüzde 31,80 seviyesine, hanehalkı için 1,85 puan azalarak yüzde 43,75 seviyesine geriledi.",
+      "scope": "domestic",
+      "tr_markers": [
+        "tcmb"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "enflasyon*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "BBVA Research: TL getirilerindeki avantaj daralıyor",
+      "url": "https://www.bloomberght.com/bbva-research-tl-getirilerindeki-avantaj-daraliyor-3792369",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "BBVA Research, küresel faizlerin yüksek kalması durumunda Türk lirası varlıklara sahip olma avantajının daralabileceği ve yatırımcıların dolarizasyona yönelim riskine karşı dikkatli olmaları gerektiği uyarısında bulundu.",
+      "scope": "domestic",
+      "tr_markers": [
+        "tl",
+        "turk*"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "faiz*",
+        "yatirim*",
+        "yatirimci*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "TÜİK, bitkisel üretim tahminini yukarı yönlü revize etti",
+      "url": "https://www.bloomberght.com/tuik-bitkisel-uretim-tahminini-yukari-yonlu-revize-etti-3792359",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "TÜİK, bitkisel üretim ikinci tahminini yayımladı. Türkiye'nin toplam bitkisel üretimine ilişkin tahmin bir öncekine göre yüzde 2,4 yukarı yönlü revize edildi.",
+      "scope": "domestic",
+      "tr_markers": [
+        "tuik",
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "uretim*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Fon soruşturmasında 11 şüpheli tutuklandı",
+      "url": "https://www.bloomberght.com/fon-sorusturmasinda-11-supheli-tutuklandi-3792327",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "İstanbul'da sermaye piyasalarında gerçekleştirilen işlemlere yönelik fon soruşturmaları kapsamında gözaltına alınan 31 şüpheliden 11'i tutuklandı, 4'ü hakkında adli kontrol kararı verildi.",
+      "scope": "domestic",
+      "tr_markers": [
+        "istanbul"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "piyasa*",
+        "sermaye*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Erdemir'in üçüncü çeyrek net kârı beklentilerin üzerinde gerçekleşti",
+      "url": "https://www.bloomberght.com/erdemir-in-ucuncu-ceyrek-net-kri-beklentilerin-uzerinde-gerceklesti-3792322",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Ereğli Demir ve Çelik Fabrikaları, 2026 yılının üçüncü çeyreğinde 2,2 milyar TL net kâr açıklayarak 1,9 milyar TL'lik piyasa beklentisinin üzerinde bir performans sergiledi.",
+      "scope": "domestic",
+      "tr_markers": [
+        "tl"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "celik*",
+        "fabrika*",
+        "piyasa*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "SPK'dan Altınkılıç Gıda ve Anel Elektrik'e ilişkin yaptırım kararı",
+      "url": "https://www.bloomberght.com/spk-dan-altinkilic-gida-ve-anel-elektrik-e-iliskin-yaptirim-karari-3792320",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Sermaye Piyasası Kurulu (SPK), Altınkılıç Gıda ve Anel Elektrik paylarında gerçekleştirilen işlemlere yönelik incelemeler sonucunda 48 gerçek kişi ve 5 tüzel kişiye işlem yasağı getirdi.",
+      "scope": "domestic",
+      "tr_markers": [
+        "spk"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "piyasa*",
+        "sermaye*",
+        "spk"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Norveç Varlık Fonu: Türkiye'deki fon krizinin mağduruyuz",
+      "url": "https://www.bloomberght.com/norvec-varlik-fonu-turkiye-deki-fon-krizinin-magduruyuz-3792319",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Norveç Varlık Fonu, Türkiye'deki yatırım fonu krizinde mağdur olduğunu belirterek, ülkedeki hisse senedi yatırımlarını ve dış portföy yöneticilerini incelemeye aldığını açıkladı. Fonun CEO Yardımcısı Trond Grande, yaşanan süreçte fail değil, mağdur olduklarını vurguladı.",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "hisse senedi*",
+        "yatirim*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "İran: Savaşın ABD'ye hiçbir faydası olmayacak",
+      "url": "https://www.bloomberght.com/iran-savasin-abd-ye-hicbir-faydasi-olmayacak-3792316",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "İran Meclis Başkanı Muhammed Bakır Kalibaf, ABD ile olası bir savaşın Washington yönetimine fayda sağlamayacağını, aksine ağır ekonomik ve askeri sonuçlar doğuracağını savundu.",
+      "scope": "domestic",
+      "tr_markers": [
+        "meclis"
+      ],
+      "primary_topic": "defense",
+      "topics": [
+        "macro",
+        "defense"
+      ],
+      "matched": [
+        "askeri",
+        "ekonomi*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "ABD'den dört şirkete 389 milyon dolarlık çip ve kritik malzeme desteği",
+      "url": "https://www.bloomberght.com/abd-den-dort-sirkete-389-milyon-dolarlik-cip-ve-kritik-malzeme-destegi-3792297",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "ABD Ticaret Bakanlığı, yarı iletken ve kritik malzeme teknolojileri geliştiren dört şirkete toplam 389 milyon dolara kadar finansman sağlamayı planladığını açıkladı.",
+      "scope": "domestic",
+      "tr_markers": [
+        "bakanligi",
+        "ticaret bakan*"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "finans*",
+        "teknoloji*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Yeşil Haber",
+      "title": "Temiz sanayi yatırımlarının finansmanı 26 Ekim’de Ankara’da ele alınacak",
+      "url": "https://yesilhaber.net/temiz-sanayi-yatirimlari-26-ekim-ankara-calistayi/",
+      "published": "2026-10-23T12:54:01+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Build Clean Now Türkiye Çalıştayı, 26 Ekim’de Ankara’da temiz sanayi projelerinin nihai yatırım kararına ulaşmasını sağlayacak finansman ve politika koşullarını ele alacak.",
+      "scope": "domestic",
+      "tr_markers": [
+        "ankara",
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "finans*",
+        "sanayi*",
+        "yatirim*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Daily Sabah",
+      "title": "Canada eyes Türkiye's defense agency as model for domestic arms sector",
+      "url": "https://www.dailysabah.com/business/economy/canada-eyes-turkiyes-defense-agency-as-model-for-domestic-arms-sector",
+      "published": "2026-10-23T12:34:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Canada plans to use a government agency in Türkiye that manages the country's defense industry and the supply of military technology as a model as it works to build up its own dome...",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "defense",
+      "topics": [
+        "industry",
+        "defense"
+      ],
+      "matched": [
+        "defense",
+        "industry",
+        "military",
+        "technology"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Ekonomim",
+      "title": "İbrahim Özhan: “Faiz indiriminin iş dünyasına yansıması önemli”",
+      "url": "https://www.ekonomim.com/sehirler/ibrahim-ozhan-faiz-indiriminin-is-dunyasina-yansimasi-onemli-haberi-926663",
+      "published": "2026-10-23T12:31:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Türkiye Cumhuriyet Merkez Bankası’nın politika faizini yüzde 36’ya indirmesini olumlu karşıladıklarını belirten Bursa TB Yönetim Kurulu Başkan Yardımcısı İbrahim Özhan, ancak asıl belirleyici unsurun faiz indirimlerinin istikrarlı biçimde sürmesi, finansman maliyetlerinin düşmesi ve KOBİ’lerin krediye erişiminin kolaylaştırılması olduğunu söyledi.",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "banka*",
+        "faiz*",
+        "finans*",
+        "kredi*",
+        "merkez bankasi*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Ekonomim",
+      "title": "OKA’dan Bölge ekonomisine 12 milyar TL’lik yatırım hamlesi",
+      "url": "https://www.ekonomim.com/sehirler/okadan-bolge-ekonomisine-12-milyar-tllik-yatirim-hamlesi-haberi-926656",
+      "published": "2026-10-23T12:07:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Orta Karadeniz Kalkınma Ajansı’nın ekim ayı Yönetim Kurulu Toplantısı Dönem Başkanı Tokat Valisi Abdullah Köklü başkanlığında, Samsun Valisi Orhan Tavlı’nın ev sahipliğinde gerçekleştirildi",
+      "scope": "domestic",
+      "tr_markers": [
+        "tl"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "ekonomi*",
+        "yatirim*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Dünya",
+      "title": "Türk şirketlerine üç bölgede finansman desteği: Kanada ile imzalar atıldı",
+      "url": "https://www.dunya.com/ekonomi/turk-sirketlerine-uc-bolgede-finansman-destegi-kanada-ile-imzalar-atildi-haberi-845035",
+      "published": "2026-10-23T11:55:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Türk Eximbank ile Kanada&amp;#039;nın ihracat destek kuruluşu EDC arasında yeni finansman işbirliği anlaşması imzalandı. Afrika, Orta Doğu ve Orta Asya&amp;#039;da ortak projelerin önü açılırken iki ülke arasındaki serbest ticaret görüşmeleri için de tarih netleşti.",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*"
+      ],
+      "primary_topic": "trade",
+      "topics": [
+        "trade",
+        "macro"
+      ],
+      "matched": [
+        "finans*",
+        "ihracat*",
+        "serbest ticaret*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Ekonomim",
+      "title": "Karadeniz'de İHA şüphesi: Romanya açıklarında batan gemi için arama kurtarma faaliyeti başlatıldı",
+      "url": "https://www.ekonomim.com/dunya/karadenizde-iha-suphesi-romanya-aciklarinda-batan-gemi-icin-arama-kurtarma-faaliyeti-baslatildi-haberi-926646",
+      "published": "2026-10-23T11:15:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Romanya&amp;#039;nın Karadeniz kıyısındaki Köstence açıklarında bir gemi sulara gömüldü. Olayın ardından bölgede arama kurtarma çalışmaları başlatılırken, Romanya Cumhurbaşkanı Dan geminin bir İHA saldırısı nedeniyle batmış olabileceğinin değerlendirildiğini açıkladı.",
+      "scope": "domestic",
+      "tr_markers": [
+        "cumhurbaskan*"
+      ],
+      "primary_topic": "defense",
+      "topics": [
+        "defense"
+      ],
+      "matched": [
+        "iha"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Daily Sabah",
+      "title": "S&amp;P says Türkiye's policy shift on track, banking risks manageable",
+      "url": "https://www.dailysabah.com/business/economy/sp-says-turkiyes-policy-shift-on-track-banking-risks-manageable",
+      "published": "2026-10-23T10:54:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Türkiye's tight monetary stance and its shift to more conventional economic policies underpin its sovereign rating, according to S&amp;P Global Ratings. Slower disinflation and the run...",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "economic"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Dünya",
+      "title": "Apple'ın ilk katlanabilir iPhone'u Türkiye'de satışa çıktı: Fiyatı 230 bin liradan başlıyor",
+      "url": "https://www.dunya.com/foto-galeri/teknoloji/applein-ilk-katlanabilir-iphoneu-turkiyede-satisa-cikti-fiyati-230-bin-liradan-basliyor-galeri-845025",
+      "published": "2026-10-23T10:33:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Apple&amp;#039;ın ilk katlanabilir telefonu iPhone Duo Türkiye&amp;#039;de satışa sunuldu. 7,6 inç katlanabilir ekran ve A20 Pro işlemciyle gelen cihazın başlangıç fiyatı 229 bin 999 TL, en yüksek depolama kapasitesine sahip modelinin fiyatı ise 335 bin 999 TL. İşte iPhone Duo&amp;#039;nun fiyatı ve teknik özellikleri...",
+      "scope": "domestic",
+      "tr_markers": [
+        "tl",
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "kapasite*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Borsada tarihi düşüş: 18 yıl sonra bir ilk yaşanıyor!",
+      "url": "https://www.sozcu.com.tr/borsada-tarihi-dusus-18-yil-sonra-bir-ilk-yasaniyor-p372041",
+      "published": "2026-10-23T10:21:56+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Borsa İstanbul'da satış baskısı derinleşiyor. BIST 100 endeksi 11 bin puanın altını görerek son 18 yılın en uzun düşüş s...",
+      "scope": "domestic",
+      "tr_markers": [
+        "bist",
+        "borsa istanbul",
+        "istanbul"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "borsa*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Dünya",
+      "title": "UEA Başkanı Birol'dan 2027 için karamsar tablo! Enerji krizi sürecek",
+      "url": "https://www.dunya.com/enerji/uea-baskani-biroldan-2027-icin-karamsar-tablo-enerji-krizi-surecek-haberi-845023",
+      "published": "2026-10-23T10:14:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Uluslararası Enerji Ajansı Başkanı Fatih Birol, enerji krizinin 2027&amp;#039;de de etkisini sürdüreceğini belirterek, &amp;quot;İyimser bakmaya çalışsam bile kendimi ikna edebilecek bir argümanla gelemiyorum&amp;quot; dedi. COP31&amp;#039;i Türkiye ve dünya için &amp;quot;altın bir fırsat&amp;quot; olarak değerlendiren Birol, elektriğin enerji içindeki payını artıracak küresel bir taahhütle Antal",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "enerji*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Hürriyet Daily News",
+      "title": "Türk Eximbank, Canada’s EDC sign cooperation MoU",
+      "url": "https://www.hurriyetdailynews.com/turk-eximbank-canadas-edc-sign-cooperation-mou-228510",
+      "published": "2026-10-23T09:40:42+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "A memorandum of understanding (MoU) has been signed between Türk Eximbank and Export Development Canada (EDC) to strengthen cooperation in export credits and support Turkish and Canadian companies in developing joint projects in third-country markets, particularly in Africa, the Middle East and North Africa (MENA) and Central Asia, Turkish Trade Mnister Ömer Bolat has announced.",
+      "scope": "domestic",
+      "tr_markers": [
+        "bolat",
+        "turk*",
+        "turkish"
+      ],
+      "primary_topic": "trade",
+      "topics": [
+        "trade"
+      ],
+      "matched": [
+        "export*",
+        "trade"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Hürriyet Daily News",
+      "title": "Households turn more optimistic on inflation, survey shows",
+      "url": "https://www.hurriyetdailynews.com/households-turn-more-optimistic-on-inflation-survey-shows-228507",
+      "published": "2026-10-23T08:53:14+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Inflation expectations diverged across sectors in October, with households and businesses becoming more optimistic about the inflation outlook while market participants turned slightly more cautious, according to surveys released by Türkiye’s Central Bank on Oct. 23.",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "bank",
+        "central bank",
+        "inflation",
+        "market"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Türkiye’deki her 2 araçtan biri tek bir ilden çıkıyor",
+      "url": "https://www.sozcu.com.tr/turkiye-deki-her-2-aractan-biri-tek-bir-ilden-cikiyor-p371988",
+      "published": "2026-10-23T08:21:46+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Türkiye'de ocak-eylül döneminde üretilen her 10 taşıttan yaklaşık 5'i Kocaeli'deki fabrikalardan çıkarken, ihraç edilen ...",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "fabrika*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Sözcü Otomotiv",
+      "title": "Türkiye’deki her 2 araçtan biri tek bir ilden çıkıyor",
+      "url": "https://www.sozcu.com.tr/turkiye-deki-her-2-aractan-biri-tek-bir-ilden-cikiyor-p371988",
+      "published": "2026-10-23T08:21:46+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Türkiye'de ocak-eylül döneminde üretilen her 10 taşıttan yaklaşık 5'i Kocaeli'deki fabrikalardan çıkarken, ihraç edilen ...",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "fabrika*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Türkiye'nin enerji devi Zorlu Enerji'den temerrüt riski",
+      "url": "https://www.sozcu.com.tr/zor-gunler-geciren-turkiye-nin-enerji-devi-zorlu-enerji-den-temerrut-riski-p371894",
+      "published": "2026-10-23T08:08:16+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Türkiye'nin en büyük holdinglerinden birine ait olan Zorlu Enerji, 1.1 milyar dolarlık tahvilinin bu hafta vadesi dolan ...",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "enerji*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Yeşil Haber",
+      "title": "Prag, eski demiryolu alanlarını yeni mahallelere açıyor",
+      "url": "https://yesilhaber.net/prag-bubny-brownfield-yeni-mahalle-plani/",
+      "published": "2026-10-23T07:41:04+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Prag’ın yeni planı eski sanayi ve demiryolu alanlarına odaklanıyor. Bubny-Zátory’de 2050’ye kadar 10 bine kadar konut hedefleniyor.",
+      "scope": "domestic",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "sanayi*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Daily Sabah",
+      "title": "Türkiye sets sail for greater yachting opportunities",
+      "url": "https://www.dailysabah.com/life/travel/turkiye-sets-sail-for-greater-yachting-opportunities",
+      "published": "2026-10-23T07:41:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Türkiye’s place in the yachting industry extends beyond its coastline. The country builds vessels for international buyers, maintains a network of marinas and shipyards, and draws...",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "industry"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Vatandaşın yatırım tercihi değişmedi",
+      "url": "https://www.sozcu.com.tr/vatandasin-yatirim-tercihi-degismedi-p371959",
+      "published": "2026-10-23T07:29:46+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "TCMB'nin Ekim 2026 Hanehalkı Beklenti Anketi'nde altın, yüzde 43,3 ile yatırım tercihlerinde ilk sırada yer aldı. Katılı...",
+      "scope": "domestic",
+      "tr_markers": [
+        "tcmb"
+      ],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "yatirim*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Hürriyet Daily News",
+      "title": "Most November discount spending expected online",
+      "url": "https://www.hurriyetdailynews.com/most-november-discount-spending-expected-online-228506",
+      "published": "2026-10-23T07:04:16+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Nearly 69 percent of planned consumer spending during this year’s November discounts is expected to take place through online channels, highlighting the dominance of e-commerce during the country’s biggest annual sales campaigns, according to PwC Türkiye’s 2026 Legendary Friday Survey.",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "e-commerce"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Yeşil Haber",
+      "title": "İş Leasing, yeşil yatırımlar için EBRD ile 100 milyon avroluk kredi sözleşmesi imzaladı",
+      "url": "https://yesilhaber.net/is-leasing-ebrd-100-milyon-avro-yesil-kredi/",
+      "published": "2026-10-23T06:45:48+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Yeşil yatırım finansmanı için İş Leasing ve EBRD arasında 100 milyon avroluk kredi sözleşmesi imzalandı. Deprem bölgesi de kapsamda.",
+      "scope": "domestic",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "finans*",
+        "kredi*",
+        "yatirim*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Tutuklu iş insanı Serdar Turhan'ın İngiltere'deki serveti ortaya çıktı! Hesaplar donduruldu",
+      "url": "https://www.sozcu.com.tr/tutuklu-is-insani-serdar-turhan-in-ingiltere-deki-serveti-ortaya-cikti-hesaplar-donduruldu-p371928",
+      "published": "2026-10-23T06:28:18+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "İstanbul’da borsa ve fon soruşturması kapsamında tutuklanan Pusula Holding Yönetim Kurulu Başkanı Serdar Turhan’ın, İngi...",
+      "scope": "domestic",
+      "tr_markers": [
+        "istanbul"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "borsa*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Yeşil Haber",
+      "title": "Zorlu Enerji, Electrip devrini tamamladı; 60,5 milyon dolarlık faiz için erteleme istedi",
+      "url": "https://yesilhaber.net/zorlu-enerji-electrip-devrini-tamamladi-605-milyon-dolarlik-faiz-icin-erteleme-istedi/",
+      "published": "2026-10-23T06:03:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Electrip pay devri tamamlandı. Zorlu Enerji 65 milyon dolar nakit tahsil etti ve 60,5 milyon dolarlık faiz için altı ay erteleme talep etti.",
+      "scope": "domestic",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "enerji*",
+        "faiz*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Hürriyet Daily News",
+      "title": "Low debt helps economy withstand shocks: Şimşek",
+      "url": "https://www.hurriyetdailynews.com/low-debt-helps-economy-withstand-shocks-simsek-228496",
+      "published": "2026-10-23T05:45:47+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Türkiye’s low debt levels strengthen its ability to withstand economic shocks and sustain growth, Treasury and Finance Minister Mehmet Şimşek said on Oct. 22.",
+      "scope": "domestic",
+      "tr_markers": [
+        "simsek",
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "economic",
+        "economy",
+        "grow*",
+        "growth"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Faizi indirdi ama krizi görmedi",
+      "url": "https://www.sozcu.com.tr/faizi-indirdi-ama-krizi-gormedi-p371850",
+      "published": "2026-10-23T02:30:18+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "TCMB 9 ay sonra faiz indirdi. 1 puanlık indirimle politika faizi yüzde 36’ya çekildi ancak borsa sert düştü. Ekonomistle...",
+      "scope": "domestic",
+      "tr_markers": [
+        "tcmb"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "borsa*",
+        "ekonomi*",
+        "faiz*",
+        "politika faizi"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Anadolu Ajansı (EN)",
+      "title": "Türkiye's economy grows 5.5% on average over 23 years despite crisis",
+      "url": "https://www.aa.com.tr/en/economy/turkiyes-economy-grows-55-on-average-over-23-years-despite-crisis/4097891",
+      "published": "2026-10-22T22:19:14+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Medium-sized powers step up to ensure regional security in increasingly multipolar world, while institutional trust erodes amid Western double standards, says chair of Dissemination of Knowledge Society",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "economy",
+        "grow*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Yeşil Haber",
+      "title": "Beta Enerji 50 bin payını 2,52 milyon TL’ye geri aldı",
+      "url": "https://yesilhaber.net/beta-enerji-50-bin-pay-geri-alim/",
+      "published": "2026-10-22T20:03:19+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Beta Enerji, 21 Ekim’de 50.000 payını yaklaşık 2,52 milyon TL’ye geri aldı. İşlem, 250 milyon TL fon ayrılan altı aylık geri alım programı kapsamında yapıldı.",
+      "scope": "domestic",
+      "tr_markers": [
+        "tl"
+      ],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "enerji*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Yeşil Haber",
+      "title": "Özgül enerji tüketimi nedir? 100 kWh/ton hesaplama örneği",
+      "url": "https://yesilhaber.net/ozgul-enerji-tuketimi-nedir/",
+      "published": "2026-10-22T19:28:27+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Özgül enerji tüketimi, belirli bir ürün veya faaliyet birimi için kullanılan enerji miktarıdır. İngilizce karşılığı specific energy consumption, kısaltması SEC olarak kullanılır. Sanayide “spesifik enerji tüketimi” veya “birim üretim başına enerji tüketimi” adlarıyla da karşılaşılır. Örneğin kWh/ton, bir ton ürünün üretiminde tüketilen kilovatsaat miktarını gösterir. Özgül enerji tüketimi nasıl he",
+      "scope": "domestic",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "energy",
+        "enerji*",
+        "sanayi*",
+        "uretim*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Yeşil Haber",
+      "title": "Fosil yakıt kaynaklı hava kirliliği: Türkiye için yıllık 55 milyar dolar yük tahmini",
+      "url": "https://yesilhaber.net/fosil-yakit-hava-kirliligi-55-milyar-dolar/",
+      "published": "2026-10-22T18:23:26+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Fosil yakıt kaynaklı hava kirliliği için THHP ve CREA, Türkiye genelinde yılda 26 bin 500 erken ölüm ve 55 milyar dolar ekonomik yük tahmin ediyor.",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "ekonomi*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Anadolu Ajansı (EN)",
+      "title": "Turkish parliament passes law on liquidation of certain investment funds",
+      "url": "https://www.aa.com.tr/en/turkiye/turkish-parliament-passes-law-on-liquidation-of-certain-investment-funds/4097731",
+      "published": "2026-10-22T17:53:02+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Legislation sets rules for investor payments, recovery of unlawfully transferred assets from funds ordered liquidated by Capital Markets Board",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkish"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "capital",
+        "investment*",
+        "investor"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Hürriyet Ekonomi",
+      "title": "Son dakika... Bazı yatırım fonları hakkındaki kanun teklifi Meclis'te kabul edildi",
+      "url": "https://www.hurriyet.com.tr/gundem/son-dakika-bazi-yatirim-fonlari-hakkindaki-kanun-teklifi-mecliste-kabul-edildi-43351547",
+      "published": "2026-10-22T17:07:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Son dakika haberi... Tasfiyesine Karar Verilen Bazı Yatırım Fonları Hakkında Kanun Teklifi, TBMM Genel Kurulu'nda kabul edilerek yasalaştı. Düzenlemeye göre, net yatırım tutarı 1 milyon liranın altında olan yatırımcılara net yatırım tutarları kadar, 1 milyon lira ve üzerinde olan yatırımcılar için ise en fazla 1 milyon lira ara ödeme yapılabilecek.",
+      "scope": "domestic",
+      "tr_markers": [
+        "lira",
+        "meclis"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "yatirim*",
+        "yatirimci*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Anadolu Ajansı (EN)",
+      "title": "Türkiye, Canada sign 3 agreements on defense industry, air transport, energy",
+      "url": "https://www.aa.com.tr/en/turkiye/turkiye-canada-sign-3-agreements-on-defense-industry-air-transport-energy/4097621",
+      "published": "2026-10-22T16:01:25+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Agreements signed after talks between President Erdogan and Prime Minister Carney in Ankara",
+      "scope": "domestic",
+      "tr_markers": [
+        "ankara",
+        "erdogan",
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "defense",
+      "topics": [
+        "industry",
+        "defense"
+      ],
+      "matched": [
+        "defense",
+        "energy",
+        "industry"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Anadolu Ajansı (EN)",
+      "title": "Türkiye's BIST 100 down over 3% at close",
+      "url": "https://www.aa.com.tr/en/turkiye/turkiyes-bist-100-down-over-3-at-close/4097619",
+      "published": "2026-10-22T15:59:40+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Borsa Istanbul loses more than 350 points",
+      "scope": "domestic",
+      "tr_markers": [
+        "bist",
+        "borsa istanbul",
+        "istanbul",
+        "turk*",
+        "turkiye"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "borsa*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Anadolu Ajansı (EN)",
+      "title": "Turkish seafood exports to China nearly triple, led by salmon and tuna",
+      "url": "https://www.aa.com.tr/en/turkiye/turkish-seafood-exports-to-china-nearly-triple-led-by-salmon-and-tuna/4097612",
+      "published": "2026-10-22T15:56:41+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Türkiye’s seafood exports to China total over $18 million in January-September as salmon revenues jump 93% amid a 153% expansion in overall shipping volume",
+      "scope": "domestic",
+      "tr_markers": [
+        "turk*",
+        "turkish",
+        "turkiye"
+      ],
+      "primary_topic": "trade",
+      "topics": [
+        "trade"
+      ],
+      "matched": [
+        "export*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Yeşil Haber",
+      "title": "Şa-Ra Enerji iş ortaklığından 31 milyon euroluk iletim hattı sözleşmesi",
+      "url": "https://yesilhaber.net/sara-enerji-31-milyon-euro-iletim-hatti-sozlesmesi/",
+      "published": "2026-10-22T13:58:29+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Şa-Ra Enerji, 22 Ekim’de yurt dışındaki bir müşteriyle iş ortaklığı üzerinden yaklaşık 31 milyon euroluk elektrik iletim hattı sözleşmesi imzaladığını duyurdu. Şa-Ra Enerji İnşaat Ticaret ve Sanayi A.Ş. (IST: SARAE), grup şirketi Şa-Ra Teknoloji A.Ş. ile kurduğu iş ortaklığı bünyesinde yüksek gerilim elektrik iletim hattı inşaat sözleşmesi imzalandığını açıkladı. Şirketin 22 Ekim 2026 saat 08.23’t",
+      "scope": "domestic",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "enerji*",
+        "sanayi*",
+        "teknoloji*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Webrazzi",
+      "title": "HUBrica 3. dönem Demo Day'inde sunum yapan 10 girişim",
+      "url": "https://webrazzi.com/2026/10/22/hubrica-3-donem-demo-day-inde-sunum-yapan-10-girisim/",
+      "published": "2026-10-22T13:50:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Halkbank'ın İTÜ ARI Teknokent iş birliğiyle hayata geçirdiği HUBrica Hızlandırma Programı'nın 3. dönemi sona erdi. İstanbul Finans Merkezi'ndeki Halkbank Kuleleri'nde gerçekleştirilen Demo Day'de, pro...",
+      "scope": "domestic",
+      "tr_markers": [
+        "istanbul"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "finans*",
+        "girisim*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "TEFAS'ta fon satışı yapanlar dikkat: SPK'dan kritik 'takas' uyarısı!",
+      "url": "https://www.sozcu.com.tr/tefas-ta-fon-satisi-yapanlar-dikkat-spk-dan-kritik-takas-uyarisi-p371748",
+      "published": "2026-10-22T13:26:33+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "SPK, TBMM'de görüşülen kanun teklifine ilişkin açıklamasında, pay blokajı kaydı bulunan kişilerin toplam 455 bin 758 fon...",
+      "scope": "domestic",
+      "tr_markers": [
+        "spk"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "spk"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Volvo CEO'su: Çin pazarı Batılı otomobil üreticileri için artık elden gitti",
+      "url": "https://www.bloomberght.com/volvo-ceo-su-cin-pazari-batili-otomobil-ureticileri-icin-artik-elden-gitti-3792387",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Volvo CEO'su, Çin pazarının Batılı otomobil üreticileri için artık 'elden gittiğini' söyledi. Harcama krizi nedeniyle Çin pazarının genelinde bir düşüş yaşanırken, elektrikli araçlar alanında yerel markaların hakimiyet kurmasıyla birlikte üçüncü çeyrekte Çin'deki teslimatlar yüzde 40'tan fazla azaldı.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "elektrikli arac*"
+      ],
+      "tw_sectors": [
+        "汽車零組件與EV供應鏈"
+      ]
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "590 bin liraya elektrikli araç satışa çıktı: Tek şarjla 555 kilometre menzil gidiyor",
+      "url": "https://www.sozcu.com.tr/590-bin-liraya-elektrikli-arac-satisa-cikti-tek-sarjla-555-kilometre-menzil-gidiyor-p371889",
+      "published": "2026-10-23T11:31:10+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Volkswagen ortaklığındaki markanın ilk seri üretim elektrikli sedanı, erişilebilir fiyat etiketi ve 555 kilometrelik men...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "uretim*"
+      ],
+      "tw_sectors": [
+        "汽車零組件與EV供應鏈"
+      ]
+    },
+    {
+      "source": "Sözcü Otomotiv",
+      "title": "590 bin liraya elektrikli araç satışa çıktı: Tek şarjla 555 kilometre menzil gidiyor",
+      "url": "https://www.sozcu.com.tr/590-bin-liraya-elektrikli-arac-satisa-cikti-tek-sarjla-555-kilometre-menzil-gidiyor-p371889",
+      "published": "2026-10-23T11:31:10+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Volkswagen ortaklığındaki markanın ilk seri üretim elektrikli sedanı, erişilebilir fiyat etiketi ve 555 kilometrelik men...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "uretim*"
+      ],
+      "tw_sectors": [
+        "汽車零組件與EV供應鏈"
+      ]
+    },
+    {
+      "source": "Ekonomim",
+      "title": "Shell’in elden çıkardığı şirketten iki ay sonra iflas haberi geldi",
+      "url": "https://www.ekonomim.com/dunya/shellin-elden-cikardigi-sirketten-iki-ay-sonra-iflas-haberi-geldi-haberi-926644",
+      "published": "2026-10-23T11:06:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "İngiliz enerji devi Shell’in yaklaşık iki ay önce sattığı Alman enerji depolama şirketi Sonnen GmbH iflas başvurusunda bulundu. Yaklaşık 400 çalışanın geleceği belirsizliğe sürüklenirken, şirketin 150 binden fazla müşterisine sunduğu hizmetlerin nasıl sürdürüleceği de gündeme geldi.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "enerji*"
+      ],
+      "tw_sectors": [
+        "綠能、儲能與回收"
+      ]
+    },
+    {
+      "source": "Ekonomim",
+      "title": "Otomotiv devi Volvo'dan tasarruf hamlesi: İşten çıkarmalar yolda",
+      "url": "https://www.ekonomim.com/sirketler/otomotiv-devi-volvodan-tasarruf-hamlesi-isten-cikarmalar-yolda-haberi-926642",
+      "published": "2026-10-23T10:52:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Otomotiv sektöründe maliyetleri düşürmeye yönelik yeniden yapılanma sürecine Volvo Cars da dahil oldu. İsveç merkezli otomobil üreticisi, küresel çapta 2 bin 500 kişilik iş gücü azaltımına gideceğini duyururken, İsveç’teki yaklaşık 2 bin pozisyonun da bu süreçten etkilenebileceği belirtildi.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "otomotiv*"
+      ],
+      "tw_sectors": [
+        "汽車零組件與EV供應鏈"
+      ]
+    },
+    {
+      "source": "Anadolu Ajansı (EN)",
+      "title": "Volvo Cars to cut 2,500 jobs as China slump drives quarterly loss",
+      "url": "https://www.aa.com.tr/en/economy/volvo-cars-to-cut-2-500-jobs-as-china-slump-drives-quarterly-loss/4098270",
+      "published": "2026-10-23T09:11:42+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Swedish automaker targets additional $504M in savings as China revenue nearly halves",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "automaker*"
+      ],
+      "tw_sectors": [
+        "汽車零組件與EV供應鏈"
+      ]
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "İşten çıkarma dalgasına bir şirket daha katıldı: 2 bin 500 kişi işsiz kalacak",
+      "url": "https://www.sozcu.com.tr/isten-cikarma-dalgasina-bir-sirket-daha-katildi-2-bin-500-kisi-issiz-kalacak-p372004",
+      "published": "2026-10-23T09:09:51+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "İsveçli otomotiv devi Volvo Cars, küresel piyasalarda artan maliyet baskılarına karşı radikal bir adım atarak binlerce ç...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "otomotiv*",
+        "piyasa*"
+      ],
+      "tw_sectors": [
+        "汽車零組件與EV供應鏈"
+      ]
+    },
+    {
+      "source": "Daily Sabah",
+      "title": "Volvo Cars announces 2,500 job cuts after disastrous Q3",
+      "url": "https://www.dailysabah.com/business/economy/volvo-cars-announces-2500-job-cuts-after-disastrous-q3",
+      "published": "2026-10-23T08:45:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Shares in Swedish carmaker Volvo Cars plunged Friday after it said U.S. tariffs and strong competition from local brands in China pushed it into a third-quarter loss. The company a...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "trade",
+      "topics": [
+        "trade",
+        "macro"
+      ],
+      "matched": [
+        "shares",
+        "tariff*"
+      ],
+      "tw_sectors": [
+        "汽車零組件與EV供應鏈"
+      ]
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "400 bin kilometreyi deviren araçlar: Alan sanayi yolunu unutuyor",
+      "url": "https://www.sozcu.com.tr/400-bin-kilometreyi-deviren-araclar-alan-sanayi-yolunu-unutuyor-p371968",
+      "published": "2026-10-23T07:48:10+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Otomotiv sektöründe yapılan kapsamlı dayanıklılık araştırması, standart bir aracın 400 bin kilometreye ulaşma şansı yaln...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "otomotiv*",
+        "sanayi*"
+      ],
+      "tw_sectors": [
+        "汽車零組件與EV供應鏈"
+      ]
+    },
+    {
+      "source": "Sözcü Otomotiv",
+      "title": "400 bin kilometreyi deviren araçlar: Alan sanayi yolunu unutuyor",
+      "url": "https://www.sozcu.com.tr/400-bin-kilometreyi-deviren-araclar-alan-sanayi-yolunu-unutuyor-p371968",
+      "published": "2026-10-23T07:48:10+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Otomotiv sektöründe yapılan kapsamlı dayanıklılık araştırması, standart bir aracın 400 bin kilometreye ulaşma şansı yaln...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "otomotiv*",
+        "sanayi*"
+      ],
+      "tw_sectors": [
+        "汽車零組件與EV供應鏈"
+      ]
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Tezgâhta balık fiyatları karıştı: Hamsi ve istavrit pahalandı, palamut fiyatları en dibi gördü",
+      "url": "https://www.sozcu.com.tr/tezgahta-balik-fiyatlari-karisti-hamsi-ve-istavrit-pahalandi-palamut-fiyatlari-en-dibi-gordu-p371927",
+      "published": "2026-10-23T06:26:03+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Karadeniz’deki bolluğunun ardından ülke genelinde tüketimi artan palamudun tezgahlardaki yerini koruyacağını belirten ba...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "tezgah*"
+      ],
+      "tw_sectors": [
+        "工具機與金屬加工"
+      ]
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Çin'in gücüne dayanamayan otomotiv markası ikiye bölündü",
+      "url": "https://www.sozcu.com.tr/cin-in-gucune-dayanamayan-otomotiv-markasi-ikiye-bolundu-p371895",
+      "published": "2026-10-23T05:38:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Alman teknoloji ve otomotiv tedarikçisi Bosch, artan rekabet ve sektördeki maliyet baskıları nedeniyle otomotiv parça fa...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "otomotiv*",
+        "teknoloji*"
+      ],
+      "tw_sectors": [
+        "汽車零組件與EV供應鏈"
+      ]
+    },
+    {
+      "source": "Sözcü Otomotiv",
+      "title": "Çin'in gücüne dayanamayan otomotiv markası ikiye bölündü",
+      "url": "https://www.sozcu.com.tr/cin-in-gucune-dayanamayan-otomotiv-markasi-ikiye-bolundu-p371895",
+      "published": "2026-10-23T05:38:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Alman teknoloji ve otomotiv tedarikçisi Bosch, artan rekabet ve sektördeki maliyet baskıları nedeniyle otomotiv parça fa...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "otomotiv*",
+        "teknoloji*"
+      ],
+      "tw_sectors": [
+        "汽車零組件與EV供應鏈"
+      ]
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Otomotiv devi kablosuz şarj olan elektrikli araçları piyasaya sürecek",
+      "url": "https://www.sozcu.com.tr/otomotiv-devi-kablosuz-sarj-olan-elektrikli-araclari-piyasaya-surecek-p371759",
+      "published": "2026-10-22T13:50:18+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Japon otomotiv devi Honda, elektrikli araç sahiplerinin şarj istasyonlarında zaman kaybetmesini engelleyecek devrim nite...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "otomotiv*",
+        "piyasa*"
+      ],
+      "tw_sectors": [
+        "汽車零組件與EV供應鏈"
+      ]
+    },
+    {
+      "source": "Sözcü Otomotiv",
+      "title": "Otomotiv devi kablosuz şarj olan elektrikli araçları piyasaya sürecek",
+      "url": "https://www.sozcu.com.tr/otomotiv-devi-kablosuz-sarj-olan-elektrikli-araclari-piyasaya-surecek-p371759",
+      "published": "2026-10-22T13:50:18+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Japon otomotiv devi Honda, elektrikli araç sahiplerinin şarj istasyonlarında zaman kaybetmesini engelleyecek devrim nite...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "otomotiv*",
+        "piyasa*"
+      ],
+      "tw_sectors": [
+        "汽車零組件與EV供應鏈"
+      ]
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "IEA Başkanı Birol, enerji krizinin 2027'de de devam edeceği görüşünde",
+      "url": "https://www.bloomberght.com/iea-baskani-birol-enerji-krizinin-2027-de-de-devam-edecegi-gorusunde-3792403",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Uluslararası Enerji Ajansı (IEA) Başkanı Fatih Birol, 2027'de enerji krizinin normalize olacağı konusunda iyimser olmadığını dile getirdi.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "enerji*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Rusya politika faizini yüzde 14'te sabit bıraktı",
+      "url": "https://www.bloomberght.com/rusya-politika-faizini-yuzde-14-te-sabit-birakti-3792402",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Bankadan yapılan açıklamada, ekonominin yılın ikinci yarısında ılımlı büyümesini sürdürdüğü, fiyat baskısının ve enflasyon beklentilerinin yüksek seyretmeye devam ettiği belirtildi.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "banka*",
+        "ekonomi*",
+        "enflasyon*",
+        "faiz*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Euro Bölgesi'nde iş faaliyetleri Fransa etkisiyle yavaşladı",
+      "url": "https://www.bloomberght.com/euro-bolgesi-nde-is-faaliyetleri-fransa-etkisiyle-yavasladi-3792388",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Euro Bölgesi'nde Ekim ayında özel sektör büyüme hızı, bölgenin ikinci büyük ekonomisi Fransa'nın mali ve siyasi gerilimlerle boğuşmasının etkisiyle beklentilerin üzerinde bir yavaşlama kaydetti.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "buyume",
+        "ekonomi*",
+        "euro bolgesi"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Finansal Hizmetler Güven Endeksi Ekim'de 155,2'ye geriledi",
+      "url": "https://www.bloomberght.com/finansal-hizmetler-guven-endeksi-ekim-de-155-2-ye-geriledi-3792379",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Finansal Hizmetler Güven Endeksi (FHGE), ekimde 3,2 puan azalışla 155,2 seviyesine indi.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "finans*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Fransa'da iş faaliyetleri bütçe sorunları ve protestolar nedeniyle daraldı",
+      "url": "https://www.bloomberght.com/fransa-da-is-faaliyetleri-butce-sorunlari-ve-protestolar-nedeniyle-daraldi-3792378",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Fransa'da iş dünyası faaliyetleri, ülkenin mali durumuna ilişkin yeniden ortaya çıkan endişeler ve protestolar nedeniyle daralma yaşandı.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "butce*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Rönesans'tan 3 milyar doları aşan veri merkezi yatırımı",
+      "url": "https://www.bloomberght.com/ronesans-ta-altyapida-6-milyar-euroluk-portfoy-ve-3-milyar-dolari-asan-veri-merkezi-yatirimi-3792354",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Hollanda'nın Amsterdam kentinde Bloomberg HT Genel Yayın Yönetmeni Açıl Sezen'in sorularını yanıtlayan Rönesans Altyapı Hizmetleri CEO'su Kemal Sağlam, holding bünyesindeki yeni reorganizasyonu ve küresel yatırım stratejileriyle ilgili bilgiler verdi.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "yatirim*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "MSCI'ın uyardığı Endonezya’da özel sektör tahvil riski 6 yılın zirvesinde",
+      "url": "https://www.bloomberght.com/msci-in-uyardigi-endonezyada-ozel-sektor-tahvil-riski-6-yilin-zirvesinde-3792367",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Yatırımcıların Endonezya tahvillerini ellerinde tutmak için talep ettikleri ek getiri, endeks sağlayıcı MSCI'in Endonezya'yı küresel hisse senedi endekslerinden çıkarabileceğine dair uyarısının ardından 67 baz puana yükseldi.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "hisse senedi*",
+        "yatirim*",
+        "yatirimci*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Altın 4 bin doların altını test etti",
+      "url": "https://www.bloomberght.com/altin-yuksek-petrol-fiyatlariyla-haftalik-sert-dususe-hazirlaniyor-3792333",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Yatırımcıların piyasa genelindeki hisse senedi satış dalgası sırasında değerli metali elden çıkarmasıyla, altının ons fiyatı 4 bin doların altına gerileyerek son üç aydan uzun bir sürenin en düşük seviyesine indi.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "hisse senedi*",
+        "piyasa*",
+        "yatirim*",
+        "yatirimci*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Güvenli liman talebi ABD tahvillerini yükseltti",
+      "url": "https://www.bloomberght.com/guvenli-liman-talebi-abd-tahvillerini-yukseltti-3792338",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "ABD Hazine tahvilleri, yapay zeka bağlantılı hisselerde derinleşen satış dalgası, Fransa'daki piyasa çalkantısı ve Ortadoğu'da yeniden artan gerilimin endişeli yatırımcıları ABD devlet tahvillerine yöneltmesiyle tüm vadelerde güçlü yükselerek iki yılı aşkın sürenin en iyi gününü kaydetti.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "piyasa*",
+        "yapay zeka",
+        "yatirim*",
+        "yatirimci*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "AMB’nin Aralık'ta faiz artırması bekleniyor",
+      "url": "https://www.bloomberght.com/ambnin-aralik-ta-faiz-artirmasi-bekleniyor-3792334",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Avrupa Merkez Bankası'nın (AMB), gelecek haftaki toplantıda faizleri sabit tuttuktan sonra yılın son faiz artırımını aralık ayında gerçekleştirmesi bekleniyor.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "banka*",
+        "faiz*",
+        "merkez bankasi*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Japonya’da çekirdek enflasyon yılın zirvesine çıktı",
+      "url": "https://www.bloomberght.com/japonyada-cekirdek-enflasyon-yilin-zirvesine-cikti-3792332",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Japonya'da çekirdek enflasyon, zayıf yenin ithalat maliyetlerini artırması ve yüksek enerji fiyatlarının dolaylı etkileriyle eylülde yüzde 2,1'e yükselerek yılın en yüksek seviyesine ulaştı.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "trade",
+      "topics": [
+        "trade",
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "enerji*",
+        "enflasyon*",
+        "ithalat*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Petrol beş ayın zirvesinin ardından yatay seyretti",
+      "url": "https://www.bloomberght.com/petrol-bes-ayin-zirvesinin-ardindan-yatay-seyretti-3792331",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Petrol, Suudi Arabistan'a yönelik Husilerin saldırılarının enerji arzında yeni kesintilere yol açabileceği endişesiyle önceki seansta yüzde 4 yükselerek beş ayın zirvesine ulaşmasının ardından cuma günü Asya işlemlerinde yatay seyretti.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "enerji*",
+        "petrol*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Trump, petrol kapasitesini artırmak için Savunma Üretim Yasası'nı devreye aldı",
+      "url": "https://www.bloomberght.com/trump-petrol-kapasitesini-artirmak-icin-savunma-uretim-yasasi-ni-devreye-aldi-3792330",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "ABD Başkanı Donald Trump, ülkenin savunma kabiliyetini güçlendirmek ve yurt içi petrol üretim, rafinasyon ve lojistik kapasitesini artırmak amacıyla Savunma Üretim Yasası'nı devreye soktu.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "trade",
+      "topics": [
+        "trade",
+        "industry"
+      ],
+      "matched": [
+        "kapasite*",
+        "lojistik*",
+        "petrol*",
+        "uretim*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Ekonomi ve siyaset gündemi- 23 Ekim 2026",
+      "url": "https://www.bloomberght.com/ekonomi-ve-siyaset-gundemi-23-ekim-2026-3792328",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Ekonomi ve siyaset gündeminde öne çıkanlar...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "ekonomi*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Fon yasası kabul edildi",
+      "url": "https://www.bloomberght.com/fon-yasasi-kabul-edildi-3792314",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Tasfiyesine karar verilen bazı yatırım fonları hakkında kanun teklifi TBMM Genel Kurulu'nda kabul edilerek yasalaştı.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "yatirim*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Trump: İran seçimler öncesi petrol fiyatlarını yükseltmeye çalışıyor",
+      "url": "https://www.bloomberght.com/trump-iran-secimler-oncesi-petrol-fiyatlarini-yukseltmeye-calisiyor-3792309",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "ABD Başkanı Donald Trump, İran'ın ABD ara seçimleri öncesinde petrol fiyatlarını yükseltmeye çalıştığını öne sürerek, Hürmüz Boğazı'ndan geçen petrol miktarının çatışma öncesindeki seviyeyi aştığını iddia etti.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "petrol*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Fransa'da borçlanma risk primi alarmı",
+      "url": "https://www.bloomberght.com/fransa-nin-borclanma-risk-primi-alarmi-3792282",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Fransa'da bütçe belirsizliği ve toplumsal huzursuzluk tahvil piyasalarında sert hareketliliğe yol açarken, ülkenin borçlanma risk primi Euro Bölgesi borç krizi dönemindeki seviyelere ulaştı.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "butce*",
+        "euro bolgesi",
+        "piyasa*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Bloomberg HT",
+      "title": "Meta hisselerinde harcama planını artırmasından sonra sert düşüş",
+      "url": "https://www.bloomberght.com/meta-hisselerinde-harcama-planini-artirmasindan-sonra-sert-dusus-3792280",
+      "published": null,
+      "no_date": true,
+      "late": false,
+      "summary": "Meta Platforms'un hisseleri, CEO Mark Zuckerberg'in yatırımcılara şirketin yapay zekaya daha agresif şekilde yatırım yapacağını açıklamasının ardından değer kaybetti.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "hisseleri",
+        "yatirim*",
+        "yatirimci*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Webrazzi",
+      "title": "a16z Crypto, yatırım odağını genişleterek a16z Frontier adını aldı",
+      "url": "https://webrazzi.com/2026/10/23/a16z-crypto-yatirim-odagini-genisleterek-a16z-frontier-adini-aldi/",
+      "published": "2026-10-23T13:00:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Andreessen Horowitz’in kripto odaklı yatırım birimi a16z Crypto, bundan sonra a16z Frontier adıyla faaliyet göstereceğini duyurdu. İsim değişikliğiyle birlikte yeni fonunun kapsamını genişleten ekip, ...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "yatirim*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Dünya",
+      "title": "Altın daha da düşecek mi? Gram altın yükselir mi?",
+      "url": "https://www.dunya.com/ekonomi/altin-daha-da-dusecek-mi-gram-altin-yukselir-mi-haberi-845042",
+      "published": "2026-10-23T12:53:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Altında düşüş sürüyor. Ons altın dün sert düşerken bugün yatay seyrediyor. Yatırımcılar son durumu merak ediyor. Altındaki düşüşün devam edip etmeyeceği sorgulanıyor.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "yatirim*",
+        "yatirimci*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Ekonomim",
+      "title": "Anthropic halka arz sürecine 750 milyar dolarlık bütçe ayırdı",
+      "url": "https://www.ekonomim.com/dunya/anthropic-halka-arz-surecine-750-milyar-dolarlik-butce-ayirdi-haberi-926658",
+      "published": "2026-10-23T12:22:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Yapay zeka şirketi Anthropic, yaklaşan halka arz süreci kapsamında önümüzdeki yıllarda bilgi işlem altyapısı ve maliyetleri için 750 milyar dolara kadar harcama yapabileceğini açıkladı. Yılın ilk yarısında milyonlarca dolarlık zarar açıklayan şirket, Google Cloud, Amazon Web Services ve Microsoft ile milyarlarca dolarlık devasa sözleşmelere imza attı.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "butce*",
+        "yapay zeka"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Ekonomim",
+      "title": "Gençler arasında salgın gibi yayılıyor: Elektronik sigaralar ölüm saçıyor",
+      "url": "https://www.ekonomim.com/saglik/gencler-arasinda-salgin-gibi-yayiliyor-elektronik-sigaralar-olum-saciyor-haberi-926659",
+      "published": "2026-10-23T12:12:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Gençler arasında salgın gibi yayılan elektronik sigara, genç hayatları karartmaya devam ediyor. Can Yayınları Genel Yayın Yönetmeni Cem Akaş’ın 19 yaşındaki oğlu Can Akaş’ın acı kaybıyla tekrar gündeme gelen bu gizli tehlike, masum görünen bu buharın vücutta aniden gelişen ölümcül tahribatlara yol açabildiğini bir kez daha gözler önüne serdi.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "elektronik*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Ekonomim",
+      "title": "Altınordu Atatürk rıhtımında uzatma çalışmaları tamamlandı",
+      "url": "https://www.ekonomim.com/sehirler/altinordu-ataturk-rihtiminda-uzatma-calismalari-tamamlandi-haberi-926655",
+      "published": "2026-10-23T12:04:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Ordu’nun denizle buluşma noktalarından Atatürk Rıhtımında yürütülen yenileme ve güçlendirme çalışmalarında önemli aşama kaydedildi. Rıhtımın kapasitesini artırmak, güvenliğini güçlendirmek ve denizcilik faaliyetlerine daha etkin hizmet vermesini sağlamak amacıyla sürdürülen çalışmalarda, 140 metrelik yeni iskele bölümünün kazık ve döşeme imalatları tamamlanırken mevcut iskelenin güçlendirilmesine ",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "kapasite*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Ekonomim",
+      "title": "Samsun’da kaz yetiştiriciliğinde bilimsel üretim dönemi başlıyor",
+      "url": "https://www.ekonomim.com/sehirler/samsunda-kaz-yetistiriciliginde-bilimsel-uretim-donemi-basliyor-haberi-926653",
+      "published": "2026-10-23T12:00:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Samsun’da 1. Kaz Yetiştiriciliği Bilim Kurulu Toplantısı yapıldı. Kaz yetiştiriciliğinin bilimsel ve ticari altyapısının geliştirilmesi ele alındığı toplantıda, OMÜ Veteriner Fakültesi ile kooperatif arasında bilimsel destek protokolü imzalandı. Kaz Yetiştiriciliği Üretim ve İşletme Kooperatifi Başkanı Burak Şahinkaya,” Kaz üretimini bilimin rehberliğinde yapmak istiyoruz” dedi.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "uretim*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Webrazzi",
+      "title": "Microsoft'un yapay zeka destekli tıbbi teşhis sistemi: MAI-DxO",
+      "url": "https://webrazzi.com/2026/10/23/microsoft-un-yapay-zeka-destekli-tibbi-teshis-sistemi-mai-dxo/",
+      "published": "2026-10-23T12:00:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Microsoft’un yapay zeka destekli teşhis sistemi MAI-DxO, karmaşık tıbbi vakalarda gerçekleştirilen simülasyonlarda yüzde 83 doğruluk oranına ulaştı. Science dergisinde yayımlanan araştırmaya göre gene...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "yapay zeka"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Anadolu Ajansı (EN)",
+      "title": "Russian central bank holds key rate steady at 14%",
+      "url": "https://www.aa.com.tr/en/economy/russian-central-bank-holds-key-rate-steady-at-14-/4098508",
+      "published": "2026-10-23T11:58:31+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Bank of Russia cites elevated price pressures, high inflation expectations as economy grows moderately in 2nd half of 2026",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "bank",
+        "central bank",
+        "economy",
+        "grow*",
+        "inflation"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Anadolu Ajansı (EN)",
+      "title": "UN official urges faster green investment ahead of COP31",
+      "url": "https://www.aa.com.tr/en/economy/un-official-urges-faster-green-investment-ahead-of-cop31/4098500",
+      "published": "2026-10-23T11:54:02+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "High financing costs hinder clean energy projects in developing countries despite falling technology costs, UN development official says",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "energy",
+        "investment*",
+        "technology"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Ekonomim",
+      "title": "Orta Doğu'daki gerilim petrol fiyatlarını uçurdu",
+      "url": "https://www.ekonomim.com/kuresel-ekonomi/orta-dogudaki-gerilim-petrol-fiyatlarini-ucurdu-haberi-926652",
+      "published": "2026-10-23T11:54:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Orta Doğu&amp;#039;daki çatışmaların yeniden tırmanabileceğine ilişkin endişeler petrol fiyatlarını yukarı taşıdı. Brent petrolün varil fiyatı 114,72 dolara çıkarak 4 Mayıs&amp;#039;tan bu yana en yüksek seviyesini gördü. Yükselen enerji fiyatlarının küresel ekonomik büyüme üzerindeki baskıyı artırabileceği belirtiliyor.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "buyume",
+        "ekonomi*",
+        "enerji*",
+        "petrol*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Ekonomim",
+      "title": "İskender, “Doğu Karadeniz’in ihracatı 9 ayda 1,29 milyar dolara ulaştı”",
+      "url": "https://www.ekonomim.com/sehirler/iskender-dogu-karadenizin-ihracati-9-ayda-129-milyar-dolara-ulasti-haberi-926651",
+      "published": "2026-10-23T11:52:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Doğu Karadeniz İhracatçılar Birliği “ DKİB” Yönetim Kurulu Başkanı Selçuk İskender, Ocak-Eylül döneminde Doğu Karadeniz’den yapılan ihracatın önceki yılın aynı dönemine oranla yüzde 17’lik bir atışla 1 milyar 20 milyon 669 bin dolara ulaştığını söyledi.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "trade",
+      "topics": [
+        "trade"
+      ],
+      "matched": [
+        "ihracat*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Ekonomim",
+      "title": "Bank of America satış baskısı için kasım ortasını işaret etti",
+      "url": "https://www.ekonomim.com/dunya/bank-of-america-satis-baskisi-icin-kasim-ortasini-isaret-etti-haberi-926650",
+      "published": "2026-10-23T11:47:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Bank of America stratejisti Michael Hartnett, küresel piyasalarda hisse senetleri üzerindeki baskının kasım ortasına kadar devam edebileceği uyarısında bulundu. Yapay zekâ yatırımlarındaki yüksek değerlemeler, artan borçlanma maliyetleri ve ABD ara seçimlerine ilişkin belirsizlikler, yatırımcıların temkinli hareket etmesine neden oluyor.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "bank",
+        "piyasa*",
+        "yapay zeka",
+        "yatirim*",
+        "yatirimci*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Ekonomim",
+      "title": "Elon Musk'tan medya dünyasında milyar dolarlık hamle: Hangi şirkete yatırım yaptı?",
+      "url": "https://www.ekonomim.com/sirketler/elon-musktan-medya-dunyasinda-milyar-dolarlik-hamle-hangi-sirkete-yatirim-yapti-haberi-926648",
+      "published": "2026-10-23T11:38:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Tesla ve SpaceX&amp;#039;in Üst Yöneticisi Elon Musk&amp;#039;ın, CNN&amp;#039;in de bünyesinde bulunduğu Skydance&amp;#039;e 1 milyar dolarlık yatırım yaptığı bildirildi. Hamle, Paramount ile Warner Bros&amp;#039;un birleşmesiyle oluşan medya grubunun finansal yapısını güçlendirmeyi hedeflerken teknoloji ve medya sektörleri arasında yeni iş birliklerinin de kapısını aralayabilir.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "finans*",
+        "teknoloji*",
+        "yatirim*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Dünya",
+      "title": "Altın yatırımcısının gözü bu gelişmede: Ünlü fon yöneticisi yeni yükselişin şifresini verdi",
+      "url": "https://www.dunya.com/foto-galeri/ekonomi/altin-yatirimcisinin-gozu-bu-gelismede-unlu-fon-yoneticisi-yeni-yukselisin-sifresini-verdi-galeri-845032",
+      "published": "2026-10-23T11:24:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Küresel piyasalarda altın fiyatlarının yönüne ilişkin belirsizlik sürerken, Gabelli Gold Fund yöneticisi Chris Mancini&amp;#039;den dikkat çeken bir değerlendirme geldi. Altının önündeki engellerin geçici olduğunu savunan Mancini, yeni yükselişin hangi gelişmeyle başlayabileceğine işaret etti.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "piyasa*",
+        "yatirim*",
+        "yatirimci*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Ekonomim",
+      "title": "Uluslararası Lions 118-R Yönetim Çevresi, suya el ver projesi ile farkındalık ve ormanlar yaratıyor",
+      "url": "https://www.ekonomim.com/sehirler/uluslararasi-lions-118-r-yonetim-cevresi-suya-el-ver-projesi-ile-farkindalik-ve-ormanlar-yaratiyor-haberi-926643",
+      "published": "2026-10-23T11:04:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Genel Yönetmen Lion Tülay Tosun; Lions 118-R olarak Ege Orman Vakfı ile sürdürülebilirlik anlamında; Lions Uluslararası Başkanı’nn çevre anlayışına uygun, hizmette kökleniyoruz sloganında ve logosundaki gibi sağlam köklere sahip bir birliktelik içinde olmaktan gururluyuz dedi.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "surdurulebilir*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Dünya",
+      "title": "Rusya Merkez Bankası faizi yüzde 14'te tuttu",
+      "url": "https://www.dunya.com/ekonomik-veriler/rusya-merkez-bankasi-faizi-yuzde-14te-tuttu-haberi-845028",
+      "published": "2026-10-23T11:01:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Rusya Merkez Bankası, politika faizini yüzde 14&amp;#039;te sabit bırakarak indirimlere verdiği arayı sürdürdü. Akaryakıt fiyatları, yüksek enflasyon beklentileri ve bütçe harcamaları para politikasını sıkı tutarken, ekonomik büyümedeki yavaşlama yeni bir ikilem yaratıyor.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "banka*",
+        "butce*",
+        "ekonomi*",
+        "enflasyon*",
+        "faiz*",
+        "merkez bankasi*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Dünyaca ünlü isimler 3 sene önce apartman parası verip aldılar: Şimdi bir telefon parası bile etmiyor",
+      "url": "https://www.sozcu.com.tr/dunyaca-unlu-isimler-3-sene-once-apartman-parasi-verip-aldilar-simdi-bir-telefon-parasi-bile-etmiyor-p372042",
+      "published": "2026-10-23T10:25:03+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Dijital varlık piyasasında bir dönem fırtınalar estiren NFT çılgınlığı, dünyaca ünlü yıldızlara milyarlarca liralık dev ...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "piyasa*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Dünya",
+      "title": "Avrupa'da enflasyon korkusu büyüyor: 19 bin kişilik anketten faiz uyarısı",
+      "url": "https://www.dunya.com/ekonomik-veriler/avrupada-enflasyon-korkusu-buyuyor-19-bin-kisilik-anketten-faiz-uyarisi-haberi-845021",
+      "published": "2026-10-23T10:08:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Avrupa Merkez Bankasının 11 ülkede yaklaşık 19 bin kişiyle yaptığı araştırmada, tüketicilerin gelecek bir yıla ilişkin enflasyon beklentisi yüzde 3,1&amp;#039;e yükseldi. Enerji fiyatları yeniden baskı oluştururken gözler 29 Ekim&amp;#039;deki faiz kararına çevrildi.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "banka*",
+        "enerji*",
+        "enflasyon*",
+        "faiz*",
+        "merkez bankasi*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Webrazzi",
+      "title": "Yapay zeka destekli ilaç geliştirme girişimi Warp, 215 milyon dolar yatırım aldı",
+      "url": "https://webrazzi.com/2026/10/23/yapay-zeka-destekli-ilac-gelistirme-girisimi-warp-215-milyon-dolar-yatirim-aldi/",
+      "published": "2026-10-23T10:00:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Yapay zeka destekli ilaç geliştirme girişimi Warp, 215 milyon dolar yatırım aldı. Şirketin 215 milyon dolarlık yatırım turuna Lightspeed liderlik etti. ABD merkezli Warp'in yatırım turunda IVP, Mayfie...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "girisim*",
+        "yapay zeka",
+        "yatirim*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Hürriyet Daily News",
+      "title": "IEA chief expects energy crisis to persist into 2027",
+      "url": "https://www.hurriyetdailynews.com/iea-chief-expects-energy-crisis-to-persist-into-2027-228511",
+      "published": "2026-10-23T09:50:33+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "International Energy Agency Executive Director Fatih Birol said on Oct. 23 he expects the energy crisis to continue into 2027, warning that the world will still be dealing with its consequences as governments seek alternative energy sources and strengthen supply security.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "energy"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Anadolu Ajansı (EN)",
+      "title": "IEA chief expects energy crisis to persist into 2027",
+      "url": "https://www.aa.com.tr/en/economy/iea-chief-expects-energy-crisis-to-persist-into-2027/4098258",
+      "published": "2026-10-23T09:04:34+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Birol's COP31 electrification proposal aims to raise electricity's share of global energy to 35% by 2035, strengthening energy security and cutting emissions",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "energy"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Webrazzi",
+      "title": "Google Cloud'dan yapay zeka ajanlarına özel yeni altyapı: Agent Compute Engine",
+      "url": "https://webrazzi.com/2026/10/23/google-clouddan-yapay-zeka-ajanlarina-ozel-yeni-altyapi-agent-compute-engine/",
+      "published": "2026-10-23T09:00:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Google Cloud, 22 Ekim’de düzenlenmiş olan AGNTCon ve MCPCon etkinliklerinde, yapay zeka ajanlarını çalıştırmaya yönelik Agent Compute Engine hizmetini duyurdu. Google’ın Gemini iş görevlerinde kulland...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "yapay zeka"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Webrazzi",
+      "title": "Canva, ilk görsel üretim modeli Craft'ı kullanıma sundu",
+      "url": "https://webrazzi.com/2026/10/23/canva-ilk-gorsel-uretim-modeli-crafti-kullanima-sundu/",
+      "published": "2026-10-23T08:00:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Canva, kendi araştırma ekibi tarafından geliştirilen ilk görsel üretim modeli Canva Craft’ı duyurdu. Google, OpenAI, ByteDance ve Meta’nın modelleriyle rekabet edecek olan Craft, platformun Dream Lab ...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "uretim*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Anadolu Ajansı (EN)",
+      "title": "EXPLAINER - How China is reshaping its export map beyond the US",
+      "url": "https://www.aa.com.tr/en/economy/explainer-how-china-is-reshaping-its-export-map-beyond-the-us/4098065",
+      "published": "2026-10-23T07:37:59+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Stronger sales to ASEAN and Europe more than covered China's 2025 export decline to US",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "trade",
+      "topics": [
+        "trade"
+      ],
+      "matched": [
+        "export*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Merkez Bankası açıkladı: Enflasyon beklentilerinde piyasa ve hanehalkı ayrıştı",
+      "url": "https://www.sozcu.com.tr/merkez-bankasi-acikladi-enflasyon-beklentilerinde-piyasa-ve-hanehalki-ayristi-p371957",
+      "published": "2026-10-23T07:26:26+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Merkez Bankası'nın ekim ayı Sektörel Enflasyon Beklentileri raporuna göre, 12 ay sonrası için yıllık enflasyon beklentis...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "banka*",
+        "enflasyon*",
+        "merkez bankasi*",
+        "piyasa*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Anadolu Ajansı (EN)",
+      "title": "Gold nears 3-month low as tech selloff, inflation concerns weigh",
+      "url": "https://www.aa.com.tr/en/economy/gold-nears-3-month-low-as-tech-selloff-inflation-concerns-weigh/4098018",
+      "published": "2026-10-23T07:00:52+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Precious metal trades near $4,015 an ounce as investors sell holdings to cover losses in equities",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "inflation"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Anadolu Ajansı (EN)",
+      "title": "Brent hits 5-month high, European gas highest since December 2022 as supply risks mount",
+      "url": "https://www.aa.com.tr/en/economy/brent-hits-5-month-high-european-gas-highest-since-december-2022-as-supply-risks-mount/4097999",
+      "published": "2026-10-23T06:46:38+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Brent climbs above $114 per barrel, European gas exceeds $102.40 per megawatt-hour amid Mideast tensions and tight LNG supplies",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "gas"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Geleceğe Ayrılan Pay",
+      "url": "https://www.sozcu.com.tr/gelecege-ayrilan-pay-p371941",
+      "published": "2026-10-23T06:44:54+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "34 yıldır bireylerin ev, araç ve iş yeri sahibi olma hedeflerine ortak olan Fuzul Tasarruf Finansman AŞ; büyüme yolculuğ...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "buyume",
+        "finans*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Hürriyet Daily News",
+      "title": "Impact of Houthi attacks on Saudi economy 'limited' for now: IMF",
+      "url": "https://www.hurriyetdailynews.com/impact-of-houthi-attacks-on-saudi-economy-limited-for-now-imf-228505",
+      "published": "2026-10-23T06:21:38+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Houthi attacks on Saudi Arabia are having only a \"limited\" economic impact on the kingdom so far, owing to robust domestic demand, the IMF's regional director told AFP, though geopolitical uncertainty remains a threat.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "economic",
+        "economy"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Gece yarısı 250 bin kişinin parasına kilit",
+      "url": "https://www.sozcu.com.tr/gece-yarisi-haramileri-p371858",
+      "published": "2026-10-23T06:15:39+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "AKP'nin gece yarısı verdiği önergeyle satış talimatı vermesine rağmen işlemi tamamlanmayan yatırımcıların foy sahibi say...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "yatirim*",
+        "yatirimci*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Hürriyet Daily News",
+      "title": "Japan inflation accelerates, paving way for interest rate hike",
+      "url": "https://www.hurriyetdailynews.com/japan-inflation-accelerates-paving-way-for-interest-rate-hike-228503",
+      "published": "2026-10-23T06:12:59+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Inflation in Japan accelerated sharply in September, official data showed on Oct. 23, rising above the Bank of Japan's target level and paving the way for a further interest rate hike.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "bank",
+        "inflation",
+        "interest rate*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Hürriyet Daily News",
+      "title": "Saudi attacks lift oil as inflation fears weigh on gold",
+      "url": "https://www.hurriyetdailynews.com/saudi-attacks-lift-oil-as-inflation-fears-weigh-on-gold-228497",
+      "published": "2026-10-23T05:47:22+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Oil traded near $114 a barrel on Oct. 23 as attacks on Saudi Arabia raised concerns over energy supplies, while gold headed for its steepest weekly decline since June.",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "energy",
+        "inflation",
+        "oil"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Petrolde son 5 ayın rekoru kırıldı: 110 doların üstüne çıktı",
+      "url": "https://www.sozcu.com.tr/petrolde-son-5-ayin-rekoru-kirildi-110-dolarin-ustune-cikti-p371890",
+      "published": "2026-10-23T05:20:03+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Suudi Arabistan’daki stratejik enerji tesislerine düzenlenen saldırılar ve Ortadoğu’da artan askeri hareketlilik, kürese...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "defense",
+      "topics": [
+        "industry",
+        "defense"
+      ],
+      "matched": [
+        "askeri",
+        "enerji*",
+        "petrol*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "İki ayın en sert kırılmasını yaşayan altın için yeni dip uyarısı",
+      "url": "https://www.sozcu.com.tr/iki-ayin-en-sert-kirilmasini-yasayan-altin-icin-yeni-dip-uyarisi-p371884",
+      "published": "2026-10-23T05:13:36+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Ons altın, iki ayın en düşük seviyesine gerileyerek 4 bin dolar psikolojik sınırının altına indi. Fransız banka Societe ...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "banka*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Kredi kartıyla bu harcamaları yapan yandı: Maliye o işlemleri tek tek incelemeye aldı",
+      "url": "https://www.sozcu.com.tr/kredi-kartiyla-bu-harcamalari-yapan-yandi-maliye-o-islemleri-tek-tek-incelemeye-aldi-p371886",
+      "published": "2026-10-23T05:10:08+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Kredi kartı ve banka hesabı kullanırken yapılan bazı masum sanılan işlemler, ileride ciddi mali ve hukuki sorumluluklar ...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "banka*",
+        "kredi*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Anadolu Ajansı (EN)",
+      "title": "US issues executive order to lower homeownership, mortgage costs",
+      "url": "https://www.aa.com.tr/en/americas/us-issues-executive-order-to-lower-homeownership-mortgage-costs/4097894",
+      "published": "2026-10-22T22:31:06+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "President Trump orders steps to reduce regulatory barriers to mortgage origination, lower fees, and promote innovation across housing market",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "market"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Daily Sabah",
+      "title": "Whose war is this? Rethinking Iran’s role in Houthi attacks",
+      "url": "https://www.dailysabah.com/opinion/op-ed/whose-war-is-this-rethinking-irans-role-in-houthi-attacks",
+      "published": "2026-10-22T21:05:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "The renewed intensity of Houthi attacks on Saudi Arabia has revived an old question: To what extent is Iran behind the missiles and drones launched from Yemen? The question is legi...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "defense",
+      "topics": [
+        "defense"
+      ],
+      "matched": [
+        "drone*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Daily Sabah",
+      "title": "Pentagon, Lockheed Martin seal 10-year deal for 850 F-35 jets",
+      "url": "https://www.dailysabah.com/business/defense/pentagon-lockheed-martin-seal-10-year-deal-for-850-f-35-jets",
+      "published": "2026-10-22T20:26:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "The Pentagon and U.S. defense giant Lockheed Martin announced a decade-long agreement Thursday to produce 850 F-35 fighter jets, reinforcing Washington's commitment to the advanced...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "defense",
+      "topics": [
+        "defense"
+      ],
+      "matched": [
+        "defense"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Merkez Bankası'ndan gelen karar borsayı vurdu",
+      "url": "https://www.sozcu.com.tr/merkez-bankasi-ndan-gelen-karar-borsayi-vurdu-p371813",
+      "published": "2026-10-22T18:27:16+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Merkez Bankası 9 ayın ardından ilk defa faiz indirimine gitti. Merkez Bankası'nın faiz indiriminin ardından Borsa İstanb...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "banka*",
+        "borsa*",
+        "faiz*",
+        "merkez bankasi*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Webrazzi",
+      "title": "Blacksmith, 1 milyar dolar değerleme üzerinden 66 milyon dolar yatırım aldı",
+      "url": "https://webrazzi.com/2026/10/22/blacksmith-1-milyar-dolar-degerleme-uzerinden-66-milyon-dolar-yatirim-aldi/",
+      "published": "2026-10-22T14:30:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Yazılım geliştirme altyapısı hizmeti sunan Blacksmith, 66 milyon dolar yatırım aldı. Şirketin 66 milyon dolarlık C serisi yatırım turuna Sequoia Capital liderlik etti. ABD merkezli Blacksmith'in yatır...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "capital",
+        "yatirim*",
+        "yazilim*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Sözcü Ekonomi",
+      "title": "Altın ve gümüş çakıldı: Savaş korkusu ve Fed kıskacında piyasalar altüst oldu",
+      "url": "https://www.sozcu.com.tr/altin-ve-gumus-cakildi-savas-korkusu-ve-fed-kiskacinda-piyasalar-altust-oldu-p371765",
+      "published": "2026-10-22T14:10:25+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Sıcak çatışma endişeleri ve ABD Merkez Bankası'nın (Fed) yaklaşan faiz kararı küresel piyasalarda deprem etkisi yarattı....",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "banka*",
+        "faiz*",
+        "merkez bankasi*",
+        "piyasa*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Anadolu Ajansı (EN)",
+      "title": "QatarEnergy signs deal to buy 4 million tons of US LNG annually through 2054",
+      "url": "https://www.aa.com.tr/en/middle-east/qatarenergy-signs-deal-to-buy-4-million-tons-of-us-lng-annually-through-2054/4097361",
+      "published": "2026-10-22T13:51:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Agreements with US energy company Cheniere cover supplies from Louisiana, Texas facilities, with deliveries expected to begin in 2031",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "industry",
+      "topics": [
+        "industry"
+      ],
+      "matched": [
+        "energy"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Anadolu Ajansı (EN)",
+      "title": "US weekly jobless claims fall to 194,000, below expectations",
+      "url": "https://www.aa.com.tr/en/americas/us-weekly-jobless-claims-fall-to-194-000-below-expectations/4097289",
+      "published": "2026-10-22T13:19:07+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Initial unemployment claims decline by 6,000 in week ending Oct. 17, compared with forecast of 200,000",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "unemployment"
+      ],
+      "tw_sectors": []
+    }
+  ],
+  "news_diagnostics": {
+    "Anadolu Ajansı (EN)": {
+      "total": 30,
+      "recent": 16,
+      "kept": 15,
+      "domestic": 5,
+      "window_hours": 24,
+      "newest": "2026-10-23T11:58:31+00:00",
+      "oldest": "2026-10-22T06:16:02+00:00",
+      "no_date": 0,
+      "dedup_skipped": 0,
+      "tw_sector": 1,
+      "no_topic_samples": [
+        "US to provide up to $389M for semiconductor research, development"
+      ],
+      "error": null
+    },
+    "Daily Sabah": {
+      "total": 42,
+      "recent": 42,
+      "kept": 6,
+      "domestic": 3,
+      "window_hours": 24,
+      "newest": "2026-10-23T12:39:00+00:00",
+      "oldest": "2026-10-22T17:31:00+00:00",
+      "no_date": 0,
+      "dedup_skipped": 0,
+      "tw_sector": 1,
+      "no_topic_samples": [
+        "‘Anatomy of Israeli Expansionism’ exposes Tel Aviv’s hawkish agenda",
+        "Türkiye convenes 8 nations for first-ever R4+E3 meeting in Istanbul",
+        "Apple's foldable iPhone hits stores with $2,000 price tag, scarce supply",
+        "Earthquake kills 16, injures 76 in Tibet as rescue efforts continue",
+        "Ukrainian soldier clings to hope of seeing his children after surgery"
+      ],
+      "error": null
+    },
+    "Hürriyet Daily News": {
+      "total": 100,
+      "recent": 13,
+      "kept": 8,
+      "domestic": 4,
+      "window_hours": 24,
+      "newest": "2026-10-23T09:50:33+00:00",
+      "oldest": "2026-06-08T05:41:15+00:00",
+      "no_date": 0,
+      "dedup_skipped": 1,
+      "tw_sector": 0,
+      "no_topic_samples": [
+        "Crop output seen rising in cereals, fruits this year",
+        "Tech titans, crypto moguls dominate US midterm money race",
+        "No more taking out the trash at your Airbnb",
+        "Parliament passes law on fund repayments"
+      ],
+      "error": null
+    },
+    "Dünya": {
+      "total": 25,
+      "recent": 25,
+      "kept": 7,
+      "domestic": 3,
+      "window_hours": 24,
+      "newest": "2026-10-23T12:53:00+00:00",
+      "oldest": "2026-10-23T09:59:00+00:00",
+      "no_date": 0,
+      "dedup_skipped": 0,
+      "tw_sector": 0,
+      "no_topic_samples": [
+        "Türkiye-Mısır-Pakistan-Suudi Arabistan Dışişleri Bakanları Yedinci Toplantısı gerçekleştirildi",
+        "KPSS Ortaöğretim sınavı ne zaman, saat kaçta başlıyor? KPSS Ortaöğretim tarihi ve saati...",
+        "WhatsApp'a beklenen özellik geliyor: Mesaj gönderme alışkanlıkları değişecek",
+        "Şampiyonlar Ligi'nde sahaya çıktı, evine hırsız girdi: Ünlü futbolcuya büyük şok",
+        "Bitcoin fonlarında sert dönüş: Bir günde 635 milyon dolar çıktı"
+      ],
+      "error": null
+    },
+    "Ekonomim": {
+      "total": 25,
+      "recent": 25,
+      "kept": 16,
+      "domestic": 5,
+      "window_hours": 24,
+      "newest": "2026-10-23T12:40:00+00:00",
+      "oldest": "2026-10-23T10:36:00+00:00",
+      "no_date": 0,
+      "dedup_skipped": 0,
+      "tw_sector": 4,
+      "no_topic_samples": [
+        "Samanyolu’nda gizemli keşif: Bilinen hiçbir şeye benzemiyor",
+        "Her derde deva: Hibiskus çayı neye iyi gelir? Hibiskus çayının faydaları!",
+        "Türkiye Haber-İş, Türk Telekom’da işten çıkarmaları durdurmaya çağırdı",
+        "2 bin dolarlık iPhone’a hücum! Stoklar yetersiz kaldı, teslimatlar 2027’ye sarktı",
+        "Düzce, ahşap yapıların yaygınlaştırılmasında pilot kent seçildi"
+      ],
+      "error": null
+    },
+    "Bloomberg HT": {
+      "total": 48,
+      "recent": 48,
+      "kept": 32,
+      "domestic": 13,
+      "window_hours": 24,
+      "newest": null,
+      "oldest": null,
+      "no_date": 48,
+      "dedup_skipped": 1,
+      "tw_sector": 1,
+      "no_topic_samples": [
+        "İngiltere'den vatandaşlara \"en az üç gün yetecek kadar gıda ve su stoku yapın\" çağrısı",
+        "BES'te gelecek yıl 684 bin kişilik artış hedefleniyor",
+        "Beyin göçünde zirve",
+        "Bloomberg Businessweek Türkiye'nin 153. sayısı çıktı",
+        "İngiltere'de perakende satışlarda ılımlı artış"
+      ],
+      "error": null
+    },
+    "Hürriyet Ekonomi": {
+      "total": 100,
+      "recent": 8,
+      "kept": 1,
+      "domestic": 1,
+      "window_hours": 120,
+      "newest": "2026-10-22T17:07:00+00:00",
+      "oldest": "2024-10-03T10:06:00+00:00",
+      "no_date": 0,
+      "dedup_skipped": 5,
+      "tw_sector": 0,
+      "no_topic_samples": [
+        "'Yılının ilk 9 ayında 91 milyar 720 milyon TL'lik ticari eşya ve uyuşturucu ele geçirildi'",
+        "Fon Kurulu'nun 6'ncı toplantısı sona erdi... Kanun teklifi haftaya TBMM'de görüşülecek"
+      ],
+      "error": null
+    },
+    "Sözcü Ekonomi": {
+      "total": 50,
+      "recent": 29,
+      "kept": 22,
+      "domestic": 7,
+      "window_hours": 24,
+      "newest": "2026-10-23T11:31:10+00:00",
+      "oldest": "2026-10-22T05:51:09+00:00",
+      "no_date": 0,
+      "dedup_skipped": 0,
+      "tw_sector": 6,
+      "no_topic_samples": [
+        "Volkswagen’in 2030 planı sızdı: 660 bin işçi için radikal maaş kararı",
+        "Kozmetik devinin satışları beklentileri aştı",
+        "40 milyar euroluk mirasta kavga: Ray-Ban mirasçısı CEO'yu hedef aldı",
+        "Sosyal medya bu tuzağı konuşuyor: Araç sahiplerini bu yöntemle dolandırmaya başladılar",
+        "Tesla yıllardır beklenen aracın satışından vazgeçti"
+      ],
+      "error": null
+    },
+    "Webrazzi": {
+      "total": 20,
+      "recent": 10,
+      "kept": 7,
+      "domestic": 1,
+      "window_hours": 24,
+      "newest": "2026-10-23T13:00:00+00:00",
+      "oldest": "2026-10-21T12:58:16+00:00",
+      "no_date": 0,
+      "dedup_skipped": 0,
+      "tw_sector": 0,
+      "no_topic_samples": [
+        "OpenAI, Jev'e rakip hızlı karar alma aracı Decisions API'ı genel kullanıma açtı",
+        "Arc tarayıcısı 22 Aralık'ta kapanıyor",
+        "Apple, iPhone Duo siparişlerine iki cihaz sınırı getirdi"
+      ],
+      "error": null
+    },
+    "ST Endüstri": {
+      "total": 40,
+      "recent": 0,
+      "kept": 0,
+      "domestic": 0,
+      "window_hours": 24,
+      "newest": "2026-10-19T09:30:00+00:00",
+      "oldest": "2020-06-22T15:02:15+00:00",
+      "no_date": 0,
+      "dedup_skipped": 0,
+      "tw_sector": 0,
+      "no_topic_samples": [],
+      "error": null
+    },
+    "MİB（機械製造商協會）": {
+      "total": 10,
+      "recent": 10,
+      "kept": 0,
+      "domestic": 0,
+      "window_hours": 336,
+      "newest": "2026-10-21T20:33:31+00:00",
+      "oldest": "2026-10-14T20:35:35+00:00",
+      "no_date": 0,
+      "dedup_skipped": 10,
+      "tw_sector": 0,
+      "no_topic_samples": [],
+      "error": null
+    },
+    "plastonline": {
+      "total": 10,
+      "recent": 7,
+      "kept": 0,
+      "domestic": 0,
+      "window_hours": 168,
+      "newest": "2026-10-21T22:47:16+00:00",
+      "oldest": "2026-10-07T14:42:32+00:00",
+      "no_date": 0,
+      "dedup_skipped": 7,
+      "tw_sector": 0,
+      "no_topic_samples": [],
+      "error": null
+    },
+    "Yeşil Haber": {
+      "total": 40,
+      "recent": 26,
+      "kept": 15,
+      "domestic": 15,
+      "window_hours": 24,
+      "newest": "2026-10-23T12:54:01+00:00",
+      "oldest": "2026-10-22T01:58:06+00:00",
+      "no_date": 0,
+      "dedup_skipped": 0,
+      "tw_sector": 7,
+      "no_topic_samples": [
+        "UNEP raporu: Türkiye, 2025’te mutlak emisyon artışında ABD’den sonra ikinci",
+        "Avrupa’nın ilk megaraptoranı, müzedeki fosille tanımlandı",
+        "Fas, en az 350 MW güneş projesi için ön yeterlilik açtı",
+        "GESAN, 284,7 milyon TL baz bedelli Sungurlu iletim hattı ihalesinde birinci",
+        "Allianz: Aşırı hava kayıplarında 131 milyar dolar sigorta dışında kaldı"
+      ],
+      "error": null
+    },
+    "Sözcü Otomotiv": {
+      "total": 50,
+      "recent": 7,
+      "kept": 5,
+      "domestic": 1,
+      "window_hours": 24,
+      "newest": "2026-10-23T11:31:10+00:00",
+      "oldest": "2026-10-04T07:13:23+00:00",
+      "no_date": 0,
+      "dedup_skipped": 0,
+      "tw_sector": 4,
+      "no_topic_samples": [
+        "Sosyal medya bu tuzağı konuşuyor: Araç sahiplerini bu yöntemle dolandırmaya başladılar",
+        "Tesla yıllardır beklenen aracın satışından vazgeçti"
+      ],
+      "error": null
+    },
+    "OSD（汽車製造商協會）": {
+      "total": 221,
+      "recent": 3,
+      "kept": 2,
+      "domestic": 2,
+      "window_hours": 336,
+      "newest": "2026-10-23T00:00:00+00:00",
+      "oldest": "2017-09-30T00:00:00+00:00",
+      "no_date": 0,
+      "dedup_skipped": 1,
+      "tw_sector": 2,
+      "no_topic_samples": [],
+      "error": null
+    },
+    "TAYSAD（汽車零組件供應商協會）": {
+      "total": 11,
+      "recent": 2,
+      "kept": 0,
+      "domestic": 0,
+      "window_hours": 336,
+      "newest": "2026-10-22T00:00:00+00:00",
+      "oldest": "2026-01-29T00:00:00+00:00",
+      "no_date": 0,
+      "dedup_skipped": 2,
+      "tw_sector": 0,
+      "no_topic_samples": [],
+      "error": null
+    }
+  },
+  "errors": [],
+  "brent_oil": {
+    "date": "2026-10-22",
+    "usd_per_barrel": 112.93,
+    "previous_date": "2026-10-21",
+    "previous_usd_per_barrel": 109.77,
+    "change_pct": 2.88,
+    "changes": {
+      "week": {
+        "pct": 6.81,
+        "base_date": "2026-10-15",
+        "base_price": 105.73
+      },
+      "month": {
+        "pct": 14.44,
+        "base_date": "2026-09-22",
+        "base_price": 98.68
+      },
+      "ytd": {
+        "pct": 85.28,
+        "base_date": "2025-12-31",
+        "base_price": 60.95
+      }
+    },
+    "changes_anchor_date": "2026-10-22",
+    "age_days": 1,
+    "stale": false,
+    "source": "canlidoviz.com（經 borsapy FX('BRENT')）",
+    "source_kind": "borsapy_canlidoviz",
+    "basis": "market",
+    "observations_used": 239,
+    "fallback_reasons": []
+  },
+  "eximclub_turkey_report": null
+}
