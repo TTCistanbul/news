@@ -1039,6 +1039,13 @@ a:focus-visible { outline: 2px solid var(--accent-blue-deep); outline-offset: 2p
   color: #b57514;
   border: 1px solid rgba(240, 163, 38, 0.25);
 }
+/* 關鍵事件表：新聞日期欄（不換行、等寬字） */
+td.col-date {
+  white-space: nowrap;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+}
 
 .data {
   font-family: 'JetBrains Mono', monospace;
@@ -1207,6 +1214,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span><span class="dot-ind amber"></span>⚪ 中性／待觀察</span>
     <span><span class="dot-ind green"></span>🟢 對台土貿易有利</span>
   </p>
+  <p class="legend">
+    <span>表一「影響方向」（圓點）與「重要性」（標籤）是兩個獨立欄位：圓點看對台土貿易的利弊，標籤看事件本身的份量，兩者可以任意搭配（例如「重大」＋🟢＝重大利多、「重大」＋⚪＝重大但中性）。</span>
+    <span><span class="badge badge-major">重大</span> 紅色標籤</span>
+    <span><span class="badge badge-medium">中等</span> 橘色標籤（重要性由 AI 判斷）</span>
+  </p>
 
   <!-- AI 免責標示：完全自動發布模式下，這段內容沒有人工審核過，明確告知讀者 -->
   <p class="ai-disclaimer">
@@ -1240,6 +1252,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <th>影響方向</th>
             <th>重要性</th>
             <th>來源</th>
+            <th>新聞日期</th>
             <th>事件</th>
             <th>重點摘要</th>
             <th>對台商與貿易影響</th>
@@ -1252,6 +1265,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <td class="dir-green">🟢</td>
             <td><span class="badge badge-major">重大</span></td>
             <td><a href="https://www.aa.com.tr/en/economy/opec-fund-approves-record-250m-loan-for-istanbul-north-rail-crossing/4098670" target="_blank" rel="noopener noreferrer">Anadolu Ajansı (EN)</a></td>
+            <td class="col-date">2026-10-23</td>
             <td>OPEC基金批准2.5億美元貸款 用於伊斯坦堡北方鐵路過境計畫</td>
             <td>OPEC基金批准破紀錄的2.5億美元貸款，支援伊斯坦堡北方鐵路過境建設，預計將博斯普魯斯海峽的鐵路年貨運能力從300萬噸提升至5,000萬噸。</td>
             <td>該鐵路建設若順利推動，可能提升土耳其跨洲貨運物流效率，值得利用土耳其作為中轉或生產基地出口歐洲的臺商持續關注。</td>
@@ -1261,6 +1275,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <td class="dir-neutral">⚪</td>
             <td><span class="badge badge-major">重大</span></td>
             <td><a href="https://www.dunya.com/is-dunya/avrupadan-cine-yeni-engel-sirada-plastik-ve-kimya-var-haberi-845117" target="_blank" rel="noopener noreferrer">Dünya</a></td>
+            <td class="col-date">—</td>
             <td>歐盟擬擴大對中國大陸產品限制 斯洛伐克表態支援土耳其納入歐洲供應鏈</td>
             <td>歐盟研擬對中國大陸塑膠與化學品採取新進口限制；土耳其貿易部長Bolat指出，斯洛伐克在「歐洲製造」（Made in Europe）議題上支援土耳其，雙方並已簽署能源合作備忘錄。</td>
             <td>歐盟進口政策調整可能促使部分塑膠與化學品訂單轉向土耳其，對在土耳其設廠或從事歐洲貿易的臺商可能帶來潛在轉單機會。</td>
@@ -1270,6 +1285,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <td class="dir-neutral">⚪</td>
             <td><span class="badge badge-medium">中等</span></td>
             <td><a href="https://www.hurriyetdailynews.com/turkish-car-market-holds-sixth-place-despite-sales-decline-228540" target="_blank" rel="noopener noreferrer">Hürriyet Daily News</a></td>
+            <td class="col-date">2026-10-24</td>
             <td>土耳其前9月汽車銷量下滑15.45% 仍居歐洲第六大市場</td>
             <td>2026年前9個月土耳其乘客用車銷量下滑15.45%，但在歐洲市場仍維持第六大地位；同時純電動車銷量亦保持歐洲第六名。</td>
             <td>土耳其車市短期內消費動能放緩，但總體市場規模仍大，汽車零元件及車用電子臺商宜持續觀察需求結構變化。</td>
@@ -1279,6 +1295,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <td class="dir-green">🟢</td>
             <td><span class="badge badge-medium">中等</span></td>
             <td><a href="https://www.aa.com.tr/en/economy/turkiye-plans-stronger-energy-targets-through-2040-official-says/4098687" target="_blank" rel="noopener noreferrer">Anadolu Ajansı (EN)</a></td>
+            <td class="col-date">2026-10-23</td>
             <td>土耳其預計於11月5日公佈2040年前新版國家能源目標</td>
             <td>土耳其官方透露將於11月5日發布修訂後的國家能源計畫，重點放在電網投資、電氣化與綠色移動，以強化其區域能源樞紐角色。</td>
             <td>國家能源計畫修訂可能帶動再生能源裝置、電網維護與電氣化相關需求，值得相關產業臺商關注後續標案與合作機會。</td>
@@ -1288,6 +1305,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <td class="dir-red">🔴</td>
             <td><span class="badge badge-medium">中等</span></td>
             <td><a href="https://www.dunya.com/gundem/fon-sorusturmasinda-15-supheli-daha-tutuklandi-haberi-845123" target="_blank" rel="noopener noreferrer">Dünya</a></td>
+            <td class="col-date">2026-10-24</td>
             <td>土耳其資本市場基金調查持續擴大 再有15名涉案人員遭逮捕</td>
             <td>針對土耳其資本市場交易進行的基金調查案，法院再逮捕15名涉案人員，包含前保險公司高層；挪威主權財富基金亦發表宣告表示為受害者之一。</td>
             <td>金融市場監管與調查可能短期影響當地資本市場信心及資產價格波動，臺商進行當地金融資產配置或融資時宜保持審慎。</td>
