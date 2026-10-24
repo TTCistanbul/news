@@ -139,7 +139,31 @@ def _plain(value) -> str:
     return html.escape(re.sub(r"\s{2,}", " ", text).strip())
 
 
-def render_key_events(events: list[dict]) -> str:
+TRT = dt.timezone(dt.timedelta(hours=3))  # 土耳其時間（UTC+3），報告頁首的時間也是 TRT
+
+
+def news_date_trt(published) -> str:
+    """把新聞的 published（資料檔裡是 UTC ISO 字串，例如
+    2026-10-23T21:26:55+00:00）換算成「土耳其當地日期」YYYY-MM-DD。
+    用 TRT 而不是直接切字串前 10 碼，是因為 UTC 晚上的新聞在土耳其已經是
+    隔天了。沒有日期或格式看不懂就回傳空字串，不猜。"""
+    if not published:
+        return ""
+    try:
+        d = dt.datetime.fromisoformat(str(published).replace("Z", "+00:00"))
+    except ValueError:
+        return ""
+    if d.tzinfo is None:
+        d = d.replace(tzinfo=dt.timezone.utc)
+    return d.astimezone(TRT).date().isoformat()
+
+
+def render_key_events(events: list[dict], news_by_url: dict | None = None) -> str:
+    """news_by_url：當天資料檔 news[] 以 url 為 key 的對照表，用來帶出每則
+    關鍵事件的新聞日期。日期完全來自資料檔裡的 published，不讓 AI 填，
+    所以不會出現 AI 編造的日期；資料檔裡本來就沒有日期的新聞顯示「—」。
+    舊的 analysis.json 沒有日期欄位，也能靠這個對照表補上。"""
+    news_by_url = news_by_url or {}
     rows = []
     for i, e in enumerate(events[:5], 1):
         direction = e.get("direction", "neutral")
@@ -152,16 +176,19 @@ def render_key_events(events: list[dict]) -> str:
         headline = _plain(e.get("headline", ""))
         summary = _plain(e.get("summary", ""))
         impact = _plain(e.get("business_impact", ""))
+        raw_url = (e.get("source_url") or "").strip()
+        news_date = news_date_trt((news_by_url.get(raw_url) or {}).get("published")) or "—"
         rows.append(f'''          <tr>
             <td>{i}</td>
             <td class="{cls}">{icon}</td>
             <td><span class="badge {badge_cls}">{importance}</span></td>
             <td><a href="{source_url}" target="_blank" rel="noopener noreferrer">{source_name}</a></td>
+            <td class="col-date">{news_date}</td>
             <td>{headline}</td>
             <td>{summary}</td>
             <td>{impact}</td>
           </tr>''')
-    return "\n".join(rows) if rows else '          <tr><td colspan="7">今日無資料</td></tr>'
+    return "\n".join(rows) if rows else '          <tr><td colspan="8">今日無資料</td></tr>'
 
 
 def render_industry_items(items: list[dict], as_of: dt.date, window_days: int = 7) -> str:
@@ -1776,7 +1803,10 @@ def main():
             )
         html_text = replace_block(
             html_text, "KEY_EVENTS",
-            render_key_events(analysis.get("key_events", []))
+            render_key_events(
+                analysis.get("key_events", []),
+                {n.get("url"): n for n in payload.get("news", []) if n.get("url")},
+            )
         )
         html_text = replace_block(
             html_text, "TRADE_IMPLICATIONS",
