@@ -401,7 +401,7 @@ def main():
 
     if args.rebuild_weeks:
         files = sorted(f for f in DATA_DIR.glob("*.json")
-                       if re.match(r"\\d{4}-\\d{2}-\\d{2}\\.json$", f.name))
+                       if re.match(r"\d{4}-\d{2}-\d{2}\.json$", f.name))
         if not files:
             raise SystemExit("data/ 裡完全沒有每日資料，無法重產週報")
         first = dt.date.fromisoformat(files[0].stem)
