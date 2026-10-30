@@ -103,6 +103,7 @@ SYSTEM_PROMPT = """\
     {
       "direction": "red|green|neutral",
       "importance": "重大|中等",
+      "sources": ["來源網址，必須逐字取自輸入中該事件的來源URL，最多3個；若無來源則空陣列"],
       "headline": "這段期間的重大發展（一行，是趨勢/事件不是單日新聞標題）",
       "summary": "重點說明（2-3句，可以整合多則相關報導）",
       "business_impact": "對台商與貿易影響（1-2句，用保留語氣）"
@@ -261,7 +262,8 @@ def build_gemini_input(period: str, start: dt.date, end: dt.date,
         if a.get("today_take"):
             lines.append(f"今日判讀：{re.sub('<[^>]+>', '', a['today_take'])[:300]}")
         for ev in (a.get("key_events") or [])[:3]:
-            lines.append(f"  事件：{ev.get('headline','')}｜{ev.get('summary','')[:150]}")
+            source_url = ev.get("source_url") or ev.get("url") or ""
+            lines.append(f"  事件：{ev.get('headline','')}｜{ev.get('summary','')[:150]}｜來源URL：{source_url}")
         for it in (a.get("industry_items") or [])[:3]:
             lines.append(f"  產業：[{it.get('sector','')}] {it.get('headline','')}｜{it.get('body','')[:150]}")
 
@@ -333,10 +335,19 @@ def render_key_developments(items: list[dict]) -> str:
         headline = html.escape(e.get("headline", ""))
         summary = html.escape(e.get("summary", ""))
         impact = html.escape(e.get("business_impact", ""))
+        source_urls = e.get("sources", [])
+        if isinstance(source_urls, str):
+            source_urls = [source_urls]
+        source_links = "、".join(
+            f'<a href="{html.escape(url, quote=True)}" target="_blank" rel="noopener noreferrer">來源{i}</a>'
+            for i, url in enumerate(source_urls[:3], 1)
+            if isinstance(url, str) and re.match(r"^https?://", url)
+        ) or "—"
         rows.append(f'''          <tr>
             <td>{i}</td>
             <td class="{cls.get(d,'dir-neutral')}">{icon.get(d,'⚪')}</td>
             <td><span class="badge {badge_cls}">{importance}</span></td>
+            <td>{source_links}</td>
             <td>{headline}</td>
             <td>{summary}</td>
             <td>{impact}</td>
