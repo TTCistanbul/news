@@ -19,9 +19,14 @@ on:
           - year
         default: week
       end_date:
-        description: '結束日（YYYY-MM-DD，留空＝用 data/ 裡最新一天）'
+        description: '結束日（YYYY-MM-DD；週報請填週日）'
         required: false
         type: string
+      rebuild_weeks:
+        description: '重產所有已完成的週一至週日週報（忽略 period/end_date）'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -50,8 +55,11 @@ jobs:
           # 定時觸發時沒有 inputs，預設產生 week
           PERIOD: ${{ inputs.period || 'week' }}
           END_DATE: ${{ inputs.end_date }}
+          REBUILD_WEEKS: ${{ inputs.rebuild_weeks || false }}
         run: |
-          if [ -n "$END_DATE" ]; then
+          if [ "$REBUILD_WEEKS" = "true" ]; then
+            python3 generate_period_report.py --period week --rebuild-weeks
+          elif [ -n "$END_DATE" ]; then
             python3 generate_period_report.py --period "$PERIOD" --end "$END_DATE"
           else
             python3 generate_period_report.py --period "$PERIOD"
