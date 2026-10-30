@@ -33,6 +33,7 @@ import json
 import re
 import sys
 import time
+import subprocess
 from pathlib import Path
 
 import requests
@@ -167,10 +168,10 @@ def load_daily_files(start: dt.date, end: dt.date) -> list[dict]:
 
 def resolve_end_date(explicit: str | None) -> dt.date:
     if explicit:
-        p = DATA_DIR / f"{explicit}.json"
-        if not p.exists():
-            raise SystemExit(f"指定的結束日 {explicit} 沒有對應的 {p} 檔案")
-        return dt.date.fromisoformat(explicit)
+        try:
+            return dt.date.fromisoformat(explicit)
+        except ValueError as e:
+            raise SystemExit(f"結束日格式錯誤，請用 YYYY-MM-DD：{explicit}") from e
     files = sorted(DATA_DIR.glob("*.json"))
     files = [f for f in files if re.match(r"\d{4}-\d{2}-\d{2}\.json$", f.name)]
     if not files:
@@ -393,10 +394,46 @@ def fmt_fx_cell(trend: dict | None) -> str:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--period", required=True, choices=list(PERIOD_DAYS.keys()))
-    ap.add_argument("--end", help="YYYY-MM-DD，預設用 data/ 裡最新一天")
+    ap.add_argument("--end", help="YYYY-MM-DD；週報結束日可指定週日")
+    ap.add_argument("--rebuild-weeks", action="store_true",
+                    help="用現有每日資料重產所有已結束的週一至週日週報")
     args = ap.parse_args()
 
+    if args.rebuild_weeks:
+        files = sorted(f for f in DATA_DIR.glob("*.json")
+                       if re.match(r"\\d{4}-\\d{2}-\\d{2}\\.json$", f.name))
+        if not files:
+            raise SystemExit("data/ 裡完全沒有每日資料，無法重產週報")
+        first = dt.date.fromisoformat(files[0].stem)
+        latest = dt.date.fromisoformat(files[-1].stem)
+        first_monday = first - dt.timedelta(days=first.weekday())
+        last_sunday = latest - dt.timedelta(days=(latest.weekday() + 1) % 7)
+        sunday = first_monday + dt.timedelta(days=6)
+        while sunday <= last_sunday:
+            print(f"-> 重產週報 {sunday - dt.timedelta(days=6)} ～ {sunday}", file=sys.stderr)
+            subprocess.run(
+                [sys.executable, str(Path(__file__).resolve()), "--period", "week",
+                 "--end", sunday.isoformat()],
+                check=True,
+            )
+            sunday += dt.timedelta(days=7)
+        index_path = OUT_DIR / "_index.json"
+        index = json.loads(index_path.read_text(encoding="utf-8"))
+        index = [
+            e for e in index
+            if e.get("period") != "week"
+            or (
+                dt.date.fromisoformat(e["end"]).weekday() == 6
+                and dt.date.fromisoformat(e["start"]) == dt.date.fromisoformat(e["end"]) - dt.timedelta(days=6)
+            )
+        ]
+        index.sort(key=lambda e: (e["end"], e["period"]))
+        index_path.write_text(json.dumps(index, ensure_ascii=False, indent=2), encoding="utf-8")
+        return
+
     end = resolve_end_date(args.end)
+    if args.period == "week" and not args.end:
+        end -= dt.timedelta(days=(end.weekday() + 1) % 7)
     start = end - dt.timedelta(days=PERIOD_DAYS[args.period] - 1)
     days = load_daily_files(start, end)
     if not days:
