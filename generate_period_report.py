@@ -270,6 +270,11 @@ def build_gemini_input(period: str, start: dt.date, end: dt.date,
     return "\n".join(lines)
 
 
+class GeminiBadJSON(RuntimeError):
+    """模型有回應，但內容不是合法 JSON（多半是長篇 HTML 字串裡少跳脫一個引號）。
+    同一個 prompt 再問一次通常就好，所以跟 503 一樣當成可以重試。"""
+
+
 def _call_gemini_once(model: str, prompt: str, api_key: str) -> dict:
     body = {
         "system_instruction": {"parts": [{"text": SYSTEM_PROMPT}]},
@@ -288,7 +293,7 @@ def _call_gemini_once(model: str, prompt: str, api_key: str) -> dict:
     try:
         return json.loads(text)
     except json.JSONDecodeError as e:
-        raise RuntimeError(f"Gemini 回傳的內容不是合法 JSON：{text[:1000]}") from e
+        raise GeminiBadJSON(f"Gemini 回傳的內容不是合法 JSON（{e}）：{text[:300]}") from e
 
 
 def call_gemini(prompt: str, api_key: str) -> tuple[dict, str]:
@@ -312,6 +317,16 @@ def call_gemini(prompt: str, api_key: str) -> tuple[dict, str]:
                     continue
                 errors.append(f"{model}: HTTP {status}")
                 print(f"   模型 {model} 失敗（HTTP {status}），改試下一個候選模型...", file=sys.stderr)
+                break
+            except GeminiBadJSON as e:
+                # 2026-10-30 週報重產在 10/19～10/25 這週當掉：Gemini 回的 JSON
+                # 在第 62 行少了雙引號，整個 workflow 失敗，前面已經重產好的
+                # 週報也沒提交。同一個模型重問最多 2 次，還是壞的就換下一個模型。
+                if attempt < 2:
+                    print(f"   模型 {model} 回的 JSON 格式壞掉，重新產生一次...", file=sys.stderr)
+                    continue
+                errors.append(f"{model}: JSON 格式錯誤")
+                print(f"   模型 {model} 連續回壞掉的 JSON，改試下一個候選模型...", file=sys.stderr)
                 break
             except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
                 if attempt < len(BACKOFF):
@@ -420,14 +435,22 @@ def main():
         first_monday = first - dt.timedelta(days=first.weekday())
         last_sunday = latest - dt.timedelta(days=(latest.weekday() + 1) % 7)
         sunday = first_monday + dt.timedelta(days=6)
+        failed = []
         while sunday <= last_sunday:
             print(f"-> 重產週報 {sunday - dt.timedelta(days=6)} ～ {sunday}", file=sys.stderr)
-            subprocess.run(
+            # 某一週失敗不要讓整批中斷，否則前面重產好的週報都不會被提交；
+            # 失敗的週保留原本的舊版，最後列出來，之後單獨重跑那一週即可。
+            res = subprocess.run(
                 [sys.executable, str(Path(__file__).resolve()), "--period", "week",
                  "--end", sunday.isoformat()],
-                check=True,
             )
+            if res.returncode != 0:
+                failed.append(sunday.isoformat())
+                print(f"!  {sunday} 這週重產失敗，保留舊版，繼續下一週", file=sys.stderr)
             sunday += dt.timedelta(days=7)
+        if failed:
+            print(f"!  以下週報重產失敗，請之後用 --period week --end <日期> 單獨重跑："
+                  f"{', '.join(failed)}", file=sys.stderr)
         index_path = OUT_DIR / "_index.json"
         index = json.loads(index_path.read_text(encoding="utf-8"))
         index = [
