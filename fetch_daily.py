@@ -316,6 +316,8 @@ def _fetch_brent_borsapy() -> list[tuple[dt.date, float]]:
     for idx, close in df["Close"].items():
         if close is None or close != close:   # None 或 NaN
             continue
+        if idx is None or idx != idx:         # 日期是 NaT
+            continue
         d = idx.date() if hasattr(idx, "date") else dt.date.fromisoformat(str(idx)[:10])
         out[d] = round(float(close), 2)
     if not out:
@@ -750,10 +752,17 @@ def fetch_evds(series_code: str, start: dt.date, end: dt.date,
             f"borsapy 回傳的 DataFrame 只有日期欄，看不出數值欄："
             f"columns={list(df.columns)}"
         )
-    return [
-        {"date": str(row[date_col]), "value": row[value_col]}
-        for _, row in df.iterrows()
-    ]
+    out = []
+    for _, row in df.iterrows():
+        d, v = row[date_col], row[value_col]
+        if d is None or _is_missing(d) or v is None or _is_missing(v):
+            continue        # 空日期（NaT）或空值（NaN）的列直接略過
+        try:
+            v = float(v)
+        except (TypeError, ValueError):
+            pass
+        out.append({"date": str(d), "value": v})
+    return out
 
 
 
@@ -1538,11 +1547,65 @@ def main():
         except Exception as e:
             print(f"! 合併當天既有新聞失敗，改為覆蓋：{e}", file=sys.stderr)
 
+    # 2026-10-31 GitHub Actions 失敗：TypeError: Object of type NaTType is not
+    # JSON serializable——payload 裡混進 pandas 的 NaT（缺值的日期），整個檔案
+    # 寫不出來，當天資料全丟。borsapy 沒有鎖版本，回傳的 DataFrame 偶爾會帶
+    # 空日期或 numpy 型別。寫檔前統一清理：NaT/NaN → null、日期 → 字串、
+    # numpy 數字 → 一般數字，並把出問題的欄位位置印出來方便追源頭。
+    payload = _json_safe(payload)
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"→ {out}", file=sys.stderr)
 
     if payload["errors"]:
         print(f"完成，但有 {len(payload['errors'])} 個錯誤", file=sys.stderr)
+
+
+def _json_safe(obj, path="payload", fixed=None):
+    """把 payload 轉成 json.dumps 一定吃得下的樣子（見 main() 寫檔前的說明）。"""
+    top = fixed is None
+    if top:
+        fixed = []
+    if isinstance(obj, dict):
+        res = {}
+        for k, v in obj.items():
+            key = k if isinstance(k, str) else str(_json_safe(k, f"{path}.<key>", fixed))
+            res[key] = _json_safe(v, f"{path}.{key}", fixed)
+    elif isinstance(obj, (list, tuple)):
+        res = [_json_safe(v, f"{path}[{i}]", fixed) for i, v in enumerate(obj)]
+    elif obj is None or isinstance(obj, (str, bool, int)):
+        res = obj
+    elif isinstance(obj, float):
+        if obj != obj or obj in (float("inf"), float("-inf")):
+            fixed.append(f"{path}=NaN")
+            res = None
+        else:
+            res = obj
+    elif type(obj).__name__ in ("NaTType", "NAType") or (
+            hasattr(obj, "__ne__") and _is_missing(obj)):
+        fixed.append(f"{path}={type(obj).__name__}")
+        res = None
+    elif isinstance(obj, (dt.datetime, dt.date)):          # 含 pandas Timestamp
+        res = obj.isoformat()
+        fixed.append(f"{path}={type(obj).__name__}")
+    elif hasattr(obj, "item"):                              # numpy 純量
+        try:
+            res = _json_safe(obj.item(), path, fixed)
+        except Exception:
+            res = str(obj)
+    else:
+        fixed.append(f"{path}={type(obj).__name__}")
+        res = str(obj)
+    if top and fixed:
+        shown = "；".join(fixed[:8]) + ("…" if len(fixed) > 8 else "")
+        print(f"! 寫檔前清理了 {len(fixed)} 個 JSON 不支援的值：{shown}", file=sys.stderr)
+    return res
+
+
+def _is_missing(obj) -> bool:
+    try:
+        return bool(obj != obj)
+    except Exception:
+        return False
 
 
 if __name__ == "__main__":
