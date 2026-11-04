@@ -391,7 +391,9 @@ def render_tw_tr_trade(data: dict | None, sectors_data: dict | None = None,
             imp_chg = _pct_change(imp, prev_imp)
 
     def fmt_amount(v):
-        return f"{v:,.0f}" if v is not None else "—"
+        # 原始金額是美元整數（911,057,000），老闆一眼讀不出來；改成「億美元」，
+        # 跟表 02 的進出口用同一個單位。
+        return f"{v / 1e8:,.2f} 億美元" if v is not None else "—"
 
     def fmt_chg(v):
         if v is None:
@@ -423,17 +425,17 @@ def render_tw_tr_trade(data: dict | None, sectors_data: dict | None = None,
     # 整頁就會被推爆變成可以左右滑（2026-09 實測）。欄數交給 CSS 決定。
     return f'''    <div class="indicator-strip" style="margin-bottom: 0.75rem;">
       <div class="indicator-cell">
-        <div class="val">{currency} {fmt_amount(exp)}</div>
+        <div class="val">{fmt_amount(exp)}</div>
         <div class="lbl">台灣出口至 Türkiye（{period_label_html}）</div>
         <div class="delta">{fmt_chg(exp_chg)}</div>
       </div>
       <div class="indicator-cell">
-        <div class="val">{currency} {fmt_amount(imp)}</div>
+        <div class="val">{fmt_amount(imp)}</div>
         <div class="lbl">台灣自 Türkiye 進口（{period_label_html}）</div>
         <div class="delta">{fmt_chg(imp_chg)}</div>
       </div>
       <div class="indicator-cell">
-        <div class="val {'green' if (bal or 0) >= 0 else 'red'}">{currency} {fmt_amount(bal)}</div>
+        <div class="val {'green' if (bal or 0) >= 0 else 'red'}">{fmt_amount(bal)}</div>
         <div class="lbl">台灣對 Türkiye 貿易餘額（{period_label_html}）</div>
         <div class="delta">正值＝台灣出超</div>
       </div>
