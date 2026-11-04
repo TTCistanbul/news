@@ -532,6 +532,41 @@ def _tw_tr_top5(direction_key: str, latest: dict, prev: dict | None,
     return rows, total
 
 
+
+# ── 圖表統一用「清爽文青」配色與簡化版面（2026-11 改版）──
+# 金額一律用「億美元」，跟表 02 同單位，老闆一眼讀得懂；顏色改成清爽的
+# 天空藍／薄荷綠／淡黃，去掉上、右、左邊框，只留淡淡的橫向格線。
+_SOFT = {
+    "export": "#6EC3F0", "import": "#FFD58A", "balance": "#2EC4A0", "balance_text": "#169A7C",
+    "text": "#3A4A5A", "grid": "#E8F1F7",
+    "lines": ["#4DB2EC", "#2EC4A0", "#FFC04D", "#FF8F8F", "#A58BF2"],
+}
+
+# 海關稅則 21 類的簡短中文名（官方全名很長，圖例與表格用簡稱）
+SECTION_SHORT = {
+    "01": "活動物及動物產品", "02": "植物產品", "03": "動植物油脂及蠟",
+    "04": "調製食品、飲料及菸", "05": "礦產品", "06": "化學工業產品",
+    "07": "塑膠及橡膠製品", "08": "皮革及皮件", "09": "木及木製品",
+    "10": "紙漿及紙製品", "11": "紡織品", "12": "鞋帽及雜項製品",
+    "13": "石料、陶瓷及玻璃", "14": "珠寶及貴金屬", "15": "卑金屬及其製品",
+    "16": "機械及電機設備", "17": "車輛及運輸設備", "18": "光學及精密儀器",
+    "19": "武器彈藥", "20": "雜項製品", "21": "藝術品及古董",
+}
+
+
+def _soft_axes(ax, plt):
+    for side in ("top", "right", "left"):
+        ax.spines[side].set_visible(False)
+    ax.spines["bottom"].set_color(_SOFT["grid"])
+    ax.tick_params(colors=_SOFT["text"], length=0)
+    ax.grid(axis="y", color=_SOFT["grid"], linewidth=0.9)
+    ax.set_axisbelow(True)
+
+
+def _fmt_yi(v):
+    return f"{v:,.2f}億"
+
+
 TW_TR_CHART_DIR = ROOT / "docs" / "images"
 TW_TR_CHART_FILENAME = "tw-tr-annual-chart.png"
 
@@ -572,44 +607,52 @@ def render_tw_tr_annual_chart(sectors_data: dict | None) -> str:
         plt.rcParams["axes.unicode_minus"] = False
 
         labels = [y.get("period_label") or y.get("year", "") for y in years]
-        exp_vals = [round(sum((y.get("exports_by_section") or {}).values()) / 1000, 1) for y in years]
-        imp_vals = [round(sum((y.get("imports_by_section") or {}).values()) / 1000, 1) for y in years]
-        bal_vals = [round(e - i, 1) for e, i in zip(exp_vals, imp_vals)]
+        exp_vals = [round(sum((y.get("exports_by_section") or {}).values()) / 1e5, 2) for y in years]
+        imp_vals = [round(sum((y.get("imports_by_section") or {}).values()) / 1e5, 2) for y in years]
+        bal_vals = [round(e - i, 2) for e, i in zip(exp_vals, imp_vals)]
 
         fig, ax1 = plt.subplots(figsize=(10, 5.8), dpi=150)
         x = range(len(labels))
         width = 0.35
 
         bars1 = ax1.bar([i - width / 2 for i in x], exp_vals, width,
-                         label="出口金額（百萬美元）", color="#3b82f6")
+                         label="出口", color=_SOFT["export"], zorder=3)
         bars2 = ax1.bar([i + width / 2 for i in x], imp_vals, width,
-                         label="進口金額（百萬美元）", color="#f59e0b")
-        ax1.set_ylabel("進出口金額（百萬美元）", fontsize=11, fontweight="bold")
+                         label="進口", color=_SOFT["import"], zorder=3)
+        ax1.set_ylabel("進出口金額（億美元）", fontsize=11, color=_SOFT["text"])
         ax1.set_xticks(list(x))
         ax1.set_xticklabels(labels, fontsize=10)
         ax1.set_ylim(0, max(exp_vals) * 1.25 if exp_vals else 1)
 
         for b in list(bars1) + list(bars2):
-            ax1.annotate(f"${b.get_height():.1f}M", (b.get_x() + b.get_width() / 2, b.get_height()),
-                         textcoords="offset points", xytext=(0, 4), ha="center", fontsize=9)
+            ax1.annotate(_fmt_yi(b.get_height()), (b.get_x() + b.get_width() / 2, b.get_height()),
+                         textcoords="offset points", xytext=(0, 4), ha="center", fontsize=9, color=_SOFT["text"])
 
         ax2 = ax1.twinx()
-        ax2.plot(list(x), bal_vals, color="#16a34a", marker="o", linewidth=2.5,
-                 markersize=7, label="貿易餘額／出超（百萬美元）")
-        ax2.set_ylabel("貿易餘額 出超（百萬美元）", fontsize=11, fontweight="bold", color="#16a34a")
-        ax2.tick_params(axis="y", labelcolor="#16a34a")
-        ax2.set_ylim(0, max(bal_vals) * 1.6 if bal_vals else 1)
-        for xi, v in zip(x, bal_vals):
-            ax2.annotate(f"${v:.1f}M", (xi, v), textcoords="offset points", xytext=(0, 10),
-                         ha="center", fontsize=9, color="#16a34a", fontweight="bold")
+        ax2.plot(list(x), bal_vals, color=_SOFT["balance"], marker="o", linewidth=2.2,
+                 markersize=7, label="貿易餘額（出超）")
+        ax2.set_ylabel("")
+        ax2.set_ylim(ax1.get_ylim())  # 出超線與進出口共用同一個刻度，避免視覺誤導
+        ax2.set_yticks([])
+        ax2.tick_params(axis="y", labelcolor=_SOFT["balance"], length=0)
+        ax2.spines["top"].set_visible(False); ax2.spines["right"].set_visible(False); ax2.spines["left"].set_visible(False); ax2.spines["bottom"].set_visible(False)
+        _soft_axes(ax1, plt)
+        _ytop = ax1.get_ylim()[1]
+        for xi, v, iv in zip(x, bal_vals, imp_vals):
+            # 出超數字跟進口數字太接近時會疊在一起：改放到點的左上方（壓在出口長條上）
+            _near = abs(v - iv) < 0.08 * _ytop
+            ax2.annotate(_fmt_yi(v), (xi, v), textcoords="offset points",
+                         xytext=((-6, 10) if _near else (0, 10)),
+                         ha=("right" if _near else "center"), fontsize=9, color=_SOFT["balance_text"], fontweight="bold",
+                         bbox=dict(boxstyle="round,pad=0.2", fc="white", ec="none", alpha=0.85))
 
         lines1, lbls1 = ax1.get_legend_handles_labels()
         lines2, lbls2 = ax2.get_legend_handles_labels()
-        ax1.legend(lines1 + lines2, lbls1 + lbls2, loc="upper right", fontsize=9, framealpha=0.9)
+        ax1.legend(lines1 + lines2, lbls1 + lbls2, loc="upper right", fontsize=9, frameon=False)
 
         year_range = f"{labels[0]}—{labels[-1]}" if len(labels) > 1 else labels[0]
         plt.title(f"{year_range} 台灣對 Türkiye 貿易走勢與貿易餘額變化圖",
-                  fontsize=13, fontweight="bold", pad=12)
+                  fontsize=13, fontweight="bold", pad=14, color=_SOFT["text"])
         plt.tight_layout()
 
         TW_TR_CHART_DIR.mkdir(parents=True, exist_ok=True)
@@ -665,47 +708,52 @@ def render_tw_tr_monthly_trend_chart(data: dict | None) -> str:
         plt.rcParams["axes.unicode_minus"] = False
 
         labels = [f"{int(m['month'].split('-')[1])}月" for m in year_months]
-        exp_vals = [round((m.get("exports_to_turkey") or 0) / 1e6, 1) for m in year_months]
-        imp_vals = [round((m.get("imports_from_turkey") or 0) / 1e6, 1) for m in year_months]
-        bal_vals = [round(e - i, 1) for e, i in zip(exp_vals, imp_vals)]
+        exp_vals = [round((m.get("exports_to_turkey") or 0) / 1e8, 2) for m in year_months]
+        imp_vals = [round((m.get("imports_from_turkey") or 0) / 1e8, 2) for m in year_months]
+        bal_vals = [round(e - i, 2) for e, i in zip(exp_vals, imp_vals)]
 
         fig, ax1 = plt.subplots(figsize=(10, 5.8), dpi=150)
         x = range(len(labels))
         width = 0.35
 
         bars1 = ax1.bar([i - width / 2 for i in x], exp_vals, width,
-                         label="出口金額（百萬美元）", color="#3b82f6")
+                         label="出口", color=_SOFT["export"], zorder=3)
         bars2 = ax1.bar([i + width / 2 for i in x], imp_vals, width,
-                         label="進口金額（百萬美元）", color="#f59e0b")
-        ax1.set_ylabel("進出口金額（百萬美元）", fontsize=11, fontweight="bold")
+                         label="進口", color=_SOFT["import"], zorder=3)
+        ax1.set_ylabel("進出口金額（億美元）", fontsize=11, color=_SOFT["text"])
         ax1.set_xticks(list(x))
         ax1.set_xticklabels(labels, fontsize=10)
         ax1.set_ylim(0, max(exp_vals) * 1.3 if exp_vals else 1)
 
         for b in list(bars1) + list(bars2):
-            ax1.annotate(f"${b.get_height():.1f}M", (b.get_x() + b.get_width() / 2, b.get_height()),
-                         textcoords="offset points", xytext=(0, 4), ha="center", fontsize=8.5)
+            ax1.annotate(_fmt_yi(b.get_height()), (b.get_x() + b.get_width() / 2, b.get_height()),
+                         textcoords="offset points", xytext=(0, 4), ha="center", fontsize=8.5, color=_SOFT["text"])
 
         ax2 = ax1.twinx()
-        ax2.plot(list(x), bal_vals, color="#16a34a", marker="o", linewidth=2.5,
-                 markersize=7, label="貿易餘額／出超（百萬美元）")
-        ax2.set_ylabel("貿易餘額 出超（百萬美元）", fontsize=11, fontweight="bold", color="#16a34a")
-        ax2.tick_params(axis="y", labelcolor="#16a34a")
-        ax2.set_ylim(0, max(bal_vals) * 1.5 if bal_vals else 1)
-        for xi, v in zip(x, bal_vals):
-            ax2.annotate(f"${v:.1f}M", (xi, v), textcoords="offset points", xytext=(0, 8),
-                         ha="center", fontsize=9, color="#16a34a", fontweight="bold")
+        ax2.plot(list(x), bal_vals, color=_SOFT["balance"], marker="o", linewidth=2.2,
+                 markersize=7, label="貿易餘額（出超）")
+        ax2.set_ylabel("")
+        ax2.set_ylim(ax1.get_ylim())  # 出超線與進出口共用同一個刻度，避免視覺誤導
+        ax2.set_yticks([])
+        ax2.tick_params(axis="y", labelcolor=_SOFT["balance"], length=0)
+        ax2.spines["top"].set_visible(False); ax2.spines["right"].set_visible(False); ax2.spines["left"].set_visible(False); ax2.spines["bottom"].set_visible(False)
+        _soft_axes(ax1, plt)
+        _ytop = ax1.get_ylim()[1]
+        for xi, v, iv in zip(x, bal_vals, imp_vals):
+            # 出超數字跟進口數字太接近時會疊在一起：改放到點的左上方（壓在出口長條上）
+            _near = abs(v - iv) < 0.08 * _ytop
+            ax2.annotate(_fmt_yi(v), (xi, v), textcoords="offset points",
+                         xytext=((-6, 10) if _near else (0, 8)),
+                         ha=("right" if _near else "center"), fontsize=9, color=_SOFT["balance_text"], fontweight="bold",
+                         bbox=dict(boxstyle="round,pad=0.2", fc="white", ec="none", alpha=0.85))
 
         lines1, lbls1 = ax1.get_legend_handles_labels()
         lines2, lbls2 = ax2.get_legend_handles_labels()
-        ax1.legend(lines1 + lines2, lbls1 + lbls2, loc="upper left", fontsize=9, framealpha=0.9)
-
-        ax1.grid(axis="y", linestyle="--", alpha=0.3)
-        ax1.set_axisbelow(True)
+        ax1.legend(lines1 + lines2, lbls1 + lbls2, loc="upper left", fontsize=9, framealpha=0.9, frameon=False)
 
         month_range = f"{labels[0]}—{labels[-1]}" if len(labels) > 1 else labels[0]
         plt.title(f"{latest_year}年{month_range} 台灣對 Türkiye 貿易走勢與貿易餘額變化圖",
-                  fontsize=13, fontweight="bold", pad=12)
+                  fontsize=13, fontweight="bold", pad=14, color=_SOFT["text"])
         plt.tight_layout()
 
         TW_TR_CHART_DIR.mkdir(parents=True, exist_ok=True)
@@ -724,7 +772,7 @@ def render_tw_tr_monthly_trend_chart(data: dict | None) -> str:
 
 
 TW_TR_MONTHLY_CHART_FILENAME = "tw-tr-monthly-top5-chart.png"
-_TW_TR_LINE_COLORS = ["#3b82f6", "#f59e0b", "#16a34a", "#dc2626", "#8b5cf6"]
+_TW_TR_LINE_COLORS = _SOFT["lines"]
 
 
 def render_tw_tr_monthly_sector_chart(monthly_data: dict | None, sections: dict) -> str:
@@ -763,20 +811,23 @@ def render_tw_tr_monthly_sector_chart(monthly_data: dict | None, sections: dict)
         for i, code in enumerate(top5_codes):
             vals = [round((m.get("exports_by_section") or {}).get(code, 0) / 1000, 1) for m in months]
             name = sections.get(code, f"第{code}類")
-            short_name = name.split("；")[0].split("，")[0]  # 官方名稱很長，圖例只取分號前的第一段
+            short_name = SECTION_SHORT.get(code) or name.split("；")[0].split("，")[0]
             ax.plot(list(x), vals, marker="o", linewidth=2.2, markersize=6,
                     color=_TW_TR_LINE_COLORS[i % len(_TW_TR_LINE_COLORS)],
-                    label=f"第{code}類 {short_name}")
+                    label=f"{short_name}")
 
         ax.set_xticks(list(x))
         ax.set_xticklabels([f"{int(ml.split('-')[1])}月" for ml in month_labels], fontsize=10)
-        ax.set_ylabel("出口金額（百萬美元）", fontsize=11, fontweight="bold")
-        ax.legend(loc="upper left", fontsize=8.5, framealpha=0.9)
-        ax.grid(axis="y", linestyle="--", alpha=0.4)
+        ax.set_ylabel("出口金額（百萬美元）", fontsize=11, color=_SOFT["text"])
+        ax.legend(loc="upper left", fontsize=8.5, frameon=False)
+        _soft_axes(ax, plt)
 
-        period = f"{month_labels[0]} ～ {month_labels[-1]}"
+        _y0, _m0 = month_labels[0].split("-")
+        _y1, _m1 = month_labels[-1].split("-")
+        period = (f"{_y0}年{int(_m0)}–{int(_m1)}月" if _y0 == _y1
+                  else f"{_y0}年{int(_m0)}月–{_y1}年{int(_m1)}月")
         plt.title(f"台灣出口 Türkiye 前五大產業逐月變化（{period}）",
-                  fontsize=13, fontweight="bold", pad=12)
+                  fontsize=13, fontweight="bold", pad=14, color=_SOFT["text"])
         plt.tight_layout()
 
         TW_TR_CHART_DIR.mkdir(parents=True, exist_ok=True)
@@ -824,8 +875,8 @@ def render_tw_tr_sector_table(sectors_data: dict | None) -> str:
         trs.append(f'''          <tr>
             <td>{i}</td>
             <td>第{r["code"]}類</td>
-            <td>{name}</td>
-            <td>{r["value"]:,} 千美元</td>
+            <td title="{name}">{html.escape(SECTION_SHORT.get(r["code"], r["name"]))}</td>
+            <td>{r["value"] / 1e5:,.2f} 億美元</td>
             <td>{r["share_pct"]:.2f}%</td>
             <td>{yoy_html}</td>
           </tr>''')
