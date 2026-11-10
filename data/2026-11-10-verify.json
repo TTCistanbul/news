@@ -1,6 +1,6 @@
 {
  "date": "2026-11-10",
- "passed": false,
+ "passed": true,
  "checks": [
   {
    "name": "1. 資料與分析是今天的",
@@ -11,16 +11,16 @@
   },
   {
    "name": "2. AI 寫的數字都能對回原始 JSON",
-   "passed": false,
+   "passed": true,
    "details": [
-    "`key_events[0].headline` 的數字 **3,000** 在原始資料找不到來源（上下文：「…在 2040 年前投入 3,000 億美元進行能源轉型…」）"
+    "共檢查 7 個數字，全部找得到來源"
    ]
   },
   {
    "name": "3. 每個事件都有來源連結（且連結、日期對得上原始新聞）",
-   "passed": false,
+   "passed": true,
    "details": [
-    "key_events[0]「土耳其計畫在 2040 年前投入 3,000 億」 的連結不在今天的原始新聞裡（可能是模型編的）：https://www.dailysabah.com/business/energy/turkiye-plans-300b-in-energy-transition-investment-by-2040-energy-minister-says-at-cop31"
+    "共 8 則事件，連結皆可對回原始新聞"
    ]
   },
   {
@@ -76,7 +76,10 @@
    "field": "key_events[0].headline",
    "token": "3,000",
    "unit_mult": 100000000.0,
-   "matched": [],
+   "matched": [
+    "新聞「Türkiye plans $300B in energy 」（Anadolu Ajansı (EN)）",
+    "新聞「Türkiye plans $300B in energy 」（Anadolu Ajansı (EN)）"
+   ],
    "note": ""
   },
   {
@@ -86,7 +89,7 @@
    "matched": [
     "新聞「Türkiye plans $300B in energy 」（Anadolu Ajansı (EN)）"
    ],
-   "note": "來自另一則新聞（非該事件引用的連結）"
+   "note": ""
   },
   {
    "field": "key_events[0].summary",
@@ -95,7 +98,7 @@
    "matched": [
     "新聞「Türkiye plans $300B in energy 」（Anadolu Ajansı (EN)）"
    ],
-   "note": "來自另一則新聞（非該事件引用的連結）"
+   "note": ""
   },
   {
    "field": "key_events[1].summary",
