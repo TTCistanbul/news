@@ -13,14 +13,14 @@
    "name": "2. AI 寫的數字都能對回原始 JSON",
    "passed": true,
    "details": [
-    "共檢查 7 個數字，全部找得到來源"
+    "共檢查 26 個數字，全部找得到來源"
    ]
   },
   {
    "name": "3. 每個事件都有來源連結（且連結、日期對得上原始新聞）",
    "passed": true,
    "details": [
-    "共 8 則事件，連結皆可對回原始新聞"
+    "共 10 則事件，連結皆可對回原始新聞"
    ]
   },
   {
@@ -39,6 +39,50 @@
   }
  ],
  "number_trace": [
+  {
+   "field": "today_take",
+   "token": "2.6",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Şimşek: Üretimdeki görünümün g」（Bloomberg HT）",
+    "新聞「Sanayi üretimi Eylül'de ivmele」（Bloomberg HT）",
+    "新聞「Industrial output rebounds in 」（Hürriyet Daily News）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "today_take",
+   "token": "2.1",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Şimşek: Üretimdeki görünümün g」（Bloomberg HT）",
+    "新聞「Sanayi üretimi Eylül'de ivmele」（Bloomberg HT）",
+    "payload.macro.core_cpi_b:相鄰差"
+   ],
+   "note": ""
+  },
+  {
+   "field": "today_take",
+   "token": "5,000",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Türkiye ile Suudi Arabistan ar」（Bloomberg HT）",
+    "新聞「Türkiye ile Suudi Arabistan ar」（Bloomberg HT）",
+    "新聞「Bayraktar duyurdu: Suudi Arabi」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "today_take",
+   "token": "36.0",
+   "unit_mult": 1.0,
+   "matched": [
+    "payload.macro.funding_cost[2].value",
+    "payload.macro.funding_cost[3].value",
+    "payload.macro.funding_cost[4].value"
+   ],
+   "note": ""
+  },
   {
    "field": "summary",
    "token": "2.6",
@@ -63,50 +107,207 @@
   },
   {
    "field": "summary",
-   "token": "3000",
+   "token": "5,000",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Türkiye ile Suudi Arabistan ar」（Bloomberg HT）",
+    "新聞「Türkiye ile Suudi Arabistan ar」（Bloomberg HT）",
+    "新聞「Bayraktar duyurdu: Suudi Arabi」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "1,000",
    "unit_mult": 100000000.0,
    "matched": [
-    "新聞「Türkiye plans $300B in energy 」（Anadolu Ajansı (EN)）",
-    "新聞「Türkiye plans $300B in energy 」（Anadolu Ajansı (EN)）",
-    "新聞「Çinlilere yüzde 10 hisse verdi」（Ekonomim）"
+    "新聞「Ziraat Katılım ve Halk Katılım」（Dünya）",
+    "新聞「Borsa İstanbul günü düşüşle ka」（Ekonomim）",
+    "新聞「Borsa İstanbul günü düşüşle ta」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "36.0",
+   "unit_mult": 1.0,
+   "matched": [
+    "payload.macro.funding_cost[2].value",
+    "payload.macro.funding_cost[3].value",
+    "payload.macro.funding_cost[4].value"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "31.7",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Astor Enerji'den milyarlarca l」（Sözcü Ekonomi）"
    ],
    "note": ""
   },
   {
    "field": "key_events[0].headline",
-   "token": "3,000",
-   "unit_mult": 100000000.0,
-   "matched": [
-    "新聞「Türkiye plans $300B in energy 」（Anadolu Ajansı (EN)）",
-    "新聞「Türkiye plans $300B in energy 」（Anadolu Ajansı (EN)）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "key_events[0].summary",
-   "token": "281",
-   "unit_mult": 1.0,
-   "matched": [
-    "新聞「Türkiye plans $300B in energy 」（Anadolu Ajansı (EN)）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "key_events[0].summary",
-   "token": "175",
-   "unit_mult": 1.0,
-   "matched": [
-    "新聞「Türkiye plans $300B in energy 」（Anadolu Ajansı (EN)）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "key_events[1].summary",
    "token": "2.6",
    "unit_mult": 1.0,
    "matched": [
-    "新聞「Industrial output rebounds in 」（Hürriyet Daily News）",
+    "新聞「Sanayi üretimi Eylül'de ivmele」（Bloomberg HT）",
     "payload.macro.cpi:相鄰漲跌幅%"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].headline",
+   "token": "2.1",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Sanayi üretimi Eylül'de ivmele」（Bloomberg HT）",
+    "payload.macro.core_cpi_b:相鄰差"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].summary",
+   "token": "2.6",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Sanayi üretimi Eylül'de ivmele」（Bloomberg HT）",
+    "payload.macro.cpi:相鄰漲跌幅%"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].summary",
+   "token": "2.1",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Sanayi üretimi Eylül'de ivmele」（Bloomberg HT）",
+    "payload.macro.core_cpi_b:相鄰差"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].headline",
+   "token": "5,000",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Bayraktar duyurdu: Suudi Arabi」（Dünya）",
+    "新聞「Bayraktar duyurdu: Suudi Arabi」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].summary",
+   "token": "5,000",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Bayraktar duyurdu: Suudi Arabi」（Dünya）",
+    "新聞「Bayraktar duyurdu: Suudi Arabi」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[1].headline",
+   "token": "1,000",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Halkbank 100 milyar TL’lik KOB」（Yeşil Haber）",
+    "新聞「Halkbank 100 milyar TL’lik KOB」（Yeşil Haber）",
+    "新聞「Halkbank 100 milyar TL’lik KOB」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[1].body",
+   "token": "1,000",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Halkbank 100 milyar TL’lik KOB」（Yeşil Haber）",
+    "新聞「Halkbank 100 milyar TL’lik KOB」（Yeşil Haber）",
+    "新聞「Halkbank 100 milyar TL’lik KOB」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[1].business_interpretation",
+   "token": "36.0",
+   "unit_mult": 1.0,
+   "matched": [
+    "payload.macro.funding_cost[2].value",
+    "payload.macro.funding_cost[3].value",
+    "payload.macro.funding_cost[4].value"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[4].headline",
+   "token": "31.7",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Astor Enerji'den milyarlarca l」（Sözcü Ekonomi）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[4].body",
+   "token": "11.6",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Astor Enerji'den milyarlarca l」（Sözcü Ekonomi）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[4].body",
+   "token": "31.7",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Astor Enerji'den milyarlarca l」（Sözcü Ekonomi）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[0].body",
+   "token": "2.6",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Şimşek: Üretimdeki görünümün g」（Bloomberg HT）",
+    "新聞「Sanayi üretimi Eylül'de ivmele」（Bloomberg HT）",
+    "新聞「Industrial output rebounds in 」（Hürriyet Daily News）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[1].body",
+   "token": "36.0",
+   "unit_mult": 1.0,
+   "matched": [
+    "payload.macro.funding_cost[2].value",
+    "payload.macro.funding_cost[3].value",
+    "payload.macro.funding_cost[4].value"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[1].body",
+   "token": "1,000",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Ziraat Katılım ve Halk Katılım」（Dünya）",
+    "新聞「Borsa İstanbul günü düşüşle ka」（Ekonomim）",
+    "新聞「Borsa İstanbul günü düşüşle ta」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[2].body",
+   "token": "5,000",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Türkiye ile Suudi Arabistan ar」（Bloomberg HT）",
+    "新聞「Türkiye ile Suudi Arabistan ar」（Bloomberg HT）",
+    "新聞「Bayraktar duyurdu: Suudi Arabi」（Dünya）"
    ],
    "note": ""
   }
