@@ -339,6 +339,15 @@ def call_gemini(prompt: str, api_key: str) -> tuple[dict, str]:
     raise RuntimeError("所有 Gemini 候選模型都失敗：" + "；".join(errors))
 
 
+def _plain(value) -> str:
+    """純文字欄位：先拿掉 AI 誤寫進來的 HTML 標籤，再 escape。
+    Gemini 有時會把 <span class="data">數字</span> 寫進 headline／summary／body，
+    直接 html.escape() 會讓標籤原封不動顯示在週報上（每日報告的 render_report.py
+    在 2026-09-23 已用同樣方式修過）。"""
+    text = re.sub(r"<[^>]+>", "", str(value or ""))
+    return html.escape(re.sub(r"\s{2,}", " ", text).strip())
+
+
 def render_key_developments(items: list[dict]) -> str:
     icon = {"red": "🔴", "green": "🟢", "neutral": "⚪"}
     cls = {"red": "dir-red", "green": "dir-green", "neutral": "dir-neutral"}
@@ -347,9 +356,9 @@ def render_key_developments(items: list[dict]) -> str:
         d = e.get("direction", "neutral")
         importance = html.escape(e.get("importance", "中等"))
         badge_cls = "badge-major" if importance == "重大" else "badge-medium"
-        headline = html.escape(e.get("headline", ""))
-        summary = html.escape(e.get("summary", ""))
-        impact = html.escape(e.get("business_impact", ""))
+        headline = _plain(e.get("headline", ""))
+        summary = _plain(e.get("summary", ""))
+        impact = _plain(e.get("business_impact", ""))
         source_urls = e.get("sources", [])
         if isinstance(source_urls, str):
             source_urls = [source_urls]
@@ -375,10 +384,10 @@ def render_industry_trends(items: list[dict]) -> str:
     lis = []
     for it in items[:6]:
         sentiment = cls.get(it.get("sentiment", "neu"), "neu")
-        sector = html.escape(it.get("sector", ""))
-        headline = html.escape(it.get("headline", ""))
-        body = html.escape(it.get("body", ""))
-        interp = html.escape(it.get("business_interpretation", ""))
+        sector = _plain(it.get("sector", ""))
+        headline = _plain(it.get("headline", ""))
+        body = _plain(it.get("body", ""))
+        interp = _plain(it.get("business_interpretation", ""))
         lis.append(f'''      <li class="sector-item {sentiment}">
         <div class="row-top">
           <span class="sector-chip">{sector}</span>
@@ -393,8 +402,8 @@ def render_industry_trends(items: list[dict]) -> str:
 def render_trade_implications(items: list[dict]) -> str:
     lis = []
     for it in items[:4]:
-        title = html.escape(it.get("title", ""))
-        body = html.escape(it.get("body", ""))
+        title = _plain(it.get("title", ""))
+        body = _plain(it.get("body", ""))
         lis.append(f"      <li><strong>{title}</strong>{body}</li>")
     return "\n".join(lis) if lis else "      <li>本期無資料</li>"
 
