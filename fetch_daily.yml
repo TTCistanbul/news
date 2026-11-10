@@ -1,0 +1,90 @@
+name: Daily Turkiye Econ Data Fetch
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - generate_analysis.py
+  schedule:
+    - cron: '30 7 * * *'
+  workflow_dispatch: {}
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write   # verification failed -> open an issue so you get an email
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Chinese fonts (for the trade charts)
+        run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk
+
+      - name: Install dependencies
+        run: pip install requests feedparser borsapy opencc-python-reimplemented matplotlib
+
+      - name: Run fetch_daily.py
+        env:
+          EVDS_API_KEY: ${{ secrets.EVDS_API_KEY }}
+        run: python fetch_daily.py
+
+      - name: Generate AI analysis (Gemini, fully automatic, no review step)
+        continue-on-error: true   # Gemini outage must not stop raw data from being saved; the verify step catches a missing analysis
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python generate_analysis.py
+
+      - name: Fill in template (rates, funding cost, AI blocks)
+        run: python render_report.py
+
+      # Gate: numbers must trace to raw JSON, every event needs a source link, no Simplified Chinese.
+      # The rendered page is checked BEFORE it is committed; on failure docs/ is reverted below.
+      - name: Pre-publish verification
+        id: verify
+        continue-on-error: true
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python verify_report.py --html docs/index.html --alert
+
+      - name: Do not publish - revert docs/ to the last published version
+        if: steps.verify.outcome == 'failure'
+        run: |
+          git checkout -- docs
+          git clean -fdq docs
+
+      - name: Commit and push data and report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "Daily data fetch $(date -u +%Y-%m-%d)"
+          git pull --rebase origin main
+          git push
+
+      - name: Alert - open GitHub issue
+        if: steps.verify.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="[Publish check failed] $(TZ=Europe/Istanbul date +%Y-%m-%d)"
+          N=$(gh issue list --state open --search "$TITLE in:title" --json number -q '.[0].number')
+          if [ -n "$N" ]; then
+            gh issue comment "$N" --body-file build/verify-report.md
+          else
+            gh issue create --title "$TITLE" --body-file build/verify-report.md
+          fi
+
+      - name: Mark run as failed (so GitHub also emails you)
+        if: steps.verify.outcome == 'failure'
+        run: |
+          echo "Verification failed -> docs/ was NOT updated. See the issue and data/*-verify.json"
+          exit 1
