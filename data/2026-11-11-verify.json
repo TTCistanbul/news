@@ -1,0 +1,204 @@
+{
+ "date": "2026-11-11",
+ "passed": true,
+ "checks": [
+  {
+   "name": "1. 資料與分析是今天的",
+   "passed": true,
+   "details": [
+    "原始資料與分析皆為 2026-11-11"
+   ]
+  },
+  {
+   "name": "2. AI 寫的數字都能對回原始 JSON",
+   "passed": true,
+   "details": [
+    "共檢查 16 個數字，全部找得到來源"
+   ]
+  },
+  {
+   "name": "3. 每個事件都有來源連結（且連結、日期對得上原始新聞）",
+   "passed": true,
+   "details": [
+    "共 10 則事件，連結皆可對回原始新聞"
+   ]
+  },
+  {
+   "name": "4. 沒有簡體字或大陸用語（OpenCC）",
+   "passed": true,
+   "details": [
+    "掃描整頁可見文字，沒有簡體字"
+   ]
+  },
+  {
+   "name": "5. 頁面完整（無殘留 token、匯率與融資成本已寫入）",
+   "passed": true,
+   "details": [
+    "token 皆已替換，數字已寫入"
+   ]
+  }
+ ],
+ "number_trace": [
+  {
+   "field": "today_take",
+   "token": "60",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「EBRD plans $6B investment in T」（Daily Sabah）",
+    "新聞「EBRD plans $6B investment in T」（Daily Sabah）",
+    "新聞「EBRD plans $6B investment in T」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "today_take",
+   "token": "3,000",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Türkiye, Saudi Arabia sign dea」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "3,000",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Şimşek says Türkiye may need a」（Daily Sabah）",
+    "新聞「Şimşek says Türkiye may need a」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "60",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「EBRD plans $6B investment in T」（Daily Sabah）",
+    "新聞「EBRD plans $6B investment in T」（Daily Sabah）",
+    "新聞「EBRD plans $6B investment in T」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "3,000",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Türkiye, Saudi Arabia sign dea」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "10",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Borsa İstanbul günü yatay seyi」（Dünya）",
+    "新聞「Türkiye targets higher oil and」（Hürriyet Daily News）",
+    "payload.fx.rates.JPY.unit"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].headline",
+   "token": "60",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「EBRD plans $6B investment in T」（Daily Sabah）",
+    "新聞「EBRD plans $6B investment in T」（Daily Sabah）",
+    "新聞「EBRD plans $6B investment in T」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "60",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「EBRD plans $6B investment in T」（Daily Sabah）",
+    "新聞「EBRD plans $6B investment in T」（Daily Sabah）",
+    "新聞「EBRD plans $6B investment in T」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].headline",
+   "token": "3,000",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Türkiye, Saudi Arabia sign dea」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].summary",
+   "token": "3,000",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Türkiye, Saudi Arabia sign dea」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[0].body",
+   "token": "10",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Türkiye targets higher oil and」（Hürriyet Daily News）",
+    "payload.fx.rates.JPY.unit",
+    "payload.brent_oil.changes.week.base_price"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[2].body",
+   "token": "240",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Uzbekistan pivots to transform」（Anadolu Ajansı (EN)）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[4].body",
+   "token": "4,000",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Şanlıurfa Gıda OSB’de günlük 4」（Yeşil Haber）",
+    "新聞「Şanlıurfa Gıda OSB’de günlük 4」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[0].body",
+   "token": "3,000",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Şimşek says Türkiye may need a」（Daily Sabah）",
+    "新聞「Şimşek says Türkiye may need a」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[0].body",
+   "token": "60",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「EBRD plans $6B investment in T」（Daily Sabah）",
+    "新聞「EBRD plans $6B investment in T」（Daily Sabah）",
+    "新聞「EBRD plans $6B investment in T」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[0].body",
+   "token": "3,000",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Türkiye, Saudi Arabia sign dea」（Daily Sabah）"
+   ],
+   "note": ""
+  }
+ ]
+}
