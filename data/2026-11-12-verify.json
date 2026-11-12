@@ -1,0 +1,188 @@
+{
+ "date": "2026-11-12",
+ "passed": false,
+ "checks": [
+  {
+   "name": "1. 資料與分析是今天的",
+   "passed": true,
+   "details": [
+    "原始資料與分析皆為 2026-11-12"
+   ]
+  },
+  {
+   "name": "2. AI 寫的數字都能對回原始 JSON",
+   "passed": false,
+   "details": [
+    "`key_events[1].summary` 的數字 **150** 在原始資料找不到來源（上下文：「…會上，與中國簽署目標約 150 億美元投資的再生能…」）",
+    "`key_events[1].summary` 的數字 **51** 在原始資料找不到來源（上下文：「…，並與四家開發銀行簽署 51 億美元的協議。…」）"
+   ]
+  },
+  {
+   "name": "3. 每個事件都有來源連結（且連結、日期對得上原始新聞）",
+   "passed": false,
+   "details": [
+    "key_events[1]「土耳其在 COP31 簽署多項能源與融資協議」 的連結不在今天的原始新聞裡（可能是模型編的）：https://www.hurriyetdailynews.com/turkiye-signs-energy-and-finance-deals-at-cop31-229303"
+   ]
+  },
+  {
+   "name": "4. 沒有簡體字或大陸用語（OpenCC）",
+   "passed": false,
+   "details": [
+    "簡體字「峰」（應為「峯」）出現 4 次，例如：…耳其在 COP31 氣候峰會期間積極吸引國際綠能…"
+   ]
+  },
+  {
+   "name": "5. 頁面完整（無殘留 token、匯率與融資成本已寫入）",
+   "passed": true,
+   "details": [
+    "token 皆已替換，數字已寫入"
+   ]
+  }
+ ],
+ "number_trace": [
+  {
+   "field": "summary",
+   "token": "29.5",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Turkish central bank raises in」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "21",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Turkish central bank raises in」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "3",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「TCMB, kredi büyüme sınırlarını」（Bloomberg HT）",
+    "新聞「TCMB, kredi büyüme sınırlarını」（Bloomberg HT）",
+    "新聞「TCMB, kredi büyüme sınırlarını」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "3.5",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「TCMB, kredi büyüme sınırlarını」（Bloomberg HT）",
+    "payload.macro.cpi:相鄰差"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "150",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「China, Türkiye sign MoU for up」（Daily Sabah）",
+    "新聞「China, Türkiye sign MoU for up」（Daily Sabah）",
+    "新聞「China, Türkiye sign MoU for up」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "51",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye signs energy and finan」（Hürriyet Daily News）",
+    "新聞「Türkiye signs energy and finan」（Hürriyet Daily News）",
+    "新聞「Bakan Şimşek: 4 dünya bankası 」（Sözcü Ekonomi）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].summary",
+   "token": "29.5",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Turkish central bank raises in」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].summary",
+   "token": "21",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Turkish central bank raises in」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "150",
+   "unit_mult": 100000000.0,
+   "matched": [],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "51",
+   "unit_mult": 100000000.0,
+   "matched": [],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].summary",
+   "token": "3",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「TCMB, kredi büyüme sınırlarını」（Bloomberg HT）",
+    "新聞「TCMB, kredi büyüme sınırlarını」（Bloomberg HT）",
+    "新聞「TCMB, kredi büyüme sınırlarını」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].summary",
+   "token": "3.5",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「TCMB, kredi büyüme sınırlarını」（Bloomberg HT）",
+    "payload.macro.cpi:相鄰差"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[2].body",
+   "token": "40.88",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Şişecam için ABD zarar kararı:」（Yeşil Haber）",
+    "新聞「Şişecam için ABD zarar kararı:」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[3].headline",
+   "token": "300",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Türk Telekom 300 MWp Malatya G」（Yeşil Haber）",
+    "新聞「Türk Telekom 300 MWp Malatya G」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[3].body",
+   "token": "300",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Türk Telekom 300 MWp Malatya G」（Yeşil Haber）",
+    "新聞「Türk Telekom 300 MWp Malatya G」（Yeşil Haber）"
+   ],
+   "note": ""
+  }
+ ]
+}
