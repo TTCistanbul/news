@@ -1,0 +1,278 @@
+{
+ "date": "2026-11-13",
+ "passed": false,
+ "checks": [
+  {
+   "name": "1. 資料與分析是今天的",
+   "passed": true,
+   "details": [
+    "原始資料與分析皆為 2026-11-13"
+   ]
+  },
+  {
+   "name": "2. AI 寫的數字都能對回原始 JSON",
+   "passed": true,
+   "details": [
+    "共檢查 23 個數字，全部找得到來源"
+   ]
+  },
+  {
+   "name": "3. 每個事件都有來源連結（且連結、日期對得上原始新聞）",
+   "passed": true,
+   "details": [
+    "共 9 則事件，連結皆可對回原始新聞"
+   ]
+  },
+  {
+   "name": "4. 沒有簡體字或大陸用語（OpenCC）",
+   "passed": false,
+   "details": [
+    "簡體字「游」（應為「遊」）出現 1 次，例如：…競爭，可能間接抑制其對上游紡織機械及自動化裝置的…"
+   ]
+  },
+  {
+   "name": "5. 頁面完整（無殘留 token、匯率與融資成本已寫入）",
+   "passed": true,
+   "details": [
+    "token 皆已替換，數字已寫入"
+   ]
+  }
+ ],
+ "number_trace": [
+  {
+   "field": "summary",
+   "token": "27.2",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Cari dengede yeniden aylık faz」（Bloomberg HT）",
+    "新聞「Türkiye posts $2.72B current a」（Daily Sabah）",
+    "新聞「Türkiye posts $2.72B current a」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "392",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Cari dengede yeniden aylık faz」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "51",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Erdoğan: Kalkınma bankalarıyla」（Bloomberg HT）",
+    "新聞「Erdoğan: Kalkınma bankalarıyla」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "400",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「DOA 4 milyon kullanıcıya ulaşt」（Yeşil Haber）",
+    "新聞「DOA 4 milyon kullanıcıya ulaşt」（Yeşil Haber）",
+    "新聞「DOA 4 milyon kullanıcıya ulaşt」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "2.5",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「15 yıllık müşteri Türkiye'den 」（Ekonomim）",
+    "新聞「15 yıllık müşteri Türkiye'den 」（Ekonomim）",
+    "payload.macro.gdp_growth_sa[10].value"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].headline",
+   "token": "27.2",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Cari dengede yeniden aylık faz」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].summary",
+   "token": "27.2",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Cari dengede yeniden aylık faz」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].summary",
+   "token": "392",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Cari dengede yeniden aylık faz」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].headline",
+   "token": "51",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Erdoğan: Kalkınma bankalarıyla」（Bloomberg HT）",
+    "新聞「Erdoğan: Kalkınma bankalarıyla」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "51",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Erdoğan: Kalkınma bankalarıyla」（Bloomberg HT）",
+    "新聞「Erdoğan: Kalkınma bankalarıyla」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].headline",
+   "token": "2.5",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「15 yıllık müşteri Türkiye'den 」（Ekonomim）",
+    "新聞「15 yıllık müşteri Türkiye'den 」（Ekonomim）",
+    "payload.macro.gdp_growth_sa[10].value"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].summary",
+   "token": "2.5",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「15 yıllık müşteri Türkiye'den 」（Ekonomim）",
+    "新聞「15 yıllık müşteri Türkiye'den 」（Ekonomim）",
+    "payload.macro.gdp_growth_sa[10].value"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[1].body",
+   "token": "20",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Hakan Güldağ'dan uyarı: Avrupa」（Ekonomim）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[2].headline",
+   "token": "400",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「DOA 4 milyon kullanıcıya ulaşt」（Yeşil Haber）",
+    "新聞「DOA 4 milyon kullanıcıya ulaşt」（Yeşil Haber）",
+    "新聞「DOA 4 milyon kullanıcıya ulaşt」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[2].body",
+   "token": "400",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「DOA 4 milyon kullanıcıya ulaşt」（Yeşil Haber）",
+    "新聞「DOA 4 milyon kullanıcıya ulaşt」（Yeşil Haber）",
+    "新聞「DOA 4 milyon kullanıcıya ulaşt」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[2].body",
+   "token": "5",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「DOA 4 milyon kullanıcıya ulaşt」（Yeşil Haber）",
+    "新聞「DOA 4 milyon kullanıcıya ulaşt」（Yeşil Haber）",
+    "新聞「DOA 4 milyon kullanıcıya ulaşt」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[3].headline",
+   "token": "1,250",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Türkiye'de 12,5 milyon adet ak」（Bloomberg HT）",
+    "新聞「Türkiye'de 12,5 milyon adet ak」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[3].body",
+   "token": "10",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye'de 12,5 milyon adet ak」（Bloomberg HT）",
+    "新聞「Türkiye'de 12,5 milyon adet ak」（Bloomberg HT）",
+    "payload.fx.rates.USD.unit"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[3].body",
+   "token": "1,250",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Türkiye'de 12,5 milyon adet ak」（Bloomberg HT）",
+    "新聞「Türkiye'de 12,5 milyon adet ak」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[4].headline",
+   "token": "750",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「TBMM’de enerji teklifi: 10 Ara」（Yeşil Haber）",
+    "新聞「TBMM’de enerji teklifi: 10 Ara」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[4].body",
+   "token": "750",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「TBMM’de enerji teklifi: 10 Ara」（Yeşil Haber）",
+    "新聞「TBMM’de enerji teklifi: 10 Ara」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[0].body",
+   "token": "51",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Erdoğan: Kalkınma bankalarıyla」（Bloomberg HT）",
+    "新聞「Erdoğan: Kalkınma bankalarıyla」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[1].body",
+   "token": "2.5",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「15 yıllık müşteri Türkiye'den 」（Ekonomim）",
+    "新聞「15 yıllık müşteri Türkiye'den 」（Ekonomim）",
+    "payload.macro.gdp_growth_sa[10].value"
+   ],
+   "note": ""
+  }
+ ]
+}
