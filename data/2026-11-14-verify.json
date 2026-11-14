@@ -1,0 +1,246 @@
+{
+ "date": "2026-11-14",
+ "passed": false,
+ "checks": [
+  {
+   "name": "1. 資料與分析是今天的",
+   "passed": true,
+   "details": [
+    "原始資料與分析皆為 2026-11-14"
+   ]
+  },
+  {
+   "name": "2. AI 寫的數字都能對回原始 JSON",
+   "passed": true,
+   "details": [
+    "共檢查 20 個數字，全部找得到來源"
+   ]
+  },
+  {
+   "name": "3. 每個事件都有來源連結（且連結、日期對得上原始新聞）",
+   "passed": true,
+   "details": [
+    "共 10 則事件，連結皆可對回原始新聞"
+   ]
+  },
+  {
+   "name": "4. 沒有簡體字或大陸用語（OpenCC）",
+   "passed": false,
+   "details": [
+    "簡體字「峰」（應為「峯」）出現 1 次，例如：…行（KfW）於COP31峰會期間簽署2.5億歐元…"
+   ]
+  },
+  {
+   "name": "5. 頁面完整（無殘留 token、匯率與融資成本已寫入）",
+   "passed": true,
+   "details": [
+    "token 皆已替換，數字已寫入"
+   ]
+  }
+ ],
+ "number_trace": [
+  {
+   "field": "today_take",
+   "token": "2.5",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「TKYB ve KfW, 250 milyon avrolu」（Yeşil Haber）",
+    "新聞「TKYB ve KfW, 250 milyon avrolu」（Yeşil Haber）",
+    "新聞「TKYB ve KfW, 250 milyon avrolu」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "36.0",
+   "unit_mult": 1.0,
+   "matched": [
+    "payload.macro.funding_cost[0].value",
+    "payload.macro.funding_cost[1].value",
+    "payload.macro.funding_cost[2].value"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "140.77",
+   "unit_mult": 1.0,
+   "matched": [
+    "payload.macro.cpi[13].value"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "50.283",
+   "unit_mult": 1.0,
+   "matched": [
+    "payload.fx.rates.USD.forex_selling",
+    "payload.fx.rates.USD.per_unit_selling",
+    "payload.fx.twd_try_cross.usd_try_selling_used"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "55.6033",
+   "unit_mult": 1.0,
+   "matched": [
+    "payload.fx.rates.EUR.forex_selling",
+    "payload.fx.rates.EUR.per_unit_selling"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "257.37",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "payload.macro.trade_exports[13].value"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "293.79",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "payload.macro.trade_imports[13].value"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "2.5",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「TKYB ve KfW, 250 milyon avrolu」（Yeşil Haber）",
+    "新聞「TKYB ve KfW, 250 milyon avrolu」（Yeşil Haber）",
+    "新聞「TKYB ve KfW, 250 milyon avrolu」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].headline",
+   "token": "2.5",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「TKYB ve KfW, 250 milyon avrolu」（Yeşil Haber）",
+    "新聞「TKYB ve KfW, 250 milyon avrolu」（Yeşil Haber）",
+    "新聞「TKYB ve KfW, 250 milyon avrolu」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].summary",
+   "token": "2.5",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「TKYB ve KfW, 250 milyon avrolu」（Yeşil Haber）",
+    "新聞「TKYB ve KfW, 250 milyon avrolu」（Yeşil Haber）",
+    "新聞「TKYB ve KfW, 250 milyon avrolu」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "14",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye ile Singapur arasında 」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[4].headline",
+   "token": "10",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Erdoğan, Bolivia's Paz seek to」（Daily Sabah）",
+    "新聞「Erdoğan, Bolivia's Paz seek to」（Daily Sabah）",
+    "payload.fx.rates.USD.unit"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[4].summary",
+   "token": "10",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Erdoğan, Bolivia's Paz seek to」（Daily Sabah）",
+    "新聞「Erdoğan, Bolivia's Paz seek to」（Daily Sabah）",
+    "payload.fx.rates.USD.unit"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[2].headline",
+   "token": "45",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Türkiye'de 5 yılda yüzde 45 ar」（Dünya）",
+    "新聞「Türkiye'de 5 yılda yüzde 45 ar」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[2].body",
+   "token": "83.4",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Türkiye'de 5 yılda yüzde 45 ar」（Dünya）",
+    "新聞「Türkiye'de 5 yılda yüzde 45 ar」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[2].body",
+   "token": "112.6",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Türkiye'de 5 yılda yüzde 45 ar」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[2].body",
+   "token": "45",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Türkiye'de 5 yılda yüzde 45 ar」（Dünya）",
+    "新聞「Türkiye'de 5 yılda yüzde 45 ar」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[0].body",
+   "token": "2.5",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「TKYB ve KfW, 250 milyon avrolu」（Yeşil Haber）",
+    "新聞「TKYB ve KfW, 250 milyon avrolu」（Yeşil Haber）",
+    "新聞「TKYB ve KfW, 250 milyon avrolu」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[2].body",
+   "token": "83.4",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Türkiye'de 5 yılda yüzde 45 ar」（Dünya）",
+    "新聞「Türkiye'de 5 yılda yüzde 45 ar」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[2].body",
+   "token": "112.6",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Türkiye'de 5 yılda yüzde 45 ar」（Dünya）"
+   ],
+   "note": ""
+  }
+ ]
+}
