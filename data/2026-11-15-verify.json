@@ -1,0 +1,256 @@
+{
+ "date": "2026-11-15",
+ "passed": false,
+ "checks": [
+  {
+   "name": "1. 資料與分析是今天的",
+   "passed": true,
+   "details": [
+    "原始資料與分析皆為 2026-11-15"
+   ]
+  },
+  {
+   "name": "2. AI 寫的數字都能對回原始 JSON",
+   "passed": true,
+   "details": [
+    "共檢查 21 個數字，全部找得到來源"
+   ]
+  },
+  {
+   "name": "3. 每個事件都有來源連結（且連結、日期對得上原始新聞）",
+   "passed": true,
+   "details": [
+    "共 9 則事件，連結皆可對回原始新聞"
+   ]
+  },
+  {
+   "name": "4. 沒有簡體字或大陸用語（OpenCC）",
+   "passed": false,
+   "details": [
+    "簡體字「峰」（應為「峯」）出現 1 次，例如：…耳其在 COP31 氣候峰會期間持續釋出綠色融資…"
+   ]
+  },
+  {
+   "name": "5. 頁面完整（無殘留 token、匯率與融資成本已寫入）",
+   "passed": true,
+   "details": [
+    "token 皆已替換，數字已寫入"
+   ]
+  }
+ ],
+ "number_trace": [
+  {
+   "field": "summary",
+   "token": "36.0",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Bakan Bolat: Mal ve hizmet ihr」（Hürriyet Ekonomi）",
+    "payload.macro.funding_cost[0].value",
+    "payload.macro.funding_cost[1].value"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "140.77",
+   "unit_mult": 1.0,
+   "matched": [
+    "payload.macro.cpi[13].value"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "4,130",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Bakan Bolat: Mal ve hizmet ihr」（Hürriyet Ekonomi）",
+    "新聞「Bakan Bolat: Mal ve hizmet ihr」（Hürriyet Ekonomi）",
+    "新聞「Bakan Bolat: Mal ve hizmet ihr」（Hürriyet Ekonomi）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "7,500",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「QNB Leasing, Proparco ile 75 m」（Bloomberg HT）",
+    "新聞「QNB Leasing, Proparco ile 75 m」（Bloomberg HT）",
+    "新聞「QNB Leasing, Proparco ile 75 m」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "59.8",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「EPDK Eylül 2026: Hidroelektrik」（Yeşil Haber）",
+    "新聞「EPDK Eylül 2026: Hidroelektrik」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].headline",
+   "token": "7,500",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「QNB Leasing, Proparco ile 75 m」（Bloomberg HT）",
+    "新聞「QNB Leasing, Proparco ile 75 m」（Bloomberg HT）",
+    "新聞「QNB Leasing, Proparco ile 75 m」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "7,500",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「QNB Leasing, Proparco ile 75 m」（Bloomberg HT）",
+    "新聞「QNB Leasing, Proparco ile 75 m」（Bloomberg HT）",
+    "新聞「QNB Leasing, Proparco ile 75 m」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].headline",
+   "token": "4,130",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Bakan Bolat: Mal ve hizmet ihr」（Hürriyet Ekonomi）",
+    "新聞「Bakan Bolat: Mal ve hizmet ihr」（Hürriyet Ekonomi）",
+    "新聞「Bakan Bolat: Mal ve hizmet ihr」（Hürriyet Ekonomi）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].summary",
+   "token": "5.3",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Bakan Bolat: Mal ve hizmet ihr」（Hürriyet Ekonomi）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].summary",
+   "token": "4,130",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Bakan Bolat: Mal ve hizmet ihr」（Hürriyet Ekonomi）",
+    "新聞「Bakan Bolat: Mal ve hizmet ihr」（Hürriyet Ekonomi）",
+    "新聞「Bakan Bolat: Mal ve hizmet ihr」（Hürriyet Ekonomi）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[3].headline",
+   "token": "1,610",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Şimşek, fonlardaki varlıkların」（Bloomberg HT）",
+    "新聞「Şimşek, fonlardaki varlıkların」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[3].summary",
+   "token": "1,610",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Şimşek, fonlardaki varlıkların」（Bloomberg HT）",
+    "新聞「Şimşek, fonlardaki varlıkların」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[0].headline",
+   "token": "59.8",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「EPDK Eylül 2026: Hidroelektrik」（Yeşil Haber）",
+    "新聞「EPDK Eylül 2026: Hidroelektrik」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[0].body",
+   "token": "153.8",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「EPDK Eylül 2026: Hidroelektrik」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[0].body",
+   "token": "2.54",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「EPDK Eylül 2026: Hidroelektrik」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[0].body",
+   "token": "59.8",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「EPDK Eylül 2026: Hidroelektrik」（Yeşil Haber）",
+    "新聞「EPDK Eylül 2026: Hidroelektrik」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[1].headline",
+   "token": "403",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Zeytinde rekor yılı krize dönü」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[1].body",
+   "token": "403",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Zeytinde rekor yılı krize dönü」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[1].body",
+   "token": "30",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Zeytinde rekor yılı krize dönü」（Dünya）",
+    "新聞「Zeytinde rekor yılı krize dönü」（Dünya）",
+    "payload.macro.cpi:對12期前%"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[1].body",
+   "token": "50",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Zeytinde rekor yılı krize dönü」（Dünya）",
+    "payload.fx.rates.USD.forex_buying",
+    "payload.fx.rates.USD.forex_selling"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[0].body",
+   "token": "59.8",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「EPDK Eylül 2026: Hidroelektrik」（Yeşil Haber）",
+    "新聞「EPDK Eylül 2026: Hidroelektrik」（Yeşil Haber）"
+   ],
+   "note": ""
+  }
+ ]
+}
