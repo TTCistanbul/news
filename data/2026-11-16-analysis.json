@@ -6,7 +6,7 @@
       "direction": "neutral",
       "importance": "重大",
       "source_name": "Dünya",
-      "source_url": "https://www.dunya.com/sektorler/otomotiv/otomotiv-10-aylik-bilanco-uretim-dustu-ihracat-geliri-artti-haberi-847728",
+      "source_url": "https://www.dunya.com/sektorler/otomotiv/otomotivde-10-aylik-bilanco-uretim-dustu-ihracat-geliri-artti-haberi-847728",
       "headline": "土耳其前10月汽車產量下滑6%，但出口金額成長3%至352億美元",
       "summary": "土耳其汽車製造商協會（OSD）資料顯示，今年前10個月汽車產量年減6%，以數量計之出口量下滑9%，其中乘用車產量降幅更達17%。然而，汽車產業出口總金額逆勢成長3%，達到352億美元。",
       "business_impact": "汽車組裝數量下滑可能減緩零元件拉貨節奏，惟出口金額成長顯示中高單價產品仍具支撐力，臺商零元件供應商宜靈活評估客戶需求與庫存變化。"
@@ -42,7 +42,7 @@
       "direction": "green",
       "importance": "中等",
       "source_name": "Yeşil Haber",
-      "source_url": "https://yesilhaber.net/akbank-denge-sanayi-50-milyon-tl/",
+      "source_url": "https://yesilhaber.net/akbank-denge-sanayi-50-milyar-tl/",
       "headline": "Akbank 推出 DENGE 計畫，目標向工業綠色轉型提供500億里拉融資",
       "summary": "Akbank 於 COP31 氣候峰會發表 DENGE 計畫，目標在2030年前提供500億里拉資金，專門協助工業界進行綠色轉型與低碳升級。",
       "business_impact": "土耳其製造業在永續資金挹注下可能加速裝置汰換，臺灣智慧製造、低碳裝置及節能系統業者可密切注意潛在裝置採購需求。"
@@ -54,7 +54,7 @@
       "sentiment": "neg",
       "headline": "土耳其前10月汽車產量年減6%，乘用車產量重挫17%",
       "source": "Dünya",
-      "source_url": "https://www.dunya.com/sektorler/otomotiv/otomotiv-10-aylik-bilanco-uretim-dustu-ihracat-geliri-artti-haberi-847728",
+      "source_url": "https://www.dunya.com/sektorler/otomotiv/otomotivde-10-aylik-bilanco-uretim-dustu-ihracat-geliri-artti-haberi-847728",
       "date": "2026-11-16",
       "body": "土耳其汽車製造商協會（OSD）公佈資料，今年前10個月土耳其汽車總產量下降6%，其中乘用車產量降幅達17%。不過，汽車產業出口總金額在產品結構或單價帶動下成長3%至352億美元。",
       "business_interpretation": "乘用車產量顯著下滑可能使零元件拉貨放緩，臺商零元件供應商需留意客戶車廠的產能調整與庫存消長。"
@@ -116,5 +116,10 @@
   ],
   "_generated_at": "2026-11-16T06:35:42.006147+00:00",
   "_model": "gemini-3.5-flash",
-  "_source_date": "2026-11-16"
+  "_source_date": "2026-11-16",
+  "_url_fixes": [
+    "key_events[0]: https://www.dunya.com/sektorler/otomotiv/otomotiv-10-aylik-bilanco-uretim-dustu-ihracat-geliri-artti-haberi-847728 -> https://www.dunya.com/sektorler/otomotiv/otomotivde-10-aylik-bilanco-uretim-dustu-ihracat-geliri-artti-haberi-847728（相似度 0.99）",
+    "key_events[4]: https://yesilhaber.net/akbank-denge-sanayi-50-milyon-tl/ -> https://yesilhaber.net/akbank-denge-sanayi-50-milyar-tl/（相似度 0.96）",
+    "industry_items[0]: https://www.dunya.com/sektorler/otomotiv/otomotiv-10-aylik-bilanco-uretim-dustu-ihracat-geliri-artti-haberi-847728 -> https://www.dunya.com/sektorler/otomotiv/otomotivde-10-aylik-bilanco-uretim-dustu-ihracat-geliri-artti-haberi-847728（相似度 0.99）"
+  ]
 }

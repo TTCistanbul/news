@@ -308,6 +308,48 @@ def call_gemini(prompt: str, api_key: str) -> tuple[dict, str]:
     raise SystemExit(f"所有候選模型都失敗，最後一個錯誤：{last_err}")
 
 
+def _collect_urls(obj, out):
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if k in ("url", "link") and isinstance(v, str) and v.startswith("http"):
+                out.add(v.strip())
+            else:
+                _collect_urls(v, out)
+    elif isinstance(obj, list):
+        for v in obj:
+            _collect_urls(v, out)
+    return out
+
+
+def snap_source_urls(analysis: dict, payload: dict) -> list[str]:
+    """模型常把網址抄錯一兩個字（例：otomotivde→otomotiv、50-milyar→50-milyon），
+    導致驗證判定「連結不在原始新聞」，連帶整則的數字都對不回來源。
+    這裡把 source_url 對回原始資料裡同網域、最相近且夠像（相似度 ≥ 0.85）的那則；
+    找不到夠像的就不動，交給 verify_report.py 照樣擋。"""
+    from difflib import SequenceMatcher
+    from urllib.parse import urlparse
+
+    raw = _collect_urls(payload, set())
+    norm = lambda u: u.strip().rstrip("/").lower()
+    raw_norm = {norm(u): u for u in raw}
+    fixes = []
+    for sec in ("key_events", "industry_items"):
+        for i, item in enumerate(analysis.get(sec) or []):
+            u = (item.get("source_url") or "").strip()
+            if not u or norm(u) in raw_norm:
+                continue
+            host = urlparse(u).netloc.lower().removeprefix("www.")
+            cands = [r for r in raw if urlparse(r).netloc.lower().removeprefix("www.") == host]
+            scored = sorted(((SequenceMatcher(None, norm(u), norm(r)).ratio(), r) for r in cands), reverse=True)
+            if not scored or scored[0][0] < 0.85:
+                continue
+            if len(scored) > 1 and scored[0][0] - scored[1][0] < 0.03:
+                continue  # 兩則一樣像，不確定是哪則，不亂改
+            item["source_url"] = scored[0][1]
+            fixes.append(f"{sec}[{i}]: {u} -> {scored[0][1]}（相似度 {scored[0][0]:.2f}）")
+    return fixes
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", help="YYYY-MM-DD，預設用 data/ 裡最新的檔案")
@@ -358,12 +400,20 @@ def main():
 
     analysis = to_traditional(analysis)
 
+    url_fixes = snap_source_urls(analysis, payload)
+    if url_fixes:
+        print("!  模型抄錯的來源網址已自動對回原始新聞：")
+        for f in url_fixes:
+            print(f"   - {f}")
+
     out_path = DATA_DIR / f"{resolved_date}-analysis.json"
     analysis["_generated_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
     analysis["_model"] = used_model
     analysis["_source_date"] = resolved_date
     if unit_problems:
         analysis["_unit_warnings"] = unit_problems
+    if url_fixes:
+        analysis["_url_fixes"] = url_fixes
     out_path.write_text(json.dumps(analysis, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"-> 已寫入 {out_path}")
     print(f"   key_events={len(analysis.get('key_events', []))}  "

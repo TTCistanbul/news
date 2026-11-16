@@ -69,9 +69,9 @@ NUM_RE = re.compile(r"(?<![A-Za-z0-9_.])(\d{1,3}(?:,\d{3})+|\d+)(\.\d+)?")
 MAINLAND_TERMS = ["軟件", "硬件", "視頻", "網絡", "默認", "激光", "打印機", "鼠標", "U盤",
                   "這里", "那里", "哪里", "里面"]
 
-# OpenCC 字元層級會把這幾個「繁體裡本來就合法」的字當成簡體（台灣、里拉、占比）。
+# OpenCC 字元層級會把這幾個「繁體裡本來就合法」的字當成簡體（台灣、里拉、占比、污染）。
 # 預設放行；真正的簡體誤用（這里、里面）由上面的詞組清單另外抓。
-DEFAULT_WHITELIST = set("台里占")
+DEFAULT_WHITELIST = set("台里占污")
 
 
 # ───────────────────────── 讀檔 ─────────────────────────
@@ -398,7 +398,9 @@ def check_links(res, analysis, payload):
 def load_opencc():
     try:
         from opencc import OpenCC
-        return OpenCC("s2t")
+        # 用台灣標準 s2tw，不用 s2t：s2t 會把台灣通用的「峰、群、床」誤判成簡體
+        # （它的目標字是「峯、羣、牀」），2026-11-16 就因「高峰會」被擋下發布。
+        return OpenCC("s2tw")
     except ImportError:
         return None
 
