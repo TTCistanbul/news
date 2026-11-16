@@ -1,0 +1,424 @@
+{
+ "date": "2026-11-16",
+ "passed": false,
+ "checks": [
+  {
+   "name": "1. 資料與分析是今天的",
+   "passed": true,
+   "details": [
+    "原始資料與分析皆為 2026-11-16"
+   ]
+  },
+  {
+   "name": "2. AI 寫的數字都能對回原始 JSON",
+   "passed": false,
+   "details": [
+    "`key_events[0].headline` 的數字 **6** 在原始資料找不到來源（上下文：「…耳其前10月汽車產量下滑6%，但出口金額成長3…」）",
+    "`key_events[0].summary` 的數字 **6** 在原始資料找不到來源（上下文：「…年前10個月汽車產量年減6%，以數量計之出口量…」）",
+    "`key_events[0].summary` 的數字 **9** 在原始資料找不到來源（上下文：「…%，以數量計之出口量下滑9%，其中乘用車產量降…」）",
+    "`key_events[0].summary` 的數字 **17** 在原始資料找不到來源（上下文：「…，其中乘用車產量降幅更達17%。然而，汽車產業出…」）",
+    "`key_events[4].headline` 的數字 **500** 在原始資料找不到來源（上下文：「…，目標向工業綠色轉型提供500億里拉融資…」）",
+    "`key_events[4].summary` 的數字 **500** 在原始資料找不到來源（上下文：「…，目標在2030年前提供500億里拉資金，專門協助…」）",
+    "`industry_items[0].headline` 的數字 **6** 在原始資料找不到來源（上下文：「…耳其前10月汽車產量年減6%，乘用車產量重挫1…」）",
+    "`industry_items[0].headline` 的數字 **17** 在原始資料找不到來源（上下文：「…年減6%，乘用車產量重挫17%…」）",
+    "`industry_items[0].body` 的數字 **6** 在原始資料找不到來源（上下文：「…個月土耳其汽車總產量下降6%，其中乘用車產量降…」）",
+    "`industry_items[0].body` 的數字 **17** 在原始資料找不到來源（上下文：「…%，其中乘用車產量降幅達17%。不過，汽車產業出…」）"
+   ]
+  },
+  {
+   "name": "3. 每個事件都有來源連結（且連結、日期對得上原始新聞）",
+   "passed": false,
+   "details": [
+    "key_events[0]「土耳其前10月汽車產量下滑6%，但出口金額成長3」 的連結不在今天的原始新聞裡（可能是模型編的）：https://www.dunya.com/sektorler/otomotiv/otomotiv-10-aylik-bilanco-uretim-dustu-ihracat-geliri-artti-haberi-847728",
+    "key_events[4]「Akbank 推出 DENGE 計畫，目標向工業」 的連結不在今天的原始新聞裡（可能是模型編的）：https://yesilhaber.net/akbank-denge-sanayi-50-milyon-tl/",
+    "industry_items[0]「土耳其前10月汽車產量年減6%，乘用車產量重挫1」 的連結不在今天的原始新聞裡（可能是模型編的）：https://www.dunya.com/sektorler/otomotiv/otomotiv-10-aylik-bilanco-uretim-dustu-ihracat-geliri-artti-haberi-847728"
+   ]
+  },
+  {
+   "name": "4. 沒有簡體字或大陸用語（OpenCC）",
+   "passed": false,
+   "details": [
+    "簡體字「峰」（應為「峯」）出現 1 次，例如：…k 於 COP31 氣候峰會發表 DENGE 計…"
+   ]
+  },
+  {
+   "name": "5. 頁面完整（無殘留 token、匯率與融資成本已寫入）",
+   "passed": true,
+   "details": [
+    "token 皆已替換，數字已寫入"
+   ]
+  }
+ ],
+ "number_trace": [
+  {
+   "field": "summary",
+   "token": "6",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「OSD: Otomotiv üretimi ilk 10 a」（Bloomberg HT）",
+    "新聞「Denizli'de 6 jeotermal kaynak 」（Ekonomim）",
+    "新聞「Denizli'de 6 jeotermal kaynak 」（Ekonomim）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "17",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Otomotivde 10 aylık bilanço: Ü」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "9",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Otomotivde 10 aylık bilanço: Ü」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "3",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Otomotivde 10 aylık bilanço: Ü」（Dünya）",
+    "新聞「Türkiye'nin cari dengesi bekle」（Dünya）",
+    "payload.fx.age_days"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "352",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Otomotivde 10 aylık bilanço: Ü」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "27.2",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye'nin cari dengesi bekle」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "392",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye'nin cari dengesi bekle」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "500",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Yakıt hücresi nedir? 100 kWh i」（Yeşil Haber）",
+    "新聞「Akbank DENGE programıyla sanay」（Yeşil Haber）",
+    "新聞「Akbank DENGE programıyla sanay」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].headline",
+   "token": "6",
+   "unit_mult": 1.0,
+   "matched": [],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].headline",
+   "token": "3",
+   "unit_mult": 1.0,
+   "matched": [
+    "payload.fx.age_days",
+    "payload.brent_oil.changes.week.pct",
+    "payload.brent_oil.age_days"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].headline",
+   "token": "352",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Otomotivde 10 aylık bilanço: Ü」（Dünya）"
+   ],
+   "note": "來自另一則新聞（非該事件引用的連結）"
+  },
+  {
+   "field": "key_events[0].summary",
+   "token": "6",
+   "unit_mult": 1.0,
+   "matched": [],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].summary",
+   "token": "9",
+   "unit_mult": 1.0,
+   "matched": [],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].summary",
+   "token": "17",
+   "unit_mult": 1.0,
+   "matched": [],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].summary",
+   "token": "3",
+   "unit_mult": 1.0,
+   "matched": [
+    "payload.fx.age_days",
+    "payload.brent_oil.changes.week.pct",
+    "payload.brent_oil.age_days"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].summary",
+   "token": "352",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Otomotivde 10 aylık bilanço: Ü」（Dünya）"
+   ],
+   "note": "來自另一則新聞（非該事件引用的連結）"
+  },
+  {
+   "field": "key_events[1].headline",
+   "token": "27.2",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye'nin cari dengesi bekle」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].headline",
+   "token": "392",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye'nin cari dengesi bekle」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "27.2",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye'nin cari dengesi bekle」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "392",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye'nin cari dengesi bekle」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "77.3",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye'nin cari dengesi bekle」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].headline",
+   "token": "0.67",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Altın kotasında ağır fatura: T」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].summary",
+   "token": "2.44",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Altın kotasında ağır fatura: T」（Dünya）",
+    "payload.macro.cpi:相鄰差"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].summary",
+   "token": "0.67",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Altın kotasında ağır fatura: T」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[4].headline",
+   "token": "500",
+   "unit_mult": 100000000.0,
+   "matched": [],
+   "note": ""
+  },
+  {
+   "field": "key_events[4].summary",
+   "token": "500",
+   "unit_mult": 100000000.0,
+   "matched": [],
+   "note": ""
+  },
+  {
+   "field": "industry_items[0].headline",
+   "token": "6",
+   "unit_mult": 1.0,
+   "matched": [],
+   "note": ""
+  },
+  {
+   "field": "industry_items[0].headline",
+   "token": "17",
+   "unit_mult": 1.0,
+   "matched": [],
+   "note": ""
+  },
+  {
+   "field": "industry_items[0].body",
+   "token": "6",
+   "unit_mult": 1.0,
+   "matched": [],
+   "note": ""
+  },
+  {
+   "field": "industry_items[0].body",
+   "token": "17",
+   "unit_mult": 1.0,
+   "matched": [],
+   "note": ""
+  },
+  {
+   "field": "industry_items[0].body",
+   "token": "3",
+   "unit_mult": 1.0,
+   "matched": [
+    "payload.fx.age_days",
+    "payload.brent_oil.changes.week.pct",
+    "payload.brent_oil.age_days"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[0].body",
+   "token": "352",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Otomotivde 10 aylık bilanço: Ü」（Dünya）"
+   ],
+   "note": "來自另一則新聞（非該事件引用的連結）"
+  },
+  {
+   "field": "industry_items[3].body",
+   "token": "3.9",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Batan böyle batmış: Dev teksti」（Sözcü Ekonomi）",
+    "新聞「Batan böyle batmış: Dev teksti」（Sözcü Ekonomi）",
+    "payload.brent_oil.change_pct"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[3].body",
+   "token": "25.5",
+   "unit_mult": 10000.0,
+   "matched": [
+    "payload.brent_oil.observations_used"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[0].body",
+   "token": "6",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「OSD: Otomotiv üretimi ilk 10 a」（Bloomberg HT）",
+    "新聞「Denizli'de 6 jeotermal kaynak 」（Ekonomim）",
+    "新聞「Denizli'de 6 jeotermal kaynak 」（Ekonomim）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[0].body",
+   "token": "17",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Otomotivde 10 aylık bilanço: Ü」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[0].body",
+   "token": "3",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Otomotivde 10 aylık bilanço: Ü」（Dünya）",
+    "新聞「Türkiye'nin cari dengesi bekle」（Dünya）",
+    "payload.fx.age_days"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[0].body",
+   "token": "352",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Otomotivde 10 aylık bilanço: Ü」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[1].body",
+   "token": "500",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Yakıt hücresi nedir? 100 kWh i」（Yeşil Haber）",
+    "新聞「Akbank DENGE programıyla sanay」（Yeşil Haber）",
+    "新聞「Akbank DENGE programıyla sanay」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[2].body",
+   "token": "27.2",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye'nin cari dengesi bekle」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[2].body",
+   "token": "77.3",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye'nin cari dengesi bekle」（Dünya）"
+   ],
+   "note": ""
+  }
+ ]
+}
