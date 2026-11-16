@@ -13,14 +13,14 @@
    "name": "2. AI 寫的數字都能對回原始 JSON",
    "passed": true,
    "details": [
-    "共檢查 36 個數字，全部找得到來源"
+    "共檢查 15 個數字，全部找得到來源"
    ]
   },
   {
    "name": "3. 每個事件都有來源連結（且連結、日期對得上原始新聞）",
    "passed": true,
    "details": [
-    "共 10 則事件，連結皆可對回原始新聞"
+    "共 6 則事件，連結皆可對回原始新聞"
    ]
   },
   {
@@ -40,40 +40,13 @@
  ],
  "number_trace": [
   {
-   "field": "today_take",
-   "token": "27.2",
-   "unit_mult": 100000000.0,
-   "matched": [
-    "新聞「Türkiye'nin cari dengesi bekle」（Dünya）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "summary",
-   "token": "27.2",
-   "unit_mult": 100000000.0,
-   "matched": [
-    "新聞「Türkiye'nin cari dengesi bekle」（Dünya）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "summary",
-   "token": "392",
-   "unit_mult": 100000000.0,
-   "matched": [
-    "新聞「Türkiye'nin cari dengesi bekle」（Dünya）"
-   ],
-   "note": ""
-  },
-  {
    "field": "summary",
    "token": "6",
    "unit_mult": 1.0,
    "matched": [
     "新聞「OSD: Otomotiv üretimi ilk 10 a」（Bloomberg HT）",
-    "新聞「Otomotivde 10 aylık tablo: Üre」（Ekonomim）",
-    "新聞「Otomotivde 10 aylık tablo: Üre」（Ekonomim）"
+    "新聞「ING, COP31'de enerji dönüşümün」（Bloomberg HT）",
+    "新聞「Türkiye's auto exports reach $」（Daily Sabah）"
    ],
    "note": ""
   },
@@ -95,7 +68,7 @@
    "matched": [
     "新聞「Otomotivde 10 aylık tablo: Üre」（Ekonomim）",
     "新聞「Otomotivde 10 aylık bilanço: Ü」（Dünya）",
-    "新聞「Türkiye'de yılın 10 ayında 53 」（Ekonomim）"
+    "新聞「Kerem Kazaz, Türkiye'de üst üs」（Dünya）"
    ],
    "note": ""
   },
@@ -104,30 +77,20 @@
    "token": "352",
    "unit_mult": 100000000.0,
    "matched": [
-    "新聞「Otomotivde 10 aylık tablo: Üre」（Ekonomim）",
-    "新聞「Otomotivde 10 aylık bilanço: Ü」（Dünya）"
+    "新聞「Türkiye's auto exports reach $」（Daily Sabah）",
+    "新聞「Türkiye's auto exports reach $」（Daily Sabah）",
+    "新聞「Otomotivde 10 aylık tablo: Üre」（Ekonomim）"
    ],
    "note": ""
   },
   {
    "field": "summary",
-   "token": "500",
+   "token": "4811",
    "unit_mult": 100000000.0,
    "matched": [
-    "新聞「Yakıt hücresi nedir? 100 kWh i」（Yeşil Haber）",
-    "新聞「Akbank DENGE programıyla sanay」（Yeşil Haber）",
-    "新聞「Akbank DENGE programıyla sanay」（Yeşil Haber）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "summary",
-   "token": "7,500",
-   "unit_mult": 10000.0,
-   "matched": [
-    "新聞「QNB Leasing ve Proparco, 75 mi」（Yeşil Haber）",
-    "新聞「QNB Leasing ve Proparco, 75 mi」（Yeşil Haber）",
-    "新聞「QNB Leasing ve Proparco, 75 mi」（Yeşil Haber）"
+    "新聞「Bütçe Ekim'de 481,1 milyar TL 」（Bloomberg HT）",
+    "新聞「Bütçe Ekim'de 481,1 milyar TL 」（Bloomberg HT）",
+    "新聞「Türkiye’s budget posts 481 bil」（Hürriyet Daily News）"
    ],
    "note": ""
   },
@@ -143,10 +106,12 @@
   },
   {
    "field": "key_events[0].headline",
-   "token": "352",
-   "unit_mult": 100000000.0,
+   "token": "3",
+   "unit_mult": 1.0,
    "matched": [
-    "新聞「Otomotivde 10 aylık tablo: Üre」（Ekonomim）"
+    "新聞「Otomotivde 10 aylık tablo: Üre」（Ekonomim）",
+    "payload.brent_oil.changes.week.pct",
+    "payload.brent_oil.age_days"
    ],
    "note": ""
   },
@@ -167,26 +132,6 @@
    "matched": [
     "新聞「Otomotivde 10 aylık tablo: Üre」（Ekonomim）",
     "新聞「Otomotivde 10 aylık tablo: Üre」（Ekonomim）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "key_events[0].summary",
-   "token": "9",
-   "unit_mult": 1.0,
-   "matched": [
-    "新聞「Otomotivde 10 aylık tablo: Üre」（Ekonomim）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "key_events[0].summary",
-   "token": "3",
-   "unit_mult": 1.0,
-   "matched": [
-    "新聞「Otomotivde 10 aylık tablo: Üre」（Ekonomim）",
-    "payload.fx.age_days",
-    "payload.brent_oil.changes.week.pct"
    ],
    "note": ""
   },
@@ -201,204 +146,50 @@
   },
   {
    "field": "key_events[1].headline",
-   "token": "27.2",
+   "token": "4811",
    "unit_mult": 100000000.0,
    "matched": [
-    "新聞「Türkiye'nin cari dengesi bekle」（Dünya）"
+    "新聞「Bütçe Ekim'de 481,1 milyar TL 」（Bloomberg HT）",
+    "新聞「Bütçe Ekim'de 481,1 milyar TL 」（Bloomberg HT）"
    ],
    "note": ""
   },
   {
    "field": "key_events[1].summary",
-   "token": "27.2",
+   "token": "4811",
    "unit_mult": 100000000.0,
    "matched": [
-    "新聞「Türkiye'nin cari dengesi bekle」（Dünya）"
+    "新聞「Bütçe Ekim'de 481,1 milyar TL 」（Bloomberg HT）",
+    "新聞「Bütçe Ekim'de 481,1 milyar TL 」（Bloomberg HT）"
    ],
    "note": ""
   },
   {
    "field": "key_events[1].summary",
-   "token": "392",
-   "unit_mult": 100000000.0,
+   "token": "2.32",
+   "unit_mult": 1000000000000.0,
    "matched": [
-    "新聞「Türkiye'nin cari dengesi bekle」（Dünya）"
+    "新聞「Türkiye’s budget posts 481 bil」（Hürriyet Daily News）"
    ],
-   "note": ""
-  },
-  {
-   "field": "key_events[1].summary",
-   "token": "77.3",
-   "unit_mult": 100000000.0,
-   "matched": [
-    "新聞「Türkiye'nin cari dengesi bekle」（Dünya）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "key_events[3].summary",
-   "token": "2.44",
-   "unit_mult": 1.0,
-   "matched": [
-    "新聞「Altın kotasında ağır fatura: T」（Dünya）",
-    "payload.macro.cpi:相鄰差"
-   ],
-   "note": ""
-  },
-  {
-   "field": "key_events[3].summary",
-   "token": "0.67",
-   "unit_mult": 1.0,
-   "matched": [
-    "新聞「Altın kotasında ağır fatura: T」（Dünya）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "key_events[3].summary",
-   "token": "72",
-   "unit_mult": 1.0,
-   "matched": [
-    "新聞「Altın kotasında ağır fatura: T」（Dünya）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "key_events[4].summary",
-   "token": "10",
-   "unit_mult": 100000000.0,
-   "matched": [
-    "新聞「Türkiye'de yılın 10 ayında 53 」（Ekonomim）",
-    "新聞「Türkiye'de yılın 10 ayında 53 」（Ekonomim）",
-    "payload.fx.rates.USD.unit"
-   ],
-   "note": ""
-  },
-  {
-   "field": "key_events[4].summary",
-   "token": "53",
-   "unit_mult": 100000000.0,
-   "matched": [
-    "新聞「Türkiye'de yılın 10 ayında 53 」（Ekonomim）"
-   ],
-   "note": ""
+   "note": "來自另一則新聞（非該事件引用的連結）"
   },
   {
    "field": "industry_items[2].headline",
-   "token": "500",
+   "token": "12.8",
    "unit_mult": 100000000.0,
    "matched": [
-    "新聞「Akbank DENGE programıyla sanay」（Yeşil Haber）",
-    "新聞「Akbank DENGE programıyla sanay」（Yeşil Haber）",
-    "新聞「Akbank DENGE programıyla sanay」（Yeşil Haber）"
+    "新聞「Aselsan'dan 1,28 milyar dolarl」（Bloomberg HT）",
+    "新聞「Aselsan'dan 1,28 milyar dolarl」（Bloomberg HT）"
    ],
    "note": ""
   },
   {
    "field": "industry_items[2].body",
-   "token": "500",
+   "token": "12.8",
    "unit_mult": 100000000.0,
    "matched": [
-    "新聞「Akbank DENGE programıyla sanay」（Yeşil Haber）",
-    "新聞「Akbank DENGE programıyla sanay」（Yeşil Haber）",
-    "新聞「Akbank DENGE programıyla sanay」（Yeşil Haber）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "industry_items[3].headline",
-   "token": "7,500",
-   "unit_mult": 10000.0,
-   "matched": [
-    "新聞「QNB Leasing ve Proparco, 75 mi」（Yeşil Haber）",
-    "新聞「QNB Leasing ve Proparco, 75 mi」（Yeşil Haber）",
-    "新聞「QNB Leasing ve Proparco, 75 mi」（Yeşil Haber）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "industry_items[3].body",
-   "token": "7,500",
-   "unit_mult": 10000.0,
-   "matched": [
-    "新聞「QNB Leasing ve Proparco, 75 mi」（Yeşil Haber）",
-    "新聞「QNB Leasing ve Proparco, 75 mi」（Yeşil Haber）",
-    "新聞「QNB Leasing ve Proparco, 75 mi」（Yeşil Haber）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "industry_items[4].body",
-   "token": "3.9",
-   "unit_mult": 100000000.0,
-   "matched": [
-    "新聞「Batan böyle batmış: Dev teksti」（Sözcü Ekonomi）",
-    "新聞「Batan böyle batmış: Dev teksti」（Sözcü Ekonomi）",
-    "payload.brent_oil.change_pct"
-   ],
-   "note": ""
-  },
-  {
-   "field": "industry_items[4].body",
-   "token": "25",
-   "unit_mult": 10000.0,
-   "matched": [
-    "新聞「Batan böyle batmış: Dev teksti」（Sözcü Ekonomi）",
-    "新聞「Batan böyle batmış: Dev teksti」（Sözcü Ekonomi）",
-    "payload.macro.gdp_growth_sa[10].value"
-   ],
-   "note": ""
-  },
-  {
-   "field": "trade_implications[0].body",
-   "token": "6",
-   "unit_mult": 1.0,
-   "matched": [
-    "新聞「OSD: Otomotiv üretimi ilk 10 a」（Bloomberg HT）",
-    "新聞「Otomotivde 10 aylık tablo: Üre」（Ekonomim）",
-    "新聞「Otomotivde 10 aylık tablo: Üre」（Ekonomim）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "trade_implications[0].body",
-   "token": "15",
-   "unit_mult": 1.0,
-   "matched": [
-    "新聞「Otomotivde 10 aylık tablo: Üre」（Ekonomim）",
-    "新聞「Otomotivde 10 aylık tablo: Üre」（Ekonomim）",
-    "新聞「VİOP'ta endeks kontratı haftay」（Ekonomim）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "trade_implications[1].body",
-   "token": "27.2",
-   "unit_mult": 100000000.0,
-   "matched": [
-    "新聞「Türkiye'nin cari dengesi bekle」（Dünya）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "trade_implications[2].body",
-   "token": "500",
-   "unit_mult": 100000000.0,
-   "matched": [
-    "新聞「Yakıt hücresi nedir? 100 kWh i」（Yeşil Haber）",
-    "新聞「Akbank DENGE programıyla sanay」（Yeşil Haber）",
-    "新聞「Akbank DENGE programıyla sanay」（Yeşil Haber）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "trade_implications[2].body",
-   "token": "7,500",
-   "unit_mult": 10000.0,
-   "matched": [
-    "新聞「QNB Leasing ve Proparco, 75 mi」（Yeşil Haber）",
-    "新聞「QNB Leasing ve Proparco, 75 mi」（Yeşil Haber）",
-    "新聞「QNB Leasing ve Proparco, 75 mi」（Yeşil Haber）"
+    "新聞「Aselsan'dan 1,28 milyar dolarl」（Bloomberg HT）",
+    "新聞「Aselsan'dan 1,28 milyar dolarl」（Bloomberg HT）"
    ],
    "note": ""
   }
