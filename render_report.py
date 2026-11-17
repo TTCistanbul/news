@@ -964,20 +964,49 @@ def render_reports_list(index: list) -> str:
             '<p class="pending" style="font-size:0.88rem;">尚未產生過任何期間報告。'
             "到 GitHub Actions 手動觸發 “Generate Period Report” 即可產生。</p>"
         )
-    sorted_idx = sorted(index, key=lambda e: e.get("end", ""), reverse=True)[:12]
-    lis = []
+    # 依報告「結束日」所在月份分組，每個月一個 <details> 摺疊區塊，
+    # 預設全部收合。月份由新到舊、月內報告也由新到舊。報告會一直累積，
+    # 所以不再只取最新 12 筆——摺疊起來就不怕清單太長。
+    sorted_idx = sorted(index, key=lambda e: e.get("end", ""), reverse=True)
+    groups: dict = {}
     for e in sorted_idx:
-        label = html.escape(PERIOD_LABEL_ZH.get(e.get("period", ""), e.get("period", "")))
-        href = html.escape(f"{SITE_BASE_PATH}/reports/{e.get('file','')}", quote=True)
-        start = html.escape(e.get("start", ""))
-        end = html.escape(e.get("end", ""))
-        lis.append(f'''      <li class="sector-item neu">
-        <div class="row-top">
-          <span class="sector-chip">{label}</span>
-          <span class="headline"><a href="{href}" target="_blank" rel="noopener noreferrer">{start} ～ {end}</a></span>
-        </div>
-      </li>''')
-    return "\n".join(lis)
+        end = e.get("end", "")
+        key = end[:7] if re.match(r"^\d{4}-\d{2}", end) else "other"
+        groups.setdefault(key, []).append(e)
+
+    blocks = []
+    for key, entries in groups.items():
+        if key == "other":
+            title = "其他"
+        else:
+            y, m = key.split("-")
+            title = f"{y} 年 {int(m)} 月"
+        # 摘要列顯示各類型份數，例如「週報 4 份・月報 1 份」
+        counts: dict = {}
+        for e in entries:
+            lbl = PERIOD_LABEL_ZH.get(e.get("period", ""), e.get("period", "") or "報告")
+            counts[lbl] = counts.get(lbl, 0) + 1
+        count_txt = "・".join(f"{k} {v} 份" for k, v in counts.items())
+
+        lis = []
+        for e in entries:
+            label = html.escape(PERIOD_LABEL_ZH.get(e.get("period", ""), e.get("period", "")))
+            href = html.escape(f"{SITE_BASE_PATH}/reports/{e.get('file','')}", quote=True)
+            start = html.escape(e.get("start", ""))
+            end = html.escape(e.get("end", ""))
+            lis.append(f'''          <li class="sector-item neu">
+            <div class="row-top">
+              <span class="sector-chip">{label}</span>
+              <span class="headline"><a href="{href}" target="_blank" rel="noopener noreferrer">{start} ～ {end}</a></span>
+            </div>
+          </li>''')
+        blocks.append(f'''      <details class="period-month">
+        <summary><span class="pm-title">{html.escape(title)}</span><span class="pm-count">{html.escape(count_txt)}</span></summary>
+        <ul class="sector-list period-list">
+{chr(10).join(lis)}
+        </ul>
+      </details>''')
+    return "\n".join(blocks)
 
 
 def load_archive_index() -> list:

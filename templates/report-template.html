@@ -849,6 +849,7 @@ a:focus-visible { outline: 2px solid var(--accent-blue-deep); outline-offset: 2p
 .econ-dialog input[type="text"],
 .econ-dialog input[type="password"],
 .econ-dialog input[type="date"],
+.econ-dialog input[type="url"],
 .econ-dialog textarea {
   width: 100%; box-sizing: border-box;
   padding: 0.5rem 0.7rem; font: inherit; font-size: 0.85rem;
@@ -859,6 +860,67 @@ a:focus-visible { outline: 2px solid var(--accent-blue-deep); outline-offset: 2p
 .econ-dialog input:focus, .econ-dialog textarea:focus {
   outline: none; border-color: var(--accent-blue); background: #fff;
 }
+/* 期間報告：每月一個摺疊區塊 */
+.period-groups { display: flex; flex-direction: column; gap: 0.6rem; }
+.period-groups + .grp-note { margin-top: 0.9rem; }
+.period-month {
+  border: 1px solid var(--border-soft); border-radius: var(--radius-md);
+  background: #fff; overflow: hidden;
+}
+.period-month > summary {
+  list-style: none; cursor: pointer; user-select: none;
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.85rem 1rem; font-size: 0.92rem;
+}
+.period-month > summary::-webkit-details-marker { display: none; }
+.period-month > summary::before {
+  content: ""; width: 0.45rem; height: 0.45rem; flex: none;
+  border-right: 2px solid var(--text-tertiary); border-bottom: 2px solid var(--text-tertiary);
+  transform: rotate(-45deg); transition: transform 0.2s ease;
+}
+.period-month[open] > summary::before { transform: rotate(45deg); }
+.period-month > summary:hover { background: var(--bg-table-even); }
+.period-month > summary:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: -2px; }
+.period-month .pm-title { font-weight: 600; color: var(--text-heading); }
+.period-month .pm-count { margin-left: auto; font-size: 0.78rem; color: var(--text-tertiary); }
+.period-month .period-list { margin: 0; padding: 0 1rem 0.9rem; }
+/* 摺疊區塊內的項目不套淡入動畫（收合時觀察器看不到，展開會延遲出現） */
+.period-month .reveal { opacity: 1 !important; transform: none !important; }
+
+/* 經濟組資訊：新聞連結預覽卡 */
+.note-link {
+  display: flex; gap: 0.9rem; align-items: stretch;
+  margin-top: 0.7rem; text-decoration: none; color: inherit;
+  border: 1px solid var(--border-soft); border-radius: var(--radius-md);
+  background: #fff; overflow: hidden; transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.note-link:hover { border-color: var(--border); box-shadow: 0 4px 14px -8px rgba(16,24,40,0.25); }
+.note-link .nl-img {
+  flex: none; width: 9rem; min-height: 5.5rem;
+  background: var(--bg-table-even) center / cover no-repeat;
+}
+.note-link .nl-text {
+  display: flex; flex-direction: column; gap: 0.25rem;
+  padding: 0.7rem 0.9rem 0.7rem 0; min-width: 0;
+}
+.note-link.no-img .nl-text { padding-left: 0.9rem; }
+.note-link .nl-site { font-size: 0.72rem; color: var(--text-tertiary); letter-spacing: 0.02em; }
+.note-link .nl-title {
+  font-size: 0.9rem; font-weight: 600; color: var(--text-heading); line-height: 1.45;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.note-link .nl-desc {
+  font-size: 0.8rem; color: var(--text-secondary); line-height: 1.55;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+@media (max-width: 560px) {
+  .note-link { flex-direction: column; }
+  .note-link .nl-img { width: 100%; height: 9.5rem; }
+  .note-link .nl-text { padding: 0.7rem 0.9rem; }
+}
+.econ-link-row { margin-top: 0.6rem; }
+.econ-link-status { font-size: 0.75rem; color: var(--text-tertiary); margin-top: 0.35rem; min-height: 1em; }
+.econ-link-status.err { color: var(--accent-red); }
 .econ-row {
   border: 1px solid var(--border-soft); border-radius: var(--radius-md);
   padding: 1rem; margin-bottom: 0.75rem; background: var(--bg-table-even);
@@ -1570,12 +1632,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h2><span class="num">08</span>期間報告</h2>
       <span class="card-sub">Period Reports</span>
     </div>
-    <ul class="sector-list">
+    <!-- 依月份分組、每月一個可摺疊的 <details>（預設收合） -->
+    <div class="period-groups">
       <!-- REPORTS_LIST:START 由 render_report.py 產生，不是 AI 生成 -->
-      <li>尚未產生過任何期間報告。</li>
+      <p class="pending">尚未產生過任何期間報告。</p>
       <!-- REPORTS_LIST:END -->
+    </div>
     <p class="grp-note">週報依可用日報彙整，期間可能重疊或有未涵蓋日期；請以各報告頁標示的日期範圍及 COVERAGE 天數為準，不代表連續完整週報。</p>
-    </ul>
 
     <!-- ============================================================
          ECON_NOTES:START — 經濟組資訊
@@ -2046,8 +2109,56 @@ function paint() {
         ${it.label ? `<span class="sector-chip">${esc(it.label)}</span>` : ""}
         <span class="note-date">${esc(it.date || "")}</span>
       </div>
-      <div class="note-body">${DOMPurify.sanitize(marked.parse(it.body || ""))}</div>
+      ${it.body ? `<div class="note-body">${DOMPurify.sanitize(marked.parse(it.body))}</div>` : ""}
+      ${linkCard(it.link)}
     </li>`).join("");
+}
+
+// ── 新聞連結預覽 ──
+// 預覽資料（標題／圖片／網站名）是在「編輯時」抓一次、跟著存進
+// Firestore，訪客瀏覽時不會再去打外部 API。網址與圖片一律只放行
+// http(s)，擋掉 javascript: 之類的危險連結。
+function safeUrl(u) {
+  try {
+    const x = new URL(String(u || "").trim());
+    return (x.protocol === "https:" || x.protocol === "http:") ? x.href : "";
+  } catch { return ""; }
+}
+function hostOf(u) {
+  try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return ""; }
+}
+function linkCard(link) {
+  const url = safeUrl(link && link.url);
+  if (!url) return "";
+  const img   = safeUrl(link.image);
+  const site  = link.site || hostOf(url);
+  const title = link.title || url;
+  return `
+      <a class="note-link${img ? "" : " no-img"}" href="${esc(url)}" target="_blank" rel="noopener noreferrer">
+        ${img ? `<span class="nl-img" style="background-image:url('${esc(img).replace(/'/g, "%27")}')" role="img" aria-label=""></span>` : ""}
+        <span class="nl-text">
+          <span class="nl-site">${esc(site)}</span>
+          <span class="nl-title">${esc(title)}</span>
+          ${link.description ? `<span class="nl-desc">${esc(link.description)}</span>` : ""}
+        </span>
+      </a>`;
+}
+
+// 透過 Microlink 公開 API 取得網頁的 Open Graph 預覽（標題、說明、
+// 縮圖）。瀏覽器不能直接讀別人網站的 HTML（CORS 限制），所以借它的
+// 服務抓。免費額度每天約 50 次，只有在編輯時貼上連結才會呼叫。
+async function fetchPreview(url) {
+  const r = await fetch("https://api.microlink.io/?url=" + encodeURIComponent(url));
+  const j = await r.json();
+  if (j.status !== "success" || !j.data) throw new Error(j.message || "preview failed");
+  const d = j.data;
+  return {
+    url,
+    title: (d.title || "").trim(),
+    description: (d.description || "").trim(),
+    site: (d.publisher || "").trim() || hostOf(url),
+    image: safeUrl(d.image && d.image.url) || safeUrl(d.logo && d.logo.url) || ""
+  };
 }
 
 async function load() {
@@ -2149,8 +2260,14 @@ function rowEl(it, i) {
         <input type="checkbox" class="js-imp"${it.important ? " checked" : ""}> 標為重點
       </label>
     </div>
-    <label for="econBody${i}">內容</label>
-    <textarea id="econBody${i}" class="js-body" placeholder="經濟組要公布的訊息（支援 Markdown：**粗體**、| 表格 |、- 清單）">${esc(it.body || "")}</textarea>
+    <div class="econ-link-row">
+      <label for="econLink${i}">新聞連結</label>
+      <input type="url" id="econLink${i}" class="js-link" value="${esc((it.link && it.link.url) || "")}" placeholder="貼上新聞網址，會自動抓取標題與預覽圖">
+      <p class="econ-link-status js-link-status"></p>
+      <div class="js-link-preview"></div>
+    </div>
+    <label for="econBody${i}">內容說明</label>
+    <textarea id="econBody${i}" class="js-body" placeholder="補充說明（可留空；支援 Markdown：**粗體**、| 表格 |、- 清單）">${esc(it.body || "")}</textarea>
     <div style="margin-top:0.6rem">
       <button type="button" class="econ-btn danger js-del">刪除這則</button>
     </div>`;
@@ -2158,6 +2275,50 @@ function rowEl(it, i) {
     wrap.remove();
     if (!$("econRows").children.length) addRow();
   });
+
+  // 連結欄位：貼上或改完網址後自動抓預覽，結果暫存在這一列上，
+  // 按「儲存並發布」時一起寫進 Firestore。
+  const linkInput = wrap.querySelector(".js-link");
+  const statusEl  = wrap.querySelector(".js-link-status");
+  const previewEl = wrap.querySelector(".js-link-preview");
+  wrap._link = (it.link && safeUrl(it.link.url)) ? it.link : null;
+  const showPreview = () => { previewEl.innerHTML = linkCard(wrap._link); };
+  showPreview();
+
+  let lastUrl = wrap._link ? wrap._link.url : "";
+  let seq = 0;
+  async function refresh() {
+    const raw = linkInput.value.trim();
+    if (!raw) { wrap._link = null; lastUrl = ""; statusEl.textContent = ""; showPreview(); return; }
+    const url = safeUrl(raw);
+    if (!url) {
+      statusEl.className = "econ-link-status js-link-status err";
+      statusEl.textContent = "網址格式不正確（需以 http:// 或 https:// 開頭）";
+      return;
+    }
+    if (url === lastUrl) return;
+    lastUrl = url;
+    const my = ++seq;
+    statusEl.className = "econ-link-status js-link-status";
+    statusEl.textContent = "正在抓取預覽…";
+    // 先放一張只有網址的卡片，抓到資料再換掉
+    wrap._link = { url, site: hostOf(url) };
+    showPreview();
+    try {
+      const p = await fetchPreview(url);
+      if (my !== seq) return;
+      wrap._link = p;
+      statusEl.textContent = p.image ? "" : "已取得標題，但這個網站沒有提供預覽圖。";
+    } catch (e) {
+      if (my !== seq) return;
+      statusEl.className = "econ-link-status js-link-status err";
+      statusEl.textContent = "無法取得預覽，仍可儲存（會只顯示網址）。";
+    }
+    showPreview();
+  }
+  linkInput.addEventListener("paste", () => setTimeout(refresh, 0));
+  linkInput.addEventListener("change", refresh);
+  linkInput.addEventListener("blur", refresh);
   return wrap;
 }
 
@@ -2171,12 +2332,27 @@ $("econAddBtn").addEventListener("click", addRow);
 
 // ── 儲存 ──
 $("econSaveBtn").addEventListener("click", async () => {
-  const rows = [...$("econRows").children].map(r => ({
-    date:      r.querySelector(".js-date").value.trim(),
-    label:     r.querySelector(".js-label").value.trim(),
-    body:      r.querySelector(".js-body").value.trim(),
-    important: r.querySelector(".js-imp").checked
-  })).filter(r => r.body);
+  const rows = [...$("econRows").children].map(r => {
+    const row = {
+      date:      r.querySelector(".js-date").value.trim(),
+      label:     r.querySelector(".js-label").value.trim(),
+      body:      r.querySelector(".js-body").value.trim(),
+      important: r.querySelector(".js-imp").checked
+    };
+    // 欄位裡的網址為準；如果預覽還沒抓完或抓失敗，至少存網址本身
+    const url = safeUrl(r.querySelector(".js-link").value);
+    if (url) {
+      const l = (r._link && r._link.url === url) ? r._link : { url, site: hostOf(url) };
+      row.link = {
+        url,
+        title:       l.title || "",
+        description: l.description || "",
+        site:        l.site || hostOf(url),
+        image:       safeUrl(l.image) || ""
+      };
+    }
+    return row;
+  }).filter(r => r.body || r.link);
 
   $("econSaveBtn").disabled = true;
   msg($("econEditMsg"), "儲存中…");
