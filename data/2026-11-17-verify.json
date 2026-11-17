@@ -1,0 +1,113 @@
+{
+ "date": "2026-11-17",
+ "passed": false,
+ "checks": [
+  {
+   "name": "1. 資料與分析是今天的",
+   "passed": true,
+   "details": [
+    "原始資料與分析皆為 2026-11-17"
+   ]
+  },
+  {
+   "name": "2. AI 寫的數字都能對回原始 JSON",
+   "passed": false,
+   "details": [
+    "`summary` 的數字 **11,661.00** 在原始資料找不到來源（上下文：「…下跌 1.53% ，報 11,661.00 點。…」）"
+   ]
+  },
+  {
+   "name": "3. 每個事件都有來源連結（且連結、日期對得上原始新聞）",
+   "passed": true,
+   "details": [
+    "共 5 則事件，連結皆可對回原始新聞"
+   ]
+  },
+  {
+   "name": "4. 沒有簡體字或大陸用語（OpenCC）",
+   "passed": true,
+   "details": [
+    "掃描整頁可見文字，沒有簡體字"
+   ]
+  },
+  {
+   "name": "5. 頁面完整（無殘留 token、匯率與融資成本已寫入）",
+   "passed": true,
+   "details": [
+    "token 皆已替換，數字已寫入"
+   ]
+  }
+ ],
+ "number_trace": [
+  {
+   "field": "summary",
+   "token": "176",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「World Bank Group unveils $17.6」（Anadolu Ajansı (EN)）",
+    "新聞「World Bank Group unveils $17.6」（Anadolu Ajansı (EN)）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "5",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Melis Sandal'a ait 4,3 milyar 」（Dünya）",
+    "新聞「Melis Sandal'a ait 4,3 milyar 」（Dünya）",
+    "新聞「Türkiye’s VakifBank secures $5」（Anadolu Ajansı (EN)）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "1.53",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Borsa günü düşüşle tamamladı」（Ekonomim）",
+    "新聞「Borsa İstanbul günü düşüşle ta」（Dünya）",
+    "payload.fx.twd_try_cross.try_per_twd"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "11,661.00",
+   "unit_mult": 1.0,
+   "matched": [],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].headline",
+   "token": "176",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「World Bank Group unveils $17.6」（Anadolu Ajansı (EN)）",
+    "新聞「World Bank Group unveils $17.6」（Anadolu Ajansı (EN)）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].summary",
+   "token": "69",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「World Bank Group unveils $17.6」（Anadolu Ajansı (EN)）",
+    "新聞「World Bank Group unveils $17.6」（Anadolu Ajansı (EN)）",
+    "payload.macro.trade_imports:對12期前%"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].summary",
+   "token": "107",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「World Bank Group unveils $17.6」（Anadolu Ajansı (EN)）",
+    "新聞「World Bank Group unveils $17.6」（Anadolu Ajansı (EN)）"
+   ],
+   "note": ""
+  }
+ ]
+}
