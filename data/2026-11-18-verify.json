@@ -1,0 +1,199 @@
+{
+ "date": "2026-11-18",
+ "passed": false,
+ "checks": [
+  {
+   "name": "1. 資料與分析是今天的",
+   "passed": true,
+   "details": [
+    "原始資料與分析皆為 2026-11-18"
+   ]
+  },
+  {
+   "name": "2. AI 寫的數字都能對回原始 JSON",
+   "passed": false,
+   "details": [
+    "`key_events[1].summary` 的數字 **0.1** 在原始資料找不到來源（上下文：「…土耳其第三季失業率上升 0.1 個百分點至 8.1…」）"
+   ]
+  },
+  {
+   "name": "3. 每個事件都有來源連結（且連結、日期對得上原始新聞）",
+   "passed": true,
+   "details": [
+    "共 5 則事件，連結皆可對回原始新聞"
+   ]
+  },
+  {
+   "name": "4. 沒有簡體字或大陸用語（OpenCC）",
+   "passed": true,
+   "details": [
+    "掃描整頁可見文字，沒有簡體字"
+   ]
+  },
+  {
+   "name": "5. 頁面完整（無殘留 token、匯率與融資成本已寫入）",
+   "passed": true,
+   "details": [
+    "token 皆已替換，數字已寫入"
+   ]
+  }
+ ],
+ "number_trace": [
+  {
+   "field": "summary",
+   "token": "8.1",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「İşsizlik üçüncü çeyrekte 46 bi」（Bloomberg HT）",
+    "新聞「Türkiye's unemployment rate in」（Daily Sabah）",
+    "新聞「Türkiye's unemployment rate in」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "50.1",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Number of electric vehicles on」（Hürriyet Daily News）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "50.9",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Number of electric vehicles on」（Hürriyet Daily News）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "5320",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Loan program supports 532 bill」（Hürriyet Daily News）",
+    "新聞「Loan program supports 532 bill」（Hürriyet Daily News）",
+    "新聞「Loan program supports 532 bill」（Hürriyet Daily News）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "30",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Yabancı yatırımcılara verilece」（Bloomberg HT）",
+    "新聞「İspanya'da asgari ücrete enfla」（Bloomberg HT）",
+    "新聞「İspanya'da asgari ücrete enfla」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].headline",
+   "token": "8.1",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「İşsizlik üçüncü çeyrekte 46 bi」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "0.1",
+   "unit_mult": 1.0,
+   "matched": [],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "8.1",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「İşsizlik üçüncü çeyrekte 46 bi」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "30.9",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「İşsizlik üçüncü çeyrekte 46 bi」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].headline",
+   "token": "30",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「KOBİ'lere 3 milyar liralık yeş」（Bloomberg HT）",
+    "新聞「KOBİ'lere 3 milyar liralık yeş」（Bloomberg HT）",
+    "新聞「KOBİ'lere 3 milyar liralık yeş」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].summary",
+   "token": "30",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「KOBİ'lere 3 milyar liralık yeş」（Bloomberg HT）",
+    "新聞「KOBİ'lere 3 milyar liralık yeş」（Bloomberg HT）",
+    "新聞「KOBİ'lere 3 milyar liralık yeş」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].summary",
+   "token": "700",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「KOBİ'lere 3 milyar liralık yeş」（Bloomberg HT）",
+    "新聞「KOBİ'lere 3 milyar liralık yeş」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[0].headline",
+   "token": "50",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Number of electric vehicles on」（Hürriyet Daily News）",
+    "新聞「Number of electric vehicles on」（Hürriyet Daily News）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[0].body",
+   "token": "501,005",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Number of electric vehicles on」（Hürriyet Daily News）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[0].body",
+   "token": "50.9",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Number of electric vehicles on」（Hürriyet Daily News）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[1].body",
+   "token": "12",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Iraq restarts original oil pip」（Hürriyet Daily News）",
+    "payload.macro.cpi[4].value",
+    "payload.macro.cpi[5].value"
+   ],
+   "note": ""
+  }
+ ]
+}
