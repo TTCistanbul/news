@@ -1,6 +1,6 @@
 {
  "date": "2026-11-19",
- "passed": true,
+ "passed": false,
  "checks": [
   {
    "name": "1. 資料與分析是今天的",
@@ -11,9 +11,11 @@
   },
   {
    "name": "2. AI 寫的數字都能對回原始 JSON",
-   "passed": true,
+   "passed": false,
    "details": [
-    "共檢查 4 個數字，全部找得到來源"
+    "`summary` 的數字 **50.45** 在原始資料找不到來源（上下文：「…耳其里拉兌美元匯率來到 50.45 水準，創下歷史新高…」）",
+    "`summary` 的數字 **21.13** 在原始資料找不到來源（上下文：「…月 13 日當週減少約 21.13 億美元，降至 15…」）",
+    "`key_events[0].summary` 的數字 **21.13** 在原始資料找不到來源（上下文：「…外匯存底較前一週減少約 21.13 億美元。…」）"
    ]
   },
   {
@@ -41,6 +43,20 @@
  "number_trace": [
   {
    "field": "summary",
+   "token": "50.45",
+   "unit_mult": 1.0,
+   "matched": [],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "21.13",
+   "unit_mult": 100000000.0,
+   "matched": [],
+   "note": ""
+  },
+  {
+   "field": "summary",
    "token": "1590",
    "unit_mult": 100000000.0,
    "matched": [
@@ -57,6 +73,23 @@
    "matched": [
     "新聞「Türkiye'nin 10 yıllık tahvil f」（Ekonomim）"
    ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].headline",
+   "token": "1590",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Merkez Bankası rezervleri 159 」（Sözcü Ekonomi）",
+    "新聞「Merkez Bankası rezervleri 159 」（Sözcü Ekonomi）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].summary",
+   "token": "21.13",
+   "unit_mult": 100000000.0,
+   "matched": [],
    "note": ""
   },
   {

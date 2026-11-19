@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-19T19:01:49.648995+03:00",
-  "generated_at_label": "2026-11-19 19:01 TRT",
+  "generated_at": "2026-11-19T19:44:26.924059+03:00",
+  "generated_at_label": "2026-11-19 19:44 TRT",
   "fx": {
     "date": "2026-11-19",
     "date_raw": "19.11.2026",
@@ -745,6 +745,29 @@
         "istanbul",
         "turk*",
         "turkiye"
+      ],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "borsa*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Ekonomim",
+      "title": "Borsa günü düşüşle tamamladı",
+      "url": "https://www.ekonomim.com/finans/haberler/borsa/borsa-gunun-ilk-yarisinda-deger-kaybetti-haberi-932156",
+      "published": "2026-11-19T15:35:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "Borsa İstanbul&amp;#039;da BIST 100 endeksi, günü yüzde 0,67 değer kaybederek 11.400,09 puandan tamamladı.",
+      "scope": "domestic",
+      "tr_markers": [
+        "bist",
+        "borsa istanbul",
+        "istanbul"
       ],
       "primary_topic": "macro",
       "topics": [
@@ -2096,6 +2119,46 @@
       "tw_sectors": []
     },
     {
+      "source": "Daily Sabah",
+      "title": "No going back 'to way it was before' Iran war's energy shock: IEA",
+      "url": "https://www.dailysabah.com/business/economy/no-going-back-to-way-it-was-before-iran-wars-energy-shock-iea",
+      "published": "2026-11-19T16:15:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "The worst energy shock in history, paired with growing urgency around climate change, is permanently changing how the world will power homes, drive cars and fuel industries. That's...",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro",
+        "industry"
+      ],
+      "matched": [
+        "energy",
+        "grow*"
+      ],
+      "tw_sectors": []
+    },
+    {
+      "source": "Ekonomim",
+      "title": "JPMorgan Chase siber saldırıyı duyurdu: Müşteri verilerine erişilmiş olabilir",
+      "url": "https://www.ekonomim.com/kuresel-ekonomi/jpmorgan-chase-ucuncu-taraf-hizmet-saglayicilari-siber-saldiriya-ugradigi-haberi-932293",
+      "published": "2026-11-19T15:57:00+00:00",
+      "no_date": false,
+      "late": false,
+      "summary": "ABD&amp;#039;nin büyük bankalarından JPMorgan Chase, hizmet aldığı üçüncü taraf şirketlerin siber saldırıya maruz kaldığını açıkladı..",
+      "scope": "global",
+      "tr_markers": [],
+      "primary_topic": "macro",
+      "topics": [
+        "macro"
+      ],
+      "matched": [
+        "banka*"
+      ],
+      "tw_sectors": []
+    },
+    {
       "source": "Dünya",
       "title": "JPMorgan Chase'in hizmet sağlayıcıları siber saldırıya uğradı",
       "url": "https://www.dunya.com/dunya/jpmorgan-chasein-hizmet-saglayicilari-siber-saldiriya-ugradi-haberi-848225",
@@ -3380,14 +3443,14 @@
     "Anadolu Ajansı (EN)": {
       "total": 30,
       "recent": 24,
-      "kept": 17,
-      "domestic": 5,
+      "kept": 0,
+      "domestic": 0,
       "window_hours": 24,
       "newest": "2026-11-19T15:57:16+00:00",
       "oldest": "2026-11-18T13:16:48+00:00",
       "no_date": 0,
-      "dedup_skipped": 0,
-      "tw_sector": 2,
+      "dedup_skipped": 17,
+      "tw_sector": 0,
       "no_topic_samples": [
         "Global business community backs Türkiye’s ‘35x35’ electrification pledge at COP31",
         "FACTBOX - From Anthropic to SpaceX, world's biggest IPOs in history",
@@ -3398,16 +3461,16 @@
       "error": null
     },
     "Daily Sabah": {
-      "total": 45,
-      "recent": 39,
-      "kept": 14,
-      "domestic": 7,
+      "total": 44,
+      "recent": 40,
+      "kept": 1,
+      "domestic": 0,
       "window_hours": 24,
-      "newest": "2026-11-19T13:34:00+00:00",
-      "oldest": "2026-11-18T12:44:00+00:00",
+      "newest": "2026-11-19T16:15:00+00:00",
+      "oldest": "2026-11-18T13:01:00+00:00",
       "no_date": 0,
-      "dedup_skipped": 0,
-      "tw_sector": 1,
+      "dedup_skipped": 14,
+      "tw_sector": 0,
       "no_topic_samples": [
         "Lowly Jazz throw Lakers out of tune, Sixers comeback block Magic",
         "Titles settled but podiums up for grabs as F1 arrives at Vegas",
@@ -3420,13 +3483,13 @@
     "Hürriyet Daily News": {
       "total": 100,
       "recent": 9,
-      "kept": 5,
-      "domestic": 2,
+      "kept": 0,
+      "domestic": 0,
       "window_hours": 24,
       "newest": "2026-11-19T11:59:03+00:00",
       "oldest": "2026-07-20T07:28:47+00:00",
       "no_date": 0,
-      "dedup_skipped": 0,
+      "dedup_skipped": 5,
       "tw_sector": 0,
       "no_topic_samples": [
         "Treasury raises 1.25 billion euros through green bond issuance",
@@ -3439,14 +3502,14 @@
     "Dünya": {
       "total": 25,
       "recent": 25,
-      "kept": 12,
-      "domestic": 6,
+      "kept": 0,
+      "domestic": 0,
       "window_hours": 24,
       "newest": "2026-11-19T15:47:00+00:00",
       "oldest": "2026-11-19T11:06:00+00:00",
       "no_date": 0,
-      "dedup_skipped": 0,
-      "tw_sector": 1,
+      "dedup_skipped": 12,
+      "tw_sector": 0,
       "no_topic_samples": [
         "Kırmızı bültenle aranan 2 suçlu Bulgaristan'dan Türkiye'ye getirildi",
         "DHBT sonuçları ne zaman, saat kaçta açıklanacak?",
@@ -3459,14 +3522,14 @@
     "Ekonomim": {
       "total": 25,
       "recent": 25,
-      "kept": 15,
-      "domestic": 3,
+      "kept": 2,
+      "domestic": 1,
       "window_hours": 24,
-      "newest": "2026-11-19T15:34:00+00:00",
-      "oldest": "2026-11-19T13:02:00+00:00",
+      "newest": "2026-11-19T15:57:00+00:00",
+      "oldest": "2026-11-19T13:06:00+00:00",
       "no_date": 0,
-      "dedup_skipped": 0,
-      "tw_sector": 1,
+      "dedup_skipped": 15,
+      "tw_sector": 0,
       "no_topic_samples": [
         "Bahçeli: Trump-Şi-Putin zirvesinde Erdoğan da olmalıydı",
         "Bozcaada ve Gökçeada hattındaki bazı feribot seferleri iptal edildi",
@@ -3479,14 +3542,14 @@
     "Bloomberg HT": {
       "total": 48,
       "recent": 48,
-      "kept": 21,
-      "domestic": 4,
+      "kept": 0,
+      "domestic": 0,
       "window_hours": 24,
       "newest": null,
       "oldest": null,
       "no_date": 48,
-      "dedup_skipped": 10,
-      "tw_sector": 2,
+      "dedup_skipped": 31,
+      "tw_sector": 0,
       "no_topic_samples": [
         "Bakan Bolat'tan 'Made in EU' temasları",
         "Son dönemin en kritik görüşmesi: Trump-Şi zirvesinde öne çıkanlar",
@@ -3499,13 +3562,13 @@
     "Hürriyet Ekonomi": {
       "total": 100,
       "recent": 3,
-      "kept": 1,
+      "kept": 0,
       "domestic": 0,
       "window_hours": 120,
       "newest": "2026-11-19T12:33:00+00:00",
       "oldest": "2024-10-03T10:06:00+00:00",
       "no_date": 0,
-      "dedup_skipped": 2,
+      "dedup_skipped": 3,
       "tw_sector": 0,
       "no_topic_samples": [],
       "error": null
@@ -3513,14 +3576,14 @@
     "Sözcü Ekonomi": {
       "total": 50,
       "recent": 27,
-      "kept": 21,
-      "domestic": 4,
+      "kept": 0,
+      "domestic": 0,
       "window_hours": 24,
       "newest": "2026-11-19T13:00:38+00:00",
       "oldest": "2026-11-18T04:47:19+00:00",
       "no_date": 0,
-      "dedup_skipped": 0,
-      "tw_sector": 2,
+      "dedup_skipped": 21,
+      "tw_sector": 0,
       "no_topic_samples": [
         "Toyota Corolla 60 yıl sonra model değiştiriyor: Artık sedan olmayacak",
         "Gurme Carrefoursa City'si İstanbul AVM'de kapılarını açtı",
@@ -3533,13 +3596,13 @@
     "Webrazzi": {
       "total": 20,
       "recent": 10,
-      "kept": 8,
+      "kept": 0,
       "domestic": 0,
       "window_hours": 24,
       "newest": "2026-11-19T14:30:00+00:00",
       "oldest": "2026-11-18T08:00:00+00:00",
       "no_date": 0,
-      "dedup_skipped": 0,
+      "dedup_skipped": 8,
       "tw_sector": 0,
       "no_topic_samples": [
         "Anthropic, 81 milyar dolarlık halka arz için hisse fiyatını 83 dolar olarak belirledi",
@@ -3550,28 +3613,28 @@
     "ST Endüstri": {
       "total": 40,
       "recent": 1,
-      "kept": 1,
-      "domestic": 1,
+      "kept": 0,
+      "domestic": 0,
       "window_hours": 24,
       "newest": "2026-11-19T14:00:00+00:00",
       "oldest": "2020-06-22T15:02:15+00:00",
       "no_date": 0,
-      "dedup_skipped": 0,
-      "tw_sector": 1,
+      "dedup_skipped": 1,
+      "tw_sector": 0,
       "no_topic_samples": [],
       "error": null
     },
     "MİB（機械製造商協會）": {
       "total": 10,
       "recent": 1,
-      "kept": 1,
-      "domestic": 1,
+      "kept": 0,
+      "domestic": 0,
       "window_hours": 336,
       "newest": "2026-11-18T19:42:21+00:00",
       "oldest": "2026-10-14T20:38:13+00:00",
       "no_date": 0,
-      "dedup_skipped": 0,
-      "tw_sector": 1,
+      "dedup_skipped": 1,
+      "tw_sector": 0,
       "no_topic_samples": [],
       "error": null
     },
@@ -3592,14 +3655,14 @@
     "Yeşil Haber": {
       "total": 40,
       "recent": 23,
-      "kept": 18,
-      "domestic": 18,
+      "kept": 0,
+      "domestic": 0,
       "window_hours": 24,
       "newest": "2026-11-19T15:03:15+00:00",
       "oldest": "2026-11-17T23:18:26+00:00",
       "no_date": 0,
-      "dedup_skipped": 0,
-      "tw_sector": 2,
+      "dedup_skipped": 18,
+      "tw_sector": 0,
       "no_topic_samples": [
         "Peyzaj Mimarlığı Kongresi’nde İstanbul’un taşkın riski gündemde",
         "Yeniköy EDT RES imar planları Şarköy’de askıya çıktı",
@@ -3612,14 +3675,14 @@
     "Sözcü Otomotiv": {
       "total": 50,
       "recent": 6,
-      "kept": 4,
+      "kept": 0,
       "domestic": 0,
       "window_hours": 24,
       "newest": "2026-11-19T13:00:38+00:00",
       "oldest": "2026-11-06T09:01:40+00:00",
       "no_date": 0,
-      "dedup_skipped": 0,
-      "tw_sector": 2,
+      "dedup_skipped": 4,
+      "tw_sector": 0,
       "no_topic_samples": [
         "Toyota Corolla 60 yıl sonra model değiştiriyor: Artık sedan olmayacak",
         "Yağmurlu havada yola çıkacaklar dikkat: Her iki sürücüden biri aynı sorunu yaşıyor!"
@@ -3629,14 +3692,14 @@
     "OSD（汽車製造商協會）": {
       "total": 224,
       "recent": 2,
-      "kept": 1,
-      "domestic": 1,
+      "kept": 0,
+      "domestic": 0,
       "window_hours": 336,
       "newest": "2026-11-16T00:00:00+00:00",
       "oldest": "2017-09-30T00:00:00+00:00",
       "no_date": 0,
-      "dedup_skipped": 1,
-      "tw_sector": 1,
+      "dedup_skipped": 2,
+      "tw_sector": 0,
       "no_topic_samples": [],
       "error": null
     },
