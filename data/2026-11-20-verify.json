@@ -1,0 +1,42 @@
+{
+ "date": "2026-11-20",
+ "passed": false,
+ "checks": [
+  {
+   "name": "1. 資料與分析是今天的",
+   "passed": false,
+   "details": [
+    "找不到今天的 AI 分析 2026-11-20-analysis.json（Gemini 可能失敗，頁面會顯示舊分析）"
+   ]
+  },
+  {
+   "name": "2. AI 寫的數字都能對回原始 JSON",
+   "passed": false,
+   "details": [
+    "缺少原始資料或 AI 分析，無法比對"
+   ]
+  },
+  {
+   "name": "3. 每個事件都有來源連結",
+   "passed": false,
+   "details": [
+    "缺少原始資料或 AI 分析，無法比對"
+   ]
+  },
+  {
+   "name": "4. 沒有簡體字或大陸用語（OpenCC）",
+   "passed": true,
+   "details": [
+    "掃描整頁可見文字，沒有簡體字"
+   ]
+  },
+  {
+   "name": "5. 頁面完整（無殘留 token、匯率與融資成本已寫入）",
+   "passed": true,
+   "details": [
+    "token 皆已替換，數字已寫入"
+   ]
+  }
+ ],
+ "number_trace": []
+}
