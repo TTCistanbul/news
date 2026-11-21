@@ -1,6 +1,6 @@
 {
  "date": "2026-11-21",
- "passed": false,
+ "passed": true,
  "checks": [
   {
    "name": "1. 資料與分析是今天的",
@@ -13,21 +13,21 @@
    "name": "2. AI 寫的數字都能對回原始 JSON",
    "passed": true,
    "details": [
-    "共檢查 34 個數字，全部找得到來源"
+    "共檢查 30 個數字，全部找得到來源"
    ]
   },
   {
    "name": "3. 每個事件都有來源連結（且連結、日期對得上原始新聞）",
    "passed": true,
    "details": [
-    "共 9 則事件，連結皆可對回原始新聞"
+    "共 8 則事件，連結皆可對回原始新聞"
    ]
   },
   {
    "name": "4. 沒有簡體字或大陸用語（OpenCC）",
-   "passed": false,
+   "passed": true,
    "details": [
-    "簡體字「游」（應為「遊」）出現 1 次，例如：…維持高位，可能帶動其對上游零元件及加工裝備的需求…"
+    "掃描整頁可見文字，沒有簡體字"
    ]
   },
   {
@@ -50,12 +50,19 @@
   },
   {
    "field": "today_take",
-   "token": "200",
-   "unit_mult": 100000000.0,
+   "token": "31.1",
+   "unit_mult": 1.0,
    "matched": [
-    "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）",
-    "新聞「Spot piyasada doğal gaz fiyatl」（Sözcü Ekonomi）",
-    "新聞「Spot piyasada doğal gaz fiyatl」（Sözcü Ekonomi）"
+    "新聞「Şimşek pledges to sustain gain」（Hürriyet Daily News）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "today_take",
+   "token": "44.5",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Şimşek pledges to sustain gain」（Hürriyet Daily News）"
    ],
    "note": ""
   },
@@ -67,24 +74,6 @@
     "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）",
     "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）",
     "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "today_take",
-   "token": "31.1",
-   "unit_mult": 1.0,
-   "matched": [
-    "新聞「Şimşek pledges to sustain gain」（Hürriyet Daily News）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "summary",
-   "token": "237",
-   "unit_mult": 100000000.0,
-   "matched": [
-    "新聞「Türkiye'nin 10 aylık makine ih」（Sözcü Ekonomi）"
    ],
    "note": ""
   },
@@ -101,63 +90,19 @@
   },
   {
    "field": "summary",
+   "token": "237",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye'nin 10 aylık makine ih」（Sözcü Ekonomi）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
    "token": "31.1",
    "unit_mult": 1.0,
    "matched": [
     "新聞「Şimşek pledges to sustain gain」（Hürriyet Daily News）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "summary",
-   "token": "44.5",
-   "unit_mult": 1.0,
-   "matched": [
-    "新聞「Şimşek pledges to sustain gain」（Hürriyet Daily News）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "summary",
-   "token": "170",
-   "unit_mult": 100000000.0,
-   "matched": [
-    "新聞「\"İsviçre ile Türkiye arasındak」（Bloomberg HT）",
-    "新聞「\"İsviçre ile Türkiye arasındak」（Bloomberg HT）",
-    "新聞「\"İsviçre ile Türkiye arasındak」（Bloomberg HT）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "summary",
-   "token": "10",
-   "unit_mult": 1.0,
-   "matched": [
-    "新聞「Türkiye'nin 10 aylık makine ih」（Sözcü Ekonomi）",
-    "新聞「Türkiye'nin 10 aylık makine ih」（Sözcü Ekonomi）",
-    "新聞「World Medicine, Konya’da iki G」（Yeşil Haber）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "summary",
-   "token": "10",
-   "unit_mult": 100000000.0,
-   "matched": [
-    "新聞「\"İsviçre ile Türkiye arasındak」（Bloomberg HT）",
-    "新聞「\"İsviçre ile Türkiye arasındak」（Bloomberg HT）",
-    "新聞「Spot piyasada doğal gaz fiyatl」（Sözcü Ekonomi）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "summary",
-   "token": "200",
-   "unit_mult": 100000000.0,
-   "matched": [
-    "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）",
-    "新聞「Spot piyasada doğal gaz fiyatl」（Sözcü Ekonomi）",
-    "新聞「Spot piyasada doğal gaz fiyatl」（Sözcü Ekonomi）"
    ],
    "note": ""
   },
@@ -169,6 +114,17 @@
     "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）",
     "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）",
     "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "1",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Türkiye'nin 10 aylık makine ih」（Sözcü Ekonomi）",
+    "新聞「Türkiye'nin 10 aylık makine ih」（Sözcü Ekonomi）",
+    "新聞「Türkiye'nin 10 aylık makine ih」（Sözcü Ekonomi）"
    ],
    "note": ""
   },
@@ -230,6 +186,37 @@
   },
   {
    "field": "key_events[2].headline",
+   "token": "250",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）",
+    "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）",
+    "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].summary",
+   "token": "200",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].summary",
+   "token": "250",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）",
+    "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）",
+    "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[3].headline",
    "token": "170",
    "unit_mult": 100000000.0,
    "matched": [
@@ -240,7 +227,7 @@
    "note": ""
   },
   {
-   "field": "key_events[2].summary",
+   "field": "key_events[3].summary",
    "token": "10",
    "unit_mult": 1.0,
    "matched": [
@@ -249,7 +236,7 @@
    "note": ""
   },
   {
-   "field": "key_events[2].summary",
+   "field": "key_events[3].summary",
    "token": "170",
    "unit_mult": 100000000.0,
    "matched": [
@@ -260,7 +247,7 @@
    "note": ""
   },
   {
-   "field": "key_events[2].summary",
+   "field": "key_events[3].summary",
    "token": "10",
    "unit_mult": 100000000.0,
    "matched": [
@@ -271,85 +258,54 @@
    "note": ""
   },
   {
-   "field": "key_events[3].headline",
-   "token": "250",
-   "unit_mult": 100000000.0,
+   "field": "key_events[4].headline",
+   "token": "70",
+   "unit_mult": 1.0,
    "matched": [
-    "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）",
-    "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）",
-    "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）"
+    "新聞「İş Leasing’in ilk sendikasyonu」（Yeşil Haber）",
+    "新聞「İş Leasing’in ilk sendikasyonu」（Yeşil Haber）"
    ],
    "note": ""
   },
   {
-   "field": "key_events[3].summary",
-   "token": "200",
+   "field": "key_events[4].summary",
+   "token": "1",
    "unit_mult": 100000000.0,
    "matched": [
-    "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）"
+    "新聞「İş Leasing’in ilk sendikasyonu」（Yeşil Haber）",
+    "新聞「İş Leasing’in ilk sendikasyonu」（Yeşil Haber）",
+    "新聞「İş Leasing’in ilk sendikasyonu」（Yeşil Haber）"
    ],
    "note": ""
   },
   {
-   "field": "key_events[3].summary",
-   "token": "250",
-   "unit_mult": 100000000.0,
+   "field": "key_events[4].summary",
+   "token": "3,000",
+   "unit_mult": 10000.0,
    "matched": [
-    "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）",
-    "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）",
-    "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）"
+    "新聞「İş Leasing’in ilk sendikasyonu」（Yeşil Haber）",
+    "新聞「İş Leasing’in ilk sendikasyonu」（Yeşil Haber）"
    ],
    "note": ""
   },
   {
-   "field": "industry_items[2].body",
+   "field": "key_events[4].summary",
+   "token": "70",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「İş Leasing’in ilk sendikasyonu」（Yeşil Haber）",
+    "新聞「İş Leasing’in ilk sendikasyonu」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[0].body",
    "token": "1",
    "unit_mult": 10000.0,
    "matched": [
     "新聞「Saloni, mutfak mobilyasında ür」（Ekonomim）",
     "新聞「Saloni, mutfak mobilyasında ür」（Ekonomim）",
     "payload.fx.rates.CNY.forex_buying"
-   ],
-   "note": ""
-  },
-  {
-   "field": "industry_items[3].headline",
-   "token": "70",
-   "unit_mult": 1.0,
-   "matched": [
-    "新聞「İş Leasing’in ilk sendikasyonu」（Yeşil Haber）",
-    "新聞「İş Leasing’in ilk sendikasyonu」（Yeşil Haber）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "industry_items[3].body",
-   "token": "1",
-   "unit_mult": 100000000.0,
-   "matched": [
-    "新聞「İş Leasing’in ilk sendikasyonu」（Yeşil Haber）",
-    "新聞「İş Leasing’in ilk sendikasyonu」（Yeşil Haber）",
-    "新聞「İş Leasing’in ilk sendikasyonu」（Yeşil Haber）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "industry_items[3].body",
-   "token": "3000",
-   "unit_mult": 10000.0,
-   "matched": [
-    "新聞「İş Leasing’in ilk sendikasyonu」（Yeşil Haber）",
-    "新聞「İş Leasing’in ilk sendikasyonu」（Yeşil Haber）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "industry_items[3].body",
-   "token": "70",
-   "unit_mult": 1.0,
-   "matched": [
-    "新聞「İş Leasing’in ilk sendikasyonu」（Yeşil Haber）",
-    "新聞「İş Leasing’in ilk sendikasyonu」（Yeşil Haber）"
    ],
    "note": ""
   },
@@ -364,23 +320,22 @@
   },
   {
    "field": "trade_implications[1].body",
-   "token": "200",
+   "token": "1",
    "unit_mult": 100000000.0,
    "matched": [
-    "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）",
-    "新聞「Spot piyasada doğal gaz fiyatl」（Sözcü Ekonomi）",
-    "新聞「Spot piyasada doğal gaz fiyatl」（Sözcü Ekonomi）"
+    "新聞「İspanya’dan veri merkezlerine 」（Yeşil Haber）",
+    "新聞「Lutnick'in yüzde 51'lik hisse 」（Ekonomim）",
+    "新聞「Lutnick'in yüzde 51'lik hisse 」（Ekonomim）"
    ],
    "note": ""
   },
   {
    "field": "trade_implications[1].body",
-   "token": "250",
-   "unit_mult": 100000000.0,
+   "token": "70",
+   "unit_mult": 1.0,
    "matched": [
-    "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）",
-    "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）",
-    "新聞「Yıl sonuna kadar esnafa 25 mil」（Ekonomim）"
+    "新聞「İş Leasing’in ilk sendikasyonu」（Yeşil Haber）",
+    "新聞「İş Leasing’in ilk sendikasyonu」（Yeşil Haber）"
    ],
    "note": ""
   }
