@@ -1,0 +1,132 @@
+{
+ "date": "2026-11-23",
+ "passed": false,
+ "checks": [
+  {
+   "name": "1. 資料與分析是今天的",
+   "passed": true,
+   "details": [
+    "原始資料與分析皆為 2026-11-23"
+   ]
+  },
+  {
+   "name": "2. AI 寫的數字都能對回原始 JSON",
+   "passed": false,
+   "details": [
+    "`key_events[2].summary` 的數字 **10,000** 在原始資料找不到來源（上下文：「…，以達成 2040 年 10,000 兆瓦的核能目標。…」）"
+   ]
+  },
+  {
+   "name": "3. 每個事件都有來源連結（且連結、日期對得上原始新聞）",
+   "passed": true,
+   "details": [
+    "共 5 則事件，連結皆可對回原始新聞"
+   ]
+  },
+  {
+   "name": "4. 沒有簡體字或大陸用語（OpenCC）",
+   "passed": false,
+   "details": [
+    "簡體字「游」（應為「遊」）出現 1 次，例如：…創新高，可能帶動當地對上游機械零件與自動化裝置的…"
+   ]
+  },
+  {
+   "name": "5. 頁面完整（無殘留 token、匯率與融資成本已寫入）",
+   "passed": true,
+   "details": [
+    "token 皆已替換，數字已寫入"
+   ]
+  }
+ ],
+ "number_trace": [
+  {
+   "field": "today_take",
+   "token": "150",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Erdoğan: Çin ile 15 milyar dol」（Bloomberg HT）",
+    "新聞「Erdoğan: Çin ile 15 milyar dol」（Bloomberg HT）",
+    "新聞「Erdoğan: Çin ile 15 milyar dol」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "43.24",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Households’ 12-month-ahead inf」（Hürriyet Daily News）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "281",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Türkiye plans to more than dou」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "150",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Erdoğan: Çin ile 15 milyar dol」（Bloomberg HT）",
+    "新聞「Erdoğan: Çin ile 15 milyar dol」（Bloomberg HT）",
+    "新聞「Erdoğan: Çin ile 15 milyar dol」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "32",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Credit card payments in Türkiy」（Hürriyet Daily News）",
+    "新聞「Credit card payments in Türkiy」（Hürriyet Daily News）",
+    "payload.fx.rates.JPY.forex_buying"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].headline",
+   "token": "150",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Erdoğan: Çin ile 15 milyar dol」（Bloomberg HT）",
+    "新聞「Erdoğan: Çin ile 15 milyar dol」（Bloomberg HT）",
+    "新聞「Erdoğan: Çin ile 15 milyar dol」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].summary",
+   "token": "150",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Erdoğan: Çin ile 15 milyar dol」（Bloomberg HT）",
+    "新聞「Erdoğan: Çin ile 15 milyar dol」（Bloomberg HT）",
+    "新聞「Erdoğan: Çin ile 15 milyar dol」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].summary",
+   "token": "51",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Erdoğan: Çin ile 15 milyar dol」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].summary",
+   "token": "10,000",
+   "unit_mult": 1000000000000.0,
+   "matched": [],
+   "note": ""
+  }
+ ]
+}
