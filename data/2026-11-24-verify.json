@@ -1,0 +1,346 @@
+{
+ "date": "2026-11-24",
+ "passed": false,
+ "checks": [
+  {
+   "name": "1. 資料與分析是今天的",
+   "passed": true,
+   "details": [
+    "原始資料與分析皆為 2026-11-24"
+   ]
+  },
+  {
+   "name": "2. AI 寫的數字都能對回原始 JSON",
+   "passed": false,
+   "details": [
+    "`industry_items[0].body` 的數字 **506,000** 在原始資料找不到來源（上下文：「…耳其電動汽車數量已達到 506,000 輛，充電點數量亦逼…」）"
+   ]
+  },
+  {
+   "name": "3. 每個事件都有來源連結（且連結、日期對得上原始新聞）",
+   "passed": true,
+   "details": [
+    "共 10 則事件，連結皆可對回原始新聞"
+   ]
+  },
+  {
+   "name": "4. 沒有簡體字或大陸用語（OpenCC）",
+   "passed": true,
+   "details": [
+    "掃描整頁可見文字，沒有簡體字"
+   ]
+  },
+  {
+   "name": "5. 頁面完整（無殘留 token、匯率與融資成本已寫入）",
+   "passed": true,
+   "details": [
+    "token 皆已替換，數字已寫入"
+   ]
+  }
+ ],
+ "number_trace": [
+  {
+   "field": "today_take",
+   "token": "2.94",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「TCMB kredi kartı faizlerinde k」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "today_take",
+   "token": "5.5",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Küresel çelik üretimi gerilerk」（Dünya）",
+    "新聞「Global steel output falls 1.1%」（Anadolu Ajansı (EN)）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "today_take",
+   "token": "780",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye foresees over $78B inv」（Daily Sabah）",
+    "新聞「Türkiye foresees over $78B inv」（Daily Sabah）",
+    "新聞「Türkiye foresees over $78B inv」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "50.6286",
+   "unit_mult": 1.0,
+   "matched": [
+    "payload.fx.rates.USD.forex_selling",
+    "payload.fx.rates.USD.per_unit_selling",
+    "payload.fx.twd_try_cross.usd_try_selling_used"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "36.0",
+   "unit_mult": 1.0,
+   "matched": [
+    "payload.macro.funding_cost[0].value",
+    "payload.macro.funding_cost[1].value",
+    "payload.macro.funding_cost[2].value"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "723",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「TIR sürücülerine özel Schengen」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "5.5",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Küresel çelik üretimi gerilerk」（Dünya）",
+    "新聞「Global steel output falls 1.1%」（Anadolu Ajansı (EN)）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "340",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Küresel çelik üretimi gerilerk」（Dünya）",
+    "新聞「Global steel output falls 1.1%」（Anadolu Ajansı (EN)）",
+    "新聞「Global steel output falls 1.1%」（Anadolu Ajansı (EN)）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "3,320",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Küresel çelik üretimi gerilerk」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "50.6",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Elektrikli araç sayısı 500 bin」（Sözcü Ekonomi）",
+    "新聞「Elektrikli araç sayısı 500 bin」（Sözcü Otomotiv）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "5",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Elektrikli araç sayısı 500 bin」（Sözcü Ekonomi）",
+    "新聞「Elektrikli araç sayısı 500 bin」（Sözcü Otomotiv）",
+    "新聞「Altındaki sert düşüş TCMB reze」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].headline",
+   "token": "1.1",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Küresel çelik üretimi gerilerk」（Dünya）",
+    "payload.macro.gdp_growth_sa:相鄰漲跌幅%"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].headline",
+   "token": "5.5",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Küresel çelik üretimi gerilerk」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "1.1",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Küresel çelik üretimi gerilerk」（Dünya）",
+    "payload.macro.gdp_growth_sa:相鄰漲跌幅%"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "1.424",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Küresel çelik üretimi gerilerk」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "5.5",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Küresel çelik üretimi gerilerk」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "340",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Küresel çelik üretimi gerilerk」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "3,320",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Küresel çelik üretimi gerilerk」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "6",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Küresel çelik üretimi gerilerk」（Dünya）",
+    "新聞「Küresel çelik üretimi gerilerk」（Dünya）",
+    "payload.brent_oil.changes.week.pct"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].headline",
+   "token": "2.94",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「TCMB kredi kartı faizlerinde k」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].summary",
+   "token": "3.11",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「TCMB kredi kartı faizlerinde k」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].summary",
+   "token": "2.94",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「TCMB kredi kartı faizlerinde k」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[3].headline",
+   "token": "723",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「TIR sürücülerine özel Schengen」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[3].summary",
+   "token": "723",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「TIR sürücülerine özel Schengen」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[4].headline",
+   "token": "780",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye foresees over $78B inv」（Daily Sabah）",
+    "新聞「Türkiye foresees over $78B inv」（Daily Sabah）",
+    "新聞「Türkiye foresees over $78B inv」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[4].summary",
+   "token": "780",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye foresees over $78B inv」（Daily Sabah）",
+    "新聞「Türkiye foresees over $78B inv」（Daily Sabah）",
+    "新聞「Türkiye foresees over $78B inv」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[0].headline",
+   "token": "50",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Elektrikli araç sayısı 500 bin」（Sözcü Otomotiv）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[0].headline",
+   "token": "5",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Elektrikli araç sayısı 500 bin」（Sözcü Otomotiv）",
+    "payload.fx.rates.USD.forex_buying",
+    "payload.fx.rates.USD.forex_selling"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[0].body",
+   "token": "506,000",
+   "unit_mult": 1.0,
+   "matched": [],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[1].body",
+   "token": "50",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Elektrikli araç sayısı 500 bin」（Sözcü Ekonomi）",
+    "新聞「Elektrikli araç sayısı 500 bin」（Sözcü Otomotiv）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[2].body",
+   "token": "780",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye foresees over $78B inv」（Daily Sabah）",
+    "新聞「Türkiye foresees over $78B inv」（Daily Sabah）",
+    "新聞「Türkiye foresees over $78B inv」（Daily Sabah）"
+   ],
+   "note": ""
+  }
+ ]
+}
