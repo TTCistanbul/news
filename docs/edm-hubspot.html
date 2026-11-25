@@ -162,6 +162,7 @@ function conv(node,pcs,top){
   if(['script','style','noscript','template'].includes(tag)) return '';
   if(cs.display==='none'||cs.visibility==='hidden') return '';
   const rect=el.getBoundingClientRect();
+  if(tag==='img'&&cs.position==='absolute') return '';
   if(tag==='img'){
     const w=Math.round(rect.width)||+el.getAttribute('width')||600;
     const st=['display:block','width:100%','max-width:'+w+'px','height:auto','border:0','outline:none','text-decoration:none'];
@@ -179,6 +180,17 @@ function conv(node,pcs,top){
   }
   if(tag==='br') return '<br>';
   const st=stylesFor(el,cs,pcs,top);
+  const bgImg=[...el.children].find(c=>c.tagName==='IMG'&&win.getComputedStyle(c).position==='absolute'&&c.naturalWidth);
+  if(bgImg&&rect.width&&rect.height){ try{
+    const ics=win.getComputedStyle(bgImg), cv=document.createElement('canvas'), W=Math.round(rect.width), H=Math.round(rect.height), sc=2;
+    cv.width=W*sc; cv.height=H*sc; const g=cv.getContext('2d');
+    const base=hex(cs.backgroundColor); g.fillStyle=base==='transparent'?'#000':base; g.fillRect(0,0,cv.width,cv.height);
+    g.globalAlpha=parseFloat(ics.opacity)||1; if(ics.filter&&ics.filter!=='none') g.filter=ics.filter;
+    const ra=W/H, na=bgImg.naturalWidth/bgImg.naturalHeight; let sw=bgImg.naturalWidth, sh=bgImg.naturalHeight; if(na>ra) sw=sh*ra; else sh=sw/ra;
+    g.drawImage(bgImg,(bgImg.naturalWidth-sw)/2,(bgImg.naturalHeight-sh)/2,sw,sh,0,0,cv.width,cv.height);
+    st.push('background-image:url('+imgToken(cv.toDataURL('image/jpeg',.85))+')','background-size:cover','background-position:center');
+    NOTES.add('有背景圖片：Outlook 電腦版不顯示背景圖，會只看到底色（文字仍看得清楚）');
+  }catch(e){} }
   const kids=()=>pseudo(el,'::before',cs)+[...el.childNodes].map(n=>conv(n,cs,false)).join('')+pseudo(el,'::after',cs);
   // flex / grid laid out side by side -> table
   const disp=cs.display;
@@ -199,8 +211,10 @@ function conv(node,pcs,top){
         r.cells.forEach((i,k)=>{ const n=items[i], cw=Math.round(rects[i].width);
           if(k&&gap) html+=`<td width="${Math.round(gap)}" style="width:${Math.round(gap)}px;font-size:0;line-height:0">&nbsp;</td>`;
           let inner, cst='';
+          const inh=INHERIT.filter(p=>p!=='text-align'&&p!=='white-space').map(p=>p+':'+(p==='color'?hex(cs.getPropertyValue(p)):cs.getPropertyValue(p)).replace(/"/g,"'")).join(';')+';';
+          cst=inh;
           if(n.nodeType===1){ const ccs=win.getComputedStyle(n); inner=conv(n,cs,false);
-            if(ccs.textAlign) cst='text-align:'+ccs.textAlign; }
+            if(ccs.textAlign) cst+='text-align:'+ccs.textAlign; }
           else inner=esc(n.textContent.trim());
           html+=`<td width="${cw}" valign="${va}" style="width:${cw}px;vertical-align:${va};${cst}">${inner}</td>`; });
         html+='</tr>';
