@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EDM → HubSpot 轉換工具 | 伊斯坦堡台灣貿易中心</title>
+<style>
+  :root{--ink:#1d2330;--mute:#6b7280;--line:#e3e6eb;--accent:#0b6bcb;--bg:#f5f6f8;--warn:#b45309;--warnbg:#fff7ed;--ok:#15803d}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans TC",sans-serif;background:var(--bg);color:var(--ink);font-size:15px}
+  header{background:#12325c;color:#fff;padding:14px 18px}
+  header h1{margin:0;font-size:18px} header small{opacity:.75}
+  main{max-width:1100px;margin:0 auto;padding:16px}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+  .panel h2{font-size:16px;margin:0 0 10px}
+  .step{display:inline-block;background:#12325c;color:#fff;border-radius:50%;width:24px;height:24px;text-align:center;line-height:24px;font-size:13px;margin-right:6px}
+  .hint{color:var(--mute);font-size:13px;margin:6px 0}
+  .warn{background:var(--warnbg);color:var(--warn);border-radius:8px;padding:8px 10px;font-size:13px;margin:8px 0}
+  .ok{color:var(--ok)}
+  .drop{border:2px dashed #9db4d3;border-radius:12px;padding:22px;text-align:center;background:#f8fbff;cursor:pointer}
+  .drop.over{background:#e8f1fd}
+  .btn{background:var(--accent);color:#fff;border:0;border-radius:8px;padding:9px 14px;font-size:14px;cursor:pointer;font-family:inherit}
+  .btn.ghost{background:#fff;color:var(--accent);border:1px solid var(--accent)}
+  .btn:disabled{opacity:.5;cursor:default}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  table.list{width:100%;border-collapse:collapse;font-size:14px}
+  table.list td,table.list th{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:middle}
+  table.list img{max-width:120px;max-height:70px;border:1px solid var(--line);border-radius:4px;display:block}
+  input[type=text]{width:100%;border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:14px;font-family:inherit}
+  input.filled{border-color:#86c79a;background:#f2fbf4}
+  textarea{width:100%;min-height:160px;font-family:ui-monospace,Menlo,monospace;font-size:12px;border:1px solid var(--line);border-radius:8px;padding:8px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:900px){.cols{grid-template-columns:1fr}}
+  iframe.prev{width:100%;height:720px;border:1px solid var(--line);border-radius:8px;background:#fff}
+  .stat{font-size:13px;color:var(--mute)}
+  ol.howto{margin:6px 0 0 18px;padding:0;font-size:14px;line-height:1.7}
+  #render{position:absolute;left:-9999px;top:0;width:700px;height:4000px;border:0}
+</style>
+</head>
+<body>
+<header><h1>EDM → HubSpot 轉換工具</h1><small>把 EDM builder 匯出的 HTML，轉成可以貼進 HubSpot 文字區塊「原始碼」的版本</small></header>
+<main>
+  <section class="panel">
+    <h2><span class="step">1</span>選 EDM builder 匯出的 HTML 檔</h2>
+    <div class="drop" id="drop"><b>點這裡選擇 EDM.html，或拖曳進來</b><div class="hint">在 EDM builder 按「⬇ Export HTML（單檔）」得到的檔案</div><input type="file" id="file" accept=".html,.htm,text/html" hidden></div>
+    <div id="loadmsg" class="hint"></div>
+  </section>
+
+  <section class="panel" id="p-img" hidden>
+    <h2><span class="step">2</span>上傳圖片到 HubSpot，把網址貼回來</h2>
+    <ol class="howto">
+      <li>按每張圖旁邊的「下載」，存到電腦。</li>
+      <li>到 HubSpot：<b>Content（內容）→ Files（檔案）</b>，按「Upload」上傳這些圖片。</li>
+      <li>在 HubSpot 檔案列表點圖片 → 「Copy URL（複製網址）」，貼到下面對應的格子。</li>
+    </ol>
+    <p class="hint">Email 裡的圖片一定要放在網路上用網址連結；直接嵌在檔案裡的圖，Gmail 和 Outlook 大多不會顯示。</p>
+    <table class="list" id="imgs"></table>
+  </section>
+
+  <section class="panel" id="p-link" hidden>
+    <h2><span class="step">3</span>檢查按鈕和連結的網址</h2>
+    <p class="hint">EDM builder 的按鈕常常沒有連結。空白的請填上報名表或網頁網址，不然收件人點了沒反應。</p>
+    <table class="list" id="links"></table>
+  </section>
+
+  <section class="panel" id="p-out" hidden>
+    <h2><span class="step">4</span>複製結果，貼進 HubSpot</h2>
+    <div class="row"><button class="btn" id="gen">產生 HubSpot 版 HTML</button><button class="btn ghost" id="copy" disabled>複製 HTML</button><button class="btn ghost" id="dl" disabled>下載 .html</button><span class="stat" id="stat"></span></div>
+    <div id="warns"></div>
+    <ol class="howto">
+      <li>HubSpot 新增 email → 拖一個 <b>Text（文字）</b> 區塊到「Drop content here」。</li>
+      <li>點進文字區塊 → 工具列「⋯ 更多 / Advanced」→ <b>Source code（原始碼）</b>。</li>
+      <li>把裡面原本的內容刪掉，貼上複製的 HTML，按儲存。</li>
+      <li>用「Preview &amp; test → Send test email」寄給自己，用 Gmail 和 Outlook 各看一次。</li>
+    </ol>
+    <div class="cols" style="margin-top:12px">
+      <div><div class="hint">HTML（貼進「原始碼」）</div><textarea id="out" readonly></textarea></div>
+      <div><div class="hint">預覽（沒有任何外部樣式時的樣子，接近 email 實際顯示）</div><iframe class="prev" id="prev"></iframe></div>
+    </div>
+  </section>
+</main>
+<iframe id="render" aria-hidden="true"></iframe>
+
+<script>
+const $=s=>document.querySelector(s);
+let SRC=null, IMGS=[], LINKS=[], RESULT='';
+
+/* ---------- load ---------- */
+const drop=$('#drop'), file=$('#file');
+drop.addEventListener('click',()=>file.click());
+file.addEventListener('change',()=>{ if(file.files[0]) load(file.files[0]); file.value=''; });
+['dragenter','dragover'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.add('over')}));
+['dragleave','drop'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.remove('over')}));
+drop.addEventListener('drop',ev=>{ const f=ev.dataTransfer.files[0]; if(f) load(f); });
+
+async function load(f){
+  $('#loadmsg').textContent='讀取中…';
+  const html=await f.text();
+  const fr=$('#render');
+  await new Promise(res=>{ fr.onload=res; fr.srcdoc=html; });
+  const doc=fr.contentDocument;
+  await Promise.all([...doc.images].map(im=>im.complete?0:new Promise(r=>{im.onload=im.onerror=r;})));
+  await new Promise(r=>setTimeout(r,150));
+  SRC=doc; IMGS=[]; LINKS=[];
+  convert(true);
+  $('#loadmsg').innerHTML=`已讀取 <b>${esc(f.name)}</b>：${IMGS.length} 張圖片、${LINKS.length} 個連結。`;
+  renderImgs(); renderLinks();
+  ['#p-img','#p-link','#p-out'].forEach(s=>$(s).hidden=false);
+  $('#p-img').hidden=!IMGS.length;
+}
+
+/* ---------- helpers ---------- */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function hex(c){ const m=String(c).match(/rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?\)/); if(!m) return c;
+  if(m[4]!==undefined&&+m[4]===0) return 'transparent';
+  return '#'+[m[1],m[2],m[3]].map(x=>(+x|0).toString(16).padStart(2,'0')).join(''); }
+const INHERIT=['color','font-family','font-size','font-weight','font-style','line-height','letter-spacing','text-align','text-transform','white-space'];
+const BOX=['padding-top','padding-right','padding-bottom','padding-left','margin-top','margin-right','margin-bottom','margin-left'];
+const BORDERS=['border-top','border-right','border-bottom','border-left'];
+const RENAME={section:'div',header:'div',footer:'div',article:'div',main:'div',nav:'div',aside:'div',figure:'div',figcaption:'div',label:'span',i:'i'};
+const KEEP=new Set(['div','span','p','a','b','strong','i','em','u','small','br','img','h1','h2','h3','h4','h5','h6','ul','ol','li','table','tbody','thead','tr','td','th','hr','sup','sub','center','font']);
+
+function stylesFor(el,cs,pcs,top){
+  const out=[];
+  for(const p of INHERIT){ const v=cs.getPropertyValue(p); if(top||!pcs||v!==pcs.getPropertyValue(p)) out.push(p+':'+(p==='color'?hex(v):v)); }
+  const td=cs.getPropertyValue('text-decoration-line'); if(td&&td!=='none') out.push('text-decoration:'+td);
+  else if(el.tagName==='A') out.push('text-decoration:none');
+  let bg=cs.getPropertyValue('background-color'); const bgi=cs.getPropertyValue('background-image');
+  if(bgi&&bgi!=='none'){
+    const g=bgi.match(/gradient\((.*)\)/); if(g){ const c=g[1].match(/rgba?\([^)]*\)|#[0-9a-f]{3,8}/i); if(c&&(!bg||hex(bg)==='transparent')) bg=c[0]; NOTES.add('漸層背景已改成單色（email 大多不支援漸層）'); }
+    const u=bgi.match(/url\("?([^")]+)"?\)/); if(u){ out.push('background-image:url('+imgToken(u[1])+')'); out.push('background-size:cover'); out.push('background-position:center'); NOTES.add('有背景圖片：Outlook 電腦版不顯示背景圖，重要文字不要只放在背景圖上'); }
+  }
+  if(bg&&hex(bg)!=='transparent') out.push('background-color:'+hex(bg));
+  const isList=/^(UL|OL)$/.test(el.tagName);
+  for(const p of BOX){ const v=cs.getPropertyValue(p); if(v&&v!=='auto'&&(v!=='0px'||isList)) out.push(p+':'+v); }
+  for(const p of BORDERS){ const w=cs.getPropertyValue(p+'-width'), s=cs.getPropertyValue(p+'-style'); if(s!=='none'&&w!=='0px') out.push(p+':'+w+' '+s+' '+hex(cs.getPropertyValue(p+'-color'))); }
+  const r=cs.getPropertyValue('border-radius'); if(r&&r!=='0px') out.push('border-radius:'+r);
+  const ls=cs.getPropertyValue('list-style-type'); if(el.tagName==='UL'||el.tagName==='OL'||cs.display==='list-item') out.push('list-style-type:'+ls);
+  return out.map(x=>x.replace(/"/g,"'"));
+}
+let NOTES=new Set();
+function imgToken(src){ if(!/^data:/i.test(src)) { return src; }
+  let i=IMGS.findIndex(x=>x.src===src); if(i<0){ IMGS.push({src,url:''}); i=IMGS.length-1; } return '{{IMG'+(i+1)+'}}'; }
+
+function pseudo(el,which,pcs){ const cs=el.ownerDocument.defaultView.getComputedStyle(el,which); let c=cs.getPropertyValue('content');
+  if(!c||c==='none'||c==='normal'||!/^["']/.test(c)) return '';
+  c=c.slice(1,-1).replace(/\\([0-9a-f]{1,6})\s?/gi,(m,h)=>String.fromCodePoint(parseInt(h,16)));
+  if(!c.trim()) return '';
+  const st=['color:'+hex(cs.color),'font-weight:'+cs.fontWeight,'font-size:'+cs.fontSize];
+  const bg=hex(cs.backgroundColor), w=parseFloat(cs.width)||0, h=parseFloat(cs.height)||0;
+  if(bg!=='transparent') st.push('background-color:'+bg);
+  if(w&&h&&w<=60){ st.push('display:inline-block','width:'+w+'px','height:'+h+'px','line-height:'+h+'px','text-align:center','vertical-align:middle'); if(cs.borderRadius!=='0px') st.push('border-radius:'+cs.borderRadius); }
+  if(cs.position==='absolute'&&which==='::before'){ const pl=parseFloat(pcs.paddingLeft)||0; if(pl&&w&&w<pl){ st.push('margin-left:-'+pl+'px','margin-right:'+Math.round(pl-w)+'px'); } }
+  else { if(cs.paddingRight!=='0px') st.push('padding-right:'+cs.paddingRight); if(cs.marginRight!=='0px') st.push('margin-right:'+cs.marginRight); }
+  return `<span style="${st.join(';')}">${esc(c)}</span>`; }
+
+/* ---------- convert ---------- */
+function conv(node,pcs,top){
+  if(node.nodeType===3){ const t=node.textContent; return t.trim()?esc(t.replace(/\s+/g,' ')):(t.length?' ':''); }
+  if(node.nodeType!==1) return '';
+  const el=node, win=el.ownerDocument.defaultView, cs=win.getComputedStyle(el), tag=el.tagName.toLowerCase();
+  if(['script','style','noscript','template'].includes(tag)) return '';
+  if(cs.display==='none'||cs.visibility==='hidden') return '';
+  const rect=el.getBoundingClientRect();
+  if(tag==='img'){
+    const w=Math.round(rect.width)||+el.getAttribute('width')||600;
+    const st=['display:block','width:100%','max-width:'+w+'px','height:auto','border:0','outline:none','text-decoration:none'];
+    const r=cs.borderRadius; if(r&&r!=='0px') st.push('border-radius:'+r);
+    for(const p of ['margin-top','margin-bottom']) if(cs.getPropertyValue(p)!=='0px') st.push(p+':'+cs.getPropertyValue(p));
+    let src=el.getAttribute('src')||'';
+    // object-fit:cover crops in the browser but not in email: crop the picture itself
+    if(cs.objectFit==='cover'&&el.naturalWidth&&rect.height){ const ra=rect.width/rect.height, na=el.naturalWidth/el.naturalHeight;
+      if(Math.abs(ra-na)/na>0.03){ try{ const cv=document.createElement('canvas'), sc=Math.min(2,el.naturalWidth/rect.width)||1;
+        cv.width=Math.round(rect.width*sc); cv.height=Math.round(rect.height*sc);
+        let sw=el.naturalWidth, sh=el.naturalHeight; if(na>ra) sw=sh*ra; else sh=sw/ra;
+        cv.getContext('2d').drawImage(el,(el.naturalWidth-sw)/2,(el.naturalHeight-sh)/2,sw,sh,0,0,cv.width,cv.height);
+        src=cv.toDataURL('image/jpeg',.88); }catch(e){} } }
+    return `<img src="${esc(imgToken(src))}" width="${w}" alt="${esc(el.getAttribute('alt')||'')}" style="${st.join(';')}">`;
+  }
+  if(tag==='br') return '<br>';
+  const st=stylesFor(el,cs,pcs,top);
+  const kids=()=>pseudo(el,'::before',cs)+[...el.childNodes].map(n=>conv(n,cs,false)).join('')+pseudo(el,'::after',cs);
+  // flex / grid laid out side by side -> table
+  const disp=cs.display;
+  if(/flex|grid/.test(disp)){
+    const items=[...el.childNodes].filter(n=>(n.nodeType===1&&win.getComputedStyle(n).display!=='none')||(n.nodeType===3&&n.textContent.trim()));
+    const rects=items.map(n=>{ if(n.nodeType===1) return n.getBoundingClientRect(); const r=document.createRange(); r.selectNodeContents(n); return r.getBoundingClientRect(); });
+    const rows=[]; items.forEach((n,i)=>{ const a=rects[i]; let row=rows.find(r=>a.top<r.bottom-2&&a.bottom>r.top+2); if(!row){ row={top:a.top,bottom:a.bottom,cells:[]}; rows.push(row); } row.top=Math.min(row.top,a.top); row.bottom=Math.max(row.bottom,a.bottom); row.cells.push(i); });
+    const horizontal=rows.some(r=>r.cells.length>1);
+    if(horizontal){
+      const W=Math.round(rect.width), gap=parseFloat(cs.columnGap)||0;
+      const va=cs.alignItems==='center'?'middle':cs.alignItems==='flex-end'||cs.alignItems==='end'?'bottom':'top';
+      const side=parseFloat(cs.marginLeft)||parseFloat(cs.marginRight); const tw=side?`width="${W}"`:'width="100%"', tws=side?`width:${W}px`:'width:100%';
+      let html=`<table role="presentation" ${tw} cellpadding="0" cellspacing="0" border="0" style="${st.join(';')};border-collapse:separate;${tws}"><tbody>`;
+      html+=pseudo(el,'::before',cs)?`<tr><td>${pseudo(el,'::before',cs)}</td></tr>`:'';
+      for(const r of rows.sort((a,b)=>a.top-b.top)){
+        r.cells.sort((a,b)=>rects[a].left-rects[b].left);
+        html+='<tr>';
+        r.cells.forEach((i,k)=>{ const n=items[i], cw=Math.round(rects[i].width);
+          if(k&&gap) html+=`<td width="${Math.round(gap)}" style="width:${Math.round(gap)}px;font-size:0;line-height:0">&nbsp;</td>`;
+          let inner, cst='';
+          if(n.nodeType===1){ const ccs=win.getComputedStyle(n); inner=conv(n,cs,false);
+            if(ccs.textAlign) cst='text-align:'+ccs.textAlign; }
+          else inner=esc(n.textContent.trim());
+          html+=`<td width="${cw}" valign="${va}" style="width:${cw}px;vertical-align:${va};${cst}">${inner}</td>`; });
+        html+='</tr>';
+      }
+      return html+'</tbody></table>';
+    }
+  }
+  let out=RENAME[tag]||(KEEP.has(tag)?tag:(/inline/.test(disp)?'span':'div'));
+  if(/^(inline-block|inline-flex)$/.test(disp)) st.push('display:inline-block');
+  else if(/^(block|flex|grid|list-item)$/.test(disp)&&/^(span|a|b|i|em|strong|small|u|sup|sub)$/.test(tag)) st.push('display:block');
+  // small fixed boxes (icons, avatars, badges): keep their size and centre the text
+  const hasBox=(hex(cs.backgroundColor)!=='transparent')||(cs.borderTopStyle!=='none'&&cs.borderTopWidth!=='0px');
+  if(hasBox&&rect.width>0&&rect.width<=90&&rect.height<=90&&el.textContent.trim().length<=4){
+    const w=Math.round(rect.width), h=Math.round(rect.height);
+    st.push('width:'+w+'px','height:'+h+'px','line-height:'+h+'px','text-align:center','display:inline-block','padding:0');
+  }
+  if(out==='div'&&/^(span|a|b|i|em|strong|small)$/.test(tag)===false&&disp==='inline') out='span';
+  if(out==='a'){
+    const li=LINKS.length; LINKS.push({text:(el.textContent||'').trim().slice(0,80)||'(圖片連結)',href:el.getAttribute('href')||''});
+    return `<a href="{{LINK${li+1}}}" target="_blank" style="${st.join(';')}">${kids()}</a>`;
+  }
+  return `<${out} style="${st.join(';')}">${kids()}</${out}>`;
+}
+
+function convert(first){
+  const doc=SRC; if(!doc) return '';
+  const keepImgs=IMGS.map(x=>x.url), keepLinks=LINKS.map(x=>x.href);
+  IMGS=[]; LINKS=[]; NOTES=new Set();
+  const root=doc.querySelector('.page')||doc.body;
+  const rcs=doc.defaultView.getComputedStyle(root);
+  const W=Math.min(600,Math.round(root.getBoundingClientRect().width)||600);
+  const inner=[...root.childNodes].map(n=>conv(n,rcs,false)).join('');
+  const base=stylesFor(root,rcs,null,true).filter(s=>!/^(margin|box-shadow)/.test(s));
+  const txt=(root.textContent||'').toLowerCase();
+  if(/unsubscribe|abonelikten|取消訂閱/.test(txt)) NOTES.add('EDM 裡有自己做的「Unsubscribe／地址」頁尾：HubSpot 會自動在最下面加上地址和取消訂閱連結，可以在 HubSpot 裡把重複的那段刪掉');
+  if(/view in browser|tarayıcıda görüntüle/.test(txt)) NOTES.add('「View in browser」在這裡沒有連結；HubSpot 的範本設定裡可以打開它自己的「在瀏覽器中檢視」連結');
+  if(!first){ IMGS.forEach((x,i)=>x.url=keepImgs[i]||''); LINKS.forEach((x,i)=>{ if(keepLinks[i]!==undefined) x.href=keepLinks[i]; }); }
+  return `<table role="presentation" width="${W}" align="center" cellpadding="0" cellspacing="0" border="0" style="width:${W}px;max-width:100%;margin:0 auto;border-collapse:collapse"><tbody><tr><td style="${base.join(';')}">${inner}</td></tr></tbody></table>`;
+}
+
+/* ---------- step 2/3 UI ---------- */
+function renderImgs(){
+  $('#imgs').innerHTML='<tr><th>#</th><th>圖片</th><th>大小</th><th></th><th style="width:50%">HubSpot 圖片網址</th></tr>'+IMGS.map((x,i)=>{
+    const kb=Math.round(x.src.length*3/4/1024); const ext=(x.src.match(/^data:image\/(\w+)/)||[])[1]||'png';
+    return `<tr><td>${i+1}</td><td><img src="${x.src}" alt=""></td><td>${kb} KB</td><td><button class="btn ghost" data-dl="${i}">下載</button></td><td><input type="text" data-img="${i}" placeholder="https://…hubspotusercontent…/edm-${i+1}.${ext}" value="${esc(x.url)}"></td></tr>`; }).join('');
+  $('#imgs').querySelectorAll('[data-dl]').forEach(b=>b.addEventListener('click',()=>{ const i=+b.dataset.dl, x=IMGS[i]; const ext=(x.src.match(/^data:image\/(\w+)/)||[])[1]||'png';
+    const a=document.createElement('a'); a.href=x.src; a.download=`edm-${i+1}.${ext==='jpeg'?'jpg':ext}`; document.body.appendChild(a); a.click(); a.remove(); }));
+  $('#imgs').querySelectorAll('[data-img]').forEach(inp=>inp.addEventListener('input',()=>{ IMGS[+inp.dataset.img].url=inp.value.trim(); inp.classList.toggle('filled',!!inp.value.trim()); }));
+}
+function renderLinks(){
+  $('#links').innerHTML='<tr><th>#</th><th>按鈕／連結文字</th><th style="width:55%">連結網址</th></tr>'+(LINKS.length?LINKS.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.text)}</td><td><input type="text" data-link="${i}" placeholder="https://… 或 mailto:…" value="${esc(x.href)}"></td></tr>`).join(''):'<tr><td colspan="3" class="hint">這份 EDM 沒有連結。</td></tr>');
+  $('#links').querySelectorAll('[data-link]').forEach(inp=>{ inp.classList.toggle('filled',!!inp.value.trim()); inp.addEventListener('input',()=>{ LINKS[+inp.dataset.link].href=inp.value.trim(); inp.classList.toggle('filled',!!inp.value.trim()); }); });
+}
+
+/* ---------- step 4 ---------- */
+$('#gen').addEventListener('click',()=>{
+  let html=convert(false);
+  const miss=[];
+  html=html.replace(/\{\{IMG(\d+)\}\}/g,(m,n)=>{ const x=IMGS[n-1]; if(x&&x.url) return esc(x.url); miss.push(n); return x?x.src:''; });
+  const noLink=[];
+  html=html.replace(/\{\{LINK(\d+)\}\}/g,(m,n)=>{ const x=LINKS[n-1]; if(x&&x.href) return esc(x.href); noLink.push(n); return '#'; });
+  RESULT=html; $('#out').value=html; $('#prev').srcdoc='<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:16px 0;background:#eef1f5">'+html+'</body></html>';
+  const kb=Math.round(new Blob([html]).size/1024);
+  $('#stat').innerHTML=`大小 ${kb} KB`+(kb>90?' · <span style="color:#b45309">超過 100 KB 左右時，Gmail 會把信件後半段折疊起來</span>':' · <span class="ok">大小正常</span>');
+  const w=[];
+  if(miss.length) w.push(`第 ${[...new Set(miss)].join('、')} 張圖片還沒填 HubSpot 網址：目前還是嵌在 HTML 裡，Gmail／Outlook 大多不會顯示，而且檔案會很大。`);
+  if(noLink.length) w.push(`第 ${[...new Set(noLink)].join('、')} 個連結沒有網址：按了不會有反應。`);
+  NOTES.forEach(n=>w.push(n));
+  $('#warns').innerHTML=w.map(x=>`<div class="warn">⚠ ${esc(x)}</div>`).join('');
+  $('#copy').disabled=$('#dl').disabled=false;
+});
+$('#copy').addEventListener('click',async()=>{ try{ await navigator.clipboard.writeText(RESULT); $('#copy').textContent='已複製 ✓'; setTimeout(()=>$('#copy').textContent='複製 HTML',1800); }catch(e){ $('#out').select(); document.execCommand('copy'); } });
+$('#dl').addEventListener('click',()=>{ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([RESULT],{type:'text/html'})); a.download='EDM-hubspot.html'; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500); });
+</script>
+</body>
+</html>
