@@ -1,0 +1,420 @@
+{
+ "date": "2026-11-26",
+ "passed": false,
+ "checks": [
+  {
+   "name": "1. 資料與分析是今天的",
+   "passed": true,
+   "details": [
+    "原始資料與分析皆為 2026-11-26"
+   ]
+  },
+  {
+   "name": "2. AI 寫的數字都能對回原始 JSON",
+   "passed": false,
+   "details": [
+    "`key_events[4].summary` 的數字 **44.5** 在原始資料找不到來源（上下文：「…有 119 支基金與近 44.5 萬名投資者獲得撥付…」）"
+   ]
+  },
+  {
+   "name": "3. 每個事件都有來源連結（且連結、日期對得上原始新聞）",
+   "passed": true,
+   "details": [
+    "共 10 則事件，連結皆可對回原始新聞"
+   ]
+  },
+  {
+   "name": "4. 沒有簡體字或大陸用語（OpenCC）",
+   "passed": false,
+   "details": [
+    "簡體字「游」（應為「遊」）出現 1 次，例如：…地化生產有望降低土耳其下游塑膠與化工業的原料成本…"
+   ]
+  },
+  {
+   "name": "5. 頁面完整（無殘留 token、匯率與融資成本已寫入）",
+   "passed": true,
+   "details": [
+    "token 皆已替換，數字已寫入"
+   ]
+  }
+ ],
+ "number_trace": [
+  {
+   "field": "today_take",
+   "token": "170",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）",
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）",
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "today_take",
+   "token": "7.4",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türk Eximbank secures $740 mil」（Hürriyet Daily News）",
+    "新聞「Türk Eximbank secures $740 mil」（Hürriyet Daily News）",
+    "新聞「Türk Eximbank secures $740 mil」（Hürriyet Daily News）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "today_take",
+   "token": "170",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）",
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）",
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "170",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）",
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）",
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "1,419.72",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Merkez Bankası rezervlerinde s」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "7.4",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türk Eximbank secures $740 mil」（Hürriyet Daily News）",
+    "新聞「Türk Eximbank secures $740 mil」（Hürriyet Daily News）",
+    "新聞「Türk Eximbank secures $740 mil」（Hürriyet Daily News）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "274",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「European automakers account fo」（Anadolu Ajansı (EN)）",
+    "新聞「European automakers account fo」（Anadolu Ajansı (EN)）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "170",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）",
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）",
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "3.3",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「$330 million plant to cut Türk」（Hürriyet Daily News）",
+    "新聞「$330 million plant to cut Türk」（Hürriyet Daily News）",
+    "新聞「$330 million plant to cut Türk」（Hürriyet Daily News）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "10",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Province of Konya accounts for」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].headline",
+   "token": "170",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Merkez Bankası rezervlerinde s」（Dünya）",
+    "新聞「Merkez Bankası rezervlerinde s」（Dünya）",
+    "新聞「Merkez Bankası rezervlerinde s」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].summary",
+   "token": "170",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Merkez Bankası rezervlerinde s」（Dünya）",
+    "新聞「Merkez Bankası rezervlerinde s」（Dünya）",
+    "新聞「Merkez Bankası rezervlerinde s」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].summary",
+   "token": "1,419.72",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Merkez Bankası rezervlerinde s」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].summary",
+   "token": "81",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Merkez Bankası rezervlerinde s」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[0].summary",
+   "token": "89",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Merkez Bankası rezervlerinde s」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].headline",
+   "token": "7.4",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türk Eximbank secures $740 mil」（Hürriyet Daily News）",
+    "新聞「Türk Eximbank secures $740 mil」（Hürriyet Daily News）",
+    "新聞「Türk Eximbank secures $740 mil」（Hürriyet Daily News）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "7.4",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türk Eximbank secures $740 mil」（Hürriyet Daily News）",
+    "新聞「Türk Eximbank secures $740 mil」（Hürriyet Daily News）",
+    "新聞「Türk Eximbank secures $740 mil」（Hürriyet Daily News）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "75",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türk Eximbank secures $740 mil」（Hürriyet Daily News）",
+    "新聞「Türk Eximbank secures $740 mil」（Hürriyet Daily News）",
+    "payload.macro.trade_exports:相鄰漲跌幅%"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].headline",
+   "token": "1,249",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Bakan Bolat: Hizmet ihracatı 1」（Bloomberg HT）",
+    "新聞「Bakan Bolat: Hizmet ihracatı 1」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].summary",
+   "token": "1,249",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Bakan Bolat: Hizmet ihracatı 1」（Bloomberg HT）",
+    "新聞「Bakan Bolat: Hizmet ihracatı 1」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[4].summary",
+   "token": "2,000",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye moves toward final pha」（Daily Sabah）",
+    "新聞「Türkiye moves toward final pha」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[4].summary",
+   "token": "39.5",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye moves toward final pha」（Daily Sabah）",
+    "新聞「Türkiye moves toward final pha」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[4].summary",
+   "token": "119",
+   "unit_mult": 1.0,
+   "matched": [
+    "payload.macro.cpi[5].value"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[4].summary",
+   "token": "44.5",
+   "unit_mult": 10000.0,
+   "matched": [],
+   "note": ""
+  },
+  {
+   "field": "industry_items[0].body",
+   "token": "274",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「European automakers account fo」（Anadolu Ajansı (EN)）",
+    "新聞「European automakers account fo」（Anadolu Ajansı (EN)）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[0].body",
+   "token": "596",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「European automakers account fo」（Anadolu Ajansı (EN)）",
+    "新聞「European automakers account fo」（Anadolu Ajansı (EN)）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[1].headline",
+   "token": "170",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）",
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）",
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[1].body",
+   "token": "170",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）",
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）",
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[1].body",
+   "token": "5",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）",
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）",
+    "payload.fx.rates.USD.forex_buying"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[2].headline",
+   "token": "10",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Province of Konya accounts for」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[2].body",
+   "token": "10",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Province of Konya accounts for」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[0].body",
+   "token": "170",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）",
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）",
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[0].body",
+   "token": "7.4",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türk Eximbank secures $740 mil」（Hürriyet Daily News）",
+    "新聞「Türk Eximbank secures $740 mil」（Hürriyet Daily News）",
+    "新聞「Türk Eximbank secures $740 mil」（Hürriyet Daily News）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[1].body",
+   "token": "274",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「European automakers account fo」（Anadolu Ajansı (EN)）",
+    "新聞「European automakers account fo」（Anadolu Ajansı (EN)）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[1].body",
+   "token": "170",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）",
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）",
+    "新聞「Dilovası’nda 17 milyar TL’lik 」（Bloomberg HT）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[1].body",
+   "token": "3.3",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「$330 million plant to cut Türk」（Hürriyet Daily News）",
+    "新聞「$330 million plant to cut Türk」（Hürriyet Daily News）",
+    "新聞「$330 million plant to cut Türk」（Hürriyet Daily News）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[2].body",
+   "token": "10",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Province of Konya accounts for」（Daily Sabah）"
+   ],
+   "note": ""
+  }
+ ]
+}
