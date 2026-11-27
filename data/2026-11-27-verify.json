@@ -13,7 +13,7 @@
    "name": "2. AI 寫的數字都能對回原始 JSON",
    "passed": true,
    "details": [
-    "共檢查 11 個數字，全部找得到來源"
+    "共檢查 12 個數字，全部找得到來源"
    ]
   },
   {
@@ -27,7 +27,7 @@
    "name": "4. 沒有簡體字或大陸用語（OpenCC）",
    "passed": false,
    "details": [
-    "簡體字「游」（應為「遊」）出現 1 次，例如：…口創新高帶動機器裝置與中游零元件需求 土耳其商品…"
+    "簡體字「游」（應為「遊」）出現 1 次，例如：…可關注當地車用零元件及中游半成品的合作機會。 貨…"
    ]
   },
   {
@@ -63,28 +63,12 @@
   },
   {
    "field": "summary",
-   "token": "86",
-   "unit_mult": 1.0,
+   "token": "1,000",
+   "unit_mult": 100000000.0,
    "matched": [
-    "新聞「Türkiye's central bank suspend」（Anadolu Ajansı (EN)）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "summary",
-   "token": "90",
-   "unit_mult": 1.0,
-   "matched": [
-    "新聞「Türkiye's central bank suspend」（Anadolu Ajansı (EN)）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "summary",
-   "token": "50.78",
-   "unit_mult": 1.0,
-   "matched": [
-    "新聞「Dolar/TL'den bir rekor geldi!」（Sözcü Ekonomi）"
+    "新聞「JPMorgan TCMB tahminlerini değ」（Bloomberg HT）",
+    "新聞「Haftalık kazanç tablosu belli 」（Dünya）",
+    "新聞「Borsada teknoloji öncülüğünde 」（Dünya）"
    ],
    "note": ""
   },
@@ -111,7 +95,59 @@
    "note": ""
   },
   {
-   "field": "industry_items[1].body",
+   "field": "key_events[2].headline",
+   "token": "1,000",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye, Russia reaffirm $100B」（Anadolu Ajansı (EN)）",
+    "新聞「Türkiye, Russia reaffirm $100B」（Anadolu Ajansı (EN)）",
+    "payload.fx.rates.JPY.unit"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].summary",
+   "token": "500",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye, Russia reaffirm $100B」（Anadolu Ajansı (EN)）",
+    "新聞「Türkiye, Russia reaffirm $100B」（Anadolu Ajansı (EN)）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].summary",
+   "token": "1,000",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye, Russia reaffirm $100B」（Anadolu Ajansı (EN)）",
+    "新聞「Türkiye, Russia reaffirm $100B」（Anadolu Ajansı (EN)）",
+    "payload.fx.rates.JPY.unit"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[3].summary",
+   "token": "32",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Meta announces entrepreneurshi」（Daily Sabah）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[4].summary",
+   "token": "330",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「2027 yılı bütçesi komisyondan 」（Ekonomim）",
+    "新聞「2027 yılı bütçesi komisyondan 」（Ekonomim）",
+    "新聞「2027 yılı bütçesi komisyondan 」（Ekonomim）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[4].body",
    "token": "70",
    "unit_mult": 1.0,
    "matched": [
@@ -127,24 +163,6 @@
     "新聞「Turkish goods and services exp」（Hürriyet Daily News）",
     "新聞「Turkish goods and services exp」（Hürriyet Daily News）",
     "新聞「Turkish goods and services exp」（Hürriyet Daily News）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "trade_implications[1].body",
-   "token": "50.78",
-   "unit_mult": 1.0,
-   "matched": [
-    "新聞「Dolar/TL'den bir rekor geldi!」（Sözcü Ekonomi）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "trade_implications[2].body",
-   "token": "70",
-   "unit_mult": 1.0,
-   "matched": [
-    "新聞「Ankara pushes ‘Made with Europ」（Hürriyet Daily News）"
    ],
    "note": ""
   }
