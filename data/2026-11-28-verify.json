@@ -1,0 +1,138 @@
+{
+ "date": "2026-11-28",
+ "passed": true,
+ "checks": [
+  {
+   "name": "1. 資料與分析是今天的",
+   "passed": true,
+   "details": [
+    "原始資料與分析皆為 2026-11-28"
+   ]
+  },
+  {
+   "name": "2. AI 寫的數字都能對回原始 JSON",
+   "passed": true,
+   "details": [
+    "共檢查 9 個數字，全部找得到來源"
+   ]
+  },
+  {
+   "name": "3. 每個事件都有來源連結（且連結、日期對得上原始新聞）",
+   "passed": true,
+   "details": [
+    "共 5 則事件，連結皆可對回原始新聞"
+   ]
+  },
+  {
+   "name": "4. 沒有簡體字或大陸用語（OpenCC）",
+   "passed": true,
+   "details": [
+    "掃描整頁可見文字，沒有簡體字"
+   ]
+  },
+  {
+   "name": "5. 頁面完整（無殘留 token、匯率與融資成本已寫入）",
+   "passed": true,
+   "details": [
+    "token 皆已替換，數字已寫入"
+   ]
+  }
+ ],
+ "number_trace": [
+  {
+   "field": "today_take",
+   "token": "7,000",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）",
+    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）",
+    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "7,000",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）",
+    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）",
+    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "50.6955",
+   "unit_mult": 1.0,
+   "matched": [
+    "payload.fx.rates.USD.forex_selling",
+    "payload.fx.rates.USD.per_unit_selling",
+    "payload.fx.twd_try_cross.usd_try_selling_used"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "38.23",
+   "unit_mult": 1.0,
+   "matched": [
+    "payload.macro.funding_cost[13].value"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].headline",
+   "token": "7,000",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）",
+    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）",
+    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "7,000",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）",
+    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）",
+    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "1.3",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）",
+    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[0].body",
+   "token": "8.3",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Büyükkışla Depolamalı RES’in k」（Dünya）",
+    "新聞「Büyükkışla Depolamalı RES’in k」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[0].body",
+   "token": "7,000",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）",
+    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）",
+    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）"
+   ],
+   "note": ""
+  }
+ ]
+}
