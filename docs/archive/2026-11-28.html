@@ -1163,6 +1163,49 @@ td.col-date {
   .card h2 { font-size: 1.15rem; }
   .legend { gap: 0.75rem; font-size: 0.75rem; }
 }
+/* ===== 手機版改善（≤640px）：表格改卡片、標題列精簡 ===== */
+@media (max-width: 640px) {
+  body { padding: 1rem 0.6rem 2rem; }
+  .topbar .brand .divider, .topbar .status { display: none; }
+  .topbar .meta { font-size: 0.7rem; line-height: 1.4; text-align: right; max-width: 9.5rem; }
+  .hero h1 { font-size: 2.2rem; }
+  .card { padding: 1.25rem 1rem; }
+  .card > .card-head { align-items: center; margin-bottom: 1.1rem; padding-bottom: 0.9rem; }
+  .card-sub { display: none; }
+  .card h2 { font-size: 1.1rem; gap: 0.6rem; }
+
+  /* 表格 → 一列一張卡片 */
+  .table-wrapper { overflow: visible; margin: 0; padding: 0; }
+  .table-wrapper table, table.tbl-wide, table.tbl-narrow { min-width: 0; width: 100%; display: block; }
+  .table-wrapper thead { display: none; }
+  .table-wrapper tbody { display: block; }
+  .table-wrapper tbody tr {
+    display: flex; flex-direction: column;
+    background: var(--bg-table-even) !important;
+    border: 1px solid var(--border-soft); border-radius: 14px;
+    padding: 0.85rem 0.95rem; margin-bottom: 0.7rem;
+  }
+  .table-wrapper tbody td,
+  .table-wrapper tbody td:first-child {
+    display: block; width: auto; border: none; padding: 0.2rem 0;
+    text-align: left; font-family: inherit; font-size: 0.88rem;
+    color: var(--text-primary); line-height: 1.65;
+  }
+  .table-wrapper tbody td.m-hide { display: none; }
+  .table-wrapper td.m-title { order: -2; font-weight: 700; font-size: 0.98rem; color: var(--text-heading); padding-bottom: 0.35rem; }
+  .table-wrapper td.m-meta { order: -3; }
+  .table-wrapper tbody td.m-short { text-align: right; }
+  .table-wrapper td.m-short::before { content: attr(data-label); float: left; margin-right: 1rem; line-height: 2.2; }
+  .table-wrapper td.m-long::before { content: attr(data-label); display: block; margin-top: 0.35rem; }
+  .table-wrapper td.m-short::before, .table-wrapper td.m-long::before {
+    font-size: 0.72rem; color: var(--text-tertiary); letter-spacing: 0.04em;
+  }
+  /* 關鍵事件：方向、重要性、來源、日期排成一行 */
+  .table-wrapper tr.m-has-meta { flex-direction: row; flex-wrap: wrap; align-items: center; column-gap: 0.6rem; }
+  .table-wrapper tr.m-has-meta td.m-meta { width: auto; }
+  .table-wrapper tr.m-has-meta td.m-meta.col-date { font-size: 0.78rem; color: var(--text-tertiary); }
+  .table-wrapper tr.m-has-meta td:not(.m-meta) { flex-basis: 100%; }
+}
 </style>
 <!-- TODO: 換成自己的 GTM 容器 ID，或整段移除 -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -1186,7 +1229,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <span class="status"><span class="dot"></span>DAILY&nbsp;ECON</span>
     </div>
     <div class="right">
-      <div class="meta">2026-11-28 00:24 TRT</div>
+      <div class="meta">2026-11-28 19:21 TRT</div>
       <button class="menu-btn" id="menuBtn" aria-label="歷史簡報" aria-expanded="false">
         <span class="bars"><span></span><span></span><span></span></span>
       </button>
@@ -1266,7 +1309,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- AI:TODAY_TAKE:START 每天由 generate_analysis.py 整段覆寫，不要手動編輯這段文字本身 -->
   <p class="assessment-text">
-    土耳其政府積極展現對實體經濟與金融市場的關注，不僅釋出可能調降扣繳稅的政策訊號，更結合國際金融機構提供<strong>7,000 萬歐元</strong>就業補助。同時，綠能儲能發電建設持續推展，金融監管則呈現對電子支付機構趨嚴、對投資基金逐步解封的雙向調整。臺商可密切觀察土耳其在綠能採購與市場流動性改善方面的潛在商機。
+    今日土耳其經濟動態焦點集中於<strong>歐盟法規對車廠的潛在影響與金融市場緊縮</strong>。歐盟車廠極力爭取將土耳其工廠納入 Made in EU 豁免範圍，以維護當地車輛供應鏈優勢；同時土耳其央行實施流動性緊縮措施推升銀行資金成本。建議臺商密切觀察汽車供應鏈法規演變，並審慎管理對土耳其客戶之放款與信用風險。
   </p>
 <!-- AI:TODAY_TAKE:END -->
 
@@ -1295,7 +1338,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <!-- AI:SUMMARY:START -->
     <p class="summary-text">
- 土耳其經濟與產業最新動態顯示，資本市場監管機構（SPK）將於<span class='data'>11 月 30 日</span>重啟先前關閉交易的<span class='data'>26</span>檔投資基金，而央行（TCMB）則撤銷了 Fintlix 電子支付機構的營運許可。產業方面，Entek Elektrik 位於安卡拉的風力發電與儲能電廠完成第一階段官方驗收；此外，TKYB 聯合歐盟與世界銀行向<span class='data'>24</span>個省份的<span class='data'>542</span>家企業提供<span class='data'>7,000 萬歐元</span>補助金，支援<span class='data'>13,000</span>人的登記就業。匯市方面，美元兌里拉售出價為<span class='data'>50.6955</span>，央行資金成本率則上升至<span class='data'>38.23%</span>。
+ 土耳其金融與產業面呈現多重變化。總體經濟方面，央行流動性緊縮推升銀行資金成本，市場預計存款利率可能即將邁向 <span class='data'>40%</span> 門檻，央行資金成本在 <span class='data'>2026年11月27日</span> 亦達 <span class='data'>38.23%</span>。在對外貿易與產業發展方面，今年前九個月襪類出口達 <span class='data'>8.468億美元</span>，實現 <span class='data'>7.931億美元</span> 的順差；對阿勒坡的電力出口容量在 <span class='data'>11月</span> 可達 <span class='data'>500 MW</span>。然而，年產能 <span class='data'>30萬件</span> 的 Kare Metal 破產案例反映出部分製造業受到高營運成本衝擊，臺商應隨時評估買家流動性狀況。
     </p>
 <!-- AI:SUMMARY:END -->
   </div>
@@ -1324,43 +1367,53 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <!-- AI:KEY_EVENTS:START 每天由 generate_analysis.py 整段覆寫 tbody 內容 -->
           <tr>
             <td>1</td>
-            <td class="dir-green">🟢</td>
+            <td class="dir-neutral">⚪</td>
             <td><span class="badge badge-major">重大</span></td>
-            <td><a href="https://www.dunya.com/ekonomi/ekonomi-yonetiminden-yatirim-istihdam-ve-piyasa-guveni-onceligi-reel-sektore-kayitsiz-kalamayiz-haberi-849125" target="_blank" rel="noopener noreferrer">Dünya</a></td>
+            <td><a href="https://www.hurriyetdailynews.com/automakers-seek-made-in-eu-exemptions-for-turkiye-plants-229922" target="_blank" rel="noopener noreferrer">Hürriyet Daily News</a></td>
             <td class="col-date">2026-11-28</td>
-            <td>土耳其經濟高層強調重視實體產業並釋出扣繳稅減免訊號</td>
-            <td>副總理 Yılmaz 表示將聽取實體產業訴求，財政部長 Şimşek 亦釋出源頭扣繳稅（stopaj）減免訊號，並提升 SPK 審查能力以維持市場信心。</td>
-            <td>稅務減免若順利推行，可能減輕當地合作夥伴營運負擔，值得觀察後續具體配套與稅率調整細則。</td>
+            <td>歐洲車廠呼籲歐盟將土耳其工廠納入 Made in EU 豁免範圍</td>
+            <td>歐洲汽車製造商呼籲歐盟在擬議的 Made in EU 規則中豁免土耳其現有工廠，警告若將土耳其排除在外可能威脅投資並削弱其競爭力。</td>
+            <td>若最終獲得豁免，可能維護土耳其作為車輛與零元件出口歐洲門戶的優勢，對供應歐洲汽車供應鏈的臺商而言值得密切關注法規進展。</td>
           </tr>
           <tr>
             <td>2</td>
+            <td class="dir-red">🔴</td>
+            <td><span class="badge badge-major">重大</span></td>
+            <td><a href="https://www.sozcu.com.tr/merkez-bankasi-nin-hamlesi-dengeleri-degistirdi-mevduat-faizlerinde-yuzde-40-donemi-kapida-p385033" target="_blank" rel="noopener noreferrer">Sözcü Ekonomi</a></td>
+            <td class="col-date">2026-11-28</td>
+            <td>土耳其央行流動性緊縮推升銀行融資成本</td>
+            <td>土耳其中央銀行（TCMB）採取流動性緊縮措施，使銀行的資金成本增加 3 個百分點，市場預測存款利率即將邁向 40% 的門檻。</td>
+            <td>融資成本上升可能加重當地企業的資金營運負擔，臺商在評估土耳其客戶付款條件及營運資金時宜保持審慎。</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td class="dir-green">🟢</td>
+            <td><span class="badge badge-medium">中等</span></td>
+            <td><a href="https://yesilhaber.net/turkiye-halep-elektrik-ihracati/" target="_blank" rel="noopener noreferrer">Yeşil Haber</a></td>
+            <td class="col-date">2026-11-28</td>
+            <td>土耳其對阿勒坡啟動電力出口 11月容量達 500 MW</td>
+            <td>土耳其能源部宣佈對阿勒坡的新電力出口已開始執行，TEİAŞ 資料顯示該線路 11 月的出口容量最高可達 500 MW。</td>
+            <td>土耳其持續拓展周邊區域電力基礎設施鏈結，可能帶動電力裝置與系統維護相關產業的需求。</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td class="dir-neutral">⚪</td>
+            <td><span class="badge badge-medium">中等</span></td>
+            <td><a href="https://www.bloomberght.com/turk-sirketleri-londrada-ingiliz-yatirimcilarla-bulusacak-3796000" target="_blank" rel="noopener noreferrer">Bloomberg HT</a></td>
+            <td class="col-date">—</td>
+            <td>土耳其財政部長與央行總裁將於倫敦會見英國投資人</td>
+            <td>MÜSİAD 與 HSBC 將於 11 月 30 日在倫敦舉辦投資會議，土耳其財政部長 Mehmet Şimşek 與央行總裁 Fatih Karahan 將出席，促成土耳其企業與英國投資者對話。</td>
+            <td>土耳其政府積極招商引資，相關經濟政策宣示與外資動向可能影響未來市場資金流動性。</td>
+          </tr>
+          <tr>
+            <td>5</td>
             <td class="dir-green">🟢</td>
             <td><span class="badge badge-medium">中等</span></td>
             <td><a href="https://www.dunya.com/ekonomi/tkybden-istihdama-70-milyon-euro-hibe-haberi-849142" target="_blank" rel="noopener noreferrer">Dünya</a></td>
             <td class="col-date">2026-11-28</td>
-            <td>TKYB 攜手歐盟與世行提供 7,000 萬歐元企業就業補助</td>
-            <td>土耳其發展與投資銀行（TKYB）在歐盟及世界銀行合作下，於 24 省向 542 家企業發放 7,000 萬歐元補助，貢獻 1.3 萬人的登記就業。</td>
-            <td>獲得國際機構資金贊助的當地中小企業資金流可能獲得改善，臺商可關注相關裝置與零元件的潛在合作或採購需求。</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td class="dir-neutral">⚪</td>
-            <td><span class="badge badge-medium">中等</span></td>
-            <td><a href="https://www.ekonomim.com/ekonomi/spk-duyurdu-isleme-kapatilan-26-fon-yeniden-aciliyor-haberi-933929" target="_blank" rel="noopener noreferrer">Ekonomim</a></td>
-            <td class="col-date">2026-11-28</td>
-            <td>SPK 宣佈 9 月遭暫停交易之 26 檔投資基金將於 11 月 30 日重啟</td>
-            <td>資本市場委員會（SPK）決定將 Bulls、A1 Capital 及 Pardus Portföy 旗下的 26 檔投資基金於 11 月 30 日星期一重新開放買賣交易。</td>
-            <td>投資基金恢復交易有助於緩解當地金融市場的不確定性，對資本市場流動性可能帶來穩定效果。</td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td class="dir-red">🔴</td>
-            <td><span class="badge badge-medium">中等</span></td>
-            <td><a href="https://www.ekonomim.com/ekonomi/tcmb-bir-odeme-kurulusunun-faaliyet-iznini-iptal-etti-haberi-933931" target="_blank" rel="noopener noreferrer">Ekonomim</a></td>
-            <td class="col-date">2026-11-28</td>
-            <td>土耳其央行撤銷 Fintlix 電子支付機構營運執照</td>
-            <td>土耳其共和國中央銀行（TCMB）已正式取消 Fintlix Elektronik Para ve Ödeme Hizmetleri A.Ş. 作為電子貨幣與支付機構的營運許可。</td>
-            <td>顯示監管機關對金融科技與第三方支付合規性審查嚴格，採用當地非銀行支付系統的臺商需留意收付款管道之合法性與安全性。</td>
+            <td>土耳其發展與投資銀行提供 7,000 萬歐元補助金促進就業</td>
+            <td>TKYB 與歐盟及世界銀行合作，在 24 個省份向 542 家企業提供 7,000 萬歐元補助，協助創造 1.3 萬個登記就業機會。</td>
+            <td>國際機構資金挹注當地中小企業與製造業，可能間接促進資本支出與裝置採購需求。</td>
           </tr>
 <!-- AI:KEY_EVENTS:END -->
         </tbody>
@@ -1518,11 +1571,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <tr>
             <td>3</td>
             <td>TWD/TRY（參考）</td>
-            <td><span class="data">1.5386</span></td>
-            <td><span class="up">+0.5%</span></td>
-            <td><span class="up">+0.2%</span></td>
+            <td><span class="data">1.5372</span></td>
+            <td><span class="up">+0.4%</span></td>
+            <td><span class="up">+0.1%</span></td>
             <td><span class="flat">—</span></td>
-            <td>交叉匯率（TCMB USD/TRY ÷ 第三方 USD/TWD），非官方直接報價，僅供台幣計價合約換算參考，資料日期 2026-11-27／2026-11-27</td>
+            <td>交叉匯率（TCMB USD/TRY ÷ 第三方 USD/TWD），非官方直接報價，僅供台幣計價合約換算參考，資料日期 2026-11-27／2026-11-28</td>
           </tr>
           <tr>
             <td>4</td>
@@ -1548,53 +1601,53 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <!-- AI:INDUSTRY:START 每天由 generate_analysis.py 整段覆寫 ul 內容（<li> 清單） -->
       <li class="sector-item pos">
         <div class="row-top">
-          <span class="sector-chip">能源與電力</span>
-          <span class="headline">Entek Elektrik 附設儲能風力發電廠第一階段透過官方驗收</span>
+          <span class="sector-chip">汽車與零元件</span>
+          <span class="headline">全球前 50 大價值車廠出爐 土耳其兩家企業入榜</span>
+          <span class="src"><a href="https://www.dunya.com/sektorler/otomotiv/dunyanin-en-degerli-otomotiv-sirketleri-belli-oldu-listede-iki-turk-sirketi-var-haberi-849176" target="_blank" rel="noopener noreferrer">Dünya</a></span>
+          <span class="date">2026-11-28</span>
+        </div>
+        <div class="body">全球前 50 大最具價值汽車公司中，中國製造商佔 16 家，土耳其亦有 2 家企業成功入榜，顯示電動車轉型正在改變全球汽車業競爭格局。</div>
+        <div class="impact"><b>台商解讀：</b>土耳其車廠在全球競爭中展現一定實力，臺商電動車零元件與供應鏈業者可留意與當地車廠的合作契機。</div>
+      </li>
+      <li class="sector-item pos">
+        <div class="row-top">
+          <span class="sector-chip">綠能與充電設施</span>
+          <span class="headline">EPDK 開放儲能快充選項 提升站點輸出功率</span>
+          <span class="src"><a href="https://yesilhaber.net/depolama-destekli-hizli-sarj-yatirim-hesabi/" target="_blank" rel="noopener noreferrer">Yeşil Haber</a></span>
+          <span class="date">2026-11-28</span>
+        </div>
+        <div class="body">EPDK 開放儲能選項，使 100 kW 連線管網的示範充電站能為車輛提供 240 kW 的快充服務，投資回報取決於節省時間所換取的可增加充電次數。</div>
+        <div class="impact"><b>台商解讀：</b>儲能型快充技術在土耳其法規放寬下推廣，可能帶動儲能系統與高功率快充裝置的引進需求。</div>
+      </li>
+      <li class="sector-item pos">
+        <div class="row-top">
+          <span class="sector-chip">紡織成衣</span>
+          <span class="headline">土耳其前九個月襪類出口達 8.468 億美元</span>
+          <span class="src"><a href="https://www.dunya.com/ekonomi/turkiyeye-milyonlarca-dolar-kazandiriyor-avrupa-ve-abdden-yogun-talep-haberi-849173" target="_blank" rel="noopener noreferrer">Dünya</a></span>
+          <span class="date">2026-11-28</span>
+        </div>
+        <div class="body">土耳其今年前九個月襪類產品出口額達 8.468 億美元，實現 7.931 億美元的貿易順差，主要需求來自歐洲國家與美國。</div>
+        <div class="impact"><b>台商解讀：</b>土耳其紡織業在外銷市場保持強勁順差實力，對於提供自動化紡織機械及原物料的臺商而言屬潛在機會。</div>
+      </li>
+      <li class="sector-item neg">
+        <div class="row-top">
+          <span class="sector-chip">金屬加工與製造</span>
+          <span class="headline">年產 30 萬件金屬加工企業 Kare Metal 宣告破產</span>
+          <span class="src"><a href="https://www.sozcu.com.tr/yilda-300-bin-adet-uretim-yapan-turk-sirketi-iflas-etti-p385013" target="_blank" rel="noopener noreferrer">Sözcü Ekonomi</a></span>
+          <span class="date">2026-11-28</span>
+        </div>
+        <div class="body">Tekirdağ 法院對處於破產延展程式中的 Kare Metal Form Sanayi 做出終止保護決定，該公司年產能原達 30 萬件。</div>
+        <div class="impact"><b>台商解讀：</b>當地高產能製造企業面臨破產，反映製造業營運壓力，臺商在給予信用額度與收付款時應強化風險控管。</div>
+      </li>
+      <li class="sector-item pos">
+        <div class="row-top">
+          <span class="sector-chip">風力發電與儲能</span>
+          <span class="headline">Büyükkışla 儲能型風電廠完成第一階段政府驗收</span>
           <span class="src"><a href="https://www.dunya.com/ekonomi/buyukkisla-depolamali-resin-kismi-bakanlik-kabulu-tamamlandi-haberi-849141" target="_blank" rel="noopener noreferrer">Dünya</a></span>
           <span class="date">2026-11-27</span>
         </div>
-        <div class="body">Entek Elektrik 在安卡拉 Şereflikoçhisar 的 Büyükkışla 儲能型風力發電廠已完成 11 座風力機組建設與部會驗收，未來全產能運作時，預估年發電量相當於 8.3 萬戶家庭的用電需求。</div>
-        <div class="impact"><b>台商解讀：</b>土耳其擴建風電與儲能結合之綠能設施，對風力發電零元件、儲能裝置及智慧電網相關產品之需求可能具推動作用。</div>
-      </li>
-      <li class="sector-item pos">
-        <div class="row-top">
-          <span class="sector-chip">能源</span>
-          <span class="headline">俄羅斯 Gazprom 與土耳其 BOTAŞ 延長天然氣供應合約 3 年</span>
-          <span class="src"><a href="https://www.bloomberght.com/gazprom-ve-botas-dogalgaz-sozlesmesini-3-yil-uzatti-3795954" target="_blank" rel="noopener noreferrer">Bloomberg HT</a></span>
-          <span class="date">2026-11-27</span>
-        </div>
-        <div class="body">俄羅斯副總理 Aleksandr Novak 宣佈，俄羅斯天然氣公司 Gazprom 與土耳其國營管道公司 BOTAŞ 已按現有條件將對土天然氣供應合約延長 3 年。</div>
-        <div class="impact"><b>台商解讀：</b>天然氣供應合約延展有助於維持土耳其工業用能源供應穩定，可能有利於降低當地製造業營運成本的波動風險。</div>
-      </li>
-      <li class="sector-item pos">
-        <div class="row-top">
-          <span class="sector-chip">能源</span>
-          <span class="headline">土耳其 BOTAŞ 與伊朗延長天然氣進口合約至 2032 年</span>
-          <span class="src"><a href="https://www.sozcu.com.tr/turkiye-iranla-dogal-gaz-anlasmasini-2032ye-kadar-uzatti-p384879" target="_blank" rel="noopener noreferrer">Sözcü Ekonomi</a></span>
-          <span class="date">2026-11-27</span>
-        </div>
-        <div class="body">據報導土耳其 BOTAŞ 與伊朗國家天然氣公司已將 7 月到期的天然氣進口協議延長至 2032 年。</div>
-        <div class="impact"><b>台商解讀：</b>長期天然氣合約的簽訂顯示土耳其持續穩定能源來源，可能評估有助於保障中長期工業生產所需的基礎能源。</div>
-      </li>
-      <li class="sector-item neu">
-        <div class="row-top">
-          <span class="sector-chip">汽車與工業</span>
-          <span class="headline">TÜSİAD 呼籲在歐盟新法規透過前完成「Made in EU」談判</span>
-          <span class="src"><a href="https://www.ekonomim.com/ekonomi/tusiaddirenden-made-in-eu-uyarisi-muzakereler-yasa-cikmadan-tamamlanmali-haberi-933914" target="_blank" rel="noopener noreferrer">Ekonomim</a></span>
-          <span class="date">2026-11-27</span>
-        </div>
-        <div class="body">土耳其工業與商業協會（TÜSİAD）主席 Ozan Diren 呼籲，土耳其應在歐盟新工業法規生效前，完成與歐盟就納入「Made in EU」範疇的談判。</div>
-        <div class="impact"><b>台商解讀：</b>若土耳其成功納入歐盟關聯供應鏈認定，可能有利於赴土投資設廠的汽車零元件及製造業者外銷歐洲市場，值得臺商關注法規進展。</div>
-      </li>
-      <li class="sector-item neu">
-        <div class="row-top">
-          <span class="sector-chip">綠能與建築</span>
-          <span class="headline">土耳其發布建築防火法規 預計 2028 年起規範電動車充電與屋頂光電</span>
-          <span class="src"><a href="https://yesilhaber.net/bina-yangin-sarj-cati-ges-2028/" target="_blank" rel="noopener noreferrer">Yeşil Haber</a></span>
-          <span class="date">2026-11-27</span>
-        </div>
-        <div class="body">土耳其修訂建築防火法規，針對電動車充電裝置及建築整合型太陽能系統的安全規範，訂定 2028 年實施與合規時程。</div>
-        <div class="impact"><b>台商解讀：</b>安全規範更新可能帶動符合新標準的充電裝置與綠能檢測方案需求，臺灣相關硬體與檢測裝置業者可提前進行產品規格準備。</div>
+        <div class="body">Entek Elektrik 位於 Ankara Şereflikoçhisar 的 Büyükkışla 儲能型風力發電廠完成部分驗收，14 座風車中已完成 11 座建造，全面運轉後預計每年可滿足 8.3 萬戶家庭用電。</div>
+        <div class="impact"><b>台商解讀：</b>土耳其持續推進風能與儲能結合的建設案，相關周邊零元件與綠能裝置供應鏈值得關注。</div>
       </li>
 <!-- AI:INDUSTRY:END -->
     </ul>
@@ -1611,9 +1664,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <ul class="implications-list">
       <!-- AI:TRADE_IMPLICATIONS:START 每天由 generate_analysis.py 整段覆寫 ul 內容 -->
-      <li><strong>政策減稅與國際資金融通有望緩解當地企業營運壓力</strong>土耳其政府釋出減稅訊號，並配合 TKYB 發放歐盟與世行 7,000 萬歐元補助，可能改善部分在地企業的營運現金流。臺商在進行貿易談判時，可適度評估客戶資金狀況，調整相關交易與付款條件。</li>
-      <li><strong>風電及儲能設施持續推進，帶動綠能供應鏈商機</strong>安卡拉儲能型風電廠進入驗收階段，顯示土耳其對再生能源與儲能建設的積極態度。生產或供應儲能系統、電力電子及相關發電零元件的臺商，可關注當地電網轉型帶來的市場機會。</li>
-      <li><strong>金融監管與合規要求提升，需確保跨境收付款管道安全</strong>土耳其央行撤銷電子支付機構執照，反映出對金融機構管制的嚴格態度。建議臺商在與土耳其買家結算貨款時，儘量選擇合規註冊之銀行與標準金融通道，以規避營運與法規風險。</li>
+      <li><strong>歐盟法規演變與土耳其汽車供應鏈戰略地位</strong>歐洲車廠爭取將土耳其納入 Made in EU 規則豁免，顯示土耳其在歐洲車輛供應鏈的關鍵位置。若獲得豁免，土耳其作為出口歐洲門戶的角色將更趨穩固，臺商可密切觀察相關零元件供應鏈變動。</li>
+      <li><strong>貨幣緊縮與企業融資成本上升之交易風險管理</strong>土耳其央行流動性緊縮推升資金成本，且當地出現年產 30 萬件的製造業者破產案例。臺商與土耳其買家進行貿易往來時，宜密切評估買方的流動性風險並善用避險工具。</li>
+      <li><strong>能源出口與儲能基礎設施帶動相關裝置需求</strong>土耳其除了啟動對阿勒坡最高 500 MW 的電力出口外，亦透過 EPDK 新規推進儲能快充站與儲能型風電廠。能源基礎建設與儲能需求持續升溫，可能為臺商在電力與儲能周邊裝置領域帶來潛在機會。</li>
 <!-- AI:TRADE_IMPLICATIONS:END -->
     </ul>
   </div>
@@ -1907,7 +1960,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="footer-brand"><img src="/news/taitra-logo.png" alt="TAITRA"></div>
     <div style="margin-top:0.3rem;">Taiwan Trade Center, Istanbul</div>
     <div style="margin-top:0.2rem;">E-mail : <a href="mailto:istanbul@taitra.org.tw" style="color:inherit;">istanbul@taitra.org.tw</a></div>
-    <div style="margin-top:0.8rem;">Türkiye 經濟情報簡報 · 2026-11-28 00:24 TRT</div>
+    <div style="margin-top:0.8rem;">Türkiye 經濟情報簡報 · 2026-11-28 19:21 TRT</div>
     <div style="margin-top:0.4rem; opacity:0.7;">本報告僅供參考，不構成任何投資或商業決策建議</div>
   </div>
 
@@ -2676,6 +2729,33 @@ $("econSaveBtn").addEventListener("click", async () => {
   setTimeout(function () {
     items.forEach(function (el) { el.classList.add('in'); });
   }, 6000);
+})();
+</script>
+<script id="mobile-table-cards">
+/* 手機版：替表格每格加上欄名（data-label），CSS 在 ≤640px 時改成卡片排版 */
+(function(){
+  var TITLE = ['事件','指標','項目','產業別'];
+  var META  = ['影響方向','重要性','來源','新聞日期'];
+  var HIDE  = ['#'];
+  function run(){
+    document.querySelectorAll('.table-wrapper table').forEach(function(t){
+      var ths = [].map.call(t.querySelectorAll('thead th'), function(th){ return th.textContent.trim(); });
+      t.querySelectorAll('tbody tr').forEach(function(tr){
+        var hasMeta = false;
+        [].forEach.call(tr.children, function(td, i){
+          var lab = ths[i] || '';
+          td.setAttribute('data-label', lab);
+          var txt = td.textContent.trim();
+          if (HIDE.indexOf(lab) > -1 || txt === '' || txt === '—' || txt === '-') td.classList.add('m-hide');
+          else if (TITLE.indexOf(lab) > -1) td.classList.add('m-title');
+          else if (META.indexOf(lab) > -1) { td.classList.add('m-meta'); hasMeta = true; }
+          else td.classList.add(txt.length > 18 ? 'm-long' : 'm-short');
+        });
+        if (hasMeta) tr.classList.add('m-has-meta');
+      });
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
 })();
 </script>
 </body>

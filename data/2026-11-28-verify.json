@@ -13,14 +13,14 @@
    "name": "2. AI 寫的數字都能對回原始 JSON",
    "passed": true,
    "details": [
-    "共檢查 9 個數字，全部找得到來源"
+    "共檢查 23 個數字，全部找得到來源"
    ]
   },
   {
    "name": "3. 每個事件都有來源連結（且連結、日期對得上原始新聞）",
    "passed": true,
    "details": [
-    "共 5 則事件，連結皆可對回原始新聞"
+    "共 10 則事件，連結皆可對回原始新聞"
    ]
   },
   {
@@ -40,35 +40,11 @@
  ],
  "number_trace": [
   {
-   "field": "today_take",
-   "token": "7,000",
-   "unit_mult": 10000.0,
-   "matched": [
-    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）",
-    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）",
-    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）"
-   ],
-   "note": ""
-  },
-  {
    "field": "summary",
-   "token": "7,000",
-   "unit_mult": 10000.0,
-   "matched": [
-    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）",
-    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）",
-    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）"
-   ],
-   "note": ""
-  },
-  {
-   "field": "summary",
-   "token": "50.6955",
+   "token": "40",
    "unit_mult": 1.0,
    "matched": [
-    "payload.fx.rates.USD.forex_selling",
-    "payload.fx.rates.USD.per_unit_selling",
-    "payload.fx.twd_try_cross.usd_try_selling_used"
+    "新聞「Merkez Bankası'nın hamlesi den」（Sözcü Ekonomi）"
    ],
    "note": ""
   },
@@ -82,7 +58,82 @@
    "note": ""
   },
   {
-   "field": "key_events[1].headline",
+   "field": "summary",
+   "token": "8.468",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye'ye milyonlarca dolar k」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "7.931",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye'ye milyonlarca dolar k」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "500",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Bakanlık: Türkiye’den Halep’e 」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "summary",
+   "token": "30",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Yılda 300 bin adet üretim yapa」（Sözcü Ekonomi）",
+    "新聞「Yılda 300 bin adet üretim yapa」（Sözcü Ekonomi）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "3",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Merkez Bankası'nın hamlesi den」（Sözcü Ekonomi）",
+    "payload.macro.cpi:相鄰漲跌幅%",
+    "payload.macro.trade_exports:相鄰漲跌幅%"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[1].summary",
+   "token": "40",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Merkez Bankası'nın hamlesi den」（Sözcü Ekonomi）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].headline",
+   "token": "500",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Bakanlık: Türkiye’den Halep’e 」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[2].summary",
+   "token": "500",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Bakanlık: Türkiye’den Halep’e 」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "key_events[4].headline",
    "token": "7,000",
    "unit_mult": 10000.0,
    "matched": [
@@ -93,7 +144,7 @@
    "note": ""
   },
   {
-   "field": "key_events[1].summary",
+   "field": "key_events[4].summary",
    "token": "7,000",
    "unit_mult": 10000.0,
    "matched": [
@@ -104,7 +155,7 @@
    "note": ""
   },
   {
-   "field": "key_events[1].summary",
+   "field": "key_events[4].summary",
    "token": "1.3",
    "unit_mult": 10000.0,
    "matched": [
@@ -114,7 +165,73 @@
    "note": ""
   },
   {
-   "field": "industry_items[0].body",
+   "field": "industry_items[1].body",
+   "token": "100",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Depolama destekli hızlı şarj h」（Yeşil Haber）",
+    "payload.fx.rates.JPY.unit"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[1].body",
+   "token": "240",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Depolama destekli hızlı şarj h」（Yeşil Haber）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[2].headline",
+   "token": "8.468",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye'ye milyonlarca dolar k」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[2].body",
+   "token": "8.468",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye'ye milyonlarca dolar k」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[2].body",
+   "token": "7.931",
+   "unit_mult": 100000000.0,
+   "matched": [
+    "新聞「Türkiye'ye milyonlarca dolar k」（Dünya）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[3].headline",
+   "token": "30",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Yılda 300 bin adet üretim yapa」（Sözcü Ekonomi）",
+    "新聞「Yılda 300 bin adet üretim yapa」（Sözcü Ekonomi）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[3].body",
+   "token": "30",
+   "unit_mult": 10000.0,
+   "matched": [
+    "新聞「Yılda 300 bin adet üretim yapa」（Sözcü Ekonomi）",
+    "新聞「Yılda 300 bin adet üretim yapa」（Sözcü Ekonomi）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "industry_items[4].body",
    "token": "8.3",
    "unit_mult": 10000.0,
    "matched": [
@@ -124,13 +241,21 @@
    "note": ""
   },
   {
-   "field": "trade_implications[0].body",
-   "token": "7,000",
+   "field": "trade_implications[1].body",
+   "token": "30",
    "unit_mult": 10000.0,
    "matched": [
-    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）",
-    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）",
-    "新聞「TKYB’den istihdama 70 milyon e」（Dünya）"
+    "新聞「Yılda 300 bin adet üretim yapa」（Sözcü Ekonomi）",
+    "新聞「Yılda 300 bin adet üretim yapa」（Sözcü Ekonomi）"
+   ],
+   "note": ""
+  },
+  {
+   "field": "trade_implications[2].body",
+   "token": "500",
+   "unit_mult": 1.0,
+   "matched": [
+    "新聞「Bakanlık: Türkiye’den Halep’e 」（Yeşil Haber）"
    ],
    "note": ""
   }
