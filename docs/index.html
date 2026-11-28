@@ -1163,6 +1163,49 @@ td.col-date {
   .card h2 { font-size: 1.15rem; }
   .legend { gap: 0.75rem; font-size: 0.75rem; }
 }
+/* ===== 手機版改善（≤640px）：表格改卡片、標題列精簡 ===== */
+@media (max-width: 640px) {
+  body { padding: 1rem 0.6rem 2rem; }
+  .topbar .brand .divider, .topbar .status { display: none; }
+  .topbar .meta { font-size: 0.7rem; line-height: 1.4; text-align: right; max-width: 9.5rem; }
+  .hero h1 { font-size: 2.2rem; }
+  .card { padding: 1.25rem 1rem; }
+  .card > .card-head { align-items: center; margin-bottom: 1.1rem; padding-bottom: 0.9rem; }
+  .card-sub { display: none; }
+  .card h2 { font-size: 1.1rem; gap: 0.6rem; }
+
+  /* 表格 → 一列一張卡片 */
+  .table-wrapper { overflow: visible; margin: 0; padding: 0; }
+  .table-wrapper table, table.tbl-wide, table.tbl-narrow { min-width: 0; width: 100%; display: block; }
+  .table-wrapper thead { display: none; }
+  .table-wrapper tbody { display: block; }
+  .table-wrapper tbody tr {
+    display: flex; flex-direction: column;
+    background: var(--bg-table-even) !important;
+    border: 1px solid var(--border-soft); border-radius: 14px;
+    padding: 0.85rem 0.95rem; margin-bottom: 0.7rem;
+  }
+  .table-wrapper tbody td,
+  .table-wrapper tbody td:first-child {
+    display: block; width: auto; border: none; padding: 0.2rem 0;
+    text-align: left; font-family: inherit; font-size: 0.88rem;
+    color: var(--text-primary); line-height: 1.65;
+  }
+  .table-wrapper tbody td.m-hide { display: none; }
+  .table-wrapper td.m-title { order: -2; font-weight: 700; font-size: 0.98rem; color: var(--text-heading); padding-bottom: 0.35rem; }
+  .table-wrapper td.m-meta { order: -3; }
+  .table-wrapper tbody td.m-short { text-align: right; }
+  .table-wrapper td.m-short::before { content: attr(data-label); float: left; margin-right: 1rem; line-height: 2.2; }
+  .table-wrapper td.m-long::before { content: attr(data-label); display: block; margin-top: 0.35rem; }
+  .table-wrapper td.m-short::before, .table-wrapper td.m-long::before {
+    font-size: 0.72rem; color: var(--text-tertiary); letter-spacing: 0.04em;
+  }
+  /* 關鍵事件：方向、重要性、來源、日期排成一行 */
+  .table-wrapper tr.m-has-meta { flex-direction: row; flex-wrap: wrap; align-items: center; column-gap: 0.6rem; }
+  .table-wrapper tr.m-has-meta td.m-meta { width: auto; }
+  .table-wrapper tr.m-has-meta td.m-meta.col-date { font-size: 0.78rem; color: var(--text-tertiary); }
+  .table-wrapper tr.m-has-meta td:not(.m-meta) { flex-basis: 100%; }
+}
 </style>
 <!-- TODO: 換成自己的 GTM 容器 ID，或整段移除 -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -3097,6 +3140,33 @@ $("econSaveBtn").addEventListener("click", async () => {
   setTimeout(function () {
     items.forEach(function (el) { el.classList.add('in'); });
   }, 6000);
+})();
+</script>
+<script id="mobile-table-cards">
+/* 手機版：替表格每格加上欄名（data-label），CSS 在 ≤640px 時改成卡片排版 */
+(function(){
+  var TITLE = ['事件','指標','項目','產業別'];
+  var META  = ['影響方向','重要性','來源','新聞日期'];
+  var HIDE  = ['#'];
+  function run(){
+    document.querySelectorAll('.table-wrapper table').forEach(function(t){
+      var ths = [].map.call(t.querySelectorAll('thead th'), function(th){ return th.textContent.trim(); });
+      t.querySelectorAll('tbody tr').forEach(function(tr){
+        var hasMeta = false;
+        [].forEach.call(tr.children, function(td, i){
+          var lab = ths[i] || '';
+          td.setAttribute('data-label', lab);
+          var txt = td.textContent.trim();
+          if (HIDE.indexOf(lab) > -1 || txt === '' || txt === '—' || txt === '-') td.classList.add('m-hide');
+          else if (TITLE.indexOf(lab) > -1) td.classList.add('m-title');
+          else if (META.indexOf(lab) > -1) { td.classList.add('m-meta'); hasMeta = true; }
+          else td.classList.add(txt.length > 18 ? 'm-long' : 'm-short');
+        });
+        if (hasMeta) tr.classList.add('m-has-meta');
+      });
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
 })();
 </script>
 </body>
